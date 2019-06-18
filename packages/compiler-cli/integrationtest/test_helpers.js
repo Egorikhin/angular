@@ -6,22 +6,22 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const child_process = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const shx = require('shelljs');
+let child_process = require('child_process');
+let fs = require('fs');
+let path = require('path');
+let shx = require('shelljs');
 
 /** Manifest path that refers to the Bazel package that contains all test sources. */
-const baseManifestPath = 'angular/packages/compiler-cli/integrationtest';
+let baseManifestPath = 'angular/packages/compiler-cli/integrationtest';
 
 /**
  * Temporary directory which will be used to build and run the integration tests. Note that
  * this environment variable is automatically set by Bazel for such test actions.
  */
-const tmpDir = process.env.TEST_TMPDIR;
+let tmpDir = process.env.TEST_TMPDIR;
 
 /** Fine grained node modules which are required in order to run the integration test. */
-const requiredNodeModules = {
+let requiredNodeModules = {
   '@angular/animations': resolveNpmTreeArtifact('angular/packages/animations/npm_package'),
   '@angular/common': resolveNpmTreeArtifact('angular/packages/common/npm_package'),
   '@angular/compiler': resolveNpmTreeArtifact('angular/packages/compiler/npm_package'),
@@ -71,7 +71,7 @@ exports.setupTestDirectory = function() {
  * the spawned process will be the temporary directory.
  */
 exports.runCommand = function runCommand(binary, args = []) {
-  const ngcProcess = child_process.spawnSync(binary, args, {
+  let ngcProcess = child_process.spawnSync(binary, args, {
     stdio: 'inherit',
     cwd: tmpDir,
     env: {
@@ -98,8 +98,8 @@ exports.runCommand = function runCommand(binary, args = []) {
  */
 function symlinkNodeModules() {
   Object.keys(requiredNodeModules).forEach(importName => {
-    const outputPath = path.join(tmpDir, 'node_modules', importName);
-    const moduleDir = requiredNodeModules[importName];
+    let outputPath = path.join(tmpDir, 'node_modules', importName);
+    let moduleDir = requiredNodeModules[importName];
     shx.mkdir('-p', path.dirname(outputPath));
     fs.symlinkSync(moduleDir, outputPath, 'junction');
   });
@@ -112,7 +112,7 @@ function symlinkNodeModules() {
  */
 function copySourceFilesToTempDir() {
   getSourceFilesFromRunfiles().forEach(({realPath, relativeFilePath}) => {
-    const tmpFilePath = path.join(tmpDir, relativeFilePath);
+    let tmpFilePath = path.join(tmpDir, relativeFilePath);
 
     shx.mkdir('-p', path.dirname(tmpFilePath));
     shx.cp(realPath, tmpFilePath);
@@ -128,10 +128,10 @@ function copySourceFilesToTempDir() {
 function getSourceFilesFromRunfiles() {
   // Path to the Bazel runfiles manifest if present. This file is present if runfiles are
   // not symlinked into the runfiles directory.
-  const runfilesManifestPath = process.env.RUNFILES_MANIFEST_FILE;
+  let runfilesManifestPath = process.env.RUNFILES_MANIFEST_FILE;
 
   if (!runfilesManifestPath) {
-    const packageRunfilesDir = path.join(process.env.RUNFILES, baseManifestPath);
+    let packageRunfilesDir = path.join(process.env.RUNFILES, baseManifestPath);
     return findFilesWithinDirectory(packageRunfilesDir).map(filePath => ({
                                                               realPath: filePath,
                                                               relativeFilePath: path.relative(

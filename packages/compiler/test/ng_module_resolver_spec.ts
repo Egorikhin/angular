@@ -36,7 +36,7 @@ class SimpleClass {}
     beforeEach(() => { resolver = new NgModuleResolver(new JitReflector()); });
 
     it('should read out the metadata from the class', () => {
-      const moduleMetadata = resolver.resolve(SomeModule);
+      let moduleMetadata = resolver.resolve(SomeModule);
       expect(moduleMetadata).toEqual(new NgModule({
         declarations: [SomeClass1],
         imports: [SomeClass2],

@@ -24,7 +24,7 @@ class SimpleClass {}
     beforeEach(() => { resolver = new PipeResolver(new JitReflector()); });
 
     it('should read out the metadata from the class', () => {
-      const moduleMetadata = resolver.resolve(SomePipe);
+      let moduleMetadata = resolver.resolve(SomePipe);
       expect(moduleMetadata).toEqual(new Pipe({name: 'somePipe', pure: true}));
     });
 

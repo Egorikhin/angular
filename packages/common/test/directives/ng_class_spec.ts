@@ -70,7 +70,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
       it('should add and remove classes based on changes to the expression object', async(() => {
            fixture = createTestComponent('<div [ngClass]="objExpr"></div>');
-           const objExpr = getComponent().objExpr;
+           let objExpr = getComponent().objExpr;
 
            detectChangesAndExpectClassName('foo');
 
@@ -139,7 +139,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
       it('should add and remove classes based on changes to the expression', async(() => {
            fixture = createTestComponent('<div [ngClass]="arrExpr"></div>');
-           const arrExpr = getComponent().arrExpr;
+           let arrExpr = getComponent().arrExpr;
            detectChangesAndExpectClassName('foo');
 
            arrExpr.push('bar');
@@ -260,11 +260,11 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
     });
 
-    describe('cooperation with other class-changing constructs', () => {
+    describe('cooperation with other class-changing letructs', () => {
 
       it('should co-operate with the class attribute', async(() => {
            fixture = createTestComponent('<div [ngClass]="objExpr" class="init foo"></div>');
-           const objExpr = getComponent().objExpr;
+           let objExpr = getComponent().objExpr;
 
            objExpr !['bar'] = true;
            detectChangesAndExpectClassName('init foo bar');
@@ -278,7 +278,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
       it('should co-operate with the interpolated class attribute', async(() => {
            fixture = createTestComponent(`<div [ngClass]="objExpr" class="{{'init foo'}}"></div>`);
-           const objExpr = getComponent().objExpr;
+           let objExpr = getComponent().objExpr;
 
            objExpr !['bar'] = true;
            detectChangesAndExpectClassName(`init foo bar`);
@@ -304,7 +304,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
       it('should co-operate with the class attribute and binding to it', async(() => {
            fixture =
                createTestComponent(`<div [ngClass]="objExpr" class="init" [class]="'foo'"></div>`);
-           const objExpr = getComponent().objExpr;
+           let objExpr = getComponent().objExpr;
 
            objExpr !['bar'] = true;
            detectChangesAndExpectClassName(`init foo bar`);
@@ -317,10 +317,10 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
          }));
 
       it('should co-operate with the class attribute and class.name binding', async(() => {
-           const template =
+           let template =
                '<div class="init foo" [ngClass]="objExpr" [class.baz]="condition"></div>';
            fixture = createTestComponent(template);
-           const objExpr = getComponent().objExpr;
+           let objExpr = getComponent().objExpr;
 
            detectChangesAndExpectClassName('init foo baz');
 
@@ -336,9 +336,9 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
       it('should co-operate with initial class and class attribute binding when binding changes',
          async(() => {
-           const template = '<div class="init" [ngClass]="objExpr" [class]="strExpr"></div>';
+           let template = '<div class="init" [ngClass]="objExpr" [class]="strExpr"></div>';
            fixture = createTestComponent(template);
-           const cmp = getComponent();
+           let cmp = getComponent();
 
            detectChangesAndExpectClassName('init foo');
 
@@ -365,7 +365,7 @@ class TestComponent {
   objExpr: {[klass: string]: any}|null = {'foo': true, 'bar': false};
   strExpr: string|null = 'foo';
 
-  constructor() { this.setExpr.add('foo'); }
+  letructor() { this.setExpr.add('foo'); }
 }
 
 function createTestComponent(template: string): ComponentFixture<TestComponent> {

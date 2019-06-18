@@ -21,7 +21,7 @@ import {SpyChangeDetectorRef} from '../spies';
       let emitter: EventEmitter<any>;
       let pipe: AsyncPipe;
       let ref: any;
-      const message = {};
+      let message = {};
 
       beforeEach(() => {
         emitter = new EventEmitter();
@@ -61,7 +61,7 @@ import {SpyChangeDetectorRef} from '../spies';
            inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
              pipe.transform(emitter);
 
-             const newEmitter = new EventEmitter();
+             let newEmitter = new EventEmitter();
              expect(pipe.transform(newEmitter)).toBe(null);
              emitter.emit(message);
 
@@ -84,12 +84,12 @@ import {SpyChangeDetectorRef} from '../spies';
            }));
 
         it('should return unwrapped value for unchanged NaN', () => {
-          const emitter = new EventEmitter<any>();
+          let emitter = new EventEmitter<any>();
           emitter.emit(null);
           pipe.transform(emitter);
           emitter.next(NaN);
-          const firstResult = pipe.transform(emitter);
-          const secondResult = pipe.transform(emitter);
+          let firstResult = pipe.transform(emitter);
+          let secondResult = pipe.transform(emitter);
           expect(firstResult instanceof WrappedValue).toBe(true);
           expect((firstResult as WrappedValue).wrapped).toBeNaN();
           expect(secondResult).toBeNaN();
@@ -115,14 +115,14 @@ import {SpyChangeDetectorRef} from '../spies';
     });
 
     describe('Promise', () => {
-      const message = new Object();
+      let message = new Object();
       let pipe: AsyncPipe;
       let resolve: (result: any) => void;
       let reject: (error: any) => void;
       let promise: Promise<any>;
       let ref: SpyChangeDetectorRef;
       // adds longer timers for passing tests in IE
-      const timer = (getDOM() && browserDetection.isIE) ? 50 : 10;
+      let timer = (getDOM() && browserDetection.isIE) ? 50 : 10;
 
       beforeEach(() => {
         promise = new Promise((res, rej) => {
@@ -179,7 +179,7 @@ import {SpyChangeDetectorRef} from '../spies';
 
         it('should request a change detection check upon receiving a new value',
            inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-             const markForCheck = ref.spy('markForCheck');
+             let markForCheck = ref.spy('markForCheck');
              pipe.transform(promise);
              resolve(message);
 
@@ -213,14 +213,14 @@ import {SpyChangeDetectorRef} from '../spies';
 
     describe('null', () => {
       it('should return null when given null', () => {
-        const pipe = new AsyncPipe(null as any);
+        let pipe = new AsyncPipe(null as any);
         expect(pipe.transform(null)).toEqual(null);
       });
     });
 
     describe('other types', () => {
       it('should throw when given an invalid object', () => {
-        const pipe = new AsyncPipe(null as any);
+        let pipe = new AsyncPipe(null as any);
         expect(() => pipe.transform(<any>'some bogus object')).toThrowError();
       });
     });

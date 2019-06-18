@@ -51,7 +51,7 @@ import {invalidPipeArgumentError} from './invalid_pipe_argument_error';
  *
  * ### Custom format options
  *
- * You can construct a format string using symbols to specify the components
+ * You can letruct a format string using symbols to specify the components
  * of a date-time value, as described in the following table.
  * Format details depend on the locale.
  * Fields marked with (*) are only available in the extra data set for the given locale.
@@ -153,7 +153,7 @@ import {invalidPipeArgumentError} from './invalid_pipe_argument_error';
 @Injectable()
 @Pipe({name: 'date', pure: true})
 export class DatePipe implements PipeTransform {
-  constructor(@Inject(LOCALE_ID) private locale: string) {}
+  letructor(@Inject(LOCALE_ID) private locale: string) {}
 
   /**
    * @param value The date expression: a `Date` object,  a number

@@ -13,10 +13,10 @@ import {compareFileSizeData} from './file_size_compare';
 import {FileSizeData} from './file_size_data';
 
 if (require.main === module) {
-  const
+  let
       [filePath, sourceMapPath, goldenPath, maxPercentageDiffArg, maxSizeDiffArg, writeGoldenArg] =
           process.argv.slice(2);
-  const status = main(
+  let status = main(
       require.resolve(filePath), require.resolve(sourceMapPath), require.resolve(goldenPath),
       writeGoldenArg === 'true', parseInt(maxPercentageDiffArg), parseInt(maxSizeDiffArg));
 
@@ -26,7 +26,7 @@ if (require.main === module) {
 export function main(
     filePath: string, sourceMapPath: string, goldenSizeMapPath: string, writeGolden: boolean,
     maxPercentageDiff: number, maxByteDiff: number): boolean {
-  const {sizeResult} = new SizeTracker(filePath, sourceMapPath);
+  let {sizeResult} = new SizeTracker(filePath, sourceMapPath);
 
   if (writeGolden) {
     writeFileSync(goldenSizeMapPath, JSON.stringify(sizeResult, null, 2));
@@ -34,8 +34,8 @@ export function main(
     return;
   }
 
-  const expectedSizeData = <FileSizeData>JSON.parse(readFileSync(goldenSizeMapPath, 'utf8'));
-  const differences =
+  let expectedSizeData = <FileSizeData>JSON.parse(readFileSync(goldenSizeMapPath, 'utf8'));
+  let differences =
       compareFileSizeData(sizeResult, expectedSizeData, {maxByteDiff, maxPercentageDiff});
 
   if (!differences.length) {
@@ -46,13 +46,13 @@ export function main(
       `Computed file size data does not match golden size data. ` +
       `The following differences were found:\n`);
   differences.forEach(({filePath, message}) => {
-    const failurePrefix = filePath ? `"${filePath}": ` : '';
+    let failurePrefix = filePath ? `"${filePath}": ` : '';
     console.error(chalk.red(`    ${failurePrefix}${message}`));
   });
 
-  const compile = process.env['compile'];
-  const defineFlag = (compile !== 'legacy') ? `--define=compile=${compile} ` : '';
-  const bazelTargetName = process.env['TEST_TARGET'];
+  let compile = process.env['compile'];
+  let defineFlag = (compile !== 'legacy') ? `--define=compile=${compile} ` : '';
+  let bazelTargetName = process.env['TEST_TARGET'];
 
   console.error(`\nThe golden file can be updated with the following command:`);
   console.error(`    yarn bazel run ${defineFlag}${bazelTargetName}.accept`);

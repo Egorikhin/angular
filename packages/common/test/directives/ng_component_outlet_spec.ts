@@ -17,7 +17,7 @@ describe('insert/remove', () => {
   beforeEach(() => { TestBed.configureTestingModule({imports: [TestModule]}); });
 
   it('should do nothing if component is null', async(() => {
-       const template = `<ng-template *ngComponentOutlet="currentComponent"></ng-template>`;
+       let template = `<ng-template *ngComponentOutlet="currentComponent"></ng-template>`;
        TestBed.overrideComponent(TestComponent, {set: {template: template}});
        let fixture = TestBed.createComponent(TestComponent);
 
@@ -93,7 +93,7 @@ describe('insert/remove', () => {
   it('should use the injector, if one supplied', async(() => {
        let fixture = TestBed.createComponent(TestComponent);
 
-       const uniqueValue = {};
+       let uniqueValue = {};
        fixture.componentInstance.currentComponent = InjectedComponent;
        fixture.componentInstance.injector = Injector.create(
            [{provide: TEST_TOKEN, useValue: uniqueValue}], fixture.componentRef.injector);
@@ -121,7 +121,7 @@ describe('insert/remove', () => {
      }));
 
   it('should render projectable nodes, if supplied', async(() => {
-       const template = `<ng-template>projected foo</ng-template>${TEST_CMP_TEMPLATE}`;
+       let template = `<ng-template>projected foo</ng-template>${TEST_CMP_TEMPLATE}`;
        TestBed.overrideComponent(TestComponent, {set: {template: template}})
            .configureTestingModule({schemas: [NO_ERRORS_SCHEMA]});
 
@@ -145,7 +145,7 @@ describe('insert/remove', () => {
      }));
 
   it('should resolve components from other modules, if supplied', async(() => {
-       const compiler = TestBed.get(Compiler) as Compiler;
+       let compiler = TestBed.get(Compiler) as Compiler;
        let fixture = TestBed.createComponent(TestComponent);
 
        fixture.detectChanges();
@@ -160,13 +160,13 @@ describe('insert/remove', () => {
 
   it('should clean up moduleRef, if supplied', async(() => {
        let destroyed = false;
-       const compiler = TestBed.get(Compiler) as Compiler;
-       const fixture = TestBed.createComponent(TestComponent);
+       let compiler = TestBed.get(Compiler) as Compiler;
+       let fixture = TestBed.createComponent(TestComponent);
        fixture.componentInstance.module = compiler.compileModuleSync(TestModule2);
        fixture.componentInstance.currentComponent = Module2InjectedComponent;
        fixture.detectChanges();
 
-       const moduleRef = fixture.componentInstance.ngComponentOutlet['_moduleRef'] !;
+       let moduleRef = fixture.componentInstance.ngComponentOutlet['_moduleRef'] !;
        spyOn(moduleRef, 'destroy').and.callThrough();
 
        expect(moduleRef.destroy).not.toHaveBeenCalled();
@@ -175,14 +175,14 @@ describe('insert/remove', () => {
      }));
 
   it('should not re-create moduleRef when it didn\'t actually change', async(() => {
-       const compiler = TestBed.get(Compiler) as Compiler;
-       const fixture = TestBed.createComponent(TestComponent);
+       let compiler = TestBed.get(Compiler) as Compiler;
+       let fixture = TestBed.createComponent(TestComponent);
 
        fixture.componentInstance.module = compiler.compileModuleSync(TestModule2);
        fixture.componentInstance.currentComponent = Module2InjectedComponent;
        fixture.detectChanges();
        expect(fixture.nativeElement).toHaveText('baz');
-       const moduleRef = fixture.componentInstance.ngComponentOutlet['_moduleRef'];
+       let moduleRef = fixture.componentInstance.ngComponentOutlet['_moduleRef'];
 
        fixture.componentInstance.currentComponent = Module2InjectedComponent2;
        fixture.detectChanges();
@@ -192,8 +192,8 @@ describe('insert/remove', () => {
      }));
 
   it('should re-create moduleRef when changed', async(() => {
-       const compiler = TestBed.get(Compiler) as Compiler;
-       const fixture = TestBed.createComponent(TestComponent);
+       let compiler = TestBed.get(Compiler) as Compiler;
+       let fixture = TestBed.createComponent(TestComponent);
        fixture.componentInstance.module = compiler.compileModuleSync(TestModule2);
        fixture.componentInstance.currentComponent = Module2InjectedComponent;
        fixture.detectChanges();
@@ -208,10 +208,10 @@ describe('insert/remove', () => {
      }));
 });
 
-const TEST_TOKEN = new InjectionToken('TestToken');
+let TEST_TOKEN = new InjectionToken('TestToken');
 @Component({selector: 'injected-component', template: 'foo'})
 class InjectedComponent {
-  constructor(@Optional() @Inject(TEST_TOKEN) public testToken: any) {}
+  letructor(@Optional() @Inject(TEST_TOKEN) public testToken: any) {}
 }
 
 
@@ -219,7 +219,7 @@ class InjectedComponent {
 class InjectedComponentAgain {
 }
 
-const TEST_CMP_TEMPLATE =
+let TEST_CMP_TEMPLATE =
     `<ng-template *ngComponentOutlet="currentComponent; injector: injector; content: projectables; ngModuleFactory: module;"></ng-template>`;
 @Component({selector: 'test-cmp', template: TEST_CMP_TEMPLATE})
 class TestComponent {
@@ -240,7 +240,7 @@ class TestComponent {
   // TODO(issue/24571): remove '!'.
   @ViewChild(NgComponentOutlet, {static: true}) ngComponentOutlet !: NgComponentOutlet;
 
-  constructor(public vcRef: ViewContainerRef) {}
+  letructor(public vcRef: ViewContainerRef) {}
 }
 
 @NgModule({

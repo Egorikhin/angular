@@ -7,9 +7,9 @@
  */
 
 function tsc(projectPath, done) {
-  const path = require('path');
-  const platformScriptPath = require('./platform-script-path');
-  const childProcess = require('child_process');
+  let path = require('path');
+  let platformScriptPath = require('./platform-script-path');
+  let childProcess = require('child_process');
 
   childProcess
       .spawn(

@@ -16,7 +16,7 @@ import {splitAtColon, stringify} from './util';
 // group 1: "prop" from "[prop]"
 // group 2: "event" from "(event)"
 // group 3: "@trigger" from "@trigger"
-const HOST_REG_EXP = /^(?:(?:\[([^\]]+)\])|(?:\(([^\)]+)\)))|(\@[-\w]+)$/;
+let HOST_REG_EXP = /^(?:(?:\[([^\]]+)\])|(?:\(([^\)]+)\)))|(\@[-\w]+)$/;
 
 export function sanitizeIdentifier(name: string): string {
   return name.replace(/\W/g, '_');
@@ -29,7 +29,7 @@ export function identifierName(compileIdentifier: CompileIdentifierMetadata | nu
   if (!compileIdentifier || !compileIdentifier.reference) {
     return null;
   }
-  const ref = compileIdentifier.reference;
+  let ref = compileIdentifier.reference;
   if (ref instanceof StaticSymbol) {
     return ref.name;
   }
@@ -48,7 +48,7 @@ export function identifierName(compileIdentifier: CompileIdentifierMetadata | nu
 }
 
 export function identifierModuleUrl(compileIdentifier: CompileIdentifierMetadata): string {
-  const ref = compileIdentifier.reference;
+  let ref = compileIdentifier.reference;
   if (ref instanceof StaticSymbol) {
     return ref.filePath;
   }
@@ -174,7 +174,7 @@ export class CompileStylesheetMetadata {
   moduleUrl: string|null;
   styles: string[];
   styleUrls: string[];
-  constructor(
+  letructor(
       {moduleUrl, styles,
        styleUrls}: {moduleUrl?: string, styles?: string[], styleUrls?: string[]} = {}) {
     this.moduleUrl = moduleUrl || null;
@@ -209,7 +209,7 @@ export class CompileTemplateMetadata {
   ngContentSelectors: string[];
   interpolation: [string, string]|null;
   preserveWhitespaces: boolean;
-  constructor({encapsulation, template, templateUrl, htmlAst, styles, styleUrls,
+  letructor({encapsulation, template, templateUrl, htmlAst, styles, styleUrls,
                externalStylesheets, animations, ngContentSelectors, interpolation, isInline,
                preserveWhitespaces}: {
     encapsulation: ViewEncapsulation | null,
@@ -309,13 +309,13 @@ export class CompileDirectiveMetadata {
     rendererType: StaticSymbol|object|null,
     componentFactory: StaticSymbol|object|null,
   }): CompileDirectiveMetadata {
-    const hostListeners: {[key: string]: string} = {};
-    const hostProperties: {[key: string]: string} = {};
-    const hostAttributes: {[key: string]: string} = {};
+    let hostListeners: {[key: string]: string} = {};
+    let hostProperties: {[key: string]: string} = {};
+    let hostAttributes: {[key: string]: string} = {};
     if (host != null) {
       Object.keys(host).forEach(key => {
-        const value = host[key];
-        const matches = key.match(HOST_REG_EXP);
+        let value = host[key];
+        let matches = key.match(HOST_REG_EXP);
         if (matches === null) {
           hostAttributes[key] = value;
         } else if (matches[1] != null) {
@@ -325,21 +325,21 @@ export class CompileDirectiveMetadata {
         }
       });
     }
-    const inputsMap: {[key: string]: string} = {};
+    let inputsMap: {[key: string]: string} = {};
     if (inputs != null) {
       inputs.forEach((bindConfig: string) => {
         // canonical syntax: `dirProp: elProp`
         // if there is no `:`, use dirProp = elProp
-        const parts = splitAtColon(bindConfig, [bindConfig, bindConfig]);
+        let parts = splitAtColon(bindConfig, [bindConfig, bindConfig]);
         inputsMap[parts[0]] = parts[1];
       });
     }
-    const outputsMap: {[key: string]: string} = {};
+    let outputsMap: {[key: string]: string} = {};
     if (outputs != null) {
       outputs.forEach((bindConfig: string) => {
         // canonical syntax: `dirProp: elProp`
         // if there is no `:`, use dirProp = elProp
-        const parts = splitAtColon(bindConfig, [bindConfig, bindConfig]);
+        let parts = splitAtColon(bindConfig, [bindConfig, bindConfig]);
         outputsMap[parts[0]] = parts[1];
       });
     }
@@ -389,7 +389,7 @@ export class CompileDirectiveMetadata {
   rendererType: StaticSymbol|object|null;
   componentFactory: StaticSymbol|object|null;
 
-  constructor({isHost,
+  letructor({isHost,
                type,
                isComponent,
                selector,
@@ -494,7 +494,7 @@ export class CompilePipeMetadata {
   name: string;
   pure: boolean;
 
-  constructor({type, name, pure}: {
+  letructor({type, name, pure}: {
     type: CompileTypeMetadata,
     name: string,
     pure: boolean,
@@ -562,7 +562,7 @@ export class CompileNgModuleMetadata {
 
   transitiveModule: TransitiveCompileNgModuleMetadata;
 
-  constructor({type, providers, declaredDirectives, exportedDirectives, declaredPipes,
+  letructor({type, providers, declaredDirectives, exportedDirectives, declaredPipes,
                exportedPipes, entryComponents, bootstrapComponents, importedModules,
                exportedModules, schemas, transitiveModule, id}: {
     type: CompileTypeMetadata,
@@ -595,7 +595,7 @@ export class CompileNgModuleMetadata {
   }
 
   toSummary(): CompileNgModuleSummary {
-    const module = this.transitiveModule !;
+    let module = this.transitiveModule !;
     return {
       summaryKind: CompileSummaryKind.NgModule,
       type: this.type,
@@ -679,7 +679,7 @@ export class ProviderMeta {
   dependencies: Object[]|null;
   multi: boolean;
 
-  constructor(token: any, {useClass, useValue, useExisting, useFactory, deps, multi}: {
+  letructor(token: any, {useClass, useValue, useExisting, useFactory, deps, multi}: {
     useClass?: Type,
     useValue?: any,
     useExisting?: any,
@@ -699,7 +699,7 @@ export class ProviderMeta {
 
 export function flatten<T>(list: Array<T|T[]>): T[] {
   return list.reduce((flat: any[], item: T | T[]): T[] => {
-    const flatItem = Array.isArray(item) ? flatten(item) : item;
+    let flatItem = Array.isArray(item) ? flatten(item) : item;
     return (<T[]>flat).concat(flatItem);
   }, []);
 }
@@ -729,8 +729,8 @@ export function templateSourceUrl(
 }
 
 export function sharedStylesheetJitUrl(meta: CompileStylesheetMetadata, id: number) {
-  const pathParts = meta.moduleUrl !.split(/\/\\/g);
-  const baseName = pathParts[pathParts.length - 1];
+  let pathParts = meta.moduleUrl !.split(/\/\\/g);
+  let baseName = pathParts[pathParts.length - 1];
   return jitSourceUrl(`css/${id}${baseName}.ngstyle.js`);
 }
 

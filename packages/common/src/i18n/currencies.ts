@@ -12,7 +12,7 @@
 export type CurrenciesSymbols = [string] | [string | undefined, string];
 
 /** @internal */
-export const CURRENCIES_EN:
+export let CURRENCIES_EN:
     {[code: string]: CurrenciesSymbols | [string | undefined, string | undefined, number]} = {
       'ADP': [undefined, undefined, 0],
       'AFN': [undefined, undefined, 0],

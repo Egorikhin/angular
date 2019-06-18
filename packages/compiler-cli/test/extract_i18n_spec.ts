@@ -12,7 +12,7 @@ import * as path from 'path';
 import {mainXi18n} from '../src/extract_i18n';
 import {makeTempDir, setup} from './test_support';
 
-const EXPECTED_XMB = `<?xml version="1.0" encoding="UTF-8" ?>
+let EXPECTED_XMB = `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE messagebundle [
 <!ELEMENT messagebundle (msg)*>
 <!ATTLIST messagebundle class CDATA #IMPLIED>
@@ -50,7 +50,7 @@ const EXPECTED_XMB = `<?xml version="1.0" encoding="UTF-8" ?>
 </messagebundle>
 `;
 
-const EXPECTED_XLIFF = `<?xml version="1.0" encoding="UTF-8" ?>
+let EXPECTED_XLIFF = `<?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="fr" datatype="plaintext" original="ng2.template">
     <body>
@@ -131,7 +131,7 @@ const EXPECTED_XLIFF = `<?xml version="1.0" encoding="UTF-8" ?>
 </xliff>
 `;
 
-const EXPECTED_XLIFF2 = `<?xml version="1.0" encoding="UTF-8" ?>
+let EXPECTED_XLIFF2 = `<?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
   <file original="ng.template" id="ngi18n">
     <unit id="8136548302122759730">
@@ -206,7 +206,7 @@ describe('extract_i18n command line', () => {
 
   beforeEach(() => {
     errorSpy = jasmine.createSpy('consoleError').and.callFake(console.error);
-    const support = setup();
+    let support = setup();
     write = (fileName: string, content: string) => { support.write(fileName, content); };
     basePath = support.basePath;
     outDir = path.join(basePath, 'built');
@@ -230,7 +230,7 @@ describe('extract_i18n command line', () => {
   });
 
   function writeSources() {
-    const welcomeMessage = `
+    let welcomeMessage = `
     <!--i18n-->
     Welcome<!--/i18n-->
     `;
@@ -327,14 +327,14 @@ describe('extract_i18n command line', () => {
     writeConfig();
     writeSources();
 
-    const exitCode =
+    let exitCode =
         mainXi18n(['-p', basePath, '--i18nFormat=xmb', '--outFile=custom_file.xmb'], errorSpy);
     expect(errorSpy).not.toHaveBeenCalled();
     expect(exitCode).toBe(0);
 
-    const xmbOutput = path.join(outDir, 'custom_file.xmb');
+    let xmbOutput = path.join(outDir, 'custom_file.xmb');
     expect(fs.existsSync(xmbOutput)).toBeTruthy();
-    const xmb = fs.readFileSync(xmbOutput, {encoding: 'utf-8'});
+    let xmb = fs.readFileSync(xmbOutput, {encoding: 'utf-8'});
     expect(xmb).toEqual(EXPECTED_XMB);
   });
 
@@ -342,13 +342,13 @@ describe('extract_i18n command line', () => {
     writeConfig();
     writeSources();
 
-    const exitCode = mainXi18n(['-p', basePath, '--i18nFormat=xlf', '--locale=fr'], errorSpy);
+    let exitCode = mainXi18n(['-p', basePath, '--i18nFormat=xlf', '--locale=fr'], errorSpy);
     expect(errorSpy).not.toHaveBeenCalled();
     expect(exitCode).toBe(0);
 
-    const xlfOutput = path.join(outDir, 'messages.xlf');
+    let xlfOutput = path.join(outDir, 'messages.xlf');
     expect(fs.existsSync(xlfOutput)).toBeTruthy();
-    const xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
+    let xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
     expect(xlf).toEqual(EXPECTED_XLIFF);
   });
 
@@ -356,14 +356,14 @@ describe('extract_i18n command line', () => {
     writeConfig();
     writeSources();
 
-    const exitCode =
+    let exitCode =
         mainXi18n(['-p', basePath, '--i18nFormat=xlf2', '--outFile=messages.xliff2.xlf'], errorSpy);
     expect(errorSpy).not.toHaveBeenCalled();
     expect(exitCode).toBe(0);
 
-    const xlfOutput = path.join(outDir, 'messages.xliff2.xlf');
+    let xlfOutput = path.join(outDir, 'messages.xliff2.xlf');
     expect(fs.existsSync(xlfOutput)).toBeTruthy();
-    const xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
+    let xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
     expect(xlf).toEqual(EXPECTED_XLIFF2);
   });
 
@@ -371,12 +371,12 @@ describe('extract_i18n command line', () => {
     writeConfig();
     writeSources();
 
-    const exitCode =
+    let exitCode =
         mainXi18n(['-p', basePath, '--i18nFormat=xlf2', '--outFile=messages.xliff2.xlf'], errorSpy);
     expect(errorSpy).not.toHaveBeenCalled();
     expect(exitCode).toBe(0);
 
-    const moduleOutput = path.join(outDir, 'src', 'module.js');
+    let moduleOutput = path.join(outDir, 'src', 'module.js');
     expect(fs.existsSync(moduleOutput)).toBeFalsy();
   });
 });

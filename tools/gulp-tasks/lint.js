@@ -8,9 +8,9 @@
 
 // Check the coding standards and programming errors
 module.exports = (gulp) => () => {
-  const tslint = require('gulp-tslint');
+  let tslint = require('gulp-tslint');
   // Built-in rules are at https://palantir.github.io/tslint/rules/
-  const path = require('path');
+  let path = require('path');
   return gulp
       .src([
         // TODO(vicb): add .js files when supported

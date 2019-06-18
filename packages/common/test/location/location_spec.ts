@@ -10,32 +10,32 @@ import {CommonModule, Location, LocationStrategy, PathLocationStrategy, Platform
 import {MockPlatformLocation} from '@angular/common/testing';
 import {TestBed, inject} from '@angular/core/testing';
 
-const baseUrl = '/base';
+let baseUrl = '/base';
 
 describe('Location Class', () => {
   describe('stripTrailingSlash', () => {
     it('should strip single character slash', () => {
-      const input = '/';
+      let input = '/';
       expect(Location.stripTrailingSlash(input)).toBe('');
     });
 
     it('should normalize strip a trailing slash', () => {
-      const input = baseUrl + '/';
+      let input = baseUrl + '/';
       expect(Location.stripTrailingSlash(input)).toBe(baseUrl);
     });
 
     it('should ignore query params when stripping a slash', () => {
-      const input = baseUrl + '/?param=1';
+      let input = baseUrl + '/?param=1';
       expect(Location.stripTrailingSlash(input)).toBe(baseUrl + '?param=1');
     });
 
     it('should not remove slashes inside query params', () => {
-      const input = baseUrl + '?test/?=3';
+      let input = baseUrl + '?test/?=3';
       expect(Location.stripTrailingSlash(input)).toBe(input);
     });
 
     it('should not remove slashes after a pound sign', () => {
-      const input = baseUrl + '#test/?=3';
+      let input = baseUrl + '#test/?=3';
       expect(Location.stripTrailingSlash(input)).toBe(input);
     });
   });

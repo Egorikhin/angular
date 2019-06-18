@@ -28,7 +28,7 @@ export function getNameText(name: ts.PropertyName | ts.BindingName): string {
  * @returns a collection of nodes that satisfy the test.
  */
 export function findAll<T>(node: ts.Node, test: (node: ts.Node) => node is ts.Node & T): T[] {
-  const nodes: T[] = [];
+  let nodes: T[] = [];
   findAllVisitor(node);
   return nodes;
 
@@ -48,7 +48,7 @@ export function findAll<T>(node: ts.Node, test: (node: ts.Node) => node is ts.No
  */
 export function hasNameIdentifier(declaration: ts.Declaration): declaration is ts.Declaration&
     {name: ts.Identifier} {
-  const namedDeclaration: ts.Declaration&{name?: ts.Node} = declaration;
+  let namedDeclaration: ts.Declaration&{name?: ts.Node} = declaration;
   return namedDeclaration.name !== undefined && ts.isIdentifier(namedDeclaration.name);
 }
 

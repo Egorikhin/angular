@@ -25,7 +25,7 @@ describe('perform watch', () => {
   });
 
   function createConfig(): ng.ParsedConfiguration {
-    const options = testSupport.createCompilerOptions({outDir});
+    let options = testSupport.createCompilerOptions({outDir});
     return {
       options,
       rootNames: [path.resolve(testSupport.basePath, 'src/index.ts')],
@@ -36,27 +36,27 @@ describe('perform watch', () => {
   }
 
   it('should compile files during the initial run', () => {
-    const config = createConfig();
-    const host = new MockWatchHost(config);
+    let config = createConfig();
+    let host = new MockWatchHost(config);
 
     testSupport.writeFiles({
       'src/main.ts': createModuleAndCompSource('main'),
       'src/index.ts': `export * from './main'; `,
     });
 
-    const watchResult = performWatchCompilation(host);
+    let watchResult = performWatchCompilation(host);
     expectNoDiagnostics(config.options, watchResult.firstCompileResult);
 
     expect(fs.existsSync(path.resolve(outDir, 'src', 'main.ngfactory.js'))).toBe(true);
   });
 
   it('should cache files on subsequent runs', () => {
-    const config = createConfig();
-    const host = new MockWatchHost(config);
+    let config = createConfig();
+    let host = new MockWatchHost(config);
     let fileExistsSpy: jasmine.Spy;
     let getSourceFileSpy: jasmine.Spy;
     host.createCompilerHost = (options: ng.CompilerOptions) => {
-      const ngHost = ng.createCompilerHost({options});
+      let ngHost = ng.createCompilerHost({options});
       fileExistsSpy = spyOn(ngHost, 'fileExists').and.callThrough();
       getSourceFileSpy = spyOn(ngHost, 'getSourceFile').and.callThrough();
       return ngHost;
@@ -64,16 +64,16 @@ describe('perform watch', () => {
 
     testSupport.writeFiles({
       'src/main.ts': createModuleAndCompSource('main'),
-      'src/util.ts': `export const x = 1;`,
+      'src/util.ts': `export let x = 1;`,
       'src/index.ts': `
         export * from './main';
         export * from './util';
       `,
     });
 
-    const mainTsPath = path.posix.join(testSupport.basePath, 'src', 'main.ts');
-    const utilTsPath = path.posix.join(testSupport.basePath, 'src', 'util.ts');
-    const mainNgFactory = path.posix.join(outDir, 'src', 'main.ngfactory.js');
+    let mainTsPath = path.posix.join(testSupport.basePath, 'src', 'main.ts');
+    let utilTsPath = path.posix.join(testSupport.basePath, 'src', 'util.ts');
+    let mainNgFactory = path.posix.join(outDir, 'src', 'main.ngfactory.js');
 
     performWatchCompilation(host);
     expect(fs.existsSync(mainNgFactory)).toBe(true);
@@ -108,22 +108,22 @@ describe('perform watch', () => {
   });
 
   it('should recover from static analysis errors', () => {
-    const config = createConfig();
-    const host = new MockWatchHost(config);
+    let config = createConfig();
+    let host = new MockWatchHost(config);
 
-    const okFileContent = `
+    let okFileContent = `
       import {NgModule} from '@angular/core';
 
       @NgModule()
       export class MyModule {}
     `;
-    const errorFileContent = `
+    let errorFileContent = `
       import {NgModule} from '@angular/core';
 
       @NgModule((() => (1===1 ? null as any : null as any)) as any)
       export class MyModule {}
     `;
-    const indexTsPath = path.resolve(testSupport.basePath, 'src', 'index.ts');
+    let indexTsPath = path.resolve(testSupport.basePath, 'src', 'index.ts');
 
     testSupport.write(indexTsPath, okFileContent);
 
@@ -142,7 +142,7 @@ describe('perform watch', () => {
       testSupport.write(indexTsPath, errorFileContent);
       host.triggerFileChange(FileChangeEvent.Change, indexTsPath);
 
-      const errDiags = host.diagnostics.filter(d => d.category === ts.DiagnosticCategory.Error);
+      let errDiags = host.diagnostics.filter(d => d.category === ts.DiagnosticCategory.Error);
       expect(errDiags.length).toBe(1);
       expect(errDiags[0].messageText).toContain('Function expressions are not supported');
     }
@@ -150,7 +150,7 @@ describe('perform watch', () => {
 });
 
 function createModuleAndCompSource(prefix: string, template: string = prefix + 'template') {
-  const templateEntry =
+  let templateEntry =
       template.endsWith('.html') ? `templateUrl: '${template}'` : `template: \`${template}\``;
   return `
     import {Component, NgModule} from '@angular/core';
@@ -168,7 +168,7 @@ class MockWatchHost {
   timeoutListeners: {[id: string]: (() => void)} = {};
   fileChangeListeners: Array<((event: FileChangeEvent, fileName: string) => void)|null> = [];
   diagnostics: ng.Diagnostic[] = [];
-  constructor(public config: ng.ParsedConfiguration) {}
+  letructor(public config: ng.ParsedConfiguration) {}
 
   reportDiagnostics(diags: ng.Diagnostics) { this.diagnostics.push(...(diags as ng.Diagnostic[])); }
   readConfiguration() { return this.config; }
@@ -177,7 +177,7 @@ class MockWatchHost {
   onFileChange(
       options: ng.CompilerOptions, listener: (event: FileChangeEvent, fileName: string) => void,
       ready: () => void) {
-    const id = this.fileChangeListeners.length;
+    let id = this.fileChangeListeners.length;
     this.fileChangeListeners.push(listener);
     ready();
     return {
@@ -185,13 +185,13 @@ class MockWatchHost {
     };
   }
   setTimeout(callback: () => void): any {
-    const id = this.nextTimeoutListenerId++;
+    let id = this.nextTimeoutListenerId++;
     this.timeoutListeners[id] = callback;
     return id;
   }
   clearTimeout(timeoutId: any): void { delete this.timeoutListeners[timeoutId]; }
   flushTimeouts() {
-    const listeners = this.timeoutListeners;
+    let listeners = this.timeoutListeners;
     this.timeoutListeners = {};
     Object.keys(listeners).forEach(id => listeners[id]());
   }

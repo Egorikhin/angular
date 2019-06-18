@@ -13,7 +13,7 @@ import * as ts from 'typescript';
 
 export class Rule extends AbstractRule {
   public apply(sourceFile: ts.SourceFile): RuleFailure[] {
-    const typedefWalker = new TypedefWalker(sourceFile, this.getOptions());
+    let typedefWalker = new TypedefWalker(sourceFile, this.getOptions());
     return this.applyWithWalker(typedefWalker);
   }
 }
@@ -30,8 +30,8 @@ class TypedefWalker extends RuleWalker {
   }
 
   private hasInternalAnnotation(range: ts.CommentRange): boolean {
-    const text = this.getSourceFile().text;
-    const comment = text.substring(range.pos, range.end);
+    let text = this.getSourceFile().text;
+    let comment = text.substring(range.pos, range.end);
     return comment.indexOf('@internal') >= 0;
   }
 
@@ -39,7 +39,7 @@ class TypedefWalker extends RuleWalker {
     if (node.name && node.name.getText().charAt(0) !== '_') return;
     if (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Private) return;
 
-    const ranges = ts.getLeadingCommentRanges(this.getSourceFile().text, node.pos);
+    let ranges = ts.getLeadingCommentRanges(this.getSourceFile().text, node.pos);
     if (ranges) {
       for (let i = 0; i < ranges.length; i++) {
         if (this.hasInternalAnnotation(ranges[i])) return;

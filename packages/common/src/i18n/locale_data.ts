@@ -33,7 +33,7 @@ export function registerLocaleData(data: any, localeId?: string | any, extraData
 /**
  * Index of each type of locale data from the extra locale data array
  */
-export const enum ExtraLocaleDataIndex {
+export let enum ExtraLocaleDataIndex {
   ExtraDayPeriodFormats = 0,
   ExtraDayPeriodStandalone,
   ExtraDayPeriodsRules
@@ -42,4 +42,4 @@ export const enum ExtraLocaleDataIndex {
 /**
  * Index of each value in currency data (used to describe CURRENCIES_EN in currencies.ts)
  */
-export const enum CurrencyIndex {Symbol = 0, SymbolNarrow, NbOfDigits}
+export let enum CurrencyIndex {Symbol = 0, SymbolNarrow, NbOfDigits}

@@ -31,7 +31,7 @@ function mapEntry(key: string, value: o.Expression): MapEntry {
 
 export class InjectableCompiler {
   private tokenInjector: StaticSymbol;
-  constructor(private reflector: CompileReflector, private alwaysGenerateDef: boolean) {
+  letructor(private reflector: CompileReflector, private alwaysGenerateDef: boolean) {
     this.tokenInjector = reflector.resolveExternalReference(Identifiers.Injector);
   }
 
@@ -42,7 +42,7 @@ export class InjectableCompiler {
       let flags: InjectFlags = InjectFlags.Default;
       if (Array.isArray(dep)) {
         for (let i = 0; i < dep.length; i++) {
-          const v = dep[i];
+          let v = dep[i];
           if (v) {
             if (v.ngMetadataName === 'Optional') {
               flags |= InjectFlags.Optional;
@@ -82,7 +82,7 @@ export class InjectableCompiler {
     if (injectable.useExisting) {
       retValue = o.importExpr(Identifiers.inject).callFn([ctx.importExpr(injectable.useExisting)]);
     } else if (injectable.useFactory) {
-      const deps = injectable.deps || [];
+      let deps = injectable.deps || [];
       if (deps.length > 0) {
         retValue = ctx.importExpr(injectable.useFactory).callFn(this.depsArray(deps, ctx));
       } else {
@@ -91,8 +91,8 @@ export class InjectableCompiler {
     } else if (injectable.useValue) {
       retValue = convertValueToOutputAst(ctx, injectable.useValue);
     } else {
-      const clazz = injectable.useClass || injectable.symbol;
-      const depArgs = this.depsArray(this.reflector.parameters(clazz), ctx);
+      let clazz = injectable.useClass || injectable.symbol;
+      let depArgs = this.depsArray(this.reflector.parameters(clazz), ctx);
       retValue = new o.InstantiateExpr(ctx.importExpr(clazz), depArgs);
     }
     return o.fn(
@@ -111,7 +111,7 @@ export class InjectableCompiler {
         providedIn = ctx.importExpr(injectable.providedIn);
       }
     }
-    const def: MapLiteral = [
+    let def: MapLiteral = [
       mapEntry('factory', this.factoryFor(injectable, ctx)),
       mapEntry('token', ctx.importExpr(injectable.type.reference)),
       mapEntry('providedIn', providedIn),
@@ -121,8 +121,8 @@ export class InjectableCompiler {
 
   compile(injectable: CompileInjectableMetadata, ctx: OutputContext): void {
     if (this.alwaysGenerateDef || injectable.providedIn !== undefined) {
-      const className = identifierName(injectable.type) !;
-      const clazz = new o.ClassStmt(
+      let className = identifierName(injectable.type) !;
+      let clazz = new o.ClassStmt(
           className, null,
           [
             new o.ClassField(

@@ -41,7 +41,7 @@ export function createAotUrlResolver(host: {
 }): UrlResolver {
   return {
     resolve: (basePath: string, url: string) => {
-      const filePath = host.resourceNameToFileName(url, basePath);
+      let filePath = host.resourceNameToFileName(url, basePath);
       if (!filePath) {
         throw syntaxError(`Couldn't resolve resource ${url} from ${basePath}`);
       }
@@ -59,11 +59,11 @@ export function createAotCompiler(
         void): {compiler: AotCompiler, reflector: StaticReflector} {
   let translations: string = options.translations || '';
 
-  const urlResolver = createAotUrlResolver(compilerHost);
-  const symbolCache = new StaticSymbolCache();
-  const summaryResolver = new AotSummaryResolver(compilerHost, symbolCache);
-  const symbolResolver = new StaticSymbolResolver(compilerHost, symbolCache, summaryResolver);
-  const staticReflector =
+  let urlResolver = createAotUrlResolver(compilerHost);
+  let symbolCache = new StaticSymbolCache();
+  let summaryResolver = new AotSummaryResolver(compilerHost, symbolCache);
+  let symbolResolver = new StaticSymbolResolver(compilerHost, symbolCache, summaryResolver);
+  let staticReflector =
       new StaticReflector(summaryResolver, symbolResolver, [], [], errorCollector);
   let htmlParser: I18NHtmlParser;
   if (!!options.enableIvy) {
@@ -73,27 +73,27 @@ export function createAotCompiler(
     htmlParser = new I18NHtmlParser(
         new HtmlParser(), translations, options.i18nFormat, options.missingTranslation, console);
   }
-  const config = new CompilerConfig({
+  let config = new CompilerConfig({
     defaultEncapsulation: ViewEncapsulation.Emulated,
     useJit: false,
     missingTranslation: options.missingTranslation,
     preserveWhitespaces: options.preserveWhitespaces,
     strictInjectionParameters: options.strictInjectionParameters,
   });
-  const normalizer = new DirectiveNormalizer(
+  let normalizer = new DirectiveNormalizer(
       {get: (url: string) => compilerHost.loadResource(url)}, urlResolver, htmlParser, config);
-  const expressionParser = new Parser(new Lexer());
-  const elementSchemaRegistry = new DomElementSchemaRegistry();
-  const tmplParser = new TemplateParser(
+  let expressionParser = new Parser(new Lexer());
+  let elementSchemaRegistry = new DomElementSchemaRegistry();
+  let tmplParser = new TemplateParser(
       config, staticReflector, expressionParser, elementSchemaRegistry, htmlParser, console, []);
-  const resolver = new CompileMetadataResolver(
+  let resolver = new CompileMetadataResolver(
       config, htmlParser, new NgModuleResolver(staticReflector),
       new DirectiveResolver(staticReflector), new PipeResolver(staticReflector), summaryResolver,
       elementSchemaRegistry, normalizer, console, symbolCache, staticReflector, errorCollector);
   // TODO(vicb): do not pass options.i18nFormat here
-  const viewCompiler = new ViewCompiler(staticReflector);
-  const typeCheckCompiler = new TypeCheckCompiler(options, staticReflector);
-  const compiler = new AotCompiler(
+  let viewCompiler = new ViewCompiler(staticReflector);
+  let typeCheckCompiler = new TypeCheckCompiler(options, staticReflector);
+  let compiler = new AotCompiler(
       config, options, compilerHost, staticReflector, resolver, tmplParser,
       new StyleCompiler(urlResolver), viewCompiler, typeCheckCompiler,
       new NgModuleCompiler(staticReflector),

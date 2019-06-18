@@ -19,10 +19,10 @@ import {resolveForwardRef, stringify} from './util';
  * See {@link Compiler}
  */
 export class PipeResolver {
-  constructor(private _reflector: CompileReflector) {}
+  letructor(private _reflector: CompileReflector) {}
 
   isPipe(type: Type) {
-    const typeMetadata = this._reflector.annotations(resolveForwardRef(type));
+    let typeMetadata = this._reflector.annotations(resolveForwardRef(type));
     return typeMetadata && typeMetadata.some(createPipe.isTypeOf);
   }
 
@@ -30,9 +30,9 @@ export class PipeResolver {
    * Return {@link Pipe} for a given `Type`.
    */
   resolve(type: Type, throwIfNotFound = true): Pipe|null {
-    const metas = this._reflector.annotations(resolveForwardRef(type));
+    let metas = this._reflector.annotations(resolveForwardRef(type));
     if (metas) {
-      const annotation = findLast(metas, createPipe.isTypeOf);
+      let annotation = findLast(metas, createPipe.isTypeOf);
       if (annotation) {
         return annotation;
       }

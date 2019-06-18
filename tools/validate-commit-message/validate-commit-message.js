@@ -16,16 +16,16 @@
 
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const configPath = path.resolve(__dirname, './commit-message.json');
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-const PATTERN = /^(\w+)(?:\(([^)]+)\))?\: (.+)$/;
-const FIXUP_SQUASH = /^(fixup|squash)\! /i;
-const REVERT = /^revert:? /i;
+let fs = require('fs');
+let path = require('path');
+let configPath = path.resolve(__dirname, './commit-message.json');
+let config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+let PATTERN = /^(\w+)(?:\(([^)]+)\))?\: (.+)$/;
+let FIXUP_SQUASH = /^(fixup|squash)\! /i;
+let REVERT = /^revert:? /i;
 
 module.exports = function(commitSubject) {
-  const subject = commitSubject.replace(FIXUP_SQUASH, '');
+  let subject = commitSubject.replace(FIXUP_SQUASH, '');
 
   if (subject.match(REVERT)) {
     return true;
@@ -36,7 +36,7 @@ module.exports = function(commitSubject) {
     return false;
   }
 
-  const match = PATTERN.exec(subject);
+  let match = PATTERN.exec(subject);
   if (!match) {
     error(
         `The commit message does not match the format of '<type>(<scope>): <subject>' OR 'Revert: "type(<scope>): <subject>"'`,
@@ -44,14 +44,14 @@ module.exports = function(commitSubject) {
     return false;
   }
 
-  const type = match[1];
+  let type = match[1];
   if (config['types'].indexOf(type) === -1) {
     error(
         `${type} is not an allowed type.\n => TYPES: ${config['types'].join(', ')}`, commitSubject);
     return false;
   }
 
-  const scope = match[2];
+  let scope = match[2];
 
   if (scope && !config['scopes'].includes(scope)) {
     error(

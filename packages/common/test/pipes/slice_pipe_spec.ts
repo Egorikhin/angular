@@ -100,8 +100,8 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
       });
 
       it('should work with mutable arrays', async(() => {
-           const fixture = TestBed.createComponent(TestComp);
-           const mutable: number[] = [1, 2];
+           let fixture = TestBed.createComponent(TestComp);
+           let mutable: number[] = [1, 2];
            fixture.componentInstance.data = mutable;
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveText('2');

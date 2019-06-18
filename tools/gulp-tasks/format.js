@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const {I18N_FOLDER, I18N_DATA_FOLDER} = require('./cldr/extract');
+let {I18N_FOLDER, I18N_DATA_FOLDER} = require('./cldr/extract');
 
 // clang-format entry points
-const srcsToFmt = [
+let srcsToFmt = [
   'packages/**/*.{js,ts}',
   'modules/benchmarks/**/*.{js,ts}',
   'modules/e2e_util/**/*.{js,ts}',
@@ -35,26 +35,26 @@ const srcsToFmt = [
  * the stdout into a stream of files.
  */
 function gulpStatus() {
-  const Vinyl = require('vinyl');
-  const path = require('path');
-  const gulpGit = require('gulp-git');
-  const through = require('through2');
-  const srcStream = through.obj();
+  let Vinyl = require('vinyl');
+  let path = require('path');
+  let gulpGit = require('gulp-git');
+  let through = require('through2');
+  let srcStream = through.obj();
 
-  const opt = {cwd: process.cwd()};
+  let opt = {cwd: process.cwd()};
 
   // https://git-scm.com/docs/git-status#_short_format
-  const RE_STATUS = /((\s\w)|(\w+)|\?{0,2})\s([\w\+\-\/\\\.]+)(\s->\s)?([\w\+\-\/\\\.]+)*\n{0,1}/gm;
+  let RE_STATUS = /((\s\w)|(\w+)|\?{0,2})\s([\w\+\-\/\\\.]+)(\s->\s)?([\w\+\-\/\\\.]+)*\n{0,1}/gm;
 
   gulpGit.status({args: '--porcelain', quiet: true}, function(err, stdout) {
     if (err) return srcStream.emit('error', err);
 
-    const data = stdout.toString();
+    let data = stdout.toString();
     let currentMatch;
 
     while ((currentMatch = RE_STATUS.exec(data)) !== null) {
       // status
-      const status = currentMatch[1].trim().toLowerCase();
+      let status = currentMatch[1].trim().toLowerCase();
 
       // We only care about untracked files and renamed files
       if (!new RegExp(/r|\?/i).test(status)) {
@@ -62,11 +62,11 @@ function gulpStatus() {
       }
 
       // file path
-      const currentFilePath = currentMatch[4];
+      let currentFilePath = currentMatch[4];
 
       // new file path in case its been moved
-      const newFilePath = currentMatch[6];
-      const filePath = newFilePath || currentFilePath;
+      let newFilePath = currentMatch[6];
+      let filePath = newFilePath || currentFilePath;
 
       srcStream.write(new Vinyl({
         path: path.resolve(opt.cwd, filePath),
@@ -85,16 +85,16 @@ function gulpStatus() {
 module.exports = {
   // Check source code for formatting errors (clang-format)
   enforce: (gulp) => () => {
-    const format = require('gulp-clang-format');
-    const clangFormat = require('clang-format');
+    let format = require('gulp-clang-format');
+    let clangFormat = require('clang-format');
     return gulp.src(srcsToFmt).pipe(
         format.checkFormat('file', clangFormat, {verbose: true, fail: true}));
   },
 
   // Format the source code with clang-format (see .clang-format)
   format: (gulp) => () => {
-    const format = require('gulp-clang-format');
-    const clangFormat = require('clang-format');
+    let format = require('gulp-clang-format');
+    let clangFormat = require('clang-format');
     return gulp.src(srcsToFmt, {base: '.'})
         .pipe(format.format('file', clangFormat))
         .pipe(gulp.dest('.'));
@@ -102,9 +102,9 @@ module.exports = {
 
   // Format only the untracked source code files with clang-format (see .clang-format)
   'format-untracked': (gulp) => () => {
-    const format = require('gulp-clang-format');
-    const clangFormat = require('clang-format');
-    const gulpFilter = require('gulp-filter');
+    let format = require('gulp-clang-format');
+    let clangFormat = require('clang-format');
+    let gulpFilter = require('gulp-filter');
 
     return gulpStatus()
         .pipe(gulpFilter(srcsToFmt))
@@ -115,14 +115,14 @@ module.exports = {
   // Format only the changed source code files diffed from the provided branch with clang-format
   // (see .clang-format)
   'format-diff': (gulp) => () => {
-    const format = require('gulp-clang-format');
-    const clangFormat = require('clang-format');
-    const gulpFilter = require('gulp-filter');
-    const minimist = require('minimist');
-    const gulpGit = require('gulp-git');
+    let format = require('gulp-clang-format');
+    let clangFormat = require('clang-format');
+    let gulpFilter = require('gulp-filter');
+    let minimist = require('minimist');
+    let gulpGit = require('gulp-git');
 
-    const args = minimist(process.argv.slice(2));
-    const branch = args.branch || 'master';
+    let args = minimist(process.argv.slice(2));
+    let branch = args.branch || 'master';
 
     return gulpGit.diff(branch, {log: false})
         .pipe(gulpFilter(srcsToFmt))

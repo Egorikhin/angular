@@ -63,7 +63,7 @@ import {EventEmitter} from '../src/event_emitter';
 
     it('delivers next and error events synchronously',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const log: any[] /** TODO #9100 */ = [];
+         let log: any[] /** TODO #9100 */ = [];
 
          emitter.subscribe({
            next: (x: any) => {
@@ -84,7 +84,7 @@ import {EventEmitter} from '../src/event_emitter';
        }));
 
     it('delivers next and complete events synchronously', () => {
-      const log: any[] /** TODO #9100 */ = [];
+      let log: any[] /** TODO #9100 */ = [];
 
       emitter.subscribe({
         next: (x: any) => {
@@ -107,8 +107,8 @@ import {EventEmitter} from '../src/event_emitter';
 
     it('delivers events asynchronously when forced to async mode',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const e = new EventEmitter(true);
-         const log: any[] /** TODO #9100 */ = [];
+         let e = new EventEmitter(true);
+         let log: any[] /** TODO #9100 */ = [];
          e.subscribe((x: any) => {
            log.push(x);
            expect(log).toEqual([1, 3, 2]);
@@ -121,21 +121,21 @@ import {EventEmitter} from '../src/event_emitter';
        }));
 
     it('reports whether it has subscribers', () => {
-      const e = new EventEmitter(false);
+      let e = new EventEmitter(false);
       expect(e.observers.length > 0).toBe(false);
       e.subscribe({next: () => {}});
       expect(e.observers.length > 0).toBe(true);
     });
 
     it('remove a subscriber subscribed directly to EventEmitter', () => {
-      const sub = emitter.subscribe();
+      let sub = emitter.subscribe();
       expect(emitter.observers.length).toBe(1);
       sub.unsubscribe();
       expect(emitter.observers.length).toBe(0);
     });
 
     it('remove a subscriber subscribed after applying operators with pipe()', () => {
-      const sub = emitter.pipe(filter(() => true)).subscribe();
+      let sub = emitter.pipe(filter(() => true)).subscribe();
       expect(emitter.observers.length).toBe(1);
       sub.unsubscribe();
       expect(emitter.observers.length).toBe(0);
@@ -143,7 +143,7 @@ import {EventEmitter} from '../src/event_emitter';
 
     it('unsubscribing a subscriber invokes the dispose method', () => {
       inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-        const sub = emitter.subscribe();
+        let sub = emitter.subscribe();
         sub.add(() => async.done());
         sub.unsubscribe();
       });
@@ -152,7 +152,7 @@ import {EventEmitter} from '../src/event_emitter';
     it('unsubscribing a subscriber after applying operators with pipe() invokes the dispose method',
        () => {
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const sub = emitter.pipe(filter(() => true)).subscribe();
+           let sub = emitter.pipe(filter(() => true)).subscribe();
            sub.add(() => async.done());
            sub.unsubscribe();
          });

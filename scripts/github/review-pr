@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const shell = require('shelljs');
+let shell = require('shelljs');
 shell.config.fatal = true;
-const util = require('./utils/git_util');
+let util = require('./utils/git_util');
 
 if (require.main === module) {
   main(process.argv.splice(2)).then(

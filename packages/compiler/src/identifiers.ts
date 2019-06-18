@@ -10,7 +10,7 @@ import {CompileTokenMetadata} from './compile_metadata';
 import {CompileReflector} from './compile_reflector';
 import * as o from './output/output_ast';
 
-const CORE = '@angular/core';
+let CORE = '@angular/core';
 
 export class Identifiers {
   static ANALYZE_FOR_ENTRY_COMPONENTS: o.ExternalReference = {

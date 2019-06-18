@@ -20,7 +20,7 @@ import {ComponentRef} from './linker/component_factory';
  * using this token.
  * @publicApi
  */
-export const APP_ID = new InjectionToken<string>('AppId');
+export let APP_ID = new InjectionToken<string>('AppId');
 
 export function _appIdRandomProviderFactory() {
   return `${_randomChar()}${_randomChar()}${_randomChar()}`;
@@ -30,7 +30,7 @@ export function _appIdRandomProviderFactory() {
  * Providers that will generate a random APP_ID_TOKEN.
  * @publicApi
  */
-export const APP_ID_RANDOM_PROVIDER = {
+export let APP_ID_RANDOM_PROVIDER = {
   provide: APP_ID,
   useFactory: _appIdRandomProviderFactory,
   deps: <any[]>[],
@@ -44,13 +44,13 @@ function _randomChar(): string {
  * A function that will be executed when a platform is initialized.
  * @publicApi
  */
-export const PLATFORM_INITIALIZER = new InjectionToken<Array<() => void>>('Platform Initializer');
+export let PLATFORM_INITIALIZER = new InjectionToken<Array<() => void>>('Platform Initializer');
 
 /**
  * A token that indicates an opaque platform id.
  * @publicApi
  */
-export const PLATFORM_ID = new InjectionToken<Object>('Platform ID');
+export let PLATFORM_ID = new InjectionToken<Object>('Platform ID');
 
 /**
  * All callbacks provided via this token will be called for every component that is bootstrapped.
@@ -60,11 +60,11 @@ export const PLATFORM_ID = new InjectionToken<Object>('Platform ID');
  *
  * @publicApi
  */
-export const APP_BOOTSTRAP_LISTENER =
+export let APP_BOOTSTRAP_LISTENER =
     new InjectionToken<Array<(compRef: ComponentRef<any>) => void>>('appBootstrapListener');
 
 /**
  * A token which indicates the root directory of the application
  * @publicApi
  */
-export const PACKAGE_ROOT_URL = new InjectionToken<string>('Application Packages Root URL');
+export let PACKAGE_ROOT_URL = new InjectionToken<string>('Application Packages Root URL');

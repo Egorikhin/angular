@@ -21,9 +21,9 @@ describe('StaticReflector', () => {
       testData: {[key: string]: any} = DEFAULT_TEST_DATA,
       decorators: {name: string, filePath: string, ctor: any}[] = [],
       errorRecorder?: (error: any, fileName: string) => void, collectorOptions?: CollectorOptions) {
-    const symbolCache = new StaticSymbolCache();
+    let symbolCache = new StaticSymbolCache();
     host = new MockStaticSymbolResolverHost(testData, collectorOptions);
-    const summaryResolver = new MockSummaryResolver([]);
+    let summaryResolver = new MockSummaryResolver([]);
     spyOn(summaryResolver, 'isLibraryFile').and.returnValue(false);
     symbolResolver = new StaticSymbolResolver(host, symbolCache, summaryResolver, errorRecorder);
     reflector = new StaticReflector(summaryResolver, symbolResolver, decorators, [], errorRecorder);
@@ -37,39 +37,39 @@ describe('StaticReflector', () => {
   }
 
   it('should get annotations for NgFor', () => {
-    const NgFor = reflector.findDeclaration('@angular/common/src/directives/ng_for', 'NgFor');
-    const annotations = reflector.annotations(NgFor);
+    let NgFor = reflector.findDeclaration('@angular/common/src/directives/ng_for', 'NgFor');
+    let annotations = reflector.annotations(NgFor);
     expect(annotations.length).toEqual(1);
-    const annotation = annotations[0];
+    let annotation = annotations[0];
     expect(annotation.selector).toEqual('[ngFor][ngForOf]');
     expect(annotation.inputs).toEqual(['ngForTrackBy', 'ngForOf', 'ngForTemplate']);
   });
 
-  it('should get constructor for NgFor', () => {
-    const NgFor = reflector.findDeclaration('@angular/common/src/directives/ng_for', 'NgFor');
-    const ViewContainerRef = reflector.findDeclaration('@angular/core', 'ViewContainerRef');
-    const TemplateRef = reflector.findDeclaration('@angular/core', 'TemplateRef');
-    const IterableDiffers = reflector.findDeclaration('@angular/core', 'IterableDiffers');
-    const ChangeDetectorRef = reflector.findDeclaration('@angular/core', 'ChangeDetectorRef');
+  it('should get letructor for NgFor', () => {
+    let NgFor = reflector.findDeclaration('@angular/common/src/directives/ng_for', 'NgFor');
+    let ViewContainerRef = reflector.findDeclaration('@angular/core', 'ViewContainerRef');
+    let TemplateRef = reflector.findDeclaration('@angular/core', 'TemplateRef');
+    let IterableDiffers = reflector.findDeclaration('@angular/core', 'IterableDiffers');
+    let ChangeDetectorRef = reflector.findDeclaration('@angular/core', 'ChangeDetectorRef');
 
-    const parameters = reflector.parameters(NgFor);
+    let parameters = reflector.parameters(NgFor);
     expect(parameters).toEqual([
       [ViewContainerRef], [TemplateRef], [IterableDiffers], [ChangeDetectorRef]
     ]);
   });
 
   it('should get annotations for HeroDetailComponent', () => {
-    const HeroDetailComponent =
+    let HeroDetailComponent =
         reflector.findDeclaration('src/app/hero-detail.component', 'HeroDetailComponent');
-    const annotations = reflector.annotations(HeroDetailComponent);
+    let annotations = reflector.annotations(HeroDetailComponent);
     expect(annotations.length).toEqual(1);
-    const annotation = annotations[0];
+    let annotation = annotations[0];
     expect(annotation.selector).toEqual('my-hero-detail');
   });
 
   it('should get and empty annotation list for an unknown class', () => {
-    const UnknownClass = reflector.findDeclaration('src/app/app.component', 'UnknownClass');
-    const annotations = reflector.annotations(UnknownClass);
+    let UnknownClass = reflector.findDeclaration('src/app/app.component', 'UnknownClass');
+    let annotations = reflector.annotations(UnknownClass);
     expect(annotations).toEqual([]);
   });
 
@@ -79,33 +79,33 @@ describe('StaticReflector', () => {
         export var x = null;
       `
     });
-    const annotations = reflector.annotations(reflector.getStaticSymbol('/tmp/test.ts', 'x'));
+    let annotations = reflector.annotations(reflector.getStaticSymbol('/tmp/test.ts', 'x'));
     expect(annotations).toEqual([]);
   });
 
   it('should get propMetadata for HeroDetailComponent', () => {
-    const HeroDetailComponent =
+    let HeroDetailComponent =
         reflector.findDeclaration('src/app/hero-detail.component', 'HeroDetailComponent');
-    const props = reflector.propMetadata(HeroDetailComponent);
+    let props = reflector.propMetadata(HeroDetailComponent);
     expect(props['hero']).toBeTruthy();
     expect(props['onMouseOver']).toEqual([compilerCore.createHostListener(
         'mouseover', ['$event'])]);
   });
 
   it('should get an empty object from propMetadata for an unknown class', () => {
-    const UnknownClass = reflector.findDeclaration('src/app/app.component', 'UnknownClass');
-    const properties = reflector.propMetadata(UnknownClass);
+    let UnknownClass = reflector.findDeclaration('src/app/app.component', 'UnknownClass');
+    let properties = reflector.propMetadata(UnknownClass);
     expect(properties).toEqual({});
   });
 
   it('should get empty parameters list for an unknown class ', () => {
-    const UnknownClass = reflector.findDeclaration('src/app/app.component', 'UnknownClass');
-    const parameters = reflector.parameters(UnknownClass);
+    let UnknownClass = reflector.findDeclaration('src/app/app.component', 'UnknownClass');
+    let parameters = reflector.parameters(UnknownClass);
     expect(parameters).toEqual([]);
   });
 
   it('should provide context for errors reported by the collector', () => {
-    const SomeClass = reflector.findDeclaration('src/error-reporting', 'SomeClass');
+    let SomeClass = reflector.findDeclaration('src/error-reporting', 'SomeClass');
     expect(() => reflector.annotations(SomeClass))
         .toThrow(new Error(`Error during template compile of 'SomeClass'
   A reasonable error message in 'Link1'
@@ -121,7 +121,7 @@ describe('StaticReflector', () => {
   });
 
   it('should simplify a static symbol into itself', () => {
-    const staticSymbol = reflector.getStaticSymbol('', '');
+    let staticSymbol = reflector.getStaticSymbol('', '');
     expect(simplify(noContext, staticSymbol)).toBe(staticSymbol);
   });
 
@@ -130,7 +130,7 @@ describe('StaticReflector', () => {
   });
 
   it('should simplify an object to a copy of the object', () => {
-    const expr = {a: 1, b: 2, c: 3};
+    let expr = {a: 1, b: 2, c: 3};
     expect(simplify(noContext, expr)).toEqual(expr);
   });
 
@@ -294,7 +294,7 @@ describe('StaticReflector', () => {
   });
 
   it('should simplify an object index', () => {
-    const expr = {__symbolic: 'select', expression: {a: 1, b: 2, c: 3}, member: 'b'};
+    let expr = {__symbolic: 'select', expression: {a: 1, b: 2, c: 3}, member: 'b'};
     expect(simplify(noContext, expr)).toBe(2);
   });
 
@@ -357,11 +357,11 @@ describe('StaticReflector', () => {
   it('should record data about the error in the exception', () => {
     let threw = false;
     try {
-      const metadata = host.getMetadataFor('/tmp/src/invalid-metadata.ts') !;
+      let metadata = host.getMetadataFor('/tmp/src/invalid-metadata.ts') !;
       expect(metadata).toBeDefined();
-      const moduleMetadata: any = metadata[0]['metadata'];
+      let moduleMetadata: any = metadata[0]['metadata'];
       expect(moduleMetadata).toBeDefined();
-      const classData: any = moduleMetadata['InvalidMetadata'];
+      let classData: any = moduleMetadata['InvalidMetadata'];
       expect(classData).toBeDefined();
       simplify(
           reflector.getStaticSymbol('/tmp/src/invalid-metadata.ts', ''),
@@ -393,15 +393,15 @@ describe('StaticReflector', () => {
   });
 
   it('should be able to get metadata for a class containing a custom decorator', () => {
-    const props = reflector.propMetadata(
+    let props = reflector.propMetadata(
         reflector.getStaticSymbol('/tmp/src/custom-decorator-reference.ts', 'Foo'));
     expect(props).toEqual({foo: []});
   });
 
   it('should read ctor parameters with forwardRef', () => {
-    const src = '/tmp/src/forward-ref.ts';
-    const dep = reflector.getStaticSymbol(src, 'Dep');
-    const props = reflector.parameters(reflector.getStaticSymbol(src, 'Forward'));
+    let src = '/tmp/src/forward-ref.ts';
+    let dep = reflector.getStaticSymbol(src, 'Dep');
+    let props = reflector.parameters(reflector.getStaticSymbol(src, 'Forward'));
     expect(props).toEqual([[dep, compilerCore.createInject(dep)]]);
   });
 
@@ -415,14 +415,14 @@ describe('StaticReflector', () => {
   });
 
   it('should be able to get metadata for a class containing a static method call', () => {
-    const annotations = reflector.annotations(
+    let annotations = reflector.annotations(
         reflector.getStaticSymbol('/tmp/src/static-method-call.ts', 'MyComponent'));
     expect(annotations.length).toBe(1);
     expect(annotations[0].providers).toEqual({provider: 'a', useValue: 100});
   });
 
   it('should be able to get metadata for a class containing a static field reference', () => {
-    const annotations = reflector.annotations(
+    let annotations = reflector.annotations(
         reflector.getStaticSymbol('/tmp/src/static-field-reference.ts', 'Foo'));
     expect(annotations.length).toBe(1);
     expect(annotations[0].providers).toEqual([{provider: 'a', useValue: 'Some string'}]);
@@ -430,7 +430,7 @@ describe('StaticReflector', () => {
 
   it('should be able to get the metadata for a class calling a method with a conditional expression',
      () => {
-       const annotations = reflector.annotations(
+       let annotations = reflector.annotations(
            reflector.getStaticSymbol('/tmp/src/static-method-call.ts', 'MyCondComponent'));
        expect(annotations.length).toBe(1);
        expect(annotations[0].providers).toEqual([
@@ -439,7 +439,7 @@ describe('StaticReflector', () => {
      });
 
   it('should be able to get metadata for a class with nested method calls', () => {
-    const annotations = reflector.annotations(
+    let annotations = reflector.annotations(
         reflector.getStaticSymbol('/tmp/src/static-method-call.ts', 'MyFactoryComponent'));
     expect(annotations.length).toBe(1);
     expect(annotations[0].providers).toEqual({
@@ -451,28 +451,28 @@ describe('StaticReflector', () => {
 
   it('should be able to get the metadata for a class calling a method with default parameters',
      () => {
-       const annotations = reflector.annotations(
+       let annotations = reflector.annotations(
            reflector.getStaticSymbol('/tmp/src/static-method-call.ts', 'MyDefaultsComponent'));
        expect(annotations.length).toBe(1);
        expect(annotations[0].providers).toEqual([['a', true, false]]);
      });
 
   it('should be able to get metadata with a reference to a static method', () => {
-    const annotations = reflector.annotations(
+    let annotations = reflector.annotations(
         reflector.getStaticSymbol('/tmp/src/static-method-ref.ts', 'MethodReference'));
     expect(annotations.length).toBe(1);
     expect(annotations[0].providers[0].useValue.members[0]).toEqual('staticMethod');
   });
 
   it('should be able to get metadata for a class calling a macro function', () => {
-    const annotations = reflector.annotations(
+    let annotations = reflector.annotations(
         reflector.getStaticSymbol('/tmp/src/call-macro-function.ts', 'MyComponent'));
     expect(annotations.length).toBe(1);
     expect(annotations[0].providers.useValue).toBe(100);
   });
 
   it('should be able to get metadata for a class calling a nested macro function', () => {
-    const annotations = reflector.annotations(
+    let annotations = reflector.annotations(
         reflector.getStaticSymbol('/tmp/src/call-macro-function.ts', 'MyComponentNested'));
     expect(annotations.length).toBe(1);
     expect(annotations[0].providers.useValue.useValue).toBe(100);
@@ -480,12 +480,12 @@ describe('StaticReflector', () => {
 
   // #13605
   it('should not throw on unknown decorators', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/app.component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/app.component.ts';
     data[file] = `
       import { Component } from '@angular/core';
 
-      export const enum TypeEnum {
+      export let enum TypeEnum {
         type
       }
 
@@ -508,13 +508,13 @@ describe('StaticReflector', () => {
         myClassProp: number;
     }`;
     init(data);
-    const appComponent = reflector.getStaticSymbol(file, 'AppComponent');
+    let appComponent = reflector.getStaticSymbol(file, 'AppComponent');
     expect(() => reflector.propMetadata(appComponent)).not.toThrow();
   });
 
   it('should not throw with an invalid extends', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/invalid-component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/invalid-component.ts';
     data[file] = `
         import {Component} from '@angular/core';
 
@@ -531,15 +531,15 @@ describe('StaticReflector', () => {
         }
       `;
     init(data);
-    const badComponent = reflector.getStaticSymbol(file, 'BadComponent');
+    let badComponent = reflector.getStaticSymbol(file, 'BadComponent');
     expect(reflector.propMetadata(badComponent)).toEqual({});
     expect(reflector.parameters(badComponent)).toEqual([]);
     expect(reflector.hasLifecycleHook(badComponent, 'onDestroy')).toEqual(false);
   });
 
   it('should produce a annotation even if it contains errors', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/invalid-component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/invalid-component.ts';
     data[file] = `
         import {Component} from '@angular/core';
 
@@ -554,17 +554,17 @@ describe('StaticReflector', () => {
       `;
     init(data, [], () => {}, {verboseInvalidExpression: true});
 
-    const badComponent = reflector.getStaticSymbol(file, 'BadComponent');
-    const annotations = reflector.annotations(badComponent);
-    const annotation = annotations[0];
+    let badComponent = reflector.getStaticSymbol(file, 'BadComponent');
+    let annotations = reflector.annotations(badComponent);
+    let annotation = annotations[0];
     expect(annotation.selector).toEqual('tmp');
     expect(annotation.template).toBeUndefined();
     expect(annotation.providers).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
   it('should ignore unresolved calls', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/invalid-component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/invalid-component.ts';
     data[file] = `
         import {Component} from '@angular/core';
         import {unknown} from 'unresolved';
@@ -580,40 +580,40 @@ describe('StaticReflector', () => {
       `;
     init(data, [], () => {}, {verboseInvalidExpression: true});
 
-    const badComponent = reflector.getStaticSymbol(file, 'BadComponent');
-    const annotations = reflector.annotations(badComponent);
-    const annotation = annotations[0];
+    let badComponent = reflector.getStaticSymbol(file, 'BadComponent');
+    let annotations = reflector.annotations(badComponent);
+    let annotation = annotations[0];
     expect(annotation.providers).toEqual([]);
   });
 
   // #15424
   it('should be able to inject a ctor parameter with a @Inject and a type expression', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/invalid-component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/invalid-component.ts';
     data[file] = `
         import {Injectable, Inject} from '@angular/core';
 
         @Injectable()
         export class SomeClass {
-          constructor (@Inject('some-token') a: {a: string, b: string}) {}
+          letructor (@Inject('some-token') a: {a: string, b: string}) {}
         }
       `;
     init(data);
 
-    const someClass = reflector.getStaticSymbol(file, 'SomeClass');
-    const parameters = reflector.parameters(someClass);
+    let someClass = reflector.getStaticSymbol(file, 'SomeClass');
+    let parameters = reflector.parameters(someClass);
     expect(compilerCore.createInject.isTypeOf(parameters[0][0])).toBe(true);
   });
 
   it('should reject a ctor parameter without a @Inject and a type exprssion', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/invalid-component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/invalid-component.ts';
     data[file] = `
         import {Injectable} from '@angular/core';
 
         @Injectable()
         export class SomeClass {
-          constructor (a: {a: string, b: string}) {}
+          letructor (a: {a: string, b: string}) {}
         }
       `;
 
@@ -623,22 +623,22 @@ describe('StaticReflector', () => {
       error = err;
     });
 
-    const someClass = reflector.getStaticSymbol(file, 'SomeClass');
+    let someClass = reflector.getStaticSymbol(file, 'SomeClass');
     expect(reflector.parameters(someClass)).toEqual([[]]);
     expect(error).toBeUndefined();
   });
 
   describe('inheritance', () => {
     class ClassDecorator {
-      constructor(public value: any) {}
+      letructor(public value: any) {}
     }
 
     class ParamDecorator {
-      constructor(public value: any) {}
+      letructor(public value: any) {}
     }
 
     class PropDecorator {
-      constructor(public value: any) {}
+      letructor(public value: any) {}
     }
 
     function initWithDecorator(testData: {[key: string]: any}) {
@@ -697,13 +697,13 @@ describe('StaticReflector', () => {
             export class C {}
 
             export class Parent {
-              constructor(@ParamDecorator('a') a: A, @ParamDecorator('b') b: B) {}
+              letructor(@ParamDecorator('a') a: A, @ParamDecorator('b') b: B) {}
             }
 
             export class Child extends Parent {}
 
             export class ChildWithCtor extends Parent {
-              constructor(@ParamDecorator('c') c: C) {}
+              letructor(@ParamDecorator('c') c: C) {}
             }
 
             export class ChildInvalidParent extends a.InvalidParent {}
@@ -835,9 +835,9 @@ describe('StaticReflector', () => {
           .toEqual([]);
     });
 
-    it('should support constructor parameters with @Inject and an interface type', () => {
-      const data = Object.create(DEFAULT_TEST_DATA);
-      const file = '/tmp/src/inject_interface.ts';
+    it('should support letructor parameters with @Inject and an interface type', () => {
+      let data = Object.create(DEFAULT_TEST_DATA);
+      let file = '/tmp/src/inject_interface.ts';
       data[file] = `
         import {Injectable, Inject} from '@angular/core';
         import {F} from './f';
@@ -850,7 +850,7 @@ describe('StaticReflector', () => {
 
         @Injectable()
         export class SomeClass {
-          constructor (@Inject(Token) injected: InjectedInterface, t: Token, @Inject(Token) f: F) {}
+          letructor (@Inject(Token) injected: InjectedInterface, t: Token, @Inject(Token) f: F) {}
         }
       `;
 
@@ -863,13 +863,13 @@ describe('StaticReflector', () => {
 
   describe('expression lowering', () => {
     it('should be able to accept a lambda in a reference location', () => {
-      const data = Object.create(DEFAULT_TEST_DATA);
-      const file = '/tmp/src/my_component.ts';
+      let data = Object.create(DEFAULT_TEST_DATA);
+      let file = '/tmp/src/my_component.ts';
       data[file] = `
         import {Component, InjectionToken} from '@angular/core';
 
-        export const myLambda = () => [1, 2, 3];
-        export const NUMBERS = new InjectionToken<number[]>();
+        export let myLambda = () => [1, 2, 3];
+        export let NUMBERS = new InjectionToken<number[]>();
 
         @Component({
           template: '<div>{{name}}</div>',
@@ -890,8 +890,8 @@ describe('StaticReflector', () => {
 
   // Regression #18170
   it('should continue to aggresively evaluate enum member accessors', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/my_component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/my_component.ts';
     data[file] = `
       import {Component} from '@angular/core';
       import {intermediate} from './index';
@@ -904,14 +904,14 @@ describe('StaticReflector', () => {
     `;
     data['/tmp/src/intermediate.ts'] = `
       import {MyEnum} from './indirect';
-      export const intermediate = [{
+      export let intermediate = [{
         data: {
           c: [MyEnum.Value]
         }
       }];`;
     data['/tmp/src/index.ts'] = `export * from './intermediate';`;
-    data['/tmp/src/indirect.ts'] = `export * from './consts';`;
-    data['/tmp/src/consts.ts'] = `
+    data['/tmp/src/indirect.ts'] = `export * from './lets';`;
+    data['/tmp/src/lets.ts'] = `
       export enum MyEnum {
         Value = 3
       }
@@ -926,12 +926,12 @@ describe('StaticReflector', () => {
 
   // Regression #18170
   it('should evaluate enums and statics that are 0', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/my_component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/my_component.ts';
     data[file] = `
       import {Component} from '@angular/core';
       import {provideRoutes} from './macro';
-      import {MyEnum, MyClass} from './consts';
+      import {MyEnum, MyClass} from './lets';
 
       @Component({
         template: '<div></div>',
@@ -959,7 +959,7 @@ describe('StaticReflector', () => {
         ];
       }
     `;
-    data['/tmp/src/consts.ts'] = `
+    data['/tmp/src/lets.ts'] = `
       export enum MyEnum {
         Value = 0,
       }
@@ -973,8 +973,8 @@ describe('StaticReflector', () => {
 
   // Regression #18170
   it('should eagerly evaluate enums selects', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/my_component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/my_component.ts';
     data[file] = `
       import {Component} from '@angular/core';
       import {provideRoutes} from './macro';
@@ -1007,11 +1007,11 @@ describe('StaticReflector', () => {
       }
     `;
     data['/tmp/src/indirect.ts'] = `
-      import {MyEnum} from './consts';
+      import {MyEnum} from './lets';
 
-      export const E = MyEnum;
+      export let E = MyEnum;
     `,
-    data['/tmp/src/consts.ts'] = `
+    data['/tmp/src/lets.ts'] = `
       export enum MyEnum {
         Value = 1,
       }
@@ -1025,8 +1025,8 @@ describe('StaticReflector', () => {
 
   // Regression #18170
   it('should aggressively evaluate array indexes', () => {
-    const data = Object.create(DEFAULT_TEST_DATA);
-    const file = '/tmp/src/my_component.ts';
+    let data = Object.create(DEFAULT_TEST_DATA);
+    let file = '/tmp/src/my_component.ts';
     data[file] = `
       import {Component} from '@angular/core';
       import {provideRoutes} from './macro';
@@ -1059,12 +1059,12 @@ describe('StaticReflector', () => {
       }
     `;
     data['/tmp/src/indirect.ts'] = `
-      import {A} from './consts';
+      import {A} from './lets';
 
-      export const E = A;
+      export let E = A;
     `,
-    data['/tmp/src/consts.ts'] = `
-      export const A = [0, 1];
+    data['/tmp/src/lets.ts'] = `
+      export let A = [0, 1];
     `;
     init(data);
     expect(reflector.annotations(reflector.getStaticSymbol(file, 'MyComponent'))[0]
@@ -1078,7 +1078,7 @@ describe('StaticReflector', () => {
        () => {
          init({
            '/tmp/root.ts': ``,
-           '/tmp/a.ts': `export const x = 1;`,
+           '/tmp/a.ts': `export let x = 1;`,
          });
          let symbol = reflector.resolveExternalReference(
              {moduleName: './a', name: 'x', runtime: null}, '/tmp/root.ts');
@@ -1091,22 +1091,22 @@ describe('StaticReflector', () => {
 
   describe('formatted error reporting', () => {
     describe('function calls', () => {
-      const fileName = '/tmp/src/invalid/components.ts';
+      let fileName = '/tmp/src/invalid/components.ts';
       beforeEach(() => {
-        const localData = {
+        let localData = {
           '/tmp/src/invalid/function-call.ts': `
         import {functionToCall} from 'some-module';
-        export const CALL_FUNCTION = functionToCall();
+        export let CALL_FUNCTION = functionToCall();
     `,
           '/tmp/src/invalid/indirect.ts': `
         import {CALL_FUNCTION} from './function-call';
 
-        export const INDIRECT_CALL_FUNCTION = CALL_FUNCTION + 1;
+        export let INDIRECT_CALL_FUNCTION = CALL_FUNCTION + 1;
     `,
           '/tmp/src/invalid/two-levels-indirect.ts': `
         import {INDIRECT_CALL_FUNCTION} from './indirect';
 
-        export const TWO_LEVELS_INDIRECT_CALL_FUNCTION = INDIRECT_CALL_FUNCTION + 1;
+        export let TWO_LEVELS_INDIRECT_CALL_FUNCTION = INDIRECT_CALL_FUNCTION + 1;
     `,
           '/tmp/src/invalid/components.ts': `
         import {functionToCall} from 'some-module';
@@ -1186,17 +1186,17 @@ describe('StaticReflector', () => {
     });
 
     describe('macro functions', () => {
-      const fileName = '/tmp/src/invalid/components.ts';
+      let fileName = '/tmp/src/invalid/components.ts';
       beforeEach(() => {
-        const localData = {
+        let localData = {
           '/tmp/src/invalid/function-call.ts': `
         import {functionToCall} from 'some-module';
-        export const CALL_FUNCTION = functionToCall();
+        export let CALL_FUNCTION = functionToCall();
     `,
           '/tmp/src/invalid/indirect.ts': `
         import {CALL_FUNCTION} from './function-call';
 
-        export const INDIRECT_CALL_FUNCTION = CALL_FUNCTION + 1;
+        export let INDIRECT_CALL_FUNCTION = CALL_FUNCTION + 1;
     `,
           '/tmp/src/invalid/macros.ts': `
         export function someMacro(value: any) {
@@ -1262,7 +1262,7 @@ describe('StaticReflector', () => {
 
     describe('and give advice', () => {
       // If in a reference expression, advice the user to replace with a reference.
-      const fileName = '/tmp/src/invalid/components.ts';
+      let fileName = '/tmp/src/invalid/components.ts';
 
       function collectError(symbol: string): string {
         try {
@@ -1282,7 +1282,7 @@ describe('StaticReflector', () => {
       }
 
       it('should advise exorting a local', () => {
-        initWith(`const f: string; @Component({value: f}) export class MyComp {}`);
+        initWith(`let f: string; @Component({value: f}) export class MyComp {}`);
         expect(collectError('MyComp')).toContain(`Consider exporting 'f'`);
       });
 
@@ -1293,7 +1293,7 @@ describe('StaticReflector', () => {
 
       it('should advise avoiding destructuring', () => {
         initWith(
-            'export const {foo, bar} = {foo: 1, bar: 2}; @Component({value: foo}) export class MyComp {}');
+            'export let {foo, bar} = {foo: 1, bar: 2}; @Component({value: foo}) export class MyComp {}');
         expect(collectError('MyComp')).toContain(`Consider simplifying to avoid destructuring`);
       });
 
@@ -1312,7 +1312,7 @@ describe('StaticReflector', () => {
   });
 });
 
-const DEFAULT_TEST_DATA: {[key: string]: any} = {
+let DEFAULT_TEST_DATA: {[key: string]: any} = {
   '/tmp/@angular/common/src/forms-deprecated/directives.d.ts': [{
     '__symbolic': 'module',
     'version': METADATA_VERSION,
@@ -1340,7 +1340,7 @@ const DEFAULT_TEST_DATA: {[key: string]: any} = {
         }],
         'members': {
           '__ctor__': [{
-            '__symbolic': 'constructor',
+            '__symbolic': 'letructor',
             'parameters': [
               {'__symbolic': 'reference', 'module': '@angular/core', 'name': 'ViewContainerRef'},
               {'__symbolic': 'reference', 'module': '@angular/core', 'name': 'TemplateRef'},
@@ -1694,7 +1694,7 @@ const DEFAULT_TEST_DATA: {[key: string]: any} = {
         import {Inject} from '@angular/core';
         @Component({})
         export class Forward {
-          constructor(@Inject(forwardRef(() => Dep)) d: Dep) {}
+          letructor(@Inject(forwardRef(() => Dep)) d: Dep) {}
         }
         export class Dep {
           @Input f: Forward;

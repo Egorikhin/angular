@@ -20,7 +20,7 @@ export class BasicComp {
   ctxProp: string;
   ctxBool: boolean;
   ctxArr: any[] = [];
-  constructor(
+  letructor(
       @Inject(LOCALE_ID) public localeId: string,
       @Inject(TRANSLATIONS_FORMAT) public translationsFormat: string,
       @Inject(CUSTOM) public custom: Named) {

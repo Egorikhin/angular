@@ -21,7 +21,7 @@ export class SizeTracker {
    */
   readonly sizeResult: FileSizeData;
 
-  constructor(private filePath: string, private sourceMapPath: string) {
+  letructor(private filePath: string, private sourceMapPath: string) {
     this.fileContent = readFileSync(filePath, 'utf8');
     this.consumer = new SourceMapConsumer(JSON.parse(readFileSync(sourceMapPath, 'utf8')));
     this.sizeResult = this._computeSizeResult();
@@ -32,8 +32,8 @@ export class SizeTracker {
    * source-map.
    */
   private _computeSizeResult(): FileSizeData {
-    const lines = this.fileContent.split(/(\r?\n)/);
-    const result: FileSizeData = {
+    let lines = this.fileContent.split(/(\r?\n)/);
+    let result: FileSizeData = {
       unmapped: 0,
       files: {size: 0},
     };
@@ -43,7 +43,7 @@ export class SizeTracker {
     // how the given input file is composed and how much each individual file
     // contributes to the overall bundle file.
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
-      const lineText = lines[lineIdx];
+      let lineText = lines[lineIdx];
       for (let colIdx = 0; colIdx < lineText.length; colIdx++) {
         // Note that the "originalPositionFor" line number is one-based.
         let {source} = this.consumer.originalPositionFor({line: lineIdx + 1, column: colIdx});
@@ -56,7 +56,7 @@ export class SizeTracker {
           continue;
         }
 
-        const pathSegments = this._resolveMappedPath(source).split('/');
+        let pathSegments = this._resolveMappedPath(source).split('/');
         let currentEntry = result.files;
 
         // Walk through each path segment and update the size entries with
@@ -71,7 +71,7 @@ export class SizeTracker {
             // Append a trailing slash to the segment so that it
             // is clear that this size entry represents a folder.
             segmentName = `${segmentName}/`;
-            const newEntry = <DirectorySizeEntry>currentEntry[segmentName] || {size: 0};
+            let newEntry = <DirectorySizeEntry>currentEntry[segmentName] || {size: 0};
             newEntry.size += 1;
             currentEntry = currentEntry[segmentName] = newEntry;
           }

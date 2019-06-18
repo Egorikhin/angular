@@ -67,7 +67,7 @@ export function createPerformWatchHost(
         }]);
         return {close: () => {}};
       }
-      const watcher = chokidar.watch(options.basePath, {
+      let watcher = chokidar.watch(options.basePath, {
         // ignore .dotfiles, .js and .map files.
         // can't ignore other files as we e.g. want to recompile if an `.html` file changes as well.
         ignored: /((^[\/\\])\..)|(\.js$)|(\.map$)|(\.metadata\.json|node_modules)/,
@@ -113,17 +113,17 @@ export function performWatchCompilation(host: PerformWatchHost):
   let cachedOptions: ParsedConfiguration|undefined;  // CompilerOptions cached from last compilation
   let timerHandleForRecompilation: any;  // Handle for 0.25s wait timer to trigger recompilation
 
-  const ignoreFilesForWatch = new Set<string>();
-  const fileCache = new Map<string, CacheEntry>();
+  let ignoreFilesForWatch = new Set<string>();
+  let fileCache = new Map<string, CacheEntry>();
 
-  const firstCompileResult = doCompilation();
+  let firstCompileResult = doCompilation();
 
   // Watch basePath, ignoring .dotfiles
   let resolveReadyPromise: () => void;
-  const readyPromise = new Promise(resolve => resolveReadyPromise = resolve);
+  let readyPromise = new Promise(resolve => resolveReadyPromise = resolve);
   // Note: ! is ok as options are filled after the first compilation
   // Note: ! is ok as resolvedReadyPromise is filled by the previous call
-  const fileWatcher =
+  let fileWatcher =
       host.onFileChange(cachedOptions !.options, watchedFileChanged, resolveReadyPromise !);
 
   return {close, ready: cb => readyPromise.then(cb), firstCompileResult};
@@ -155,36 +155,36 @@ export function performWatchCompilation(host: PerformWatchHost):
       host.reportDiagnostics(cachedOptions.errors);
       return cachedOptions.errors;
     }
-    const startTime = Date.now();
+    let startTime = Date.now();
     if (!cachedCompilerHost) {
       cachedCompilerHost = host.createCompilerHost(cachedOptions.options);
-      const originalWriteFileCallback = cachedCompilerHost.writeFile;
+      let originalWriteFileCallback = cachedCompilerHost.writeFile;
       cachedCompilerHost.writeFile = function(
           fileName: string, data: string, writeByteOrderMark: boolean,
           onError?: (message: string) => void, sourceFiles: ReadonlyArray<ts.SourceFile> = []) {
         ignoreFilesForWatch.add(path.normalize(fileName));
         return originalWriteFileCallback(fileName, data, writeByteOrderMark, onError, sourceFiles);
       };
-      const originalFileExists = cachedCompilerHost.fileExists;
+      let originalFileExists = cachedCompilerHost.fileExists;
       cachedCompilerHost.fileExists = function(fileName: string) {
-        const ce = cacheEntry(fileName);
+        let ce = cacheEntry(fileName);
         if (ce.exists == null) {
           ce.exists = originalFileExists.call(this, fileName);
         }
         return ce.exists !;
       };
-      const originalGetSourceFile = cachedCompilerHost.getSourceFile;
+      let originalGetSourceFile = cachedCompilerHost.getSourceFile;
       cachedCompilerHost.getSourceFile = function(
           fileName: string, languageVersion: ts.ScriptTarget) {
-        const ce = cacheEntry(fileName);
+        let ce = cacheEntry(fileName);
         if (!ce.sf) {
           ce.sf = originalGetSourceFile.call(this, fileName, languageVersion);
         }
         return ce.sf !;
       };
-      const originalReadFile = cachedCompilerHost.readFile;
+      let originalReadFile = cachedCompilerHost.readFile;
       cachedCompilerHost.readFile = function(fileName: string) {
-        const ce = cacheEntry(fileName);
+        let ce = cacheEntry(fileName);
         if (ce.content == null) {
           ce.content = originalReadFile.call(this, fileName);
         }
@@ -192,11 +192,11 @@ export function performWatchCompilation(host: PerformWatchHost):
       };
     }
     ignoreFilesForWatch.clear();
-    const oldProgram = cachedProgram;
+    let oldProgram = cachedProgram;
     // We clear out the `cachedProgram` here as a
     // program can only be used as `oldProgram` 1x
     cachedProgram = undefined;
-    const compileResult = performCompilation({
+    let compileResult = performCompilation({
       rootNames: cachedOptions.rootNames,
       options: cachedOptions.options,
       host: cachedCompilerHost,
@@ -208,12 +208,12 @@ export function performWatchCompilation(host: PerformWatchHost):
       host.reportDiagnostics(compileResult.diagnostics);
     }
 
-    const endTime = Date.now();
+    let endTime = Date.now();
     if (cachedOptions.options.diagnostics) {
-      const totalTime = (endTime - startTime) / 1000;
+      let totalTime = (endTime - startTime) / 1000;
       host.reportDiagnostics([totalCompilationTimeDiagnostic(endTime - startTime)]);
     }
-    const exitCode = exitCodeFromResult(compileResult.diagnostics);
+    let exitCode = exitCodeFromResult(compileResult.diagnostics);
     if (exitCode == 0) {
       cachedProgram = compileResult.program;
       host.reportDiagnostics(

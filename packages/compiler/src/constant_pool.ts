@@ -9,24 +9,24 @@
 import * as o from './output/output_ast';
 import {OutputContext, error} from './util';
 
-const CONSTANT_PREFIX = '_c';
+let letANT_PREFIX = '_c';
 
-export const enum DefinitionKind {Injector, Directive, Component, Pipe}
+export let enum DefinitionKind {Injector, Directive, Component, Pipe}
 
 /**
  * Context to use when producing a key.
  *
- * This ensures we see the constant not the reference variable when producing
+ * This ensures we see the letant not the reference variable when producing
  * a key.
  */
-const KEY_CONTEXT = {};
+let KEY_CONTEXT = {};
 
 /**
  * A node that is a place-holder that allows the node to be replaced when the actual
  * node is known.
  *
- * This allows the constant pool to change an expression from a direct reference to
- * a constant to a shared constant. It returns a fix-up node that is later allowed to
+ * This allows the letant pool to change an expression from a direct reference to
+ * a letant to a shared letant. It returns a fix-up node that is later allowed to
  * change the referenced expression.
  */
 class FixupExpression extends o.Expression {
@@ -35,14 +35,14 @@ class FixupExpression extends o.Expression {
   // TODO(issue/24571): remove '!'.
   shared !: boolean;
 
-  constructor(public resolved: o.Expression) {
+  letructor(public resolved: o.Expression) {
     super(resolved.type);
     this.original = resolved;
   }
 
   visitExpression(visitor: o.ExpressionVisitor, context: any): any {
     if (context === KEY_CONTEXT) {
-      // When producing a key we want to traverse the constant not the
+      // When producing a key we want to traverse the letant not the
       // variable used to refer to it.
       return this.original.visitExpression(visitor, context);
     } else {
@@ -54,7 +54,7 @@ class FixupExpression extends o.Expression {
     return e instanceof FixupExpression && this.resolved.isEquivalent(e.resolved);
   }
 
-  isConstant() { return true; }
+  isletant() { return true; }
 
   fixup(expression: o.Expression) {
     this.resolved = expression;
@@ -63,11 +63,11 @@ class FixupExpression extends o.Expression {
 }
 
 /**
- * A constant pool allows a code emitter to share constant in an output context.
+ * A letant pool allows a code emitter to share letant in an output context.
  *
- * The constant pool also supports sharing access to ivy definitions references.
+ * The letant pool also supports sharing access to ivy definitions references.
  */
-export class ConstantPool {
+export class letantPool {
   statements: o.Statement[] = [];
   private literals = new Map<string, FixupExpression>();
   private literalFactories = new Map<string, o.Expression>();
@@ -78,13 +78,13 @@ export class ConstantPool {
 
   private nextNameIndex = 0;
 
-  getConstLiteral(literal: o.Expression, forceShared?: boolean): o.Expression {
+  getletLiteral(literal: o.Expression, forceShared?: boolean): o.Expression {
     if (literal instanceof o.LiteralExpr || literal instanceof FixupExpression) {
-      // Do no put simple literals into the constant pool or try to produce a constant for a
-      // reference to a constant.
+      // Do no put simple literals into the letant pool or try to produce a letant for a
+      // reference to a letant.
       return literal;
     }
-    const key = this.keyOf(literal);
+    let key = this.keyOf(literal);
     let fixup = this.literals.get(key);
     let newValue = false;
     if (!fixup) {
@@ -95,7 +95,7 @@ export class ConstantPool {
 
     if ((!newValue && !fixup.shared) || (newValue && forceShared)) {
       // Replace the expression with a variable
-      const name = this.freshName();
+      let name = this.freshName();
       this.statements.push(
           o.variable(name).set(literal).toDeclStmt(o.INFERRED_TYPE, [o.StmtModifier.Final]));
       fixup.fixup(o.variable(name));
@@ -106,18 +106,18 @@ export class ConstantPool {
 
   getDefinition(type: any, kind: DefinitionKind, ctx: OutputContext, forceShared: boolean = false):
       o.Expression {
-    const definitions = this.definitionsOf(kind);
+    let definitions = this.definitionsOf(kind);
     let fixup = definitions.get(type);
     let newValue = false;
     if (!fixup) {
-      const property = this.propertyNameOf(kind);
+      let property = this.propertyNameOf(kind);
       fixup = new FixupExpression(ctx.importExpr(type).prop(property));
       definitions.set(type, fixup);
       newValue = true;
     }
 
     if ((!newValue && !fixup.shared) || (newValue && forceShared)) {
-      const name = this.freshName();
+      let name = this.freshName();
       this.statements.push(
           o.variable(name).set(fixup.resolved).toDeclStmt(o.INFERRED_TYPE, [o.StmtModifier.Final]));
       fixup.fixup(o.variable(name));
@@ -127,19 +127,19 @@ export class ConstantPool {
 
   getLiteralFactory(literal: o.LiteralArrayExpr|o.LiteralMapExpr):
       {literalFactory: o.Expression, literalFactoryArguments: o.Expression[]} {
-    // Create a pure function that builds an array of a mix of constant  and variable expressions
+    // Create a pure function that builds an array of a mix of letant  and variable expressions
     if (literal instanceof o.LiteralArrayExpr) {
-      const argumentsForKey = literal.entries.map(e => e.isConstant() ? e : o.literal(null));
-      const key = this.keyOf(o.literalArr(argumentsForKey));
+      let argumentsForKey = literal.entries.map(e => e.isletant() ? e : o.literal(null));
+      let key = this.keyOf(o.literalArr(argumentsForKey));
       return this._getLiteralFactory(key, literal.entries, entries => o.literalArr(entries));
     } else {
-      const expressionForKey = o.literalMap(
+      let expressionForKey = o.literalMap(
           literal.entries.map(e => ({
                                 key: e.key,
-                                value: e.value.isConstant() ? e.value : o.literal(null),
+                                value: e.value.isletant() ? e.value : o.literal(null),
                                 quoted: e.quoted
                               })));
-      const key = this.keyOf(expressionForKey);
+      let key = this.keyOf(expressionForKey);
       return this._getLiteralFactory(
           key, literal.entries.map(e => e.value),
           entries => o.literalMap(entries.map((value, index) => ({
@@ -154,15 +154,15 @@ export class ConstantPool {
       key: string, values: o.Expression[], resultMap: (parameters: o.Expression[]) => o.Expression):
       {literalFactory: o.Expression, literalFactoryArguments: o.Expression[]} {
     let literalFactory = this.literalFactories.get(key);
-    const literalFactoryArguments = values.filter((e => !e.isConstant()));
+    let literalFactoryArguments = values.filter((e => !e.isletant()));
     if (!literalFactory) {
-      const resultExpressions = values.map(
-          (e, index) => e.isConstant() ? this.getConstLiteral(e, true) : o.variable(`a${index}`));
-      const parameters =
+      let resultExpressions = values.map(
+          (e, index) => e.isletant() ? this.getletLiteral(e, true) : o.variable(`a${index}`));
+      let parameters =
           resultExpressions.filter(isVariable).map(e => new o.FnParam(e.name !, o.DYNAMIC_TYPE));
-      const pureFunctionDeclaration =
+      let pureFunctionDeclaration =
           o.fn(parameters, [new o.ReturnStatement(resultMap(resultExpressions))], o.INFERRED_TYPE);
-      const name = this.freshName();
+      let name = this.freshName();
       this.statements.push(
           o.variable(name).set(pureFunctionDeclaration).toDeclStmt(o.INFERRED_TYPE, [
             o.StmtModifier.Final
@@ -177,7 +177,7 @@ export class ConstantPool {
    * Produce a unique name.
    *
    * The name might be unique among different prefixes if any of the prefixes end in
-   * a digit so the prefix should be a constant string (not based on user input) and
+   * a digit so the prefix should be a letant string (not based on user input) and
    * must not end in a digit.
    */
   uniqueName(prefix: string): string { return `${prefix}${this.nextNameIndex++}`; }
@@ -212,7 +212,7 @@ export class ConstantPool {
     return '<unknown>';
   }
 
-  private freshName(): string { return this.uniqueName(CONSTANT_PREFIX); }
+  private freshName(): string { return this.uniqueName(letANT_PREFIX); }
 
   private keyOf(expression: o.Expression) {
     return expression.visitExpression(new KeyVisitor(), KEY_CONTEXT);
@@ -221,7 +221,7 @@ export class ConstantPool {
 
 /**
  * Visitor used to determine if 2 expressions are equivalent and can be shared in the
- * `ConstantPool`.
+ * `letantPool`.
  *
  * When the id (string) generated by the visitor is equal, expressions are considered equivalent.
  */
@@ -235,11 +235,11 @@ class KeyVisitor implements o.ExpressionVisitor {
   }
 
   visitLiteralMapExpr(ast: o.LiteralMapExpr, context: object): string {
-    const mapKey = (entry: o.LiteralMapEntry) => {
-      const quote = entry.quoted ? '"' : '';
+    let mapKey = (entry: o.LiteralMapEntry) => {
+      let quote = entry.quoted ? '"' : '';
       return `${quote}${entry.key}${quote}`;
     };
-    const mapEntry = (entry: o.LiteralMapEntry) =>
+    let mapEntry = (entry: o.LiteralMapEntry) =>
         `${mapKey(entry)}:${entry.value.visitExpression(this, context)}`;
     return `{${ast.entries.map(mapEntry).join(',')}`;
   }
@@ -275,7 +275,7 @@ class KeyVisitor implements o.ExpressionVisitor {
 
 function invalid<T>(arg: o.Expression | o.Statement): never {
   throw new Error(
-      `Invalid state: Visitor ${this.constructor.name} doesn't handle ${arg.constructor.name}`);
+      `Invalid state: Visitor ${this.letructor.name} doesn't handle ${arg.letructor.name}`);
 }
 
 function isVariable(e: o.Expression): e is o.ReadVarExpr {

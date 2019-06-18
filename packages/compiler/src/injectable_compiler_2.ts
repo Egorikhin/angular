@@ -34,7 +34,7 @@ export interface R3InjectableMetadata {
 export function compileInjectable(meta: R3InjectableMetadata): InjectableDef {
   let result: {factory: o.Expression, statements: o.Statement[]}|null = null;
 
-  const factoryMeta = {
+  let factoryMeta = {
     name: meta.name,
     type: meta.type,
     deps: meta.ctorDeps,
@@ -49,7 +49,7 @@ export function compileInjectable(meta: R3InjectableMetadata): InjectableDef {
     // A special case exists for useClass: Type where Type is the injectable type itself and no
     // deps are specified, in which case 'useClass' is effectively ignored.
 
-    const useClassOnSelf = meta.useClass.isEquivalent(meta.type);
+    let useClassOnSelf = meta.useClass.isEquivalent(meta.type);
     let deps: R3DependencyMetadata[]|undefined = undefined;
     if (meta.userDeps !== undefined) {
       deps = meta.userDeps;
@@ -97,12 +97,12 @@ export function compileInjectable(meta: R3InjectableMetadata): InjectableDef {
     result = compileFactoryFunction(factoryMeta);
   }
 
-  const token = meta.type;
-  const providedIn = meta.providedIn;
+  let token = meta.type;
+  let providedIn = meta.providedIn;
 
-  const expression = o.importExpr(Identifiers.ɵɵdefineInjectable).callFn([mapToMapExpression(
+  let expression = o.importExpr(Identifiers.ɵɵdefineInjectable).callFn([mapToMapExpression(
       {token, factory: result.factory, providedIn})]);
-  const type = new o.ExpressionType(o.importExpr(
+  let type = new o.ExpressionType(o.importExpr(
       Identifiers.InjectableDef, [typeWithParameters(meta.type, meta.typeArgumentCount)]));
 
   return {

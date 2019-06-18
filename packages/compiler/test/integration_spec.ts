@@ -31,10 +31,10 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
              ],
            });
 
-           const template = `<div [dot.name]="'foo'"></div>`;
+           let template = `<div [dot.name]="'foo'"></div>`;
            fixture = createTestComponent(template);
            fixture.detectChanges();
-           const myDir = fixture.debugElement.query(By.directive(MyDir)).injector.get(MyDir);
+           let myDir = fixture.debugElement.query(By.directive(MyDir)).injector.get(MyDir);
            expect(myDir.value).toEqual('foo');
          }));
     });
@@ -50,7 +50,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
              class MyCmp {
              }
 
-             const f =
+             let f =
                  TestBed.configureTestingModule({declarations: [MyCmp]}).createComponent(MyCmp);
              f.detectChanges();
 

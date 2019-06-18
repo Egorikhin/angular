@@ -26,8 +26,8 @@ export function createModule(): NgModuleRef<MainModule> {
 }
 
 export function createComponent<C>(comp: {new (...args: any[]): C}): ComponentFixture<C> {
-  const moduleRef = createModule();
-  const compRef =
+  let moduleRef = createModule();
+  let compRef =
       moduleRef.componentFactoryResolver.resolveComponentFactory(comp).create(moduleRef.injector);
   return new ComponentFixture(compRef, null, false);
 }

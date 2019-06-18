@@ -14,7 +14,7 @@ import {formatCurrency, formatNumber, formatPercent, registerLocaleData} from '@
 import {describe, expect, it} from '@angular/core/testing/src/testing_internal';
 
 describe('Format number', () => {
-  const defaultLocale = 'en-US';
+  let defaultLocale = 'en-US';
 
   beforeAll(() => {
     registerLocaleData(localeEn);
@@ -77,7 +77,7 @@ describe('Format number', () => {
   });
 
   describe('Currency', () => {
-    const defaultCurrencyCode = 'USD';
+    let defaultCurrencyCode = 'USD';
     describe('transform', () => {
       it('should return correct value for numbers', () => {
         expect(formatCurrency(123, defaultLocale, '$')).toEqual('$123.00');

@@ -6,4 +6,4 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export const IMPORT_PREFIX = 'ɵngcc';
+export let IMPORT_PREFIX = 'ɵngcc';

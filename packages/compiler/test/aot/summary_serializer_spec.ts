@@ -43,7 +43,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
 
     it('should serialize various data correctly', () => {
       init();
-      const serializedData = serializeSummaries(
+      let serializedData = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
           [
             {
@@ -78,7 +78,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
           }]);
 
 
-      const summaries =
+      let summaries =
           deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serializedData.json)
               .summaries;
       expect(summaries.length).toBe(2);
@@ -108,7 +108,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
     it('should automatically add exported directives / pipes of NgModules that are not source files',
        () => {
          init();
-         const externalSerialized = serializeSummaries(
+         let externalSerialized = serializeSummaries(
              'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
              [
                {symbol: symbolCache.get('/tmp/external.ts', 'SomeExternalPipe'), metadata: null},
@@ -140,7 +140,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
            '/tmp/external.ngsummary.json': externalSerialized.json,
          });
 
-         const serialized = serializeSummaries(
+         let serialized = serializeSummaries(
              'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
              [
                {symbol: symbolCache.get('/tmp/some_module.ts', 'SomeModule'), metadata: null},
@@ -162,14 +162,14 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
                },
                metadata: null as any
              }]);
-         const summaries =
+         let summaries =
              deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json)
                  .summaries;
          init({
            '/tmp/some_module.ngsummary.json': serialized.json,
          });
 
-         const serializedReexport = serializeSummaries(
+         let serializedReexport = serializeSummaries(
              'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
              [
                {
@@ -185,7 +185,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
          expect(summaries[2].symbol)
              .toBe(symbolCache.get('/tmp/external.d.ts', 'SomeExternalPipe'));
 
-         const reexportSummaries =
+         let reexportSummaries =
              deserializeSummaries(
                  symbolCache, summaryResolver, 'someFile.d.ts', serializedReexport.json)
                  .summaries;
@@ -203,7 +203,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
     it('should automatically add the metadata of referenced symbols that are not in the source files',
        () => {
          init();
-         const externalSerialized = serializeSummaries(
+         let externalSerialized = serializeSummaries(
              'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
              [
                {
@@ -245,7 +245,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
                '/tmp/non_summary.d.ts':
                    {__symbolic: 'module', version: METADATA_VERSION, metadata: {'external': 'b'}}
              });
-         const serialized = serializeSummaries(
+         let serialized = serializeSummaries(
              'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
                symbol: symbolCache.get('/tmp/test.ts', 'main'),
                metadata: {
@@ -257,7 +257,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
              }],
              []);
 
-         const summaries =
+         let summaries =
              deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json)
                  .summaries;
          // Note: local should not show up!
@@ -284,7 +284,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
 
     it('should resolve reexported values in libraries', () => {
       init();
-      const externalSerialized = serializeSummaries(
+      let externalSerialized = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
           [
             {symbol: symbolCache.get('/tmp/external.ts', 'value'), metadata: 'someString'},
@@ -297,7 +297,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
       init({
         '/tmp/external.ngsummary.json': externalSerialized.json,
       });
-      const serialized = serializeSummaries(
+      let serialized = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
           [
             {
@@ -307,7 +307,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
           ],
           []);
 
-      const summaries =
+      let summaries =
           deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json)
               .summaries;
       expect(summaries.length).toBe(2);
@@ -319,7 +319,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
 
     it('should use existing reexports for "importAs" for symbols of libraries', () => {
       init();
-      const externalSerialized = serializeSummaries(
+      let externalSerialized = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
           [
             {symbol: symbolCache.get('/tmp/external.ts', 'value'), metadata: 'aValue'},
@@ -333,14 +333,14 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
       init({
         '/tmp/external.ngsummary.json': externalSerialized.json,
       });
-      const serialized = serializeSummaries(
+      let serialized = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
             symbol: symbolCache.get('/tmp/test.ts', 'mainValue'),
             metadata: symbolCache.get('/tmp/external.d.ts', 'reexportValue'),
           }],
           []);
       expect(serialized.exportAs).toEqual([]);
-      const importAs =
+      let importAs =
           deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json)
               .importAs;
       expect(importAs).toEqual([{
@@ -352,7 +352,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
     describe('with resolved symbols', () => {
       it('should be able to serialize a call', () => {
         init();
-        const serialized = serializeSummaries(
+        let serialized = serializeSummaries(
             'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
               symbol: symbolCache.get('/tmp/test.ts', 'main'),
               metadata: {
@@ -367,7 +367,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
 
       it('should be able to serialize a call to a method', () => {
         init();
-        const serialized = serializeSummaries(
+        let serialized = serializeSummaries(
             'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
               symbol: symbolCache.get('/tmp/test.ts', 'main'),
               metadata: {
@@ -391,7 +391,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
       it('should not create "importAs" names for ctor arguments which are types of reexported classes in libraries',
          () => {
            init();
-           const externalSerialized = serializeSummaries(
+           let externalSerialized = serializeSummaries(
                'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
                [
                  {
@@ -408,7 +408,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
                      __symbolic: 'class',
                      'members': {
                        '__ctor__': [{
-                         '__symbolic': 'constructor',
+                         '__symbolic': 'letructor',
                          'parameters': [
                            symbolCache.get('/tmp/external.ts', 'type'),
                            symbolCache.get('/tmp/external.ts', 'value'),
@@ -424,13 +424,13 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
            init({
              '/tmp/external.ngsummary.json': externalSerialized.json,
            });
-           const serialized = serializeSummaries(
+           let serialized = serializeSummaries(
                'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
                  symbol: symbolCache.get('/tmp/test.ts', 'mainClass'),
                  metadata: symbolCache.get('/tmp/external.d.ts', 'reexportClass'),
                }],
                [], true);
-           const importAs =
+           let importAs =
                deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json)
                    .importAs;
            expect(importAs).toEqual([
@@ -447,7 +447,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
 
       it('should create reexports in the ngfactory for symbols of libraries', () => {
         init();
-        const serialized = serializeSummaries(
+        let serialized = serializeSummaries(
             'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
               symbol: symbolCache.get('/tmp/test.ts', 'main'),
               metadata: [
@@ -461,7 +461,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
           {symbol: symbolCache.get('/tmp/external.d.ts', 'lib'), exportAs: 'lib_1'}
         ]);
 
-        const deserialized =
+        let deserialized =
             deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json);
         // Note: no entry for the symbol with members!
         expect(deserialized.importAs).toEqual([{
@@ -473,7 +473,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
 
     it('should use existing reexports for "importAs" for symbols of libraries', () => {
       init();
-      const externalSerialized = serializeSummaries(
+      let externalSerialized = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver,
           [
             {symbol: symbolCache.get('/tmp/external.ts', 'value'), metadata: 'aValue'},
@@ -487,14 +487,14 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
       init({
         '/tmp/external.ngsummary.json': externalSerialized.json,
       });
-      const serialized = serializeSummaries(
+      let serialized = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
             symbol: symbolCache.get('/tmp/test.ts', 'mainValue'),
             metadata: symbolCache.get('/tmp/external.d.ts', 'reexportValue'),
           }],
           []);
       expect(serialized.exportAs).toEqual([]);
-      const importAs =
+      let importAs =
           deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json)
               .importAs;
       expect(importAs).toEqual([{
@@ -505,7 +505,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
 
     it('should not create reexports in the ngfactory for external symbols', () => {
       init();
-      const serialized = serializeSummaries(
+      let serialized = serializeSummaries(
           'someFile.ts', createMockOutputContext(), summaryResolver, symbolResolver, [{
             symbol: symbolCache.get('/tmp/test.ts', 'main'),
             metadata: [
@@ -515,7 +515,7 @@ import {MockAotSummaryResolverHost, createMockOutputContext} from './summary_res
           }],
           [], false);
       expect(serialized.exportAs.length).toBe(0, 'Expected no external symbols to be re-exported.');
-      const deserialized =
+      let deserialized =
           deserializeSummaries(symbolCache, summaryResolver, 'someFile.d.ts', serialized.json);
       expect(deserialized.importAs.length)
           .toBe(0, 'Expected no symbols that can be imported from a re-exported location');

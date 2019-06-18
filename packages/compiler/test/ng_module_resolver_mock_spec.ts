@@ -23,14 +23,14 @@ import {MockNgModuleResolver} from '../testing';
     describe('NgModule overriding', () => {
       it('should fallback to the default NgModuleResolver when templates are not overridden',
          () => {
-           const ngModule = ngModuleResolver.resolve(SomeNgModule);
+           let ngModule = ngModuleResolver.resolve(SomeNgModule);
            expect(ngModule.declarations).toEqual([SomeDirective]);
          });
 
       it('should allow overriding the @NgModule', () => {
         ngModuleResolver.setNgModule(
             SomeNgModule, new NgModule({declarations: [SomeOtherDirective]}));
-        const ngModule = ngModuleResolver.resolve(SomeNgModule);
+        let ngModule = ngModuleResolver.resolve(SomeNgModule);
         expect(ngModule.declarations).toEqual([SomeOtherDirective]);
       });
     });

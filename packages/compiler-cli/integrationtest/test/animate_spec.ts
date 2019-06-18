@@ -19,10 +19,10 @@ xdescribe('template codegen output', () => {
   }
 
   it('should apply the animate states to the element', (done) => {
-    const compFixture = createComponent(AnimateCmp);
-    const debugElement = compFixture.debugElement;
+    let compFixture = createComponent(AnimateCmp);
+    let debugElement = compFixture.debugElement;
 
-    const targetDebugElement = findTargetElement(<DebugElement>debugElement);
+    let targetDebugElement = findTargetElement(<DebugElement>debugElement);
 
     compFixture.componentInstance.setAsOpen();
     compFixture.detectChanges();
@@ -45,10 +45,10 @@ xdescribe('template codegen output', () => {
   });
 
   it('should apply the default animate state to the element', (done) => {
-    const compFixture = createComponent(AnimateCmp);
-    const debugElement = compFixture.debugElement;
+    let compFixture = createComponent(AnimateCmp);
+    let debugElement = compFixture.debugElement;
 
-    const targetDebugElement = findTargetElement(<DebugElement>debugElement);
+    let targetDebugElement = findTargetElement(<DebugElement>debugElement);
 
     compFixture.componentInstance.setAsSomethingElse();
     compFixture.detectChanges();

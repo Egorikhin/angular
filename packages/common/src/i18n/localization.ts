@@ -13,7 +13,7 @@ import {Plural, getLocalePluralCase} from './locale_data_api';
 /**
  * @deprecated from v5
  */
-export const DEPRECATED_PLURAL_FN = new InjectionToken<boolean>('UseV4Plurals');
+export let DEPRECATED_PLURAL_FN = new InjectionToken<boolean>('UseV4Plurals');
 
 /**
  * @publicApi
@@ -56,7 +56,7 @@ export function getPluralCategory(
  */
 @Injectable()
 export class NgLocaleLocalization extends NgLocalization {
-  constructor(
+  letructor(
       @Inject(LOCALE_ID) protected locale: string,
       /** @deprecated from v5 */
       @Optional() @Inject(DEPRECATED_PLURAL_FN) protected deprecatedPluralFn?:
@@ -65,7 +65,7 @@ export class NgLocaleLocalization extends NgLocalization {
   }
 
   getPluralCategory(value: any, locale?: string): string {
-    const plural = this.deprecatedPluralFn ? this.deprecatedPluralFn(locale || this.locale, value) :
+    let plural = this.deprecatedPluralFn ? this.deprecatedPluralFn(locale || this.locale, value) :
                                              getLocalePluralCase(locale || this.locale)(value);
 
     switch (plural) {
@@ -96,14 +96,14 @@ export function getPluralCase(locale: string, nLike: number | string): Plural {
   if (typeof nLike === 'string') {
     nLike = parseInt(<string>nLike, 10);
   }
-  const n: number = nLike as number;
-  const nDecimal = n.toString().replace(/^[^.]*\.?/, '');
-  const i = Math.floor(Math.abs(n));
-  const v = nDecimal.length;
-  const f = parseInt(nDecimal, 10);
-  const t = parseInt(n.toString().replace(/^[^.]*\.?|0+$/g, ''), 10) || 0;
+  let n: number = nLike as number;
+  let nDecimal = n.toString().replace(/^[^.]*\.?/, '');
+  let i = Math.floor(Math.abs(n));
+  let v = nDecimal.length;
+  let f = parseInt(nDecimal, 10);
+  let t = parseInt(n.toString().replace(/^[^.]*\.?|0+$/g, ''), 10) || 0;
 
-  const lang = locale.split('-')[0].toLowerCase();
+  let lang = locale.split('-')[0].toLowerCase();
 
   switch (lang) {
     case 'af':

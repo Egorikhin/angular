@@ -28,13 +28,13 @@ import {MockDirectiveResolver} from '../testing';
     describe('Directive overriding', () => {
       it('should fallback to the default DirectiveResolver when templates are not overridden',
          () => {
-           const ngModule = dirResolver.resolve(SomeComponent);
+           let ngModule = dirResolver.resolve(SomeComponent);
            expect(ngModule.selector).toEqual('cmp');
          });
 
       it('should allow overriding the @Directive', () => {
         dirResolver.setDirective(SomeComponent, new Component({selector: 'someOtherSelector'}));
-        const metadata = dirResolver.resolve(SomeComponent);
+        let metadata = dirResolver.resolve(SomeComponent);
         expect(metadata.selector).toEqual('someOtherSelector');
       });
     });

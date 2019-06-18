@@ -6,15 +6,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const fs = require('fs');
-const path = require('path');
-const sourceMapTest = require('../source-map-test');
+let fs = require('fs');
+let path = require('path');
+let sourceMapTest = require('../source-map-test');
 
-const excludedPackages = ['bazel', 'benchpress', 'compiler-cli', 'language-service'];
+let excludedPackages = ['bazel', 'benchpress', 'compiler-cli', 'language-service'];
 
 module.exports = (gulp) => () => {
-  const packageDir = path.resolve(process.cwd(), 'dist/packages-dist/');
-  const packages =
+  let packageDir = path.resolve(process.cwd(), 'dist/packages-dist/');
+  let packages =
       fs.readdirSync(packageDir).filter(package => excludedPackages.indexOf(package) === -1);
 
   packages.forEach(package => {

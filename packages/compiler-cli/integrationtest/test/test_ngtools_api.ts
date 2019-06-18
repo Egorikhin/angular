@@ -29,12 +29,12 @@ function main() {
 }
 
 function lazyRoutesTest() {
-  const basePath = path.join(__dirname, '../ngtools_src');
-  const project = path.join(basePath, 'tsconfig-build.json');
+  let basePath = path.join(__dirname, '../ngtools_src');
+  let project = path.join(basePath, 'tsconfig-build.json');
 
-  const config = readConfiguration(project);
-  const host = ts.createCompilerHost(config.options, true);
-  const program = createProgram({
+  let config = readConfiguration(project);
+  let host = ts.createCompilerHost(config.options, true);
+  let program = createProgram({
     rootNames: config.rootNames,
     options: config.options, host,
   });
@@ -42,8 +42,8 @@ function lazyRoutesTest() {
   config.options.basePath = basePath;
   config.options.rootDir = basePath;
 
-  const lazyRoutes = program.listLazyRoutes('app.module#AppModule');
-  const expectations: {[route: string]: string} = {
+  let lazyRoutes = program.listLazyRoutes('app.module#AppModule');
+  let expectations: {[route: string]: string} = {
     './lazy.module#LazyModule': 'lazy.module.ts',
     './feature/feature.module#FeatureModule': 'feature/feature.module.ts',
     './feature/lazy-feature.module#LazyFeatureModule': 'feature/lazy-feature.module.ts',
@@ -55,12 +55,12 @@ function lazyRoutesTest() {
   };
 
   lazyRoutes.forEach(lazyRoute => {
-    const routeName = lazyRoute.route;
+    let routeName = lazyRoute.route;
 
     // Normalize the module path and the expected module path so that these can be compared
     // on Windows where path separators are not consistent with TypeScript internal paths.
-    const modulePath = path.normalize(lazyRoute.referencedModule.filePath);
-    const expectedModulePath = path.normalize(path.join(basePath, expectations[routeName]));
+    let modulePath = path.normalize(lazyRoute.referencedModule.filePath);
+    let expectedModulePath = path.normalize(path.join(basePath, expectations[routeName]));
 
     assert(routeName in expectations, `Found a route that was not expected: "${routeName}".`);
     assert(

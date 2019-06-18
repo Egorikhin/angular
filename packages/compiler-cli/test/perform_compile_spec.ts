@@ -49,7 +49,7 @@ describe('perform_compile', () => {
 
   it('should merge tsconfig "angularCompilerOptions"', () => {
     writeSomeConfigs();
-    const {options} = readConfiguration(path.resolve(basePath, 'tsconfig-level-1.json'));
+    let {options} = readConfiguration(path.resolve(basePath, 'tsconfig-level-1.json'));
     expect(options.annotateForClosureCompiler).toBe(true);
     expect(options.annotationsAs).toBe('decorators');
     expect(options.skipMetadataEmit).toBe(true);

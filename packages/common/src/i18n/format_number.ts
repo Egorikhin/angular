@@ -8,15 +8,15 @@
 
 import {NumberFormatStyle, NumberSymbol, getLocaleNumberFormat, getLocaleNumberSymbol, getNumberOfCurrencyDigits} from './locale_data_api';
 
-export const NUMBER_FORMAT_REGEXP = /^(\d+)?\.((\d+)(-(\d+))?)?$/;
-const MAX_DIGITS = 22;
-const DECIMAL_SEP = '.';
-const ZERO_CHAR = '0';
-const PATTERN_SEP = ';';
-const GROUP_SEP = ',';
-const DIGIT_CHAR = '#';
-const CURRENCY_CHAR = '¤';
-const PERCENT_CHAR = '%';
+export let NUMBER_FORMAT_REGEXP = /^(\d+)?\.((\d+)(-(\d+))?)?$/;
+let MAX_DIGITS = 22;
+let DECIMAL_SEP = '.';
+let ZERO_CHAR = '0';
+let PATTERN_SEP = ';';
+let GROUP_SEP = ',';
+let DIGIT_CHAR = '#';
+let CURRENCY_CHAR = '¤';
+let PERCENT_CHAR = '%';
 
 /**
  * Transforms a number to a locale string based on a style and a format.
@@ -41,13 +41,13 @@ function formatNumberToLocaleString(
     let maxFraction = pattern.maxFrac;
 
     if (digitsInfo) {
-      const parts = digitsInfo.match(NUMBER_FORMAT_REGEXP);
+      let parts = digitsInfo.match(NUMBER_FORMAT_REGEXP);
       if (parts === null) {
         throw new Error(`${digitsInfo} is not a valid digit info`);
       }
-      const minIntPart = parts[1];
-      const minFractionPart = parts[3];
-      const maxFractionPart = parts[5];
+      let minIntPart = parts[1];
+      let minFractionPart = parts[3];
+      let maxFractionPart = parts[5];
       if (minIntPart != null) {
         minInt = parseIntAutoRadix(minIntPart);
       }
@@ -65,7 +65,7 @@ function formatNumberToLocaleString(
 
     let digits = parsedNumber.digits;
     let integerLen = parsedNumber.integerLen;
-    const exponent = parsedNumber.exponent;
+    let exponent = parsedNumber.exponent;
     let decimals = [];
     isZero = digits.every(d => !d);
 
@@ -88,7 +88,7 @@ function formatNumberToLocaleString(
     }
 
     // format the integer digits with grouping separators
-    const groups = [];
+    let groups = [];
     if (digits.length >= pattern.lgSize) {
       groups.unshift(digits.splice(-pattern.lgSize, digits.length).join(''));
     }
@@ -149,13 +149,13 @@ function formatNumberToLocaleString(
 export function formatCurrency(
     value: number, locale: string, currency: string, currencyCode?: string,
     digitsInfo?: string): string {
-  const format = getLocaleNumberFormat(locale, NumberFormatStyle.Currency);
-  const pattern = parseNumberFormat(format, getLocaleNumberSymbol(locale, NumberSymbol.MinusSign));
+  let format = getLocaleNumberFormat(locale, NumberFormatStyle.Currency);
+  let pattern = parseNumberFormat(format, getLocaleNumberSymbol(locale, NumberSymbol.MinusSign));
 
   pattern.minFrac = getNumberOfCurrencyDigits(currencyCode !);
   pattern.maxFrac = pattern.minFrac;
 
-  const res = formatNumberToLocaleString(
+  let res = formatNumberToLocaleString(
       value, pattern, locale, NumberSymbol.CurrencyGroup, NumberSymbol.CurrencyDecimal, digitsInfo);
   return res
       .replace(CURRENCY_CHAR, currency)
@@ -183,9 +183,9 @@ export function formatCurrency(
  *
  */
 export function formatPercent(value: number, locale: string, digitsInfo?: string): string {
-  const format = getLocaleNumberFormat(locale, NumberFormatStyle.Percent);
-  const pattern = parseNumberFormat(format, getLocaleNumberSymbol(locale, NumberSymbol.MinusSign));
-  const res = formatNumberToLocaleString(
+  let format = getLocaleNumberFormat(locale, NumberFormatStyle.Percent);
+  let pattern = parseNumberFormat(format, getLocaleNumberSymbol(locale, NumberSymbol.MinusSign));
+  let res = formatNumberToLocaleString(
       value, pattern, locale, NumberSymbol.Group, NumberSymbol.Decimal, digitsInfo, true);
   return res.replace(
       new RegExp(PERCENT_CHAR, 'g'), getLocaleNumberSymbol(locale, NumberSymbol.PercentSign));
@@ -209,8 +209,8 @@ export function formatPercent(value: number, locale: string, digitsInfo?: string
  * @publicApi
  */
 export function formatNumber(value: number, locale: string, digitsInfo?: string): string {
-  const format = getLocaleNumberFormat(locale, NumberFormatStyle.Decimal);
-  const pattern = parseNumberFormat(format, getLocaleNumberSymbol(locale, NumberSymbol.MinusSign));
+  let format = getLocaleNumberFormat(locale, NumberFormatStyle.Decimal);
+  let pattern = parseNumberFormat(format, getLocaleNumberSymbol(locale, NumberSymbol.MinusSign));
   return formatNumberToLocaleString(
       value, pattern, locale, NumberSymbol.Group, NumberSymbol.Decimal, digitsInfo);
 }
@@ -236,7 +236,7 @@ interface ParsedNumberFormat {
 }
 
 function parseNumberFormat(format: string, minusSign = '-'): ParsedNumberFormat {
-  const p = {
+  let p = {
     minInt: 1,
     minFrac: 0,
     maxFrac: 0,
@@ -248,11 +248,11 @@ function parseNumberFormat(format: string, minusSign = '-'): ParsedNumberFormat 
     lgSize: 0
   };
 
-  const patternParts = format.split(PATTERN_SEP);
-  const positive = patternParts[0];
-  const negative = patternParts[1];
+  let patternParts = format.split(PATTERN_SEP);
+  let positive = patternParts[0];
+  let negative = patternParts[1];
 
-  const positiveParts = positive.indexOf(DECIMAL_SEP) !== -1 ?
+  let positiveParts = positive.indexOf(DECIMAL_SEP) !== -1 ?
       positive.split(DECIMAL_SEP) :
       [
         positive.substring(0, positive.lastIndexOf(ZERO_CHAR) + 1),
@@ -263,7 +263,7 @@ function parseNumberFormat(format: string, minusSign = '-'): ParsedNumberFormat 
   p.posPre = integer.substr(0, integer.indexOf(DIGIT_CHAR));
 
   for (let i = 0; i < fraction.length; i++) {
-    const ch = fraction.charAt(i);
+    let ch = fraction.charAt(i);
     if (ch === ZERO_CHAR) {
       p.minFrac = p.maxFrac = i + 1;
     } else if (ch === DIGIT_CHAR) {
@@ -273,12 +273,12 @@ function parseNumberFormat(format: string, minusSign = '-'): ParsedNumberFormat 
     }
   }
 
-  const groups = integer.split(GROUP_SEP);
+  let groups = integer.split(GROUP_SEP);
   p.gSize = groups[1] ? groups[1].length : 0;
   p.lgSize = (groups[2] || groups[1]) ? (groups[2] || groups[1]).length : 0;
 
   if (negative) {
-    const trunkLen = positive.length - p.posPre.length - p.posSuf.length,
+    let trunkLen = positive.length - p.posPre.length - p.posSuf.length,
           pos = negative.indexOf(DIGIT_CHAR);
 
     p.negPre = negative.substr(0, pos).replace(/'/g, '');
@@ -308,7 +308,7 @@ function toPercent(parsedNumber: ParsedNumber): ParsedNumber {
   }
 
   // Getting the current number of decimals
-  const fractionLen = parsedNumber.digits.length - parsedNumber.integerLen;
+  let fractionLen = parsedNumber.digits.length - parsedNumber.integerLen;
   if (parsedNumber.exponent) {
     parsedNumber.exponent += 2;
   } else {
@@ -392,7 +392,7 @@ function roundNumber(parsedNumber: ParsedNumber, minFrac: number, maxFrac: numbe
 
   let digits = parsedNumber.digits;
   let fractionLen = digits.length - parsedNumber.integerLen;
-  const fractionSize = Math.min(Math.max(minFrac, fractionLen), maxFrac);
+  let fractionSize = Math.min(Math.max(minFrac, fractionLen), maxFrac);
 
   // The index of the digit to where rounding is to occur
   let roundAt = fractionSize + parsedNumber.integerLen;
@@ -434,9 +434,9 @@ function roundNumber(parsedNumber: ParsedNumber, minFrac: number, maxFrac: numbe
   let dropTrailingZeros = fractionSize !== 0;
   // Minimal length = nb of decimals required + current nb of integers
   // Any number besides that is optional and can be removed if it's a trailing 0
-  const minLen = minFrac + parsedNumber.integerLen;
+  let minLen = minFrac + parsedNumber.integerLen;
   // Do any carrying, e.g. a digit was rounded up to 10
-  const carry = digits.reduceRight(function(carry, d, i, digits) {
+  let carry = digits.reduceRight(function(carry, d, i, digits) {
     d = d + carry;
     digits[i] = d < 10 ? d : d - 10;  // d % 10
     if (dropTrailingZeros) {
@@ -456,7 +456,7 @@ function roundNumber(parsedNumber: ParsedNumber, minFrac: number, maxFrac: numbe
 }
 
 export function parseIntAutoRadix(text: string): number {
-  const result: number = parseInt(text);
+  let result: number = parseInt(text);
   if (isNaN(result)) {
     throw new Error('Invalid integer literal when parsing ' + text);
   }

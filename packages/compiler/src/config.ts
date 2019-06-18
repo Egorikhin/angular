@@ -20,7 +20,7 @@ export class CompilerConfig {
   public preserveWhitespaces: boolean;
   public strictInjectionParameters: boolean;
 
-  constructor(
+  letructor(
       {defaultEncapsulation = ViewEncapsulation.Emulated, useJit = true, jitDevMode = false,
        missingTranslation = null, preserveWhitespaces, strictInjectionParameters}: {
         defaultEncapsulation?: ViewEncapsulation,

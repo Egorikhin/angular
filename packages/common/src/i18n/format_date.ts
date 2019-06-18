@@ -8,11 +8,11 @@
 
 import {FormStyle, FormatWidth, NumberSymbol, Time, TranslationWidth, getLocaleDateFormat, getLocaleDateTimeFormat, getLocaleDayNames, getLocaleDayPeriods, getLocaleEraNames, getLocaleExtraDayPeriodRules, getLocaleExtraDayPeriods, getLocaleId, getLocaleMonthNames, getLocaleNumberSymbol, getLocaleTimeFormat} from './locale_data_api';
 
-export const ISO8601_DATE_REGEX =
+export let ISO8601_DATE_REGEX =
     /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
 //    1        2       3         4          5          6          7          8  9     10      11
-const NAMED_FORMATS: {[localeId: string]: {[format: string]: string}} = {};
-const DATE_FORMATS_SPLIT =
+let NAMED_FORMATS: {[localeId: string]: {[format: string]: string}} = {};
+let DATE_FORMATS_SPLIT =
     /((?:[^GyMLwWdEabBhHmsSzZO']+)|(?:'(?:[^']|'')*')|(?:G{1,5}|y{1,4}|M{1,5}|L{1,5}|w{1,2}|W{1}|d{1,2}|E{1,6}|a{1,5}|b{1,5}|B{1,5}|h{1,2}|H{1,2}|m{1,2}|s{1,2}|S{1,3}|z{1,4}|Z{1,5}|O{1,4}))([\s\S]*)/;
 
 enum ZoneWidth {
@@ -64,7 +64,7 @@ enum TranslationType {
 export function formatDate(
     value: string | number | Date, format: string, locale: string, timezone?: string): string {
   let date = toDate(value);
-  const namedFormat = getNamedFormat(locale, format);
+  let namedFormat = getNamedFormat(locale, format);
   format = namedFormat || format;
 
   let parts: string[] = [];
@@ -73,7 +73,7 @@ export function formatDate(
     match = DATE_FORMATS_SPLIT.exec(format);
     if (match) {
       parts = parts.concat(match.slice(1));
-      const part = parts.pop();
+      let part = parts.pop();
       if (!part) {
         break;
       }
@@ -92,7 +92,7 @@ export function formatDate(
 
   let text = '';
   parts.forEach(value => {
-    const dateFormatter = getDateFormatter(value);
+    let dateFormatter = getDateFormatter(value);
     text += dateFormatter ?
         dateFormatter(date, locale, dateTimezoneOffset) :
         value === '\'\'' ? '\'' : value.replace(/(^'|'$)/g, '').replace(/''/g, '\'');
@@ -102,7 +102,7 @@ export function formatDate(
 }
 
 function getNamedFormat(locale: string, format: string): string {
-  const localeId = getLocaleId(locale);
+  let localeId = getLocaleId(locale);
   NAMED_FORMATS[localeId] = NAMED_FORMATS[localeId] || {};
 
   if (NAMED_FORMATS[localeId][format]) {
@@ -136,26 +136,26 @@ function getNamedFormat(locale: string, format: string): string {
       formatValue = getLocaleTimeFormat(locale, FormatWidth.Full);
       break;
     case 'short':
-      const shortTime = getNamedFormat(locale, 'shortTime');
-      const shortDate = getNamedFormat(locale, 'shortDate');
+      let shortTime = getNamedFormat(locale, 'shortTime');
+      let shortDate = getNamedFormat(locale, 'shortDate');
       formatValue = formatDateTime(
           getLocaleDateTimeFormat(locale, FormatWidth.Short), [shortTime, shortDate]);
       break;
     case 'medium':
-      const mediumTime = getNamedFormat(locale, 'mediumTime');
-      const mediumDate = getNamedFormat(locale, 'mediumDate');
+      let mediumTime = getNamedFormat(locale, 'mediumTime');
+      let mediumDate = getNamedFormat(locale, 'mediumDate');
       formatValue = formatDateTime(
           getLocaleDateTimeFormat(locale, FormatWidth.Medium), [mediumTime, mediumDate]);
       break;
     case 'long':
-      const longTime = getNamedFormat(locale, 'longTime');
-      const longDate = getNamedFormat(locale, 'longDate');
+      let longTime = getNamedFormat(locale, 'longTime');
+      let longDate = getNamedFormat(locale, 'longDate');
       formatValue =
           formatDateTime(getLocaleDateTimeFormat(locale, FormatWidth.Long), [longTime, longDate]);
       break;
     case 'full':
-      const fullTime = getNamedFormat(locale, 'fullTime');
-      const fullDate = getNamedFormat(locale, 'fullDate');
+      let fullTime = getNamedFormat(locale, 'fullTime');
+      let fullDate = getNamedFormat(locale, 'fullDate');
       formatValue =
           formatDateTime(getLocaleDateTimeFormat(locale, FormatWidth.Full), [fullTime, fullDate]);
       break;
@@ -197,7 +197,7 @@ function padNumber(
 }
 
 function formatFractionalSeconds(milliseconds: number, digits: number): string {
-  const strMs = padNumber(milliseconds, 3);
+  let strMs = padNumber(milliseconds, 3);
   return strMs.substr(0, digits);
 }
 
@@ -221,7 +221,7 @@ function dateGetter(
       return formatFractionalSeconds(part, size);
     }
 
-    const localeMinus = getLocaleNumberSymbol(locale, NumberSymbol.MinusSign);
+    let localeMinus = getLocaleNumberSymbol(locale, NumberSymbol.MinusSign);
     return padNumber(part, size, localeMinus, trim, negWrap);
   };
 }
@@ -272,24 +272,24 @@ function getDateTranslation(
     case TranslationType.Days:
       return getLocaleDayNames(locale, form, width)[date.getDay()];
     case TranslationType.DayPeriods:
-      const currentHours = date.getHours();
-      const currentMinutes = date.getMinutes();
+      let currentHours = date.getHours();
+      let currentMinutes = date.getMinutes();
       if (extended) {
-        const rules = getLocaleExtraDayPeriodRules(locale);
-        const dayPeriods = getLocaleExtraDayPeriods(locale, form, width);
+        let rules = getLocaleExtraDayPeriodRules(locale);
+        let dayPeriods = getLocaleExtraDayPeriods(locale, form, width);
         let result;
         rules.forEach((rule: Time | [Time, Time], index: number) => {
           if (Array.isArray(rule)) {
             // morning, afternoon, evening, night
-            const {hours: hoursFrom, minutes: minutesFrom} = rule[0];
-            const {hours: hoursTo, minutes: minutesTo} = rule[1];
+            let {hours: hoursFrom, minutes: minutesFrom} = rule[0];
+            let {hours: hoursTo, minutes: minutesTo} = rule[1];
             if (currentHours >= hoursFrom && currentMinutes >= minutesFrom &&
                 (currentHours < hoursTo ||
                  (currentHours === hoursTo && currentMinutes < minutesTo))) {
               result = dayPeriods[index];
             }
           } else {  // noon or midnight
-            const {hours, minutes} = rule;
+            let {hours, minutes} = rule;
             if (hours === currentHours && minutes === currentMinutes) {
               result = dayPeriods[index];
             }
@@ -308,7 +308,7 @@ function getDateTranslation(
       // However Closure Compiler does not understand that and reports an error in typed mode.
       // The `throw new Error` below works around the problem, and the unexpected: never variable
       // makes sure tsc still checks this code is unreachable.
-      const unexpected: never = name;
+      let unexpected: never = name;
       throw new Error(`unexpected translation type ${unexpected}`);
   }
 }
@@ -320,9 +320,9 @@ function getDateTranslation(
  */
 function timeZoneGetter(width: ZoneWidth): DateFormatter {
   return function(date: Date, locale: string, offset: number) {
-    const zone = -1 * offset;
-    const minusSign = getLocaleNumberSymbol(locale, NumberSymbol.MinusSign);
-    const hours = zone > 0 ? Math.floor(zone / 60) : Math.ceil(zone / 60);
+    let zone = -1 * offset;
+    let minusSign = getLocaleNumberSymbol(locale, NumberSymbol.MinusSign);
+    let hours = zone > 0 ? Math.floor(zone / 60) : Math.ceil(zone / 60);
     switch (width) {
       case ZoneWidth.Short:
         return ((zone >= 0) ? '+' : '') + padNumber(hours, 2, minusSign) +
@@ -345,10 +345,10 @@ function timeZoneGetter(width: ZoneWidth): DateFormatter {
   };
 }
 
-const JANUARY = 0;
-const THURSDAY = 4;
+let JANUARY = 0;
+let THURSDAY = 4;
 function getFirstThursdayOfYear(year: number) {
-  const firstDayOfYear = (new Date(year, JANUARY, 1)).getDay();
+  let firstDayOfYear = (new Date(year, JANUARY, 1)).getDay();
   return new Date(
       year, 0, 1 + ((firstDayOfYear <= THURSDAY) ? THURSDAY : THURSDAY + 7) - firstDayOfYear);
 }
@@ -363,14 +363,14 @@ function weekGetter(size: number, monthBased = false): DateFormatter {
   return function(date: Date, locale: string) {
     let result;
     if (monthBased) {
-      const nbDaysBefore1stDayOfMonth =
+      let nbDaysBefore1stDayOfMonth =
           new Date(date.getFullYear(), date.getMonth(), 1).getDay() - 1;
-      const today = date.getDate();
+      let today = date.getDate();
       result = 1 + Math.floor((today + nbDaysBefore1stDayOfMonth) / 7);
     } else {
-      const firstThurs = getFirstThursdayOfYear(date.getFullYear());
-      const thisThurs = getThursdayThisWeek(date);
-      const diff = thisThurs.getTime() - firstThurs.getTime();
+      let firstThurs = getFirstThursdayOfYear(date.getFullYear());
+      let thisThurs = getThursdayThisWeek(date);
+      let diff = thisThurs.getTime() - firstThurs.getTime();
       result = 1 + Math.round(diff / 6.048e8);  // 6.048e8 ms per week
     }
 
@@ -380,7 +380,7 @@ function weekGetter(size: number, monthBased = false): DateFormatter {
 
 type DateFormatter = (date: Date, locale: string, offset?: number) => string;
 
-const DATE_FORMATS: {[format: string]: DateFormatter} = {};
+let DATE_FORMATS: {[format: string]: DateFormatter} = {};
 
 // Based on CLDR formats:
 // See complete list: http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -623,7 +623,7 @@ function timezoneToOffset(timezone: string, fallback: number): number {
   // Support: IE 9-11 only, Edge 13-15+
   // IE/Edge do not "understand" colon (`:`) in timezone
   timezone = timezone.replace(/:/g, '');
-  const requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
+  let requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
   return isNaN(requestedTimezoneOffset) ? fallback : requestedTimezoneOffset;
 }
 
@@ -634,9 +634,9 @@ function addDateMinutes(date: Date, minutes: number) {
 }
 
 function convertTimezoneToLocal(date: Date, timezone: string, reverse: boolean): Date {
-  const reverseValue = reverse ? -1 : 1;
-  const dateTimezoneOffset = date.getTimezoneOffset();
-  const timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
+  let reverseValue = reverse ? -1 : 1;
+  let dateTimezoneOffset = date.getTimezoneOffset();
+  let timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
   return addDateMinutes(date, reverseValue * (timezoneOffset - dateTimezoneOffset));
 }
 
@@ -664,7 +664,7 @@ export function toDate(value: string | number | Date): Date {
   if (typeof value === 'string') {
     value = value.trim();
 
-    const parsedNb = parseFloat(value);
+    let parsedNb = parseFloat(value);
 
     // any string that only contains numbers, like "1234" but not like "1234hello"
     if (!isNaN(value as any - parsedNb)) {
@@ -679,7 +679,7 @@ export function toDate(value: string | number | Date): Date {
       If we leave the '-' ("2015-01-01") and try to create a new Date("2015-01-01") the timeoffset
       is applied.
       Note: ISO months are 0 for January, 1 for February, ... */
-      const [y, m, d] = value.split('-').map((val: string) => +val);
+      let [y, m, d] = value.split('-').map((val: string) => +val);
       return new Date(y, m - 1, d);
     }
 
@@ -689,7 +689,7 @@ export function toDate(value: string | number | Date): Date {
     }
   }
 
-  const date = new Date(value as any);
+  let date = new Date(value as any);
   if (!isDate(date)) {
     throw new Error(`Unable to convert "${value}" into a date`);
   }
@@ -701,13 +701,13 @@ export function toDate(value: string | number | Date): Date {
  * Used instead of `Date.parse` because of browser discrepancies.
  */
 export function isoStringToDate(match: RegExpMatchArray): Date {
-  const date = new Date(0);
+  let date = new Date(0);
   let tzHour = 0;
   let tzMin = 0;
 
   // match[8] means that the string contains "Z" (UTC) or a timezone like "+01:00" or "+0100"
-  const dateSetter = match[8] ? date.setUTCFullYear : date.setFullYear;
-  const timeSetter = match[8] ? date.setUTCHours : date.setHours;
+  let dateSetter = match[8] ? date.setUTCFullYear : date.setFullYear;
+  let timeSetter = match[8] ? date.setUTCHours : date.setHours;
 
   // if there is a timezone defined like "+01:00" or "+0100"
   if (match[9]) {
@@ -715,10 +715,10 @@ export function isoStringToDate(match: RegExpMatchArray): Date {
     tzMin = Number(match[9] + match[11]);
   }
   dateSetter.call(date, Number(match[1]), Number(match[2]) - 1, Number(match[3]));
-  const h = Number(match[4] || 0) - tzHour;
-  const m = Number(match[5] || 0) - tzMin;
-  const s = Number(match[6] || 0);
-  const ms = Math.round(parseFloat('0.' + (match[7] || 0)) * 1000);
+  let h = Number(match[4] || 0) - tzHour;
+  let m = Number(match[5] || 0) - tzMin;
+  let s = Number(match[6] || 0);
+  let ms = Math.round(parseFloat('0.' + (match[7] || 0)) * 1000);
   timeSetter.call(date, h, m, s, ms);
   return date;
 }

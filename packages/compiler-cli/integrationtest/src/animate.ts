@@ -30,7 +30,7 @@ import {Component} from '@angular/core';
 })
 export class AnimateCmp {
   stateExpression: string;
-  constructor() { this.setAsClosed(); }
+  letructor() { this.setAsClosed(); }
   setAsSomethingElse() { this.stateExpression = 'something'; }
   setAsOpen() { this.stateExpression = 'open'; }
   setAsClosed() { this.stateExpression = 'closed'; }

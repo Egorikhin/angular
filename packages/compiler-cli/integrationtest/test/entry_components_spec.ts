@@ -15,15 +15,15 @@ import {createComponent} from './util';
 
 describe('content projection', () => {
   it('should support entryComponents in components', () => {
-    const compFixture = createComponent(CompWithEntryComponents);
-    const cf = compFixture.componentInstance.cfr.resolveComponentFactory(BasicComp);
+    let compFixture = createComponent(CompWithEntryComponents);
+    let cf = compFixture.componentInstance.cfr.resolveComponentFactory(BasicComp);
     expect(cf.componentType).toBe(BasicComp);
   });
 
   it('should support entryComponents via the ANALYZE_FOR_ENTRY_COMPONENTS provider and function providers in components',
      () => {
-       const compFixture = createComponent(CompWithAnalyzeEntryComponentsProvider);
-       const cf = compFixture.componentInstance.cfr.resolveComponentFactory(BasicComp);
+       let compFixture = createComponent(CompWithAnalyzeEntryComponentsProvider);
+       let cf = compFixture.componentInstance.cfr.resolveComponentFactory(BasicComp);
        expect(cf.componentType).toBe(BasicComp);
        // check that the function call that created the provider for ANALYZE_FOR_ENTRY_COMPONENTS
        // worked.

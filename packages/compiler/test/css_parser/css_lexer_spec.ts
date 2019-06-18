@@ -13,13 +13,13 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
   function tokenize(
       code: string, trackComments: boolean = false,
       mode: CssLexerMode = CssLexerMode.ALL): CssToken[] {
-    const scanner = new CssLexer().scan(code, trackComments);
+    let scanner = new CssLexer().scan(code, trackComments);
     scanner.setMode(mode);
 
-    const tokens: CssToken[] = [];
+    let tokens: CssToken[] = [];
     let output = scanner.scan();
     while (output != null) {
-      const error = output.error;
+      let error = output.error;
       if (error != null) {
         throw cssScannerError(getToken(error), getRawMessage(error));
       }
@@ -32,31 +32,31 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
 
   describe('CssLexer', () => {
     it('should lex newline characters as whitespace when whitespace mode is on', () => {
-      const newlines = ['\n', '\r\n', '\r', '\f'];
+      let newlines = ['\n', '\r\n', '\r', '\f'];
       newlines.forEach((line) => {
-        const token = tokenize(line, false, CssLexerMode.ALL_TRACK_WS)[0];
+        let token = tokenize(line, false, CssLexerMode.ALL_TRACK_WS)[0];
         expect(token.type).toEqual(CssTokenType.Whitespace);
       });
     });
 
     it('should combined newline characters as one newline token when whitespace mode is on', () => {
-      const newlines = ['\n', '\r\n', '\r', '\f'].join('');
-      const tokens = tokenize(newlines, false, CssLexerMode.ALL_TRACK_WS);
+      let newlines = ['\n', '\r\n', '\r', '\f'].join('');
+      let tokens = tokenize(newlines, false, CssLexerMode.ALL_TRACK_WS);
       expect(tokens.length).toEqual(1);
       expect(tokens[0].type).toEqual(CssTokenType.Whitespace);
     });
 
     it('should not consider whitespace or newline values at all when whitespace mode is off',
        () => {
-         const newlines = ['\n', '\r\n', '\r', '\f'].join('');
-         const tokens = tokenize(newlines);
+         let newlines = ['\n', '\r\n', '\r', '\f'].join('');
+         let tokens = tokenize(newlines);
          expect(tokens.length).toEqual(0);
        });
 
     it('should lex simple selectors and their inner properties', () => {
-      const cssCode = '\n' +
+      let cssCode = '\n' +
           '  .selector { my-prop: my-value; }\n';
-      const tokens = tokenize(cssCode);
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].type).toEqual(CssTokenType.Character);
       expect(tokens[0].strValue).toEqual('.');
@@ -84,11 +84,11 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should capture the column and line values for each token', () => {
-      const cssCode = '#id {\n' +
+      let cssCode = '#id {\n' +
           '  prop:value;\n' +
           '}';
 
-      const tokens = tokenize(cssCode);
+      let tokens = tokenize(cssCode);
 
       // #
       expect(tokens[0].type).toEqual(CssTokenType.Character);
@@ -132,8 +132,8 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should lex quoted strings and escape accordingly', () => {
-      const cssCode = 'prop: \'some { value } \\\' that is quoted\'';
-      const tokens = tokenize(cssCode);
+      let cssCode = 'prop: \'some { value } \\\' that is quoted\'';
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].type).toEqual(CssTokenType.Identifier);
       expect(tokens[1].type).toEqual(CssTokenType.Character);
@@ -146,8 +146,8 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should lex numbers properly and set them as numbers', () => {
-      const cssCode = '0 1 -2 3.0 -4.001';
-      const tokens = tokenize(cssCode);
+      let cssCode = '0 1 -2 3.0 -4.001';
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].type).toEqual(CssTokenType.Number);
       expect(tokens[0].strValue).toEqual('0');
@@ -166,8 +166,8 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should lex @keywords', () => {
-      const cssCode = '@import()@something';
-      const tokens = tokenize(cssCode);
+      let cssCode = '@import()@something';
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].type).toEqual(CssTokenType.AtKeyword);
       expect(tokens[0].strValue).toEqual('@import');
@@ -183,8 +183,8 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should still lex a number even if it has a dimension suffix', () => {
-      const cssCode = '40% is 40 percent';
-      const tokens = tokenize(cssCode);
+      let cssCode = '40% is 40 percent';
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].type).toEqual(CssTokenType.Number);
       expect(tokens[0].strValue).toEqual('40');
@@ -200,8 +200,8 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should allow escaped character and unicode character-strings in CSS selectors', () => {
-      const cssCode = '\\123456 .some\\thing \{\}';
-      const tokens = tokenize(cssCode);
+      let cssCode = '\\123456 .some\\thing \{\}';
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].type).toEqual(CssTokenType.Identifier);
       expect(tokens[0].strValue).toEqual('\\123456');
@@ -212,8 +212,8 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should distinguish identifiers and numbers from special characters', () => {
-      const cssCode = 'one*two=-4+three-4-equals_value$';
-      const tokens = tokenize(cssCode);
+      let cssCode = 'one*two=-4+three-4-equals_value$';
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].type).toEqual(CssTokenType.Identifier);
       expect(tokens[0].strValue).toEqual('one');
@@ -241,8 +241,8 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should filter out comments and whitespace by default', () => {
-      const cssCode = '.selector /* comment */ { /* value */ }';
-      const tokens = tokenize(cssCode);
+      let cssCode = '.selector /* comment */ { /* value */ }';
+      let tokens = tokenize(cssCode);
 
       expect(tokens[0].strValue).toEqual('.');
       expect(tokens[1].strValue).toEqual('selector');
@@ -251,9 +251,9 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
     });
 
     it('should track comments when the flag is set to true', () => {
-      const cssCode = '.selector /* comment */ { /* value */ }';
-      const trackComments = true;
-      const tokens = tokenize(cssCode, trackComments, CssLexerMode.ALL_TRACK_WS);
+      let cssCode = '.selector /* comment */ { /* value */ }';
+      let trackComments = true;
+      let tokens = tokenize(cssCode, trackComments, CssLexerMode.ALL_TRACK_WS);
 
       expect(tokens[0].strValue).toEqual('.');
       expect(tokens[1].strValue).toEqual('selector');
@@ -272,7 +272,7 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
 
     describe('Selector Mode', () => {
       it('should throw an error if a selector is being parsed while in the wrong mode', () => {
-        const cssCode = '.class > tag';
+        let cssCode = '.class > tag';
 
         let capturedMessage: string|null = null;
         try {
@@ -298,7 +298,7 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
       it('should consider attribute selectors as valid input and throw when an invalid modifier is used',
          () => {
            function tokenizeAttr(modifier: string) {
-             const cssCode = 'value' + modifier + '=\'something\'';
+             let cssCode = 'value' + modifier + '=\'something\'';
              return tokenize(cssCode, false, CssLexerMode.ATTRIBUTE_SELECTOR);
            }
 
@@ -337,7 +337,7 @@ import {CssLexer, CssLexerMode, CssToken, CssTokenType, cssScannerError, getRawM
       it('should validate pseudo selector identifiers with a reduced subset of valid characters',
          () => {
            function tokenizePseudo(code: string, withArgs = false): CssToken[] {
-             const mode = withArgs ? CssLexerMode.PSEUDO_SELECTOR_WITH_ARGUMENTS :
+             let mode = withArgs ? CssLexerMode.PSEUDO_SELECTOR_WITH_ARGUMENTS :
                                      CssLexerMode.PSEUDO_SELECTOR;
              return tokenize(code, false, mode);
            }

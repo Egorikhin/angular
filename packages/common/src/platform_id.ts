@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export const PLATFORM_BROWSER_ID = 'browser';
-export const PLATFORM_SERVER_ID = 'server';
-export const PLATFORM_WORKER_APP_ID = 'browserWorkerApp';
-export const PLATFORM_WORKER_UI_ID = 'browserWorkerUi';
+export let PLATFORM_BROWSER_ID = 'browser';
+export let PLATFORM_SERVER_ID = 'server';
+export let PLATFORM_WORKER_APP_ID = 'browserWorkerApp';
+export let PLATFORM_WORKER_UI_ID = 'browserWorkerUi';
 
 /**
  * Returns whether a platform id represents a browser platform.

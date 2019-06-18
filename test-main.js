@@ -189,7 +189,7 @@ function loadCustomElementsPolyfills() {
   var polyfillPath = !window.customElements ?
       // Load custom elements polyfill.
       'node_modules/@webcomponents/custom-elements/custom-elements.min.js' :
-      // Allow ES5 functions as custom element constructors.
+      // Allow ES5 functions as custom element letructors.
       'node_modules/@webcomponents/custom-elements/src/native-shim.js';
 
   loadedPromise =

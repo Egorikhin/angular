@@ -11,7 +11,7 @@ import {compareFileSizeData} from './file_size_compare';
 describe('file size compare', () => {
 
   it('should report if size entry differ by more than the specified max percentage diff', () => {
-    const diffs = compareFileSizeData(
+    let diffs = compareFileSizeData(
         {
           unmapped: 0,
           files: {
@@ -36,7 +36,7 @@ describe('file size compare', () => {
   });
 
   it('should report if size entry differ by more than the specified max byte diff', () => {
-    const diffs = compareFileSizeData(
+    let diffs = compareFileSizeData(
         {
           unmapped: 0,
           files: {
@@ -61,7 +61,7 @@ describe('file size compare', () => {
   });
 
   it('should report if unmapped bytes differ by more than specified threshold', () => {
-    const diffs = compareFileSizeData(
+    let diffs = compareFileSizeData(
         {unmapped: 1000, files: {size: 0}}, {unmapped: 1055, files: {size: 0}},
         {maxPercentageDiff: 6, maxByteDiff: 50});
 
@@ -71,7 +71,7 @@ describe('file size compare', () => {
   });
 
   it('should not report if size percentage difference does not exceed threshold', () => {
-    const diffs = compareFileSizeData(
+    let diffs = compareFileSizeData(
         {
           unmapped: 0,
           files: {
@@ -93,7 +93,7 @@ describe('file size compare', () => {
 
 
   it('should report if expected file size data misses a file size entry', () => {
-    const diffs = compareFileSizeData(
+    let diffs = compareFileSizeData(
         {
           unmapped: 0,
           files: {
@@ -110,7 +110,7 @@ describe('file size compare', () => {
   });
 
   it('should report if actual file size data misses an expected file size entry', () => {
-    const diffs = compareFileSizeData(
+    let diffs = compareFileSizeData(
         {
           unmapped: 0,
           files: {

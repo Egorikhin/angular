@@ -8,17 +8,17 @@
 
 // tslint:disable:no-console
 module.exports = (gulp) => (done) => {
-  const madge = require('madge');
+  let madge = require('madge');
 
   // TODO: This only checks for circular dependencies within each package because
   // imports to other packages cannot be resolved by Madge when CommonJS is used.
   // We should consider updating Madge and use a tsonfig to check across packages.
-  const dependencyObject = madge(['dist/packages-dist/'], {
+  let dependencyObject = madge(['dist/packages-dist/'], {
     format: 'cjs',
     extensions: ['.js'],
     onParseFile: function(data) { data.src = data.src.replace(/\/\* circular \*\//g, '//'); }
   });
-  const circularDependencies = dependencyObject.circular().getArray();
+  let circularDependencies = dependencyObject.circular().getArray();
   if (circularDependencies.length > 0) {
     console.log('Found circular dependencies!');
     console.log(circularDependencies);

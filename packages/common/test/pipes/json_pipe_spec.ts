@@ -13,7 +13,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
 
 {
   describe('JsonPipe', () => {
-    const regNewLine = '\n';
+    let regNewLine = '\n';
     let inceptionObj: any;
     let inceptionObjString: string;
     let pipe: JsonPipe;
@@ -39,14 +39,14 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
          () => { expect(pipe.transform(inceptionObj)).toEqual(inceptionObjString); });
 
       it('should return JSON-formatted string even when normalized', () => {
-        const dream1 = normalize(pipe.transform(inceptionObj));
-        const dream2 = normalize(inceptionObjString);
+        let dream1 = normalize(pipe.transform(inceptionObj));
+        let dream2 = normalize(inceptionObjString);
         expect(dream1).toEqual(dream2);
       });
 
       it('should return JSON-formatted string similar to Json.stringify', () => {
-        const dream1 = normalize(pipe.transform(inceptionObj));
-        const dream2 = normalize(JSON.stringify(inceptionObj, null, 2));
+        let dream1 = normalize(pipe.transform(inceptionObj));
+        let dream2 = normalize(JSON.stringify(inceptionObj, null, 2));
         expect(dream1).toEqual(dream2);
       });
     });
@@ -63,8 +63,8 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
       });
 
       it('should work with mutable objects', async(() => {
-           const fixture = TestBed.createComponent(TestComp);
-           const mutable: number[] = [1];
+           let fixture = TestBed.createComponent(TestComp);
+           let mutable: number[] = [1];
            fixture.componentInstance.data = mutable;
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveText('[\n  1\n]');

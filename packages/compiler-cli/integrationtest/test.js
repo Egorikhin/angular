@@ -6,19 +6,19 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const path = require('path');
-const shx = require('shelljs');
-const os = require('os');
-const {runCommand, setupTestDirectory} = require('./test_helpers');
+let path = require('path');
+let shx = require('shelljs');
+let os = require('os');
+let {runCommand, setupTestDirectory} = require('./test_helpers');
 
-const ngcBin = require.resolve('./ngc_bin');
-const xi18nBin = require.resolve('./ng_xi18n');
-const nodeBin = require.resolve(`nodejs/bin/node${(os.platform() === 'win32' ? '.cmd' : '')}`);
-const jasmineBin = require.resolve('npm/node_modules/jasmine/bin/jasmine.js');
+let ngcBin = require.resolve('./ngc_bin');
+let xi18nBin = require.resolve('./ng_xi18n');
+let nodeBin = require.resolve(`nodejs/bin/node${(os.platform() === 'win32' ? '.cmd' : '')}`);
+let jasmineBin = require.resolve('npm/node_modules/jasmine/bin/jasmine.js');
 
 // Prepare the test directory before building the integration test output. This ensures that
 // the test runs in an hermetic way and works on Windows.
-const tmpDir = setupTestDirectory();
+let tmpDir = setupTestDirectory();
 
 // Compile the "flat_module" Angular project using NGC.
 runCommand(ngcBin, ['-p', 'flat_module/tsconfig-build.json']);

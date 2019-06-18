@@ -16,8 +16,8 @@ import {noUndefined} from '../src/util';
 
 import {TEST_COMPILER_PROVIDERS} from './test_bindings';
 
-const SOME_MODULE_URL = 'package:some/module/a.js';
-const SOME_HTTP_MODULE_URL = 'http://some/module/a.js';
+let SOME_MODULE_URL = 'package:some/module/a.js';
+let SOME_HTTP_MODULE_URL = 'http://some/module/a.js';
 
 function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
   moduleUrl?: string; template?: string | null; templateUrl?: string | null; styles?: string[];
@@ -49,7 +49,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
     beforeEach(() => {
       resourceLoaderSpy =
           jasmine.createSpy('get').and.callFake((url: string) => `resource(${url})`);
-      const resourceLoader = {get: resourceLoaderSpy};
+      let resourceLoader = {get: resourceLoaderSpy};
       TestBed.configureCompiler({
         providers:
             [...TEST_COMPILER_PROVIDERS, {provide: ResourceLoader, useValue: resourceLoader}]
@@ -96,7 +96,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should store the template',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: 'a',
            });
            expect(template.template).toEqual('a');
@@ -106,14 +106,14 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should resolve styles on the annotation against the moduleUrl',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(
+           let template = <CompileTemplateMetadata>normalizeTemplate(
                normalizer, {template: '', styleUrls: ['test.css']});
            expect(template.styleUrls).toEqual(['package:some/module/test.css']);
          }));
 
       it('should resolve styles in the template against the moduleUrl and add them to the styles',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<style>template @import test.css</style>',
              styles: ['direct'],
            });
@@ -124,7 +124,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should use ViewEncapsulation.Emulated by default',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(
+           let template = <CompileTemplateMetadata>normalizeTemplate(
                normalizer, {template: '', styleUrls: ['test.css']});
            expect(template.encapsulation).toEqual(ViewEncapsulation.Emulated);
          }));
@@ -134,7 +134,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
              [CompilerConfig, DirectiveNormalizer],
              (config: CompilerConfig, normalizer: DirectiveNormalizer) => {
                config.defaultEncapsulation = ViewEncapsulation.None;
-               const template = <CompileTemplateMetadata>normalizeTemplate(
+               let template = <CompileTemplateMetadata>normalizeTemplate(
                    normalizer, {template: '', styleUrls: ['test.css']});
                expect(template.encapsulation).toEqual(ViewEncapsulation.None);
              }));
@@ -142,7 +142,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
     it('should load a template from a url that is resolved against moduleUrl',
        inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-         const template = <CompileTemplateMetadata>normalizeTemplate(
+         let template = <CompileTemplateMetadata>normalizeTemplate(
              normalizer, {templateUrl: 'sometplurl.html', styleUrls: ['test.css']});
          expect(template.template).toEqual('resource(package:some/module/sometplurl.html)');
          expect(template.templateUrl).toEqual('package:some/module/sometplurl.html');
@@ -151,7 +151,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
     it('should resolve styles on the annotation against the moduleUrl',
        inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-         const template = <CompileTemplateMetadata>normalizeTemplate(
+         let template = <CompileTemplateMetadata>normalizeTemplate(
              normalizer, {templateUrl: 'tpl/sometplurl.html', styleUrls: ['test.css']});
          expect(template.styleUrls).toEqual(['package:some/module/test.css']);
        }));
@@ -166,7 +166,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
                return `resource(${url})`;
            }
          });
-         const template = <CompileTemplateMetadata>normalizeTemplate(
+         let template = <CompileTemplateMetadata>normalizeTemplate(
              normalizer, {templateUrl: 'tpl/sometplurl.html', styles: ['direct']});
          expect(template.styles).toEqual([
            'direct', 'template ', 'resource(package:some/module/tpl/test.css)'
@@ -177,7 +177,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should load an external stylesheet',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(
+           let template = <CompileTemplateMetadata>normalizeTemplate(
                normalizer, {template: '', styleUrls: ['package:some/module/test.css']});
            expect(template.externalStylesheets.length).toBe(1);
            expect(template.externalStylesheets[0]).toEqual(new CompileStylesheetMetadata({
@@ -198,7 +198,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
                  throw new Error(`Unexpected url ${url}`);
              }
            });
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '',
              styleUrls: ['package:some/module/test.css'],
            });
@@ -212,11 +212,11 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
     describe('caching', () => {
       it('should work for templateUrl',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const prenormMeta = {
+           let prenormMeta = {
              templateUrl: 'cmp.html',
            };
-           const template1 = <CompileTemplateMetadata>normalizeTemplate(normalizer, prenormMeta);
-           const template2 = <CompileTemplateMetadata>normalizeTemplate(normalizer, prenormMeta);
+           let template1 = <CompileTemplateMetadata>normalizeTemplate(normalizer, prenormMeta);
+           let template2 = <CompileTemplateMetadata>normalizeTemplate(normalizer, prenormMeta);
            expect(template1.template).toEqual('resource(package:some/module/cmp.html)');
            expect(template2.template).toEqual('resource(package:some/module/cmp.html)');
 
@@ -228,8 +228,8 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
     describe('normalizeLoadedTemplate', () => {
       it('should store the viewEncapsulation in the result',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const viewEncapsulation = ViewEncapsulation.Native;
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let viewEncapsulation = ViewEncapsulation.Native;
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              encapsulation: viewEncapsulation,
              template: '',
            });
@@ -240,28 +240,28 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
          inject(
              [DirectiveNormalizer, CompilerConfig],
              (normalizer: DirectiveNormalizer, config: CompilerConfig) => {
-               const template =
+               let template =
                    <CompileTemplateMetadata>normalizeTemplate(normalizer, {template: ''});
                expect(template.preserveWhitespaces).toBe(config.preserveWhitespaces);
              }));
 
       it('should store the preserveWhitespaces=false in the result',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(
+           let template = <CompileTemplateMetadata>normalizeTemplate(
                normalizer, {preserveWhitespaces: false, template: ''});
            expect(template.preserveWhitespaces).toBe(false);
          }));
 
       it('should store the preserveWhitespaces=true in the result',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(
+           let template = <CompileTemplateMetadata>normalizeTemplate(
                normalizer, {preserveWhitespaces: true, template: ''});
            expect(template.preserveWhitespaces).toBe(true);
          }));
 
       it('should keep the template as html',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: 'a',
            });
            expect(template.template).toEqual('a');
@@ -269,7 +269,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should collect ngContent',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<ng-content select="a"></ng-content>',
            });
            expect(template.ngContentSelectors).toEqual(['a']);
@@ -277,7 +277,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should normalize ngContent wildcard selector',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template:
                  '<ng-content></ng-content><ng-content select></ng-content><ng-content select="*"></ng-content>',
            });
@@ -286,7 +286,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should collect top level styles in the template',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<style>a</style>',
            });
            expect(template.styles).toEqual(['a']);
@@ -294,7 +294,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should collect styles inside elements',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<div><style>a</style></div>',
            });
            expect(template.styles).toEqual(['a']);
@@ -302,7 +302,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should collect styleUrls in the template and add them to the styles',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<link rel="stylesheet" href="aUrl">',
            });
            expect(template.styles).toEqual(['resource(package:some/module/aUrl)']);
@@ -311,7 +311,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should collect styleUrls in elements and add them to the styles',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<div><link rel="stylesheet" href="aUrl"></div>',
            });
            expect(template.styles).toEqual(['resource(package:some/module/aUrl)']);
@@ -320,7 +320,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should ignore link elements with non stylesheet rel attribute',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<link href="b" rel="a">',
            });
            expect(template.styleUrls).toEqual([]);
@@ -328,7 +328,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should ignore link elements with absolute urls but non package: scheme',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<link href="http://some/external.css" rel="stylesheet">',
            });
            expect(template.styleUrls).toEqual([]);
@@ -336,7 +336,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should extract @import style urls and add them to the styles',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              styles: ['@import "test.css";'],
              template: '',
            });
@@ -346,7 +346,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should not resolve relative urls in inline styles',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              styles: ['.foo{background-image: url(\'double.jpg\');'],
              template: '',
            });
@@ -355,7 +355,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should resolve relative style urls in styleUrls',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              styleUrls: ['test.css'],
              template: '',
            });
@@ -365,7 +365,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should resolve relative style urls in styleUrls with http directive url',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              moduleUrl: SOME_HTTP_MODULE_URL,
              styleUrls: ['test.css'],
              template: '',
@@ -376,7 +376,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should normalize ViewEncapsulation.Emulated to ViewEncapsulation.None if there are no styles nor stylesheets',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              encapsulation: ViewEncapsulation.Emulated,
              template: '',
            });
@@ -385,7 +385,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should ignore ng-content in elements with ngNonBindable',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<div ngNonBindable><ng-content select="a"></ng-content></div>',
            });
            expect(template.ngContentSelectors).toEqual([]);
@@ -393,7 +393,7 @@ function normalizeTemplate(normalizer: DirectiveNormalizer, o: {
 
       it('should still collect <style> in elements with ngNonBindable',
          inject([DirectiveNormalizer], (normalizer: DirectiveNormalizer) => {
-           const template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
+           let template = <CompileTemplateMetadata>normalizeTemplate(normalizer, {
              template: '<div ngNonBindable><style>div {color:red}</style></div>',
            });
            expect(template.styles).toEqual(['div {color:red}']);

@@ -10,9 +10,9 @@ module.exports = {
 
   // Serve the built files
   default: (gulp) => () => {
-    const connect = require('gulp-connect');
-    const cors = require('cors');
-    const path = require('path');
+    let connect = require('gulp-connect');
+    let cors = require('cors');
+    let path = require('path');
 
     connect.server({
       root: path.resolve(__dirname, '../../dist'),

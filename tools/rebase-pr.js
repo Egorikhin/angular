@@ -37,10 +37,10 @@
 // tslint:disable:no-console
 
 // Imports
-const util = require('util');
-const https = require('https');
-const child_process = require('child_process');
-const exec = util.promisify(child_process.exec);
+let util = require('util');
+let https = require('https');
+let child_process = require('child_process');
+let exec = util.promisify(child_process.exec);
 
 // CLI validation
 if (process.argv.length != 4) {
@@ -60,7 +60,7 @@ _main(...process.argv.slice(2)).catch(err => {
 // Helpers
 async function _main(repository, prNumber) {
   console.log(`Determining target branch for PR ${prNumber} on ${repository}.`);
-  const targetBranch = await determineTargetBranch(repository, prNumber);
+  let targetBranch = await determineTargetBranch(repository, prNumber);
   console.log(`Target branch is ${targetBranch}.`);
   await exec(`git fetch origin ${targetBranch}`);
   console.log(`Rebasing current branch on ${targetBranch}.`);
@@ -69,17 +69,17 @@ async function _main(repository, prNumber) {
 }
 
 function determineTargetBranch(repository, prNumber) {
-  const pullsUrl = `https://api.github.com/repos/${repository}/pulls/${prNumber}`;
+  let pullsUrl = `https://api.github.com/repos/${repository}/pulls/${prNumber}`;
   // GitHub requires a user agent: https://developer.github.com/v3/#user-agent-required
-  const options = {headers: {'User-Agent': repository}};
+  let options = {headers: {'User-Agent': repository}};
 
   return new Promise((resolve, reject) => {
     https
         .get(
             pullsUrl, options,
             (res) => {
-              const {statusCode} = res;
-              const contentType = res.headers['content-type'];
+              let {statusCode} = res;
+              let contentType = res.headers['content-type'];
               let rawData = '';
 
               res.on('data', (chunk) => { rawData += chunk; });
@@ -101,7 +101,7 @@ function determineTargetBranch(repository, prNumber) {
                 }
 
                 try {
-                  const parsedData = JSON.parse(rawData);
+                  let parsedData = JSON.parse(rawData);
                   resolve(parsedData['base']['ref']);
                 } catch (e) {
                   reject(e);

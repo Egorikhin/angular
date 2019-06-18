@@ -46,7 +46,7 @@ import {LocationChangeListener, PlatformLocation} from './platform_location';
 export class PathLocationStrategy extends LocationStrategy {
   private _baseHref: string;
 
-  constructor(
+  letructor(
       private _platformLocation: PlatformLocation,
       @Optional() @Inject(APP_BASE_HREF) href?: string) {
     super();
@@ -75,19 +75,19 @@ export class PathLocationStrategy extends LocationStrategy {
   }
 
   path(includeHash: boolean = false): string {
-    const pathname = this._platformLocation.pathname +
+    let pathname = this._platformLocation.pathname +
         Location.normalizeQueryParams(this._platformLocation.search);
-    const hash = this._platformLocation.hash;
+    let hash = this._platformLocation.hash;
     return hash && includeHash ? `${pathname}${hash}` : pathname;
   }
 
   pushState(state: any, title: string, url: string, queryParams: string) {
-    const externalUrl = this.prepareExternalUrl(url + Location.normalizeQueryParams(queryParams));
+    let externalUrl = this.prepareExternalUrl(url + Location.normalizeQueryParams(queryParams));
     this._platformLocation.pushState(state, title, externalUrl);
   }
 
   replaceState(state: any, title: string, url: string, queryParams: string) {
-    const externalUrl = this.prepareExternalUrl(url + Location.normalizeQueryParams(queryParams));
+    let externalUrl = this.prepareExternalUrl(url + Location.normalizeQueryParams(queryParams));
     this._platformLocation.replaceState(state, title, externalUrl);
   }
 

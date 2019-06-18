@@ -14,8 +14,8 @@ import {ConsoleLogger, LogLevel} from './src/logging/console_logger';
 
 // CLI entry point
 if (require.main === module) {
-  const args = process.argv.slice(2);
-  const options =
+  let args = process.argv.slice(2);
+  let options =
       yargs
           .option('s', {
             alias: 'source',
@@ -56,11 +56,11 @@ if (require.main === module) {
         'The formats option (-f/--formats) has been removed. Consider the properties option (-p/--properties) instead.');
     process.exit(1);
   }
-  const baseSourcePath = AbsoluteFsPath.resolve(options['s'] || './node_modules');
-  const propertiesToConsider: string[] = options['p'];
-  const targetEntryPointPath = options['t'] ? options['t'] : undefined;
-  const compileAllFormats = !options['first-only'];
-  const logLevel = options['l'] as keyof typeof LogLevel | undefined;
+  let baseSourcePath = AbsoluteFsPath.resolve(options['s'] || './node_modules');
+  let propertiesToConsider: string[] = options['p'];
+  let targetEntryPointPath = options['t'] ? options['t'] : undefined;
+  let compileAllFormats = !options['first-only'];
+  let logLevel = options['l'] as keyof typeof LogLevel | undefined;
   try {
     mainNgcc({
       basePath: baseSourcePath,

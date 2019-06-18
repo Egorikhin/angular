@@ -6,12 +6,12 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {ConstantPool} from './constant_pool';
+import {letantPool} from './letant_pool';
 
 import * as o from './output/output_ast';
 import {ParseError} from './parse_util';
 
-const DASH_CASE_REGEXP = /-+([a-z0-9])/g;
+let DASH_CASE_REGEXP = /-+([a-z0-9])/g;
 
 export function dashCaseToCamelCase(input: string): string {
   return input.replace(DASH_CASE_REGEXP, (...m: any[]) => m[1].toUpperCase());
@@ -26,7 +26,7 @@ export function splitAtPeriod(input: string, defaultValues: string[]): string[] 
 }
 
 function _splitAt(input: string, character: string, defaultValues: string[]): string[] {
-  const characterIndex = input.indexOf(character);
+  let characterIndex = input.indexOf(character);
   if (characterIndex == -1) return defaultValues;
   return [input.slice(0, characterIndex).trim(), input.slice(characterIndex + 1).trim()];
 }
@@ -68,7 +68,7 @@ export class ValueTransformer implements ValueVisitor {
     return arr.map(value => visitValue(value, this, context));
   }
   visitStringMap(map: {[key: string]: any}, context: any): any {
-    const result: {[key: string]: any} = {};
+    let result: {[key: string]: any} = {};
     Object.keys(map).forEach(key => { result[key] = visitValue(map[key], this, context); });
     return result;
   }
@@ -78,7 +78,7 @@ export class ValueTransformer implements ValueVisitor {
 
 export type SyncAsync<T> = T | Promise<T>;
 
-export const SyncAsync = {
+export let SyncAsync = {
   assertSync: <T>(value: SyncAsync<T>): T => {
     if (isPromise(value)) {
       throw new Error(`Illegal state: value cannot be a promise`);
@@ -97,14 +97,14 @@ export function error(msg: string): never {
 }
 
 export function syntaxError(msg: string, parseErrors?: ParseError[]): Error {
-  const error = Error(msg);
+  let error = Error(msg);
   (error as any)[ERROR_SYNTAX_ERROR] = true;
   if (parseErrors) (error as any)[ERROR_PARSE_ERRORS] = parseErrors;
   return error;
 }
 
-const ERROR_SYNTAX_ERROR = 'ngSyntaxError';
-const ERROR_PARSE_ERRORS = 'ngParseErrors';
+let ERROR_SYNTAX_ERROR = 'ngSyntaxError';
+let ERROR_PARSE_ERRORS = 'ngParseErrors';
 
 export function isSyntaxError(error: Error): boolean {
   return (error as any)[ERROR_SYNTAX_ERROR];
@@ -119,7 +119,7 @@ export function escapeRegExp(s: string): string {
   return s.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 }
 
-const STRING_MAP_PROTO = Object.getPrototypeOf({});
+let STRING_MAP_PROTO = Object.getPrototypeOf({});
 function isStrictStringMap(obj: any): boolean {
   return typeof obj === 'object' && obj !== null && Object.getPrototypeOf(obj) === STRING_MAP_PROTO;
 }
@@ -132,7 +132,7 @@ export function utf8Encode(str: string): string {
     // decode surrogate
     // see https://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
     if (codePoint >= 0xd800 && codePoint <= 0xdbff && str.length > (index + 1)) {
-      const low = str.charCodeAt(index + 1);
+      let low = str.charCodeAt(index + 1);
       if (low >= 0xdc00 && low <= 0xdfff) {
         index++;
         codePoint = ((codePoint - 0xd800) << 10) + low - 0xdc00 + 0x10000;
@@ -159,7 +159,7 @@ export function utf8Encode(str: string): string {
 export interface OutputContext {
   genFilePath: string;
   statements: o.Statement[];
-  constantPool: ConstantPool;
+  letantPool: letantPool;
   importExpr(reference: any, typeParams?: o.Type[]|null, useSummaries?: boolean): o.Expression;
 }
 
@@ -186,13 +186,13 @@ export function stringify(token: any): string {
 
   // WARNING: do not try to `JSON.stringify(token)` here
   // see https://github.com/angular/angular/issues/23440
-  const res = token.toString();
+  let res = token.toString();
 
   if (res == null) {
     return '' + res;
   }
 
-  const newLineIndex = res.indexOf('\n');
+  let newLineIndex = res.indexOf('\n');
   return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
 }
 
@@ -221,8 +221,8 @@ export class Version {
   public readonly minor: string;
   public readonly patch: string;
 
-  constructor(public full: string) {
-    const splits = full.split('.');
+  letructor(public full: string) {
+    let splits = full.split('.');
     this.major = splits[0];
     this.minor = splits[1];
     this.patch = splits.slice(2).join('.');
@@ -240,12 +240,12 @@ declare var WorkerGlobalScope: any;
 // We don't want to include the whole node.d.ts this this compilation unit so we'll just fake
 // the global "global" var for now.
 declare var global: any;
-const __window = typeof window !== 'undefined' && window;
-const __self = typeof self !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' &&
+let __window = typeof window !== 'undefined' && window;
+let __self = typeof self !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' &&
     self instanceof WorkerGlobalScope && self;
-const __global = typeof global !== 'undefined' && global;
+let __global = typeof global !== 'undefined' && global;
 
 // Check __global first, because in Node tests both __global and __window may be defined and _global
 // should be __global in that case.
-const _global: {[name: string]: any} = __global || __window || __self;
+let _global: {[name: string]: any} = __global || __window || __self;
 export {_global as global};

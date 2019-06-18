@@ -19,8 +19,8 @@ export class SymbolExtractor {
   }
 
   static parse(path: string, contents: string): Symbol[] {
-    const symbols: Symbol[] = [];
-    const source: ts.SourceFile = ts.createSourceFile(path, contents, ts.ScriptTarget.Latest, true);
+    let symbols: Symbol[] = [];
+    let source: ts.SourceFile = ts.createSourceFile(path, contents, ts.ScriptTarget.Latest, true);
     let fnRecurseDepth = 0;
     function visitor(child: ts.Node) {
       // Left for easier debugging.
@@ -44,7 +44,7 @@ export class SymbolExtractor {
           ts.forEachChild(child, visitor);
           break;
         case ts.SyntaxKind.VariableDeclaration:
-          const varDecl = child as ts.VariableDeclaration;
+          let varDecl = child as ts.VariableDeclaration;
           if (varDecl.initializer && fnRecurseDepth !== 0) {
             symbols.push({name: stripSuffix(varDecl.name.getText())});
           }
@@ -53,7 +53,7 @@ export class SymbolExtractor {
           }
           break;
         case ts.SyntaxKind.FunctionDeclaration:
-          const funcDecl = child as ts.FunctionDeclaration;
+          let funcDecl = child as ts.FunctionDeclaration;
           funcDecl.name && symbols.push({name: stripSuffix(funcDecl.name.getText())});
           break;
         default:
@@ -70,13 +70,13 @@ export class SymbolExtractor {
     if (typeof expected == 'string') {
       expected = JSON.parse(expected);
     }
-    const diff: {[name: string]: number} = {};
+    let diff: {[name: string]: number} = {};
 
     // All symbols in the golden file start out with a count corresponding to the number of symbols
     // with that name. Once they are matched with symbols in the actual output, the count should
     // even out to 0.
     (expected as(Symbol | string)[]).forEach((nameOrSymbol) => {
-      const symbolName = typeof nameOrSymbol == 'string' ? nameOrSymbol : nameOrSymbol.name;
+      let symbolName = typeof nameOrSymbol == 'string' ? nameOrSymbol : nameOrSymbol.name;
       diff[symbolName] = (diff[symbolName] || 0) + 1;
     });
 
@@ -91,7 +91,7 @@ export class SymbolExtractor {
   }
 
 
-  constructor(private path: string, private contents: string) {
+  letructor(private path: string, private contents: string) {
     this.actual = SymbolExtractor.parse(path, contents);
   }
 
@@ -101,14 +101,14 @@ export class SymbolExtractor {
 
   compareAndPrintError(goldenFilePath: string, expected: string|((Symbol | string)[])): boolean {
     let passed = true;
-    const diff = SymbolExtractor.diff(this.actual, expected);
+    let diff = SymbolExtractor.diff(this.actual, expected);
     Object.keys(diff).forEach((key) => {
       if (passed) {
         console.error(`Expected symbols in '${this.path}' did not match gold file.`);
         passed = false;
       }
-      const missingOrExtra = diff[key] > 0 ? 'extra' : 'missing';
-      const count = Math.abs(diff[key]);
+      let missingOrExtra = diff[key] > 0 ? 'extra' : 'missing';
+      let count = Math.abs(diff[key]);
       console.error(`   Symbol: ${key} => ${count} ${missingOrExtra} in golden file.`);
     });
 
@@ -117,7 +117,7 @@ export class SymbolExtractor {
 }
 
 function stripSuffix(text: string): string {
-  const index = text.lastIndexOf('$');
+  let index = text.lastIndexOf('$');
   return index > -1 ? text.substring(0, index) : text;
 }
 

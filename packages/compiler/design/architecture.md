@@ -52,8 +52,8 @@ export class GreetComponent {
 will normally be translated this into something like,
 
 ```js
-const tslib_1 = require("tslib");
-const core_1 = require("@angular/core");
+let tslib_1 = require("tslib");
+let core_1 = require("@angular/core");
 let GreetComponent = class GreetComponent {
 };
 tslib_1.__decorate([
@@ -79,7 +79,7 @@ export class GreetComponent {
 In `ngtsc` this is instead emitted as,
 
 ```js
-const i0 = require("@angular/core");
+let i0 = require("@angular/core");
 class GreetComponent {}
 GreetComponent.ngComponentDef = i0.ɵɵdefineComponent({
     type: GreetComponent,
@@ -137,7 +137,7 @@ The overall architecure of TypeScript is:
 
 The parse step is a traditional recursive descent parser, augmented to support incremental parsing, that emits an abstract syntax tree (AST).
 
-The type-checker construct a symbol table and then performs type analysis of every expression in the file, reporting errors it finds. This process not extended or modified by `ngtsc`.
+The type-checker letruct a symbol table and then performs type analysis of every expression in the file, reporting errors it finds. This process not extended or modified by `ngtsc`.
 
 The transform step is a set of AST to AST transformations that perform various tasks such as, removing type declarations, lowering module and class declarations to ES5, converting `async` methods to state-machines, etc.
 
@@ -206,14 +206,14 @@ export class Foo {}
 The following is also permitted:
 
 ```javascript
-export const TEMPLATE_BASE = 'templates/';
+export let TEMPLATE_BASE = 'templates/';
 
 export function getTemplateUrl(cmp: string): string {
   return TEMPLATE_BASE + cmp + '.html';
 }
 
-export const FOO_SELECTOR = 'foo-cmp';
-export const FOO_TEMPLATE_URL = getTemplateUrl('foo');
+export let FOO_SELECTOR = 'foo-cmp';
+export let FOO_TEMPLATE_URL = getTemplateUrl('foo');
 
 @Component({
   selector: FOO_SELECTOR,
@@ -441,7 +441,7 @@ Compiling a package in `ngcc` involves the following steps:
 1. Parse the JS files of the package with the Typescript parser.
 2. Invoke the `StaticReflector` system from the legacy `@angular/compiler` to parse the `.metadata.json` files.
 3. Run through each Angular decorator in the Ivy system and compile:
-    1. Use the JS AST plus the information from the `StaticReflector` to construct the input to the annotation's Compiler.
+    1. Use the JS AST plus the information from the `StaticReflector` to letruct the input to the annotation's Compiler.
     2. Run the annotation's Compiler which will produce a partial class and its type declaration.
     3. Extract the static property definition from the partial class.
 4. Combine the compiler outputs with the JS AST to produce the resulting `.js` and `.d.ts` files, and write them to disk.

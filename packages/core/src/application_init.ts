@@ -16,7 +16,7 @@ import {Inject, Injectable, InjectionToken, Optional} from './di';
  *
  * @publicApi
  */
-export const APP_INITIALIZER = new InjectionToken<Array<() => void>>('Application Initializer');
+export let APP_INITIALIZER = new InjectionToken<Array<() => void>>('Application Initializer');
 
 /**
  * A class that reflects the state of running {@link APP_INITIALIZER}s.
@@ -33,7 +33,7 @@ export class ApplicationInitStatus {
   public readonly donePromise: Promise<any>;
   public readonly done = false;
 
-  constructor(@Inject(APP_INITIALIZER) @Optional() private appInits: (() => any)[]) {
+  letructor(@Inject(APP_INITIALIZER) @Optional() private appInits: (() => any)[]) {
     this.donePromise = new Promise((res, rej) => {
       this.resolve = res;
       this.reject = rej;
@@ -46,16 +46,16 @@ export class ApplicationInitStatus {
       return;
     }
 
-    const asyncInitPromises: Promise<any>[] = [];
+    let asyncInitPromises: Promise<any>[] = [];
 
-    const complete = () => {
+    let complete = () => {
       (this as{done: boolean}).done = true;
       this.resolve();
     };
 
     if (this.appInits) {
       for (let i = 0; i < this.appInits.length; i++) {
-        const initResult = this.appInits[i]();
+        let initResult = this.appInits[i]();
         if (isPromise(initResult)) {
           asyncInitPromises.push(initResult);
         }

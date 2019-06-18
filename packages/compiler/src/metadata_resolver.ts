@@ -27,7 +27,7 @@ import {Console, SyncAsync, ValueTransformer, isPromise, noUndefined, resolveFor
 
 export type ErrorCollector = (error: any, type?: any) => void;
 
-export const ERROR_COMPONENT_TYPE = 'ngComponentType';
+export let ERROR_COMPONENT_TYPE = 'ngComponentType';
 
 // Design notes:
 // - don't lazily create metadata:
@@ -46,7 +46,7 @@ export class CompileMetadataResolver {
   private _ngModuleOfTypes = new Map<Type, Type>();
   private _shallowModuleCache = new Map<Type, cpl.CompileShallowModuleMetadata>();
 
-  constructor(
+  letructor(
       private _config: CompilerConfig, private _htmlParser: HtmlParser,
       private _ngModuleResolver: NgModuleResolver, private _directiveResolver: DirectiveResolver,
       private _pipeResolver: PipeResolver, private _summaryResolver: SummaryResolver<any>,
@@ -58,7 +58,7 @@ export class CompileMetadataResolver {
   getReflector(): CompileReflector { return this._reflector; }
 
   clearCacheFor(type: Type) {
-    const dirMeta = this._directiveCache.get(type);
+    let dirMeta = this._directiveCache.get(type);
     this._directiveCache.delete(type);
     this._nonNormalizedDirectiveCache.delete(type);
     this._summaryCache.delete(type);
@@ -83,7 +83,7 @@ export class CompileMetadataResolver {
 
   private _createProxyClass(baseType: any, name: string): cpl.ProxyClass {
     let delegate: any = null;
-    const proxyClass: cpl.ProxyClass = <any>function() {
+    let proxyClass: cpl.ProxyClass = <any>function() {
       if (!delegate) {
         throw new Error(
             `Illegal state: Class ${name} for type ${stringify(baseType)} is not compiled yet!`);
@@ -116,7 +116,7 @@ export class CompileMetadataResolver {
   }
 
   getHostComponentType(dirType: any): StaticSymbol|cpl.ProxyClass {
-    const name = `${cpl.identifierName({reference: dirType})}_Host`;
+    let name = `${cpl.identifierName({reference: dirType})}_Host`;
     if (dirType instanceof StaticSymbol) {
       return this._staticSymbolCache.get(dirType.filePath, name);
     }
@@ -142,10 +142,10 @@ export class CompileMetadataResolver {
       return this._staticSymbolCache.get(
           ngfactoryFilePath(dirType.filePath), cpl.componentFactoryName(dirType));
     } else {
-      const hostView = this.getHostComponentViewClass(dirType);
+      let hostView = this.getHostComponentViewClass(dirType);
       // Note: ngContentSelectors will be filled later once the template is
       // loaded.
-      const createComponentFactory =
+      let createComponentFactory =
           this._reflector.resolveExternalReference(Identifiers.createComponentFactory);
       return createComponentFactory(selector, dirType, <any>hostView, inputs, outputs, []);
     }
@@ -160,7 +160,7 @@ export class CompileMetadataResolver {
   private _loadSummary(type: any, kind: cpl.CompileSummaryKind): cpl.CompileTypeSummary|null {
     let typeSummary = this._summaryCache.get(type);
     if (!typeSummary) {
-      const summary = this._summaryResolver.resolveSummary(type);
+      let summary = this._summaryResolver.resolveSummary(type);
       typeSummary = summary ? summary.type : null;
       this._summaryCache.set(type, typeSummary || null);
     }
@@ -170,15 +170,15 @@ export class CompileMetadataResolver {
   getHostComponentMetadata(
       compMeta: cpl.CompileDirectiveMetadata,
       hostViewType?: StaticSymbol|cpl.ProxyClass): cpl.CompileDirectiveMetadata {
-    const hostType = this.getHostComponentType(compMeta.type.reference);
+    let hostType = this.getHostComponentType(compMeta.type.reference);
     if (!hostViewType) {
       hostViewType = this.getHostComponentViewClass(hostType);
     }
     // Note: ! is ok here as this method should only be called with normalized directive
     // metadata, which always fills in the selector.
-    const template = CssSelector.parse(compMeta.selector !)[0].getMatchingElementTemplate();
-    const templateUrl = '';
-    const htmlAst = this._htmlParser.parse(template, templateUrl);
+    let template = CssSelector.parse(compMeta.selector !)[0].getMatchingElementTemplate();
+    let templateUrl = '';
+    let htmlAst = this._htmlParser.parse(template, templateUrl);
     return cpl.CompileDirectiveMetadata.create({
       isHost: true,
       type: {reference: hostType, diDeps: [], lifecycleHooks: []},
@@ -221,10 +221,10 @@ export class CompileMetadataResolver {
       return null;
     }
     directiveType = resolveForwardRef(directiveType);
-    const {annotation, metadata} = this.getNonNormalizedDirectiveMetadata(directiveType) !;
+    let {annotation, metadata} = this.getNonNormalizedDirectiveMetadata(directiveType) !;
 
-    const createDirectiveMetadata = (templateMetadata: cpl.CompileTemplateMetadata | null) => {
-      const normalizedDirMeta = new cpl.CompileDirectiveMetadata({
+    let createDirectiveMetadata = (templateMetadata: cpl.CompileTemplateMetadata | null) => {
+      let normalizedDirMeta = new cpl.CompileDirectiveMetadata({
         isHost: false,
         type: metadata.type,
         isComponent: metadata.isComponent,
@@ -256,8 +256,8 @@ export class CompileMetadataResolver {
     };
 
     if (metadata.isComponent) {
-      const template = metadata.template !;
-      const templateMeta = this._directiveNormalizer.normalizeTemplate({
+      let template = metadata.template !;
+      let templateMeta = this._directiveNormalizer.normalizeTemplate({
         ngModuleType,
         componentType: directiveType,
         moduleUrl: this._reflector.componentModuleUrl(directiveType, annotation),
@@ -292,7 +292,7 @@ export class CompileMetadataResolver {
     if (cacheEntry) {
       return cacheEntry;
     }
-    const dirMeta = this._directiveResolver.resolve(directiveType, false);
+    let dirMeta = this._directiveResolver.resolve(directiveType, false);
     if (!dirMeta) {
       return null;
     }
@@ -300,12 +300,12 @@ export class CompileMetadataResolver {
 
     if (createComponent.isTypeOf(dirMeta)) {
       // component
-      const compMeta = dirMeta as Component;
+      let compMeta = dirMeta as Component;
       assertArrayOfStrings('styles', compMeta.styles);
       assertArrayOfStrings('styleUrls', compMeta.styleUrls);
       assertInterpolationSymbols('interpolation', compMeta.interpolation);
 
-      const animations = compMeta.animations;
+      let animations = compMeta.animations;
 
       nonNormalizedTemplateMetadata = new cpl.CompileTemplateMetadata({
         encapsulation: noUndefined(compMeta.encapsulation),
@@ -330,7 +330,7 @@ export class CompileMetadataResolver {
 
     if (createComponent.isTypeOf(dirMeta)) {
       // Component
-      const compMeta = dirMeta as Component;
+      let compMeta = dirMeta as Component;
       changeDetectionStrategy = compMeta.changeDetection !;
       if (compMeta.viewProviders) {
         viewProviders = this._getProvidersMetadata(
@@ -369,7 +369,7 @@ export class CompileMetadataResolver {
       viewQueries = this._getQueriesMetadata(dirMeta.queries, true, directiveType);
     }
 
-    const metadata = cpl.CompileDirectiveMetadata.create({
+    let metadata = cpl.CompileDirectiveMetadata.create({
       isHost: false,
       selector: selector,
       exportAs: noUndefined(dirMeta.exportAs),
@@ -405,7 +405,7 @@ export class CompileMetadataResolver {
    * This assumes `loadNgModuleDirectiveAndPipeMetadata` has been called first.
    */
   getDirectiveMetadata(directiveType: any): cpl.CompileDirectiveMetadata {
-    const dirMeta = this._directiveCache.get(directiveType) !;
+    let dirMeta = this._directiveCache.get(directiveType) !;
     if (!dirMeta) {
       this._reportError(
           syntaxError(
@@ -416,7 +416,7 @@ export class CompileMetadataResolver {
   }
 
   getDirectiveSummary(dirType: any): cpl.CompileDirectiveSummary {
-    const dirSummary =
+    let dirSummary =
         <cpl.CompileDirectiveSummary>this._loadSummary(dirType, cpl.CompileSummaryKind.Directive);
     if (!dirSummary) {
       this._reportError(
@@ -447,7 +447,7 @@ export class CompileMetadataResolver {
     let moduleSummary: cpl.CompileNgModuleSummary|null =
         <cpl.CompileNgModuleSummary>this._loadSummary(moduleType, cpl.CompileSummaryKind.NgModule);
     if (!moduleSummary) {
-      const moduleMeta = this.getNgModuleMetadata(moduleType, false, alreadyCollecting);
+      let moduleMeta = this.getNgModuleMetadata(moduleType, false, alreadyCollecting);
       moduleSummary = moduleMeta ? moduleMeta.toSummary() : null;
       if (moduleSummary) {
         this._summaryCache.set(moduleType, moduleSummary);
@@ -461,11 +461,11 @@ export class CompileMetadataResolver {
    */
   loadNgModuleDirectiveAndPipeMetadata(moduleType: any, isSync: boolean, throwIfNotFound = true):
       Promise<any> {
-    const ngModule = this.getNgModuleMetadata(moduleType, throwIfNotFound);
-    const loading: Promise<any>[] = [];
+    let ngModule = this.getNgModuleMetadata(moduleType, throwIfNotFound);
+    let loading: Promise<any>[] = [];
     if (ngModule) {
       ngModule.declaredDirectives.forEach((id) => {
-        const promise = this.loadDirectiveMetadata(moduleType, id.reference, isSync);
+        let promise = this.loadDirectiveMetadata(moduleType, id.reference, isSync);
         if (promise) {
           loading.push(promise);
         }
@@ -481,7 +481,7 @@ export class CompileMetadataResolver {
       return compileMeta;
     }
 
-    const ngModuleMeta =
+    let ngModuleMeta =
         findLast(this._reflector.shallowAnnotations(moduleType), createNgModule.isTypeOf);
 
     compileMeta = {
@@ -503,19 +503,19 @@ export class CompileMetadataResolver {
     if (compileMeta) {
       return compileMeta;
     }
-    const meta = this._ngModuleResolver.resolve(moduleType, throwIfNotFound);
+    let meta = this._ngModuleResolver.resolve(moduleType, throwIfNotFound);
     if (!meta) {
       return null;
     }
-    const declaredDirectives: cpl.CompileIdentifierMetadata[] = [];
-    const exportedNonModuleIdentifiers: cpl.CompileIdentifierMetadata[] = [];
-    const declaredPipes: cpl.CompileIdentifierMetadata[] = [];
-    const importedModules: cpl.CompileNgModuleSummary[] = [];
-    const exportedModules: cpl.CompileNgModuleSummary[] = [];
-    const providers: cpl.CompileProviderMetadata[] = [];
-    const entryComponents: cpl.CompileEntryComponentMetadata[] = [];
-    const bootstrapComponents: cpl.CompileIdentifierMetadata[] = [];
-    const schemas: SchemaMetadata[] = [];
+    let declaredDirectives: cpl.CompileIdentifierMetadata[] = [];
+    let exportedNonModuleIdentifiers: cpl.CompileIdentifierMetadata[] = [];
+    let declaredPipes: cpl.CompileIdentifierMetadata[] = [];
+    let importedModules: cpl.CompileNgModuleSummary[] = [];
+    let exportedModules: cpl.CompileNgModuleSummary[] = [];
+    let providers: cpl.CompileProviderMetadata[] = [];
+    let entryComponents: cpl.CompileEntryComponentMetadata[] = [];
+    let bootstrapComponents: cpl.CompileIdentifierMetadata[] = [];
+    let schemas: SchemaMetadata[] = [];
 
     if (meta.imports) {
       flattenAndDedupeArray(meta.imports).forEach((importedType) => {
@@ -523,7 +523,7 @@ export class CompileMetadataResolver {
         if (isValidType(importedType)) {
           importedModuleType = importedType;
         } else if (importedType && importedType.ngModule) {
-          const moduleWithProviders: ModuleWithProviders = importedType;
+          let moduleWithProviders: ModuleWithProviders = importedType;
           importedModuleType = moduleWithProviders.ngModule;
           if (moduleWithProviders.providers) {
             providers.push(...this._getProvidersMetadata(
@@ -544,7 +544,7 @@ export class CompileMetadataResolver {
             return;
           }
           alreadyCollecting.add(importedModuleType);
-          const importedModuleSummary =
+          let importedModuleSummary =
               this.getNgModuleSummary(importedModuleType, alreadyCollecting);
           alreadyCollecting.delete(importedModuleType);
           if (!importedModuleSummary) {
@@ -583,7 +583,7 @@ export class CompileMetadataResolver {
           return;
         }
         alreadyCollecting.add(exportedType);
-        const exportedModuleSummary = this.getNgModuleSummary(exportedType, alreadyCollecting);
+        let exportedModuleSummary = this.getNgModuleSummary(exportedType, alreadyCollecting);
         alreadyCollecting.delete(exportedType);
         if (exportedModuleSummary) {
           exportedModules.push(exportedModuleSummary);
@@ -595,7 +595,7 @@ export class CompileMetadataResolver {
 
     // Note: This will be modified later, so we rely on
     // getting a new instance every time!
-    const transitiveModule = this._getTransitiveNgModuleMetadata(importedModules, exportedModules);
+    let transitiveModule = this._getTransitiveNgModuleMetadata(importedModules, exportedModules);
     if (meta.declarations) {
       flattenAndDedupeArray(meta.declarations).forEach((declaredType) => {
         if (!isValidType(declaredType)) {
@@ -605,7 +605,7 @@ export class CompileMetadataResolver {
               moduleType);
           return;
         }
-        const declaredIdentifier = this._getIdentifierMetadata(declaredType);
+        let declaredIdentifier = this._getIdentifierMetadata(declaredType);
         if (this.isDirective(declaredType)) {
           transitiveModule.addDirective(declaredIdentifier);
           declaredDirectives.push(declaredIdentifier);
@@ -625,8 +625,8 @@ export class CompileMetadataResolver {
       });
     }
 
-    const exportedDirectives: cpl.CompileIdentifierMetadata[] = [];
-    const exportedPipes: cpl.CompileIdentifierMetadata[] = [];
+    let exportedDirectives: cpl.CompileIdentifierMetadata[] = [];
+    let exportedPipes: cpl.CompileIdentifierMetadata[] = [];
     exportedNonModuleIdentifiers.forEach((exportedId) => {
       if (transitiveModule.directivesSet.has(exportedId.reference)) {
         exportedDirectives.push(exportedId);
@@ -732,7 +732,7 @@ export class CompileMetadataResolver {
 
 
   private _addTypeToModule(type: Type, moduleType: Type) {
-    const oldModule = this._ngModuleOfTypes.get(type);
+    let oldModule = this._ngModuleOfTypes.get(type);
     if (oldModule && oldModule !== moduleType) {
       this._reportError(
           syntaxError(
@@ -749,20 +749,20 @@ export class CompileMetadataResolver {
       importedModules: cpl.CompileNgModuleSummary[],
       exportedModules: cpl.CompileNgModuleSummary[]): cpl.TransitiveCompileNgModuleMetadata {
     // collect `providers` / `entryComponents` from all imported and all exported modules
-    const result = new cpl.TransitiveCompileNgModuleMetadata();
-    const modulesByToken = new Map<any, Set<any>>();
+    let result = new cpl.TransitiveCompileNgModuleMetadata();
+    let modulesByToken = new Map<any, Set<any>>();
     importedModules.concat(exportedModules).forEach((modSummary) => {
       modSummary.modules.forEach((mod) => result.addModule(mod));
       modSummary.entryComponents.forEach((comp) => result.addEntryComponent(comp));
-      const addedTokens = new Set<any>();
+      let addedTokens = new Set<any>();
       modSummary.providers.forEach((entry) => {
-        const tokenRef = cpl.tokenReference(entry.provider.token);
+        let tokenRef = cpl.tokenReference(entry.provider.token);
         let prevModules = modulesByToken.get(tokenRef);
         if (!prevModules) {
           prevModules = new Set<any>();
           modulesByToken.set(tokenRef, prevModules);
         }
-        const moduleRef = entry.module.reference;
+        let moduleRef = entry.module.reference;
         // Note: the providers of one module may still contain multiple providers
         // per token (e.g. for multi providers), and we need to preserve these.
         if (addedTokens.has(tokenRef) || !prevModules.has(moduleRef)) {
@@ -789,7 +789,7 @@ export class CompileMetadataResolver {
   }
 
   isInjectable(type: any): boolean {
-    const annotations = this._reflector.tryAnnotations(type);
+    let annotations = this._reflector.tryAnnotations(type);
     return annotations.some(ann => createInjectable.isTypeOf(ann));
   }
 
@@ -803,19 +803,19 @@ export class CompileMetadataResolver {
   getInjectableMetadata(
       type: any, dependencies: any[]|null = null,
       throwOnUnknownDeps: boolean = true): cpl.CompileInjectableMetadata|null {
-    const typeSummary = this._loadSummary(type, cpl.CompileSummaryKind.Injectable);
-    const typeMetadata = typeSummary ?
+    let typeSummary = this._loadSummary(type, cpl.CompileSummaryKind.Injectable);
+    let typeMetadata = typeSummary ?
         typeSummary.type :
         this._getTypeMetadata(type, dependencies, throwOnUnknownDeps);
 
-    const annotations: Injectable[] =
+    let annotations: Injectable[] =
         this._reflector.annotations(type).filter(ann => createInjectable.isTypeOf(ann));
 
     if (annotations.length === 0) {
       return null;
     }
 
-    const meta = annotations[annotations.length - 1];
+    let meta = annotations[annotations.length - 1];
     return {
       symbol: type,
       type: typeMetadata,
@@ -830,7 +830,7 @@ export class CompileMetadataResolver {
 
   private _getTypeMetadata(type: Type, dependencies: any[]|null = null, throwOnUnknownDeps = true):
       cpl.CompileTypeMetadata {
-    const identifier = this._getIdentifierMetadata(type);
+    let identifier = this._getIdentifierMetadata(type);
     return {
       reference: identifier.reference,
       diDeps: this._getDependenciesMetadata(identifier.reference, dependencies, throwOnUnknownDeps),
@@ -849,7 +849,7 @@ export class CompileMetadataResolver {
    * This assumes `loadNgModuleDirectiveAndPipeMetadata` has been called first.
    */
   getPipeMetadata(pipeType: any): cpl.CompilePipeMetadata|null {
-    const pipeMeta = this._pipeCache.get(pipeType);
+    let pipeMeta = this._pipeCache.get(pipeType);
     if (!pipeMeta) {
       this._reportError(
           syntaxError(
@@ -860,7 +860,7 @@ export class CompileMetadataResolver {
   }
 
   getPipeSummary(pipeType: any): cpl.CompilePipeSummary {
-    const pipeSummary =
+    let pipeSummary =
         <cpl.CompilePipeSummary>this._loadSummary(pipeType, cpl.CompileSummaryKind.Pipe);
     if (!pipeSummary) {
       this._reportError(
@@ -881,9 +881,9 @@ export class CompileMetadataResolver {
 
   private _loadPipeMetadata(pipeType: any): cpl.CompilePipeMetadata {
     pipeType = resolveForwardRef(pipeType);
-    const pipeAnnotation = this._pipeResolver.resolve(pipeType) !;
+    let pipeAnnotation = this._pipeResolver.resolve(pipeType) !;
 
-    const pipeMeta = new cpl.CompilePipeMetadata({
+    let pipeMeta = new cpl.CompilePipeMetadata({
       type: this._getTypeMetadata(pipeType),
       name: pipeAnnotation.name,
       pure: !!pipeAnnotation.pure
@@ -897,9 +897,9 @@ export class CompileMetadataResolver {
       typeOrFunc: Type|Function, dependencies: any[]|null,
       throwOnUnknownDeps = true): cpl.CompileDiDependencyMetadata[] {
     let hasUnknownDeps = false;
-    const params = dependencies || this._reflector.parameters(typeOrFunc) || [];
+    let params = dependencies || this._reflector.parameters(typeOrFunc) || [];
 
-    const dependenciesMetadata: cpl.CompileDiDependencyMetadata[] = params.map((param) => {
+    let dependenciesMetadata: cpl.CompileDiDependencyMetadata[] = params.map((param) => {
       let isAttribute = false;
       let isHost = false;
       let isSelf = false;
@@ -948,9 +948,9 @@ export class CompileMetadataResolver {
     });
 
     if (hasUnknownDeps) {
-      const depsTokens =
+      let depsTokens =
           dependenciesMetadata.map((dep) => dep.token ? stringifyType(dep.token) : '?').join(', ');
-      const message =
+      let message =
           `Can't resolve all parameters for ${stringifyType(typeOrFunc)}: (${depsTokens}).`;
       if (throwOnUnknownDeps || this._config.strictInjectionParameters) {
         this._reportError(syntaxError(message), typeOrFunc);
@@ -993,7 +993,7 @@ export class CompileMetadataResolver {
               `Encountered undefined provider! Usually this means you have a circular dependencies. This might be caused by using 'barrel' index.ts files.`));
           return;
         } else {
-          const providersInfo =
+          let providersInfo =
               (<string[]>providers.reduce(
                    (soFar: string[], seenProvider: any, seenProviderIdx: number) => {
                      if (seenProviderIdx < providerIdx) {
@@ -1036,8 +1036,8 @@ export class CompileMetadataResolver {
 
   private _getEntryComponentsFromProvider(provider: cpl.ProviderMeta, type?: any):
       cpl.CompileEntryComponentMetadata[] {
-    const components: cpl.CompileEntryComponentMetadata[] = [];
-    const collectedIdentifiers: cpl.CompileIdentifierMetadata[] = [];
+    let components: cpl.CompileEntryComponentMetadata[] = [];
+    let collectedIdentifiers: cpl.CompileIdentifierMetadata[] = [];
 
     if (provider.useFactory || provider.useExisting || provider.useClass) {
       this._reportError(
@@ -1054,7 +1054,7 @@ export class CompileMetadataResolver {
 
     extractIdentifiers(provider.useValue, collectedIdentifiers);
     collectedIdentifiers.forEach((identifier) => {
-      const entry = this._getEntryComponentMetadata(identifier.reference, false);
+      let entry = this._getEntryComponentMetadata(identifier.reference, false);
       if (entry) {
         components.push(entry);
       }
@@ -1064,11 +1064,11 @@ export class CompileMetadataResolver {
 
   private _getEntryComponentMetadata(dirType: any, throwIfNotFound = true):
       cpl.CompileEntryComponentMetadata|null {
-    const dirMeta = this.getNonNormalizedDirectiveMetadata(dirType);
+    let dirMeta = this.getNonNormalizedDirectiveMetadata(dirType);
     if (dirMeta && dirMeta.metadata.isComponent) {
       return {componentType: dirType, componentFactory: dirMeta.metadata.componentFactory !};
     }
-    const dirSummary =
+    let dirSummary =
         <cpl.CompileDirectiveSummary>this._loadSummary(dirType, cpl.CompileSummaryKind.Directive);
     if (dirSummary && dirSummary.isComponent) {
       return {componentType: dirType, componentFactory: dirSummary.componentFactory !};
@@ -1081,7 +1081,7 @@ export class CompileMetadataResolver {
 
   private _getInjectableTypeMetadata(type: Type, dependencies: any[]|null = null):
       cpl.CompileTypeMetadata {
-    const typeSummary = this._loadSummary(type, cpl.CompileSummaryKind.Injectable);
+    let typeSummary = this._loadSummary(type, cpl.CompileSummaryKind.Injectable);
     if (typeSummary) {
       return typeSummary.type;
     }
@@ -1121,10 +1121,10 @@ export class CompileMetadataResolver {
   private _getQueriesMetadata(
       queries: {[key: string]: Query}, isViewQuery: boolean,
       directiveType: Type): cpl.CompileQueryMetadata[] {
-    const res: cpl.CompileQueryMetadata[] = [];
+    let res: cpl.CompileQueryMetadata[] = [];
 
     Object.keys(queries).forEach((propertyName: string) => {
-      const query = queries[propertyName];
+      let query = queries[propertyName];
       if (query.isViewQuery === isViewQuery) {
         res.push(this._getQueryMetadata(query, propertyName, directiveType));
       }
@@ -1145,7 +1145,7 @@ export class CompileMetadataResolver {
       if (!q.selector) {
         this._reportError(
             syntaxError(
-                `Can't construct a query for the property "${propertyName}" of "${stringifyType(typeOrFunc)}" since the query selector wasn't defined.`),
+                `Can't letruct a query for the property "${propertyName}" of "${stringifyType(typeOrFunc)}" since the query selector wasn't defined.`),
             typeOrFunc);
         selectors = [];
       } else {
@@ -1177,7 +1177,7 @@ export class CompileMetadataResolver {
 function flattenArray(tree: any[], out: Array<any> = []): Array<any> {
   if (tree) {
     for (let i = 0; i < tree.length; i++) {
-      const item = resolveForwardRef(tree[i]);
+      let item = resolveForwardRef(tree[i]);
       if (Array.isArray(item)) {
         flattenArray(item, out);
       } else {
@@ -1225,7 +1225,7 @@ function stringifyType(type: any): string {
  * Indicates that a component is still being loaded in a synchronous compile.
  */
 function componentStillLoadingError(compType: Type) {
-  const error =
+  let error =
       Error(`Can't compile synchronously as ${stringify(compType)} is still being loaded!`);
   (error as any)[ERROR_COMPONENT_TYPE] = compType;
   return error;

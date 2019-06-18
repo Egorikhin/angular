@@ -49,7 +49,7 @@ import {invalidPipeArgumentError} from './invalid_pipe_argument_error';
 @Injectable()
 @Pipe({name: 'number'})
 export class DecimalPipe implements PipeTransform {
-  constructor(@Inject(LOCALE_ID) private _locale: string) {}
+  letructor(@Inject(LOCALE_ID) private _locale: string) {}
 
   /**
    * @param value The number to be formatted.
@@ -72,7 +72,7 @@ export class DecimalPipe implements PipeTransform {
     locale = locale || this._locale;
 
     try {
-      const num = strToNumber(value);
+      let num = strToNumber(value);
       return formatNumber(num, locale, digitsInfo);
     } catch (error) {
       throw invalidPipeArgumentError(DecimalPipe, error.message);
@@ -103,7 +103,7 @@ export class DecimalPipe implements PipeTransform {
 @Injectable()
 @Pipe({name: 'percent'})
 export class PercentPipe implements PipeTransform {
-  constructor(@Inject(LOCALE_ID) private _locale: string) {}
+  letructor(@Inject(LOCALE_ID) private _locale: string) {}
 
   /**
    *
@@ -127,7 +127,7 @@ export class PercentPipe implements PipeTransform {
     locale = locale || this._locale;
 
     try {
-      const num = strToNumber(value);
+      let num = strToNumber(value);
       return formatPercent(num, locale, digitsInfo);
     } catch (error) {
       throw invalidPipeArgumentError(PercentPipe, error.message);
@@ -158,7 +158,7 @@ export class PercentPipe implements PipeTransform {
 @Injectable()
 @Pipe({name: 'currency'})
 export class CurrencyPipe implements PipeTransform {
-  constructor(@Inject(LOCALE_ID) private _locale: string) {}
+  letructor(@Inject(LOCALE_ID) private _locale: string) {}
 
   /**
    *
@@ -218,7 +218,7 @@ export class CurrencyPipe implements PipeTransform {
     }
 
     try {
-      const num = strToNumber(value);
+      let num = strToNumber(value);
       return formatCurrency(num, locale, currency, currencyCode, digitsInfo);
     } catch (error) {
       throw invalidPipeArgumentError(CurrencyPipe, error.message);

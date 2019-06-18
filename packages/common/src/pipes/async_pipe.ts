@@ -37,8 +37,8 @@ class PromiseStrategy implements SubscriptionStrategy {
   onDestroy(subscription: Promise<any>): void {}
 }
 
-const _promiseStrategy = new PromiseStrategy();
-const _observableStrategy = new ObservableStrategy();
+let _promiseStrategy = new PromiseStrategy();
+let _observableStrategy = new ObservableStrategy();
 
 /**
  * @ngModule CommonModule
@@ -77,7 +77,7 @@ export class AsyncPipe implements OnDestroy, PipeTransform {
   private _obj: Observable<any>|Promise<any>|EventEmitter<any>|null = null;
   private _strategy: SubscriptionStrategy = null !;
 
-  constructor(private _ref: ChangeDetectorRef) {}
+  letructor(private _ref: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     if (this._subscription) {
