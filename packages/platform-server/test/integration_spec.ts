@@ -45,7 +45,7 @@ function exceptionRenderHook() {
 function getMetaRenderHook(doc: any) {
   return () => {
     // Add a meta tag before rendering the document.
-    const metaElement = doc.createElement('meta');
+    let metaElement = doc.createElement('meta');
     metaElement.setAttribute('name', 'description');
     doc.head.appendChild(metaElement);
   };
@@ -136,7 +136,7 @@ class ExampleModule2 {
 
 @Component({selector: 'app', template: ``})
 class TitleApp {
-  constructor(private title: Title) {}
+  letructor(private title: Title) {}
   ngOnInit() { this.title.setTitle('Test App Title'); }
 }
 
@@ -197,7 +197,7 @@ class SVGServerModule {
 })
 class MyAnimationApp {
   state = 'active';
-  constructor(private builder: AnimationBuilder) {}
+  letructor(private builder: AnimationBuilder) {}
 
   text = 'Works!';
 }
@@ -236,7 +236,7 @@ export class HttpClientExampleModule {
 
 @Injectable()
 export class MyHttpInterceptor implements HttpInterceptor {
-  constructor(private http: HttpClient) {}
+  letructor(private http: HttpClient) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req);
@@ -327,7 +327,7 @@ class NameModule {
 @Component({selector: 'app', template: '<div [innerHTML]="html"></div>'})
 class HTMLTypesApp {
   html = '<b>foo</b> bar';
-  constructor(@Inject(DOCUMENT) doc: Document) {}
+  letructor(@Inject(DOCUMENT) doc: Document) {}
 }
 
 @NgModule({
@@ -338,18 +338,18 @@ class HTMLTypesApp {
 class HTMLTypesModule {
 }
 
-const TEST_KEY = makeStateKey<number>('test');
-const STRING_KEY = makeStateKey<string>('testString');
+let TEST_KEY = makeStateKey<number>('test');
+let STRING_KEY = makeStateKey<string>('testString');
 
 @Component({selector: 'app', template: 'Works!'})
 class TransferComponent {
-  constructor(private transferStore: TransferState) {}
+  letructor(private transferStore: TransferState) {}
   ngOnInit() { this.transferStore.set(TEST_KEY, 10); }
 }
 
 @Component({selector: 'esc-app', template: 'Works!'})
 class EscapedComponent {
-  constructor(private transferStore: TransferState) {}
+  letructor(private transferStore: TransferState) {}
   ngOnInit() {
     this.transferStore.set(STRING_KEY, '</script><script>alert(\'Hello&\' + "World");');
   }
@@ -402,12 +402,12 @@ class HiddenModule {
     });
 
     it('should bootstrap', async(() => {
-         const platform = platformDynamicServer(
+         let platform = platformDynamicServer(
              [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
 
          platform.bootstrapModule(ExampleModule).then((moduleRef) => {
            expect(isPlatformServer(moduleRef.injector.get(PLATFORM_ID))).toBe(true);
-           const doc = moduleRef.injector.get(DOCUMENT);
+           let doc = moduleRef.injector.get(DOCUMENT);
 
            expect(doc.head).toBe(getDOM().querySelector(doc, 'head'));
            expect(doc.body).toBe(getDOM().querySelector(doc, 'body'));
@@ -419,63 +419,63 @@ class HiddenModule {
        }));
 
     it('should allow multiple platform instances', async(() => {
-         const platform = platformDynamicServer(
+         let platform = platformDynamicServer(
              [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
 
-         const platform2 = platformDynamicServer(
+         let platform2 = platformDynamicServer(
              [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
 
 
          platform.bootstrapModule(ExampleModule).then((moduleRef) => {
-           const doc = moduleRef.injector.get(DOCUMENT);
+           let doc = moduleRef.injector.get(DOCUMENT);
            expect(getDOM().getText(doc.documentElement)).toEqual('Works!');
            platform.destroy();
          });
 
          platform2.bootstrapModule(ExampleModule2).then((moduleRef) => {
-           const doc = moduleRef.injector.get(DOCUMENT);
+           let doc = moduleRef.injector.get(DOCUMENT);
            expect(getDOM().getText(doc.documentElement)).toEqual('Works too!');
            platform2.destroy();
          });
        }));
 
     it('adds title to the document using Title service', async(() => {
-         const platform = platformDynamicServer([{
+         let platform = platformDynamicServer([{
            provide: INITIAL_CONFIG,
            useValue:
                {document: '<html><head><title></title></head><body><app></app></body></html>'}
          }]);
          platform.bootstrapModule(TitleAppModule).then(ref => {
-           const state = ref.injector.get(PlatformState);
-           const doc = ref.injector.get(DOCUMENT);
-           const title = getDOM().querySelector(doc, 'title');
+           let state = ref.injector.get(PlatformState);
+           let doc = ref.injector.get(DOCUMENT);
+           let title = getDOM().querySelector(doc, 'title');
            expect(getDOM().getText(title)).toBe('Test App Title');
            expect(state.renderToString()).toContain('<title>Test App Title</title>');
          });
        }));
 
     it('should get base href from document', async(() => {
-         const platform = platformDynamicServer([{
+         let platform = platformDynamicServer([{
            provide: INITIAL_CONFIG,
            useValue:
                {document: '<html><head><base href="/"></head><body><app></app></body></html>'}
          }]);
          platform.bootstrapModule(ExampleModule).then((moduleRef) => {
-           const location = moduleRef.injector.get(PlatformLocation);
+           let location = moduleRef.injector.get(PlatformLocation);
            expect(location.getBaseHrefFromDOM()).toEqual('/');
            platform.destroy();
          });
        }));
 
     it('adds styles with ng-transition attribute', async(() => {
-         const platform = platformDynamicServer([{
+         let platform = platformDynamicServer([{
            provide: INITIAL_CONFIG,
            useValue: {document: '<html><head></head><body><app></app></body></html>'}
          }]);
          platform.bootstrapModule(ExampleStylesModule).then(ref => {
-           const doc = ref.injector.get(DOCUMENT);
-           const head = getDOM().getElementsByTagName(doc, 'head')[0];
-           const styles: any[] = head.children as any;
+           let doc = ref.injector.get(DOCUMENT);
+           let head = getDOM().getElementsByTagName(doc, 'head')[0];
+           let styles: any[] = head.children as any;
            expect(styles.length).toBe(1);
            expect(getDOM().getText(styles[0])).toContain('color: red');
            expect(getDOM().getAttribute(styles[0], 'ng-transition')).toBe('example-styles');
@@ -483,22 +483,22 @@ class HiddenModule {
        }));
 
     it('copies known properties to attributes', async(() => {
-         const platform = platformDynamicServer(
+         let platform = platformDynamicServer(
              [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
          platform.bootstrapModule(ImageExampleModule).then(ref => {
-           const appRef: ApplicationRef = ref.injector.get(ApplicationRef);
-           const app = appRef.components[0].location.nativeElement;
-           const img = getDOM().getElementsByTagName(app, 'img')[0] as any;
+           let appRef: ApplicationRef = ref.injector.get(ApplicationRef);
+           let app = appRef.components[0].location.nativeElement;
+           let img = getDOM().getElementsByTagName(app, 'img')[0] as any;
            expect(img.attributes['src'].value).toEqual('link');
          });
        }));
 
     describe('PlatformLocation', () => {
       it('is injectable', async(() => {
-           const platform = platformDynamicServer(
+           let platform = platformDynamicServer(
                [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
            platform.bootstrapModule(ExampleModule).then(appRef => {
-             const location: PlatformLocation = appRef.injector.get(PlatformLocation);
+             let location: PlatformLocation = appRef.injector.get(PlatformLocation);
              expect(location.pathname).toBe('/');
              platform.destroy();
            });
@@ -510,7 +510,7 @@ class HiddenModule {
         }])
             .bootstrapModule(ExampleModule)
             .then(appRef => {
-              const location: PlatformLocation = appRef.injector.get(PlatformLocation);
+              let location: PlatformLocation = appRef.injector.get(PlatformLocation);
               expect(location.pathname).toBe('/deep/path');
               expect(location.search).toBe('?query');
               expect(location.hash).toBe('#hash');
@@ -523,7 +523,7 @@ class HiddenModule {
         }])
             .bootstrapModule(ExampleModule)
             .then(appRef => {
-              const location: PlatformLocation = appRef.injector.get(PlatformLocation);
+              let location: PlatformLocation = appRef.injector.get(PlatformLocation);
               expect(location.hostname).toBe('test.com');
               expect(location.protocol).toBe('http:');
               expect(location.port).toBe('80');
@@ -539,17 +539,17 @@ class HiddenModule {
         }])
             .bootstrapModule(ExampleModule)
             .then(appRef => {
-              const location: PlatformLocation = appRef.injector.get(PlatformLocation);
+              let location: PlatformLocation = appRef.injector.get(PlatformLocation);
               expect(location.pathname).toBe('/deep/path');
               expect(location.search).toBe('');
               expect(location.hash).toBe('');
             });
       });
       it('pushState causes the URL to update', async(() => {
-           const platform = platformDynamicServer(
+           let platform = platformDynamicServer(
                [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
            platform.bootstrapModule(ExampleModule).then(appRef => {
-             const location: PlatformLocation = appRef.injector.get(PlatformLocation);
+             let location: PlatformLocation = appRef.injector.get(PlatformLocation);
              location.pushState(null, 'Test', '/foo#bar');
              expect(location.pathname).toBe('/foo');
              expect(location.hash).toBe('#bar');
@@ -557,10 +557,10 @@ class HiddenModule {
            });
          }));
       it('allows subscription to the hash state', done => {
-        const platform =
+        let platform =
             platformDynamicServer([{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
         platform.bootstrapModule(ExampleModule).then(appRef => {
-          const location: PlatformLocation = appRef.injector.get(PlatformLocation);
+          let location: PlatformLocation = appRef.injector.get(PlatformLocation);
           expect(location.pathname).toBe('/');
           location.onHashChange((e: any) => {
             expect(e.type).toBe('hashchange');
@@ -594,12 +594,12 @@ class HiddenModule {
       afterEach(() => { expect(called).toBe(true); });
 
       it('using long form should work', async(() => {
-           const platform =
+           let platform =
                platformDynamicServer([{provide: INITIAL_CONFIG, useValue: {document: doc}}]);
 
            platform.bootstrapModule(AsyncServerModule)
                .then((moduleRef) => {
-                 const applicationRef: ApplicationRef = moduleRef.injector.get(ApplicationRef);
+                 let applicationRef: ApplicationRef = moduleRef.injector.get(ApplicationRef);
                  return applicationRef.isStable.pipe(first((isStable: boolean) => isStable))
                      .toPromise();
                })
@@ -628,9 +628,9 @@ class HiddenModule {
 
       it('using renderModuleFactory should work',
          async(inject([PlatformRef], (defaultPlatform: PlatformRef) => {
-           const compilerFactory: CompilerFactory =
+           let compilerFactory: CompilerFactory =
                defaultPlatform.injector.get(CompilerFactory, null);
-           const moduleFactory =
+           let moduleFactory =
                compilerFactory.createCompiler().compileModuleSync(AsyncServerModule);
            renderModuleFactory(moduleFactory, {document: doc}).then(output => {
              expect(output).toBe(expectedOutput);
@@ -726,7 +726,7 @@ class HiddenModule {
          }));
 
       it('should call multiple render hooks', async(() => {
-           const consoleSpy = spyOn(console, 'warn');
+           let consoleSpy = spyOn(console, 'warn');
            renderModule(MultiRenderHookModule, {document: doc}).then(output => {
              // title should be added by the render hook.
              expect(output).toBe(
@@ -748,7 +748,7 @@ class HiddenModule {
          }));
 
       it('should call multiple async and sync render hooks', async(() => {
-           const consoleSpy = spyOn(console, 'warn');
+           let consoleSpy = spyOn(console, 'warn');
            renderModule(AsyncMultiRenderHookModule, {document: doc}).then(output => {
              // title should be added by the render hook.
              expect(output).toBe(
@@ -762,7 +762,7 @@ class HiddenModule {
 
     describe('HttpClient', () => {
       it('can inject HttpClient', async(() => {
-           const platform = platformDynamicServer(
+           let platform = platformDynamicServer(
                [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
            platform.bootstrapModule(HttpClientExampleModule).then(ref => {
              expect(ref.injector.get(HttpClient) instanceof HttpClient).toBeTruthy();
@@ -770,11 +770,11 @@ class HiddenModule {
          }));
 
       it('can make HttpClient requests', async(() => {
-           const platform = platformDynamicServer(
+           let platform = platformDynamicServer(
                [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
            platform.bootstrapModule(HttpClientExampleModule).then(ref => {
-             const mock = ref.injector.get(HttpTestingController) as HttpTestingController;
-             const http = ref.injector.get(HttpClient);
+             let mock = ref.injector.get(HttpTestingController) as HttpTestingController;
+             let http = ref.injector.get(HttpClient);
              ref.injector.get<NgZone>(NgZone).run(() => {
                http.get('http://localhost/testing').subscribe(body => {
                  NgZone.assertInAngularZone();
@@ -786,11 +786,11 @@ class HiddenModule {
          }));
 
       it('requests are macrotasks', async(() => {
-           const platform = platformDynamicServer(
+           let platform = platformDynamicServer(
                [{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
            platform.bootstrapModule(HttpClientExampleModule).then(ref => {
-             const mock = ref.injector.get(HttpTestingController) as HttpTestingController;
-             const http = ref.injector.get(HttpClient);
+             let mock = ref.injector.get(HttpTestingController) as HttpTestingController;
+             let http = ref.injector.get(HttpClient);
              ref.injector.get<NgZone>(NgZone).run(() => {
                http.get('http://localhost/testing').subscribe(body => {
                  expect(body).toEqual('success!');
@@ -803,11 +803,11 @@ class HiddenModule {
          }));
 
       it('can use HttpInterceptor that injects HttpClient', () => {
-        const platform =
+        let platform =
             platformDynamicServer([{provide: INITIAL_CONFIG, useValue: {document: '<app></app>'}}]);
         platform.bootstrapModule(HttpInterceptorExampleModule).then(ref => {
-          const mock = ref.injector.get(HttpTestingController) as HttpTestingController;
-          const http = ref.injector.get(HttpClient);
+          let mock = ref.injector.get(HttpTestingController) as HttpTestingController;
+          let http = ref.injector.get(HttpClient);
           ref.injector.get<NgZone>(NgZone).run(() => {
             http.get('http://localhost/testing').subscribe(body => {
               NgZone.assertInAngularZone();
@@ -821,7 +821,7 @@ class HiddenModule {
 
     describe('ServerTransferStoreModule', () => {
       let called = false;
-      const defaultExpectedOutput =
+      let defaultExpectedOutput =
           '<html><head></head><body><app ng-version="0.0.0-PLACEHOLDER">Works!</app><script id="transfer-state" type="application/json">{&q;test&q;:10}</script></body></html>';
 
       beforeEach(() => { called = false; });
@@ -836,9 +836,9 @@ class HiddenModule {
 
       it('adds transfer script tag when using renderModuleFactory',
          async(inject([PlatformRef], (defaultPlatform: PlatformRef) => {
-           const compilerFactory: CompilerFactory =
+           let compilerFactory: CompilerFactory =
                defaultPlatform.injector.get(CompilerFactory, null);
-           const moduleFactory =
+           let moduleFactory =
                compilerFactory.createCompiler().compileModuleSync(TransferStoreModule);
            renderModuleFactory(moduleFactory, {document: '<app></app>'}).then(output => {
              expect(output).toBe(defaultExpectedOutput);

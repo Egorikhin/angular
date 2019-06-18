@@ -33,11 +33,11 @@ describe('ComponentFactoryNgElementStrategy', () => {
   });
 
   it('should create a new strategy from the factory', () => {
-    const factoryResolver = jasmine.createSpyObj('factoryResolver', ['resolveComponentFactory']);
+    let factoryResolver = jasmine.createSpyObj('factoryResolver', ['resolveComponentFactory']);
     factoryResolver.resolveComponentFactory.and.returnValue(factory);
     injector.get.and.returnValue(factoryResolver);
 
-    const strategyFactory = new ComponentNgElementStrategyFactory(FakeComponent, injector);
+    let strategyFactory = new ComponentNgElementStrategyFactory(FakeComponent, injector);
     expect(strategyFactory.create(injector)).toBeTruthy();
   });
 
@@ -55,7 +55,7 @@ describe('ComponentFactoryNgElementStrategy', () => {
        () => { expect(componentRef.changeDetectorRef.detectChanges).toHaveBeenCalled(); });
 
     it('should listen to output events', () => {
-      const events: NgElementStrategyEvent[] = [];
+      let events: NgElementStrategyEvent[] = [];
       strategy.events.subscribe(e => events.push(e));
 
       componentRef.instance.output1.next('output-1a');
@@ -220,7 +220,7 @@ export class FakeComponentFactory extends ComponentFactory<any> {
   componentRef: any = jasmine.createSpyObj(
       'componentRef', ['instance', 'changeDetectorRef', 'hostView', 'destroy']);
 
-  constructor() {
+  letructor() {
     super();
     this.componentRef.instance = new FakeComponent();
     this.componentRef.changeDetectorRef =
