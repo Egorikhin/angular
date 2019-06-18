@@ -27,7 +27,7 @@ function notSupported(feature: string): Error {
   throw new Error(`platform-server does not support '${feature}'.`);
 }
 
-export const INTERNAL_SERVER_PLATFORM_PROVIDERS: StaticProvider[] = [
+export let INTERNAL_SERVER_PLATFORM_PROVIDERS: StaticProvider[] = [
   {provide: DOCUMENT, useFactory: _document, deps: [Injector]},
   {provide: PLATFORM_ID, useValue: PLATFORM_SERVER_ID},
   {provide: PLATFORM_INITIALIZER, useFactory: initDominoAdapter, multi: true, deps: [Injector]}, {
@@ -49,7 +49,7 @@ export function instantiateServerRendererFactory(
   return new ɵAnimationRendererFactory(renderer, engine, zone);
 }
 
-export const SERVER_RENDER_PROVIDERS: Provider[] = [
+export let SERVER_RENDER_PROVIDERS: Provider[] = [
   ServerRendererFactory2,
   {
     provide: RendererFactory2,
@@ -91,7 +91,7 @@ function _document(injector: Injector) {
 /**
  * @publicApi
  */
-export const platformServer =
+export let platformServer =
     createPlatformFactory(platformCore, 'server', INTERNAL_SERVER_PLATFORM_PROVIDERS);
 
 /**
@@ -99,5 +99,5 @@ export const platformServer =
  *
  * @publicApi
  */
-export const platformDynamicServer =
+export let platformDynamicServer =
     createPlatformFactory(platformCoreDynamic, 'serverDynamic', INTERNAL_SERVER_PLATFORM_PROVIDERS);

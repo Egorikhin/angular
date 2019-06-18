@@ -12,8 +12,8 @@ import {JitReflector} from '@angular/platform-browser-dynamic/src/compiler_refle
 
 {
   describe('I18nSelectPipe', () => {
-    const pipe: I18nSelectPipe = new I18nSelectPipe();
-    const mapping = {'male': 'Invite him.', 'female': 'Invite her.', 'other': 'Invite them.'};
+    let pipe: I18nSelectPipe = new I18nSelectPipe();
+    let mapping = {'male': 'Invite him.', 'female': 'Invite her.', 'other': 'Invite them.'};
 
     it('should be marked as pure', () => {
       expect(new PipeResolver(new JitReflector()).resolve(I18nSelectPipe) !.pure).toEqual(true);
@@ -21,12 +21,12 @@ import {JitReflector} from '@angular/platform-browser-dynamic/src/compiler_refle
 
     describe('transform', () => {
       it('should return the "male" text if value is "male"', () => {
-        const val = pipe.transform('male', mapping);
+        let val = pipe.transform('male', mapping);
         expect(val).toEqual('Invite him.');
       });
 
       it('should return the "female" text if value is "female"', () => {
-        const val = pipe.transform('female', mapping);
+        let val = pipe.transform('female', mapping);
         expect(val).toEqual('Invite her.');
       });
 

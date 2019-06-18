@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export const toh = {
+export let toh = {
   'foo.ts': `export * from './app/app.component.ts';`,
   app: {
     'app.component.ts': `import { Component } from '@angular/core';

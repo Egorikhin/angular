@@ -25,7 +25,7 @@ describe('RouterState & Snapshot', () => {
       b = createActivatedRouteSnapshot('b');
       c = createActivatedRouteSnapshot('c');
 
-      const root = new TreeNode(a, [new TreeNode(b, []), new TreeNode(c, [])]);
+      let root = new TreeNode(a, [new TreeNode(b, []), new TreeNode(c, [])]);
 
       state = new (RouterStateSnapshot as any)('url', root);
     });
@@ -33,24 +33,24 @@ describe('RouterState & Snapshot', () => {
     it('should return first child', () => { expect(state.root.firstChild).toBe(b); });
 
     it('should return children', () => {
-      const cc = state.root.children;
+      let cc = state.root.children;
       expect(cc[0]).toBe(b);
       expect(cc[1]).toBe(c);
     });
 
     it('should return root', () => {
-      const b = state.root.firstChild !;
+      let b = state.root.firstChild !;
       expect(b.root).toBe(state.root);
     });
 
     it('should return parent', () => {
-      const b = state.root.firstChild !;
+      let b = state.root.firstChild !;
       expect(b.parent).toBe(state.root);
     });
 
     it('should return path from root', () => {
-      const b = state.root.firstChild !;
-      const p = b.pathFromRoot;
+      let b = state.root.firstChild !;
+      let p = b.pathFromRoot;
       expect(p[0]).toBe(state.root);
       expect(p[1]).toBe(b);
     });
@@ -67,7 +67,7 @@ describe('RouterState & Snapshot', () => {
       b = createActivatedRoute('b');
       c = createActivatedRoute('c');
 
-      const root = new TreeNode(a, [new TreeNode(b, []), new TreeNode(c, [])]);
+      let root = new TreeNode(a, [new TreeNode(b, []), new TreeNode(c, [])]);
 
       state = new (RouterState as any)(root, <any>null);
     });
@@ -75,24 +75,24 @@ describe('RouterState & Snapshot', () => {
     it('should return first child', () => { expect(state.root.firstChild).toBe(b); });
 
     it('should return children', () => {
-      const cc = state.root.children;
+      let cc = state.root.children;
       expect(cc[0]).toBe(b);
       expect(cc[1]).toBe(c);
     });
 
     it('should return root', () => {
-      const b = state.root.firstChild !;
+      let b = state.root.firstChild !;
       expect(b.root).toBe(state.root);
     });
 
     it('should return parent', () => {
-      const b = state.root.firstChild !;
+      let b = state.root.firstChild !;
       expect(b.parent).toBe(state.root);
     });
 
     it('should return path from root', () => {
-      const b = state.root.firstChild !;
-      const p = b.pathFromRoot;
+      let b = state.root.firstChild !;
+      let p = b.pathFromRoot;
       expect(p[0]).toBe(state.root);
       expect(p[1]).toBe(b);
     });
@@ -100,7 +100,7 @@ describe('RouterState & Snapshot', () => {
 
   describe('equalParamsAndUrlSegments', () => {
     function createSnapshot(params: Params, url: UrlSegment[]): ActivatedRouteSnapshot {
-      const snapshot = new (ActivatedRouteSnapshot as any)(
+      let snapshot = new (ActivatedRouteSnapshot as any)(
           url, params, <any>null, <any>null, <any>null, <any>null, <any>null, <any>null, <any>null,
           -1, null !);
       snapshot._routerState = new (RouterStateSnapshot as any)('', new TreeNode(snapshot, []));
@@ -110,11 +110,11 @@ describe('RouterState & Snapshot', () => {
     function createSnapshotPairWithParent(
         params: [Params, Params], parentParams: [Params, Params],
         urls: [string, string]): [ActivatedRouteSnapshot, ActivatedRouteSnapshot] {
-      const snapshot1 = createSnapshot(params[0], []);
-      const snapshot2 = createSnapshot(params[1], []);
+      let snapshot1 = createSnapshot(params[0], []);
+      let snapshot2 = createSnapshot(params[1], []);
 
-      const snapshot1Parent = createSnapshot(parentParams[0], [new UrlSegment(urls[0], {})]);
-      const snapshot2Parent = createSnapshot(parentParams[1], [new UrlSegment(urls[1], {})]);
+      let snapshot1Parent = createSnapshot(parentParams[0], [new UrlSegment(urls[0], {})]);
+      let snapshot2Parent = createSnapshot(parentParams[1], [new UrlSegment(urls[1], {})]);
 
       (snapshot1 as any)._routerState = new (RouterStateSnapshot as any)(
           '', new TreeNode(snapshot1Parent, [new TreeNode(snapshot1, [])]));
@@ -144,21 +144,21 @@ describe('RouterState & Snapshot', () => {
     });
 
     it('should return false when upstream params are different', () => {
-      const [snapshot1, snapshot2] =
+      let [snapshot1, snapshot2] =
           createSnapshotPairWithParent([{a: '1'}, {a: '1'}], [{b: '1'}, {c: '1'}], ['a', 'a']);
 
       expect(equalParamsAndUrlSegments(snapshot1, snapshot2)).toEqual(false);
     });
 
     it('should return false when upstream urls are different', () => {
-      const [snapshot1, snapshot2] =
+      let [snapshot1, snapshot2] =
           createSnapshotPairWithParent([{a: '1'}, {a: '1'}], [{b: '1'}, {b: '1'}], ['a', 'b']);
 
       expect(equalParamsAndUrlSegments(snapshot1, snapshot2)).toEqual(false);
     });
 
     it('should return true when upstream urls and params are equal', () => {
-      const [snapshot1, snapshot2] =
+      let [snapshot1, snapshot2] =
           createSnapshotPairWithParent([{a: '1'}, {a: '1'}], [{b: '1'}, {b: '1'}], ['a', 'a']);
 
       expect(equalParamsAndUrlSegments(snapshot1, snapshot2)).toEqual(true);
@@ -172,20 +172,20 @@ describe('RouterState & Snapshot', () => {
     beforeEach(() => { route = createActivatedRoute('a'); });
 
     function createSnapshot(params: Params, url: UrlSegment[]): ActivatedRouteSnapshot {
-      const queryParams = {};
-      const fragment = '';
-      const data = {};
-      const snapshot = new (ActivatedRouteSnapshot as any)(
+      let queryParams = {};
+      let fragment = '';
+      let data = {};
+      let snapshot = new (ActivatedRouteSnapshot as any)(
           url, params, queryParams, fragment, data, <any>null, <any>null, <any>null, <any>null, -1,
           null !);
-      const state = new (RouterStateSnapshot as any)('', new TreeNode(snapshot, []));
+      let state = new (RouterStateSnapshot as any)('', new TreeNode(snapshot, []));
       snapshot._routerState = state;
       return snapshot;
     }
 
     it('should call change observers', () => {
-      const firstPlace = createSnapshot({a: '1'}, []);
-      const secondPlace = createSnapshot({a: '2'}, []);
+      let firstPlace = createSnapshot({a: '1'}, []);
+      let secondPlace = createSnapshot({a: '2'}, []);
       route.snapshot = firstPlace;
       (route as any)._futureSnapshot = secondPlace;
 

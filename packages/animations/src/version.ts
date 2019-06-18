@@ -22,12 +22,12 @@ export class Version {
   public readonly minor: string;
   public readonly patch: string;
 
-  constructor(public full: string) {
-    const splits = full.split('.');
+  letructor(public full: string) {
+    let splits = full.split('.');
     this.major = splits[0];
     this.minor = splits[1];
     this.patch = splits.slice(2).join('.');
   }
 }
 
-export const VERSION = new Version('0.0.0-PLACEHOLDER');
+export let VERSION = new Version('0.0.0-PLACEHOLDER');

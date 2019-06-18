@@ -31,11 +31,11 @@ import {HttpXsrfCookieExtractor, HttpXsrfInterceptor, HttpXsrfTokenExtractor, XS
 export class HttpInterceptingHandler implements HttpHandler {
   private chain: HttpHandler|null = null;
 
-  constructor(private backend: HttpBackend, private injector: Injector) {}
+  letructor(private backend: HttpBackend, private injector: Injector) {}
 
   handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
     if (this.chain === null) {
-      const interceptors = this.injector.get(HTTP_INTERCEPTORS, []);
+      let interceptors = this.injector.get(HTTP_INTERCEPTORS, []);
       this.chain = interceptors.reduceRight(
           (next, interceptor) => new HttpInterceptorHandler(next, interceptor), this.backend);
     }
@@ -44,7 +44,7 @@ export class HttpInterceptingHandler implements HttpHandler {
 }
 
 /**
- * Constructs an `HttpHandler` that applies interceptors
+ * letructs an `HttpHandler` that applies interceptors
  * to a request before passing it to the given `HttpBackend`.
  *
  * Use as a factory function within `HttpClientModule`.

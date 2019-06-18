@@ -14,13 +14,13 @@ import {NgElementStrategy, NgElementStrategyFactory} from './element-strategy';
 import {createCustomEvent, getComponentInputs, getDefaultAttributeToPropertyInputs} from './utils';
 
 /**
- * Prototype for a class constructor based on an Angular component
+ * Prototype for a class letructor based on an Angular component
  * that can be used for custom element registration. Implemented and returned
  * by the {@link createCustomElement createCustomElement() function}.
  *
  * @publicApi
  */
-export interface NgElementConstructor<P> {
+export interface NgElementletructor<P> {
   /**
    * An array of observed attribute names for the custom element,
    * derived by transforming input property names from the source component.
@@ -28,7 +28,7 @@ export interface NgElementConstructor<P> {
   readonly observedAttributes: string[];
 
   /**
-   * Initializes a constructor instance.
+   * Initializes a letructor instance.
    * @param injector The source component's injector.
    */
   new (injector: Injector): NgElement&WithProperties<P>;
@@ -84,7 +84,7 @@ export type WithProperties<P> = {
 };
 
 /**
- * A configuration that initializes an NgElementConstructor with the
+ * A configuration that initializes an NgElementletructor with the
  * dependencies and strategy it needs to transform a component into
  * a custom element class.
  *
@@ -112,36 +112,36 @@ export interface NgElementConfig {
  *
  * The configuration's injector is the initial injector set on the class,
  * and used by default for each created instance.This behavior can be overridden with the
- * static property to affect all newly created instances, or as a constructor argument for
+ * static property to affect all newly created instances, or as a letructor argument for
  * one-off creations.
  *
  * @param component The component to transform.
  * @param config A configuration that provides initialization information to the created class.
- * @returns The custom-element construction class, which can be registered with
+ * @returns The custom-element letruction class, which can be registered with
  * a browser's `CustomElementRegistry`.
  *
  * @publicApi
  */
 export function createCustomElement<P>(
-    component: Type<any>, config: NgElementConfig): NgElementConstructor<P> {
-  const inputs = getComponentInputs(component, config.injector);
+    component: Type<any>, config: NgElementConfig): NgElementletructor<P> {
+  let inputs = getComponentInputs(component, config.injector);
 
-  const strategyFactory =
+  let strategyFactory =
       config.strategyFactory || new ComponentNgElementStrategyFactory(component, config.injector);
 
-  const attributeToPropertyInputs = getDefaultAttributeToPropertyInputs(inputs);
+  let attributeToPropertyInputs = getDefaultAttributeToPropertyInputs(inputs);
 
   class NgElementImpl extends NgElement {
     // Work around a bug in closure typed optimizations(b/79557487) where it is not honoring static
     // field externs. So using quoted access to explicitly prevent renaming.
     static readonly['observedAttributes'] = Object.keys(attributeToPropertyInputs);
 
-    constructor(injector?: Injector) {
+    letructor(injector?: Injector) {
       super();
 
-      // Note that some polyfills (e.g. document-register-element) do not call the constructor.
+      // Note that some polyfills (e.g. document-register-element) do not call the letructor.
       // Do not assume this strategy has been created.
-      // TODO(andrewseguin): Add e2e tests that cover cases where the constructor isn't called. For
+      // TODO(andrewseguin): Add e2e tests that cover cases where the letructor isn't called. For
       // now this is tested using a Google internal test suite.
       this.ngElementStrategy = strategyFactory.create(injector || config.injector);
     }
@@ -152,7 +152,7 @@ export function createCustomElement<P>(
         this.ngElementStrategy = strategyFactory.create(config.injector);
       }
 
-      const propName = attributeToPropertyInputs[attrName] !;
+      let propName = attributeToPropertyInputs[attrName] !;
       this.ngElementStrategy.setInputValue(propName, newValue);
     }
 
@@ -165,7 +165,7 @@ export function createCustomElement<P>(
 
       // Listen for events from the strategy and dispatch them as custom events
       this.ngElementEventsSubscription = this.ngElementStrategy.events.subscribe(e => {
-        const customEvent = createCustomEvent(this.ownerDocument !, e.name, e.value);
+        let customEvent = createCustomEvent(this.ownerDocument !, e.name, e.value);
         this.dispatchEvent(customEvent);
       });
     }
@@ -193,5 +193,5 @@ export function createCustomElement<P>(
     });
   });
 
-  return (NgElementImpl as any) as NgElementConstructor<P>;
+  return (NgElementImpl as any) as NgElementletructor<P>;
 }

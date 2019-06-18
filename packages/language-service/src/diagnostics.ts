@@ -19,9 +19,9 @@ export interface AstProvider {
 
 export function getTemplateDiagnostics(
     fileName: string, astProvider: AstProvider, templates: TemplateSource[]): Diagnostics {
-  const results: Diagnostics = [];
-  for (const template of templates) {
-    const ast = astProvider.getTemplateAst(template, fileName);
+  let results: Diagnostics = [];
+  for (let template of templates) {
+    let ast = astProvider.getTemplateAst(template, fileName);
     if (ast) {
       if (ast.parseErrors && ast.parseErrors.length) {
         results.push(...ast.parseErrors.map<Diagnostic>(
@@ -31,14 +31,14 @@ export function getTemplateDiagnostics(
               message: e.msg
             })));
       } else if (ast.templateAst && ast.htmlAst) {
-        const info: DiagnosticTemplateInfo = {
+        let info: DiagnosticTemplateInfo = {
           templateAst: ast.templateAst,
           htmlAst: ast.htmlAst,
           offset: template.span.start,
           query: template.query,
           members: template.members
         };
-        const expressionDiagnostics = getTemplateExpressionDiagnostics(info);
+        let expressionDiagnostics = getTemplateExpressionDiagnostics(info);
         results.push(...expressionDiagnostics);
       }
       if (ast.errors) {
@@ -52,17 +52,17 @@ export function getTemplateDiagnostics(
 
 export function getDeclarationDiagnostics(
     declarations: Declarations, modules: NgAnalyzedModules): Diagnostics {
-  const results: Diagnostics = [];
+  let results: Diagnostics = [];
 
   let directives: Set<StaticSymbol>|undefined = undefined;
-  for (const declaration of declarations) {
-    const report = (message: string | DiagnosticMessageChain, span?: Span) => {
+  for (let declaration of declarations) {
+    let report = (message: string | DiagnosticMessageChain, span?: Span) => {
       results.push(<Diagnostic>{
         kind: DiagnosticKind.Error,
         span: span || declaration.declarationSpan, message
       });
     };
-    for (const error of declaration.errors) {
+    for (let error of declaration.errors) {
       report(error.message, error.span);
     }
     if (declaration.metadata) {
@@ -71,7 +71,7 @@ export function getDeclarationDiagnostics(
           report(
               `Component '${declaration.type.name}' is not included in a module and will not be available inside a template. Consider adding it to a NgModule declaration`);
         }
-        const {template, templateUrl} = declaration.metadata.template !;
+        let {template, templateUrl} = declaration.metadata.template !;
         if (template === null && !templateUrl) {
           report(`Component '${declaration.type.name}' must have a template or templateUrl`);
         } else if (template && templateUrl) {

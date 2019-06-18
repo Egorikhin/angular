@@ -68,9 +68,9 @@ export function hasTemplateReference(type: CompileTypeMetadata): boolean {
 }
 
 export function getSelectors(info: TemplateInfo): SelectorInfo {
-  const map = new Map<CssSelector, CompileDirectiveSummary>();
-  const selectors: CssSelector[] = flatten(info.directives.map(directive => {
-    const selectors: CssSelector[] = CssSelector.parse(directive.selector !);
+  let map = new Map<CssSelector, CompileDirectiveSummary>();
+  let selectors: CssSelector[] = flatten(info.directives.map(directive => {
+    let selectors: CssSelector[] = CssSelector.parse(directive.selector !);
     selectors.forEach(selector => map.set(selector, directive));
     return selectors;
   }));
@@ -91,9 +91,9 @@ export function uniqueByName < T extends {
 }
 > (elements: T[] | undefined): T[]|undefined {
   if (elements) {
-    const result: T[] = [];
-    const set = new Set<string>();
-    for (const element of elements) {
+    let result: T[] = [];
+    let set = new Set<string>();
+    for (let element of elements) {
       if (!set.has(element.name)) {
         set.add(element.name);
         result.push(element);
@@ -104,7 +104,7 @@ export function uniqueByName < T extends {
 }
 
 export function isTypescriptVersion(low: string, high?: string) {
-  const version = ts.version;
+  let version = ts.version;
 
   if (version.substring(0, low.length) < low) return false;
 
@@ -126,12 +126,12 @@ export function diagnosticInfoFromTemplateInfo(info: TemplateInfo): DiagnosticTe
 
 export function findTemplateAstAt(
     ast: TemplateAst[], position: number, allowWidening: boolean = false): TemplateAstPath {
-  const path: TemplateAst[] = [];
-  const visitor = new class extends RecursiveTemplateAstVisitor {
+  let path: TemplateAst[] = [];
+  let visitor = new class extends RecursiveTemplateAstVisitor {
     visit(ast: TemplateAst, context: any): any {
       let span = spanOf(ast);
       if (inSpan(position, span)) {
-        const len = path.length;
+        let len = path.length;
         if (!len || allowWidening || isNarrower(span, spanOf(path[len - 1]))) {
           path.push(ast);
         }
@@ -164,7 +164,7 @@ export function findTemplateAstAt(
 
     visitDirective(ast: DirectiveAst, context: any): any {
       // Ignore the host properties of a directive
-      const result = this.visitChildren(context, visit => { visit(ast.inputs); });
+      let result = this.visitChildren(context, visit => { visit(ast.inputs); });
       // We never care about the diretive itself, just its inputs.
       if (path[path.length - 1] == ast) {
         path.pop();

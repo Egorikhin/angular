@@ -12,28 +12,28 @@ import {StaticSymbolCache, JitCompiler, ProviderMeta, I18NHtmlParser, ViewCompil
 
 import {JitReflector} from './compiler_reflector';
 
-export const ERROR_COLLECTOR_TOKEN = new InjectionToken('ErrorCollector');
+export let ERROR_COLLECTOR_TOKEN = new InjectionToken('ErrorCollector');
 
 /**
  * A default provider for {@link PACKAGE_ROOT_URL} that maps to '/'.
  */
-export const DEFAULT_PACKAGE_URL_PROVIDER = {
+export let DEFAULT_PACKAGE_URL_PROVIDER = {
   provide: PACKAGE_ROOT_URL,
   useValue: '/'
 };
 
-const _NO_RESOURCE_LOADER: ResourceLoader = {
+let _NO_RESOURCE_LOADER: ResourceLoader = {
   get(url: string): Promise<string>{
       throw new Error(
           `No ResourceLoader implementation has been provided. Can't read the url "${url}"`);}
 };
 
-const baseHtmlParser = new InjectionToken('HtmlParser');
+let baseHtmlParser = new InjectionToken('HtmlParser');
 
 export class CompilerImpl implements Compiler {
   private _delegate: JitCompiler;
   public readonly injector: Injector;
-  constructor(
+  letructor(
       injector: Injector, private _metadataResolver: CompileMetadataResolver,
       templateParser: TemplateParser, styleCompiler: StyleCompiler, viewCompiler: ViewCompiler,
       ngModuleCompiler: NgModuleCompiler, summaryResolver: SummaryResolver<Type<any>>,
@@ -58,7 +58,7 @@ export class CompilerImpl implements Compiler {
     return this._delegate.compileModuleAsync(moduleType) as Promise<NgModuleFactory<T>>;
   }
   compileModuleAndAllComponentsSync<T>(moduleType: Type<T>): ModuleWithComponentFactories<T> {
-    const result = this._delegate.compileModuleAndAllComponentsSync(moduleType);
+    let result = this._delegate.compileModuleAndAllComponentsSync(moduleType);
     return {
       ngModuleFactory: result.ngModuleFactory as NgModuleFactory<T>,
       componentFactories: result.componentFactories as ComponentFactory<any>[],
@@ -80,7 +80,7 @@ export class CompilerImpl implements Compiler {
   clearCache(): void { this._delegate.clearCache(); }
   clearCacheFor(type: Type<any>) { this._delegate.clearCacheFor(type); }
   getModuleId(moduleType: Type<any>): string|undefined {
-    const meta = this._metadataResolver.getNgModuleMetadata(moduleType);
+    let meta = this._metadataResolver.getNgModuleMetadata(moduleType);
     return meta && meta.id || undefined;
   }
 }
@@ -89,7 +89,7 @@ export class CompilerImpl implements Compiler {
  * A set of providers that provide `JitCompiler` and its dependencies to use for
  * template compilation.
  */
-export const COMPILER_PROVIDERS = <StaticProvider[]>[
+export let COMPILER_PROVIDERS = <StaticProvider[]>[
   {provide: CompileReflector, useValue: new JitReflector()},
   {provide: ResourceLoader, useValue: _NO_RESOURCE_LOADER},
   {provide: JitSummaryResolver, deps: []},
@@ -107,7 +107,7 @@ export const COMPILER_PROVIDERS = <StaticProvider[]>[
     useFactory: (parser: HtmlParser, translations: string | null, format: string,
                  config: CompilerConfig, console: Console) => {
       translations = translations || '';
-      const missingTranslation =
+      let missingTranslation =
           translations ? config.missingTranslation ! : MissingTranslationStrategy.Ignore;
       return new I18NHtmlParser(parser, translations, format, missingTranslation, console);
     },
@@ -163,8 +163,8 @@ export class JitCompilerFactory implements CompilerFactory {
   private _defaultOptions: CompilerOptions[];
 
   /* @internal */
-  constructor(defaultOptions: CompilerOptions[]) {
-    const compilerOptions: CompilerOptions = {
+  letructor(defaultOptions: CompilerOptions[]) {
+    let compilerOptions: CompilerOptions = {
       useJit: true,
       defaultEncapsulation: ViewEncapsulation.Emulated,
       missingTranslation: MissingTranslationStrategy.Warning,
@@ -173,8 +173,8 @@ export class JitCompilerFactory implements CompilerFactory {
     this._defaultOptions = [compilerOptions, ...defaultOptions];
   }
   createCompiler(options: CompilerOptions[] = []): Compiler {
-    const opts = _mergeOptions(this._defaultOptions.concat(options));
-    const injector = Injector.create([
+    let opts = _mergeOptions(this._defaultOptions.concat(options));
+    let injector = Injector.create([
       COMPILER_PROVIDERS, {
         provide: CompilerConfig,
         useFactory: () => {
@@ -218,7 +218,7 @@ function _lastDefined<T>(args: T[]): T|undefined {
 }
 
 function _mergeArrays(parts: any[][]): any[] {
-  const result: any[] = [];
+  let result: any[] = [];
   parts.forEach((part) => part && result.push(...part));
   return result;
 }

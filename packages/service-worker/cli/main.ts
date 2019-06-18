@@ -6,24 +6,24 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const {Generator, NgswConfig} = require('@angular/service-worker/config');
-const fs = require('fs');
-const path = require('path');
+let {Generator, NgswConfig} = require('@angular/service-worker/config');
+let fs = require('fs');
+let path = require('path');
 import {NodeFilesystem} from './filesystem';
 
 
-const cwd = process.cwd();
+let cwd = process.cwd();
 
-const distDir = path.join(cwd, process.argv[2]);
-const config = path.join(cwd, process.argv[3]);
-const baseHref = process.argv[4] || '/';
+let distDir = path.join(cwd, process.argv[2]);
+let config = path.join(cwd, process.argv[3]);
+let baseHref = process.argv[4] || '/';
 
-const configParsed = JSON.parse(fs.readFileSync(config).toString());
+let configParsed = JSON.parse(fs.readFileSync(config).toString());
 
-const filesystem = new NodeFilesystem(distDir);
-const gen = new Generator(filesystem, baseHref);
+let filesystem = new NodeFilesystem(distDir);
+let gen = new Generator(filesystem, baseHref);
 
 (async() => {
-  const control = await gen.process(configParsed);
+  let control = await gen.process(configParsed);
   await filesystem.write('/ngsw.json', JSON.stringify(control, null, 2));
 })();

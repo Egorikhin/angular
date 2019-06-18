@@ -27,7 +27,7 @@ describe('aot summaries for jit', () => {
   }
 
   it('should create @Injectable summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.module.ts': `
         import { Injectable } from '@angular/core';
 
@@ -35,15 +35,15 @@ describe('aot summaries for jit', () => {
 
         @Injectable()
         export class MyService {
-          constructor(d: Dep) {}
+          letructor(d: Dep) {}
         }
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toContain(`import * as i0 from '/app/app.module'`);
     expect(genSource).toContain('export function MyServiceNgSummary()');
@@ -53,7 +53,7 @@ describe('aot summaries for jit', () => {
   });
 
   it('should create @Pipe summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.module.ts': `
         import { Pipe, NgModule } from '@angular/core';
 
@@ -61,18 +61,18 @@ describe('aot summaries for jit', () => {
 
         @Pipe({name: 'myPipe'})
         export class MyPipe {
-          constructor(d: Dep) {}
+          letructor(d: Dep) {}
         }
 
         @NgModule({declarations: [MyPipe]})
         export class MyModule {}
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toContain(`import * as i0 from '/app/app.module'`);
     expect(genSource).toContain('export function MyPipeNgSummary()');
@@ -82,7 +82,7 @@ describe('aot summaries for jit', () => {
   });
 
   it('should create @Directive summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.module.ts': `
         import { Directive, NgModule } from '@angular/core';
 
@@ -90,18 +90,18 @@ describe('aot summaries for jit', () => {
 
         @Directive({selector: '[myDir]'})
         export class MyDirective {
-          constructor(a: Dep) {}
+          letructor(a: Dep) {}
         }
 
         @NgModule({declarations: [MyDirective]})
         export class MyModule {}
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toContain(`import * as i0 from '/app/app.module'`);
     expect(genSource).toContain('export function MyDirectiveNgSummary()');
@@ -111,7 +111,7 @@ describe('aot summaries for jit', () => {
   });
 
   it('should create @NgModule summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.module.ts': `
         import { NgModule } from '@angular/core';
 
@@ -119,15 +119,15 @@ describe('aot summaries for jit', () => {
 
         @NgModule()
         export class MyModule {
-          constructor(d: Dep) {}
+          letructor(d: Dep) {}
         }
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toContain(`import * as i0 from '/app/app.module'`);
     expect(genSource).toContain('export function MyModuleNgSummary()');
@@ -137,7 +137,7 @@ describe('aot summaries for jit', () => {
   });
 
   it('should embed useClass provider summaries in @Directive summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.service.ts': `
         import { Injectable } from '@angular/core';
 
@@ -145,7 +145,7 @@ describe('aot summaries for jit', () => {
 
         @Injectable()
         export class MyService {
-          constructor(d: Dep) {}
+          letructor(d: Dep) {}
         }
       `,
       'app.module.ts': `
@@ -162,11 +162,11 @@ describe('aot summaries for jit', () => {
         export class MyModule {}
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toMatch(/useClass:\{\s*reference:i1.MyService/);
     // Note: CompileSummaryKind.Injectable = 3
@@ -175,7 +175,7 @@ describe('aot summaries for jit', () => {
   });
 
   it('should embed useClass provider summaries into @NgModule summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.service.ts': `
         import { Injectable } from '@angular/core';
 
@@ -183,7 +183,7 @@ describe('aot summaries for jit', () => {
 
         @Injectable()
         export class MyService {
-          constructor(d: Dep) {}
+          letructor(d: Dep) {}
         }
       `,
       'app.module.ts': `
@@ -196,11 +196,11 @@ describe('aot summaries for jit', () => {
         export class MyModule {}
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toMatch(/useClass:\{\s*reference:i1.MyService/);
     // Note: CompileSummaryKind.Injectable = 3
@@ -209,7 +209,7 @@ describe('aot summaries for jit', () => {
   });
 
   it('should reference declared @Directive and @Pipe summaries in @NgModule summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.module.ts': `
         import { Directive, Pipe, NgModule } from '@angular/core';
 
@@ -223,18 +223,18 @@ describe('aot summaries for jit', () => {
         export class MyModule {}
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toMatch(
         /export function MyModuleNgSummary()[^;]*,\s*MyDirectiveNgSummary,\s*MyPipeNgSummary\s*\]\s*;/);
   });
 
   it('should reference imported @NgModule summaries in @NgModule summaries', () => {
-    const appDir = {
+    let appDir = {
       'app.module.ts': `
         import { NgModule } from '@angular/core';
 
@@ -245,11 +245,11 @@ describe('aot summaries for jit', () => {
         export class MyModule {}
       `
     };
-    const rootDir = {'app': appDir};
+    let rootDir = {'app': appDir};
 
-    const genFile =
+    let genFile =
         compileApp(rootDir).genFiles.find(f => f.genFileUrl === '/app/app.module.ngsummary.ts') !;
-    const genSource = toTypeScript(genFile);
+    let genSource = toTypeScript(genFile);
 
     expect(genSource).toMatch(
         /export function MyModuleNgSummary()[^;]*,\s*MyImportedModuleNgSummary\s*\]\s*;/);
@@ -258,7 +258,7 @@ describe('aot summaries for jit', () => {
   it('should create and use reexports for imported NgModules ' +
          'across compilation units if symbol re-exports are enabled',
      () => {
-       const lib1In = {
+       let lib1In = {
          'lib1': {
            'module.ts': `
           import { NgModule } from '@angular/core';
@@ -272,11 +272,11 @@ describe('aot summaries for jit', () => {
           @NgModule()
           export class ReexportModule {}
 
-          export const reexports: any[] = [ ReexportModule ];
+          export let reexports: any[] = [ ReexportModule ];
         `,
          }
        };
-       const {outDir: lib2In, genFiles: lib1Gen} = compileApp(lib1In, {
+       let {outDir: lib2In, genFiles: lib1Gen} = compileApp(lib1In, {
          useSummaries: true,
          createExternalSymbolFactoryReexports: true,
        });
@@ -293,17 +293,17 @@ describe('aot summaries for jit', () => {
         `,
          'reexport.ts': `
         import { reexports as reexports_lib1 } from '../lib1/reexport';
-        export const reexports: any[] = [ reexports_lib1 ];
+        export let reexports: any[] = [ reexports_lib1 ];
         `,
        };
-       const {outDir: lib3In, genFiles: lib2Gen} = compileApp(lib2In, {
+       let {outDir: lib3In, genFiles: lib2Gen} = compileApp(lib2In, {
          useSummaries: true,
          createExternalSymbolFactoryReexports: true,
        });
 
-       const lib2ModuleNgSummary =
+       let lib2ModuleNgSummary =
            lib2Gen.find(f => f.genFileUrl === '/lib2/module.ngsummary.ts') !;
-       const lib2ReexportNgSummary =
+       let lib2ReexportNgSummary =
            lib2Gen.find(f => f.genFileUrl === '/lib2/reexport.ngsummary.ts') !;
 
        // ngsummaries should add reexports for imported NgModules from a direct dependency
@@ -328,21 +328,21 @@ describe('aot summaries for jit', () => {
         `,
          'reexport.ts': `
         import { reexports as reexports_lib2 } from '../lib2/reexport';
-        export const reexports: any[] = [ reexports_lib2 ];
+        export let reexports: any[] = [ reexports_lib2 ];
         `,
        };
 
-       const lib3Gen = compileApp(lib3In, {
+       let lib3Gen = compileApp(lib3In, {
                          useSummaries: true,
                          createExternalSymbolFactoryReexports: true
                        }).genFiles;
-       const lib3ModuleNgSummary =
+       let lib3ModuleNgSummary =
            lib3Gen.find(f => f.genFileUrl === '/lib3/module.ngsummary.ts') !;
-       const lib3ReexportNgSummary =
+       let lib3ReexportNgSummary =
            lib3Gen.find(f => f.genFileUrl === '/lib3/reexport.ngsummary.ts') !;
 
        // ngsummary.ts files should use the reexported values from direct and deep deps
-       const lib3ModuleNgSummarySource = toTypeScript(lib3ModuleNgSummary);
+       let lib3ModuleNgSummarySource = toTypeScript(lib3ModuleNgSummary);
        expect(lib3ModuleNgSummarySource).toContain(`import * as i4 from '/lib2/module.ngsummary'`);
        expect(lib3ModuleNgSummarySource)
            .toContain(`import * as i5 from '/lib2/reexport.ngsummary'`);
@@ -361,7 +361,7 @@ describe('aot summaries for jit', () => {
      });
 
   it('should not create reexports for external symbols imported by NgModules', () => {
-    const lib1In = {
+    let lib1In = {
       'lib1': {
         'module.ts': `
           import { NgModule } from '@angular/core';
@@ -374,12 +374,12 @@ describe('aot summaries for jit', () => {
           @NgModule()
           export class ReexportModule {}
 
-          export const reexports: any[] = [ ReexportModule ];`,
+          export let reexports: any[] = [ ReexportModule ];`,
       }
     };
-    const {outDir: lib1Out} = compileApp(lib1In, {useSummaries: true});
+    let {outDir: lib1Out} = compileApp(lib1In, {useSummaries: true});
 
-    const lib2In = {
+    let lib2In = {
       ...lib1Out,
       'lib2': {
         'module.ts': `
@@ -392,14 +392,14 @@ describe('aot summaries for jit', () => {
           export class Lib2Module {}`,
         'reexport.ts': `
           import { reexports as reexports_lib1 } from '../lib1/reexport';
-          export const reexports: any[] = [ reexports_lib1 ];`,
+          export let reexports: any[] = [ reexports_lib1 ];`,
       },
     };
 
-    const {outDir: lib2Out, genFiles: lib2Gen} = compileApp(lib2In, {useSummaries: true});
+    let {outDir: lib2Out, genFiles: lib2Gen} = compileApp(lib2In, {useSummaries: true});
 
-    const lib2ModuleNgSummary = lib2Gen.find(f => f.genFileUrl === '/lib2/module.ngsummary.ts') !;
-    const lib2ReexportNgSummary =
+    let lib2ModuleNgSummary = lib2Gen.find(f => f.genFileUrl === '/lib2/module.ngsummary.ts') !;
+    let lib2ReexportNgSummary =
         lib2Gen.find(f => f.genFileUrl === '/lib2/reexport.ngsummary.ts') !;
 
     // ngsummaries should not add reexports by default for imported NgModules from a direct
@@ -413,7 +413,7 @@ describe('aot summaries for jit', () => {
         .toContain(
             `export {ReexportModuleNgSummary as ReexportModuleNgSummary} from '/lib1/reexport.ngsummary'`);
 
-    const lib3In = {
+    let lib3In = {
       ...lib1Out,
       ...lib2Out,
       'lib3': {
@@ -429,20 +429,20 @@ describe('aot summaries for jit', () => {
         `,
         'reexport.ts': `
           import { reexports as reexports_lib2 } from '../lib2/reexport';
-          export const reexports: any[] = [ reexports_lib2 ];
+          export let reexports: any[] = [ reexports_lib2 ];
         `,
       },
     };
 
-    const lib3Gen = compileApp(lib3In, {useSummaries: true}).genFiles;
-    const lib3ModuleNgSummary = lib3Gen.find(f => f.genFileUrl === '/lib3/module.ngsummary.ts') !;
-    const lib3ReexportNgSummary =
+    let lib3Gen = compileApp(lib3In, {useSummaries: true}).genFiles;
+    let lib3ModuleNgSummary = lib3Gen.find(f => f.genFileUrl === '/lib3/module.ngsummary.ts') !;
+    let lib3ReexportNgSummary =
         lib3Gen.find(f => f.genFileUrl === '/lib3/reexport.ngsummary.ts') !;
 
     // ngsummary.ts files should use the external symbols which are manually re-exported from
     // "lib2" from their original symbol location. With re-exported external symbols this would
     // be different because there would be no *direct* dependency on "lib1" at all.
-    const lib3ModuleNgSummarySource = toTypeScript(lib3ModuleNgSummary);
+    let lib3ModuleNgSummarySource = toTypeScript(lib3ModuleNgSummary);
     expect(lib3ModuleNgSummarySource).toContain(`import * as i1 from '/lib1/module';`);
     expect(lib3ModuleNgSummarySource).toContain(`import * as i3 from '/lib1/reexport';`);
     expect(lib3ModuleNgSummarySource)

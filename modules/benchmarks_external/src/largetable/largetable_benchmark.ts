@@ -9,9 +9,9 @@
 import {getIntParameter, getStringParameter, bindAction} from '@angular/testing/src/benchmark_util';
 declare var angular: any;
 
-const totalRows = getIntParameter('rows');
-const totalColumns = getIntParameter('columns');
-const benchmarkType = getStringParameter('benchmarkType');
+let totalRows = getIntParameter('rows');
+let totalColumns = getIntParameter('columns');
+let benchmarkType = getStringParameter('benchmarkType');
 
 export function main() {
   angular.bootstrap(document.querySelector('largetable'), ['app']);
@@ -45,7 +45,7 @@ angular.module('app', [])
                     $scope.$apply(function() { $scope.benchmarkType = benchmarkType; });
                   }
 
-                  const data = $scope.data = [];
+                  let data = $scope.data = [];
 
                   function iGetter() { return this.i; }
                   function jGetter() { return this.j; }
@@ -63,7 +63,7 @@ angular.module('app', [])
                    restrict: 'E',
                    link: function($scope, $element) {
                      let i, j, row, cell, comment;
-                     const template = document.createElement('span');
+                     let template = document.createElement('span');
                      template.setAttribute('ng-repeat', 'foo in foos');
                      template.classList.add('ng-scope');
                      template.appendChild(document.createElement('span'));
@@ -95,7 +95,7 @@ angular.module('app', [])
         restrict: 'E',
         link: function($scope, $element) {
           let i, j, row, cell, comment;
-          const template = document.createElement('span');
+          let template = document.createElement('span');
           template.setAttribute('ng-repeat', 'foo in foos');
           template.classList.add('ng-scope');
 

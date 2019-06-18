@@ -5,30 +5,30 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const Package = require('dgeni').Package;
-const glob = require('glob');
-const ignore = require('ignore');
-const fs = require('fs');
-const path = require('canonical-path');
-const basePackage = require('../angular-base-package');
-const contentPackage = require('../content-package');
+let Package = require('dgeni').Package;
+let glob = require('glob');
+let ignore = require('ignore');
+let fs = require('fs');
+let path = require('canonical-path');
+let basePackage = require('../angular-base-package');
+let contentPackage = require('../content-package');
 
-const { CONTENTS_PATH, GUIDE_EXAMPLES_PATH } = require('../config');
+let { CONTENTS_PATH, GUIDE_EXAMPLES_PATH } = require('../config');
 
 module.exports = new Package('angular-content', [basePackage, contentPackage])
 
   // Where do we get the source files?
   .config(function(readFilesProcessor, collectExamples, renderExamples) {
 
-    const gitignoreFilePath = path.resolve(GUIDE_EXAMPLES_PATH, '.gitignore');
-    const gitignoreFile = fs.readFileSync(gitignoreFilePath, 'utf8');
-    const gitignore = ignore().add(gitignoreFile);
+    let gitignoreFilePath = path.resolve(GUIDE_EXAMPLES_PATH, '.gitignore');
+    let gitignoreFile = fs.readFileSync(gitignoreFilePath, 'utf8');
+    let gitignore = ignore().add(gitignoreFile);
 
-    const examplePaths = glob.sync('**/*', { cwd: GUIDE_EXAMPLES_PATH, dot: true, ignore: '**/node_modules/**', mark: true })
+    let examplePaths = glob.sync('**/*', { cwd: GUIDE_EXAMPLES_PATH, dot: true, ignore: '**/node_modules/**', mark: true })
                             .filter(filePath => filePath !== '.gitignore') // we are not interested in the .gitignore file itself
                             .filter(filePath => !/\/$/.test(filePath)); // this filter removes the folders, leaving only files
-    const ignoredExamplePaths = [];
-    const resolvedExamplePaths = [];
+    let ignoredExamplePaths = [];
+    let resolvedExamplePaths = [];
 
     examplePaths.forEach(filePath => {
       // filter out files that match the .gitignore rules

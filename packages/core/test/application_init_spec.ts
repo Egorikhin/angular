@@ -33,7 +33,7 @@ import {TestBed, async, inject} from '../testing';
       beforeEach(() => {
         let initializerFactory = (injector: Injector) => {
           return () => {
-            const initStatus = injector.get(ApplicationInitStatus);
+            let initStatus = injector.get(ApplicationInitStatus);
             initStatus.donePromise.then(() => { expect(completerResolver).toBe(true); });
           };
         };

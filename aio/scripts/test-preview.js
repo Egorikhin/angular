@@ -12,21 +12,21 @@
  */
 
 // Imports
-const {spawn} = require('child_process');
-const {get: httpsGet} = require('https');
-const {relative} = require('path');
+let {spawn} = require('child_process');
+let {get: httpsGet} = require('https');
+let {relative} = require('path');
 
 // Input
-const [prNumber, prLastSha, minPwaScore] = validateArgs(process.argv.slice(2));
+let [prNumber, prLastSha, minPwaScore] = validateArgs(process.argv.slice(2));
 
 // Variables
-const aioBuildsDomain = 'ngbuilds.io';
-const previewCheckInterval = 30000;
-const previewCheckAttempts = 10;
+let aioBuildsDomain = 'ngbuilds.io';
+let previewCheckInterval = 30000;
+let previewCheckAttempts = 10;
 
-const shortSha = prLastSha && prLastSha.slice(0, 7);
-const previewabilityCheckUrl = `https://${aioBuildsDomain}/can-have-public-preview/${prNumber}`;
-const previewUrl = `https://pr${prNumber}-${shortSha}.${aioBuildsDomain}/`;
+let shortSha = prLastSha && prLastSha.slice(0, 7);
+let previewabilityCheckUrl = `https://${aioBuildsDomain}/can-have-public-preview/${prNumber}`;
+let previewUrl = `https://pr${prNumber}-${shortSha}.${aioBuildsDomain}/`;
 
 // Check whether the PR can have a (public) preview.
 get(previewabilityCheckUrl).
@@ -42,7 +42,7 @@ get(previewabilityCheckUrl).
     return poll(previewCheckInterval, previewCheckAttempts, () => get(previewUrl)).
       // The preview is still not available after the specified waiting period.
       catch(() => {
-        const totalSecs = Math.round((previewCheckInterval * previewCheckAttempts) / 1000);
+        let totalSecs = Math.round((previewCheckInterval * previewCheckAttempts) / 1000);
         throw new Error(`Preview still not available after ${totalSecs}s.`);
       }).
       // The preview is now available. Run the tests.
@@ -55,9 +55,9 @@ get(previewabilityCheckUrl).
 function get(url) {
   console.log(`GET ${url}`);
   return new Promise((resolve, reject) => {
-    const onResponse = res => {
-      const statusCode = res.statusCode || -1;
-      const isSuccess = (200 <= statusCode) && (statusCode < 400);
+    let onResponse = res => {
+      let statusCode = res.statusCode || -1;
+      let isSuccess = (200 <= statusCode) && (statusCode < 400);
       let responseText = '';
 
       res.
@@ -96,8 +96,8 @@ function reportNoPreview(reason) {
 
 function validateArgs(args) {
   if (args.length !== 3) {
-    const relativeScriptPath = relative('.', __filename.replace(/\.js$/, ''));
-    const usageCmd = `node ${relativeScriptPath} <pr-number> <pr-last-sha> <min-pwa-score>`;
+    let relativeScriptPath = relative('.', __filename.replace(/\.js$/, ''));
+    let usageCmd = `node ${relativeScriptPath} <pr-number> <pr-last-sha> <min-pwa-score>`;
 
     return onError(
       `Invalid number of arguments (expected 3, found ${args.length}).\n` +
@@ -114,7 +114,7 @@ function wait(delay) {
 
 function yarnRun(script, ...args) {
   return new Promise((resolve, reject) => {
-    const spawnOptions = {cwd: __dirname, stdio: 'inherit'};
+    let spawnOptions = {cwd: __dirname, stdio: 'inherit'};
     spawn('yarn', [script, ...args], spawnOptions).
       on('error', reject).
       on('exit', code => (code === 0 ? resolve : reject)());

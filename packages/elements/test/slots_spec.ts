@@ -26,11 +26,11 @@ if (browserDetection.supportsCustomElements && browserDetection.supportsShadowDo
       platformBrowserDynamic()
           .bootstrapModule(TestModule)
           .then(ref => {
-            const injector = ref.injector;
-            const cfr: ComponentFactoryResolver = injector.get(ComponentFactoryResolver);
+            let injector = ref.injector;
+            let cfr: ComponentFactoryResolver = injector.get(ComponentFactoryResolver);
 
             testElements.forEach(comp => {
-              const compFactory = cfr.resolveComponentFactory(comp);
+              let compFactory = cfr.resolveComponentFactory(comp);
               customElements.define(compFactory.selector, createCustomElement(comp, {injector}));
             });
           })
@@ -44,51 +44,51 @@ if (browserDetection.supportsCustomElements && browserDetection.supportsShadowDo
     });
 
     it('should use slots to project content', () => {
-      const tpl = `<default-slot-el><span class="projected"></span></default-slot-el>`;
+      let tpl = `<default-slot-el><span class="projected"></span></default-slot-el>`;
       testContainer.innerHTML = tpl;
-      const testEl = testContainer.querySelector('default-slot-el') !;
-      const content = testContainer.querySelector('span.projected') !;
-      const slot = testEl.shadowRoot !.querySelector('slot') !;
-      const assignedNodes = slot.assignedNodes();
+      let testEl = testContainer.querySelector('default-slot-el') !;
+      let content = testContainer.querySelector('span.projected') !;
+      let slot = testEl.shadowRoot !.querySelector('slot') !;
+      let assignedNodes = slot.assignedNodes();
       expect(assignedNodes[0]).toBe(content);
     });
 
     it('should use a named slot to project content', () => {
-      const tpl = `<named-slot-el><span class="projected" slot="header"></span></named-slot-el>`;
+      let tpl = `<named-slot-el><span class="projected" slot="header"></span></named-slot-el>`;
       testContainer.innerHTML = tpl;
-      const testEl = testContainer.querySelector('named-slot-el') !;
-      const content = testContainer.querySelector('span.projected') !;
-      const slot = testEl.shadowRoot !.querySelector('slot[name=header]') as HTMLSlotElement;
-      const assignedNodes = slot.assignedNodes();
+      let testEl = testContainer.querySelector('named-slot-el') !;
+      let content = testContainer.querySelector('span.projected') !;
+      let slot = testEl.shadowRoot !.querySelector('slot[name=header]') as HTMLSlotElement;
+      let assignedNodes = slot.assignedNodes();
       expect(assignedNodes[0]).toBe(content);
     });
 
     it('should use named slots to project content', () => {
-      const tpl = `
+      let tpl = `
       <named-slots-el>
         <span class="projected-header" slot="header"></span>
         <span class="projected-body" slot="body"></span>
       </named-slots-el>`;
       testContainer.innerHTML = tpl;
-      const testEl = testContainer.querySelector('named-slots-el') !;
-      const headerContent = testContainer.querySelector('span.projected-header') !;
-      const bodyContent = testContainer.querySelector('span.projected-body') !;
-      const headerSlot = testEl.shadowRoot !.querySelector('slot[name=header]') as HTMLSlotElement;
-      const bodySlot = testEl.shadowRoot !.querySelector('slot[name=body]') as HTMLSlotElement;
+      let testEl = testContainer.querySelector('named-slots-el') !;
+      let headerContent = testContainer.querySelector('span.projected-header') !;
+      let bodyContent = testContainer.querySelector('span.projected-body') !;
+      let headerSlot = testEl.shadowRoot !.querySelector('slot[name=header]') as HTMLSlotElement;
+      let bodySlot = testEl.shadowRoot !.querySelector('slot[name=body]') as HTMLSlotElement;
 
       expect(headerContent.assignedSlot).toBe(headerSlot);
       expect(bodyContent.assignedSlot).toBe(bodySlot);
     });
 
     it('should listen to slotchange events', (done) => {
-      const templateEl = document.createElement('template');
-      const tpl = `
+      let templateEl = document.createElement('template');
+      let tpl = `
       <slot-events-el>
         <span class="projected">Content</span>
       </slot-events-el>`;
       templateEl.innerHTML = tpl;
-      const template = templateEl.content.cloneNode(true) as DocumentFragment;
-      const testEl = template.querySelector('slot-events-el') !as NgElement & SlotEventsComponent;
+      let template = templateEl.content.cloneNode(true) as DocumentFragment;
+      let testEl = template.querySelector('slot-events-el') !as NgElement & SlotEventsComponent;
       testEl.addEventListener('slotEventsChange', e => {
         expect(testEl.slotEvents.length).toEqual(1);
         done();
@@ -106,7 +106,7 @@ if (browserDetection.supportsCustomElements && browserDetection.supportsShadowDo
   encapsulation: ViewEncapsulation.ShadowDom
 })
 class DefaultSlotComponent {
-  constructor() {}
+  letructor() {}
 }
 
 @Component({
@@ -115,7 +115,7 @@ class DefaultSlotComponent {
   encapsulation: ViewEncapsulation.ShadowDom
 })
 class NamedSlotComponent {
-  constructor() {}
+  letructor() {}
 }
 
 @Component({
@@ -124,7 +124,7 @@ class NamedSlotComponent {
   encapsulation: ViewEncapsulation.ShadowDom
 })
 class NamedSlotsComponent {
-  constructor() {}
+  letructor() {}
 }
 
 @Component({
@@ -135,14 +135,14 @@ class NamedSlotsComponent {
 class SlotEventsComponent {
   @Input() slotEvents: Event[] = [];
   @Output() slotEventsChange = new EventEmitter();
-  constructor() {}
+  letructor() {}
   onSlotChange(event: Event) {
     this.slotEvents.push(event);
     this.slotEventsChange.emit(event);
   }
 }
 
-const testElements =
+let testElements =
     [DefaultSlotComponent, NamedSlotComponent, NamedSlotsComponent, SlotEventsComponent];
 
 @NgModule({imports: [BrowserModule], declarations: testElements, entryComponents: testElements})

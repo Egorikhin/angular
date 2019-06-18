@@ -22,7 +22,7 @@ function httpRequest(backend: ConnectionBackend, request: Request): Observable<R
 function mergeOptions(
     defaultOpts: BaseRequestOptions, providedOpts: RequestOptionsArgs | undefined,
     method: RequestMethod, url: string): RequestArgs {
-  const newOptions = defaultOpts;
+  let newOptions = defaultOpts;
   if (providedOpts) {
     // Hack so Dart can used named parameters
     return newOptions.merge(new RequestOptions({
@@ -60,7 +60,7 @@ function mergeOptions(
  *   templateUrl: 'people.html'
  * })
  * class PeopleComponent {
- *   constructor(http: Http) {
+ *   letructor(http: Http) {
  *     http.get('people.json')
  *       // Call map on the response observable to get the parsed people object
  *       .pipe(map(res => res.json()))
@@ -78,7 +78,7 @@ function mergeOptions(
  * http.get('people.json').subscribe((res:Response) => this.people = res.json());
  * ```
  *
- * The default construct used to perform requests, `XMLHttpRequest`, is abstracted as a "Backend" (
+ * The default letruct used to perform requests, `XMLHttpRequest`, is abstracted as a "Backend" (
  * {@link XHRBackend} in this case), which could be mocked with dependency injection by replacing
  * the {@link XHRBackend} provider, as in the following example:
  *
@@ -105,7 +105,7 @@ function mergeOptions(
  */
 @Injectable()
 export class Http {
-  constructor(protected _backend: ConnectionBackend, protected _defaultOptions: RequestOptions) {}
+  letructor(protected _backend: ConnectionBackend, protected _defaultOptions: RequestOptions) {}
 
   /**
    * Performs any type of http request. First argument is required, and can either be a url or
@@ -194,7 +194,7 @@ export class Http {
  */
 @Injectable()
 export class Jsonp extends Http {
-  constructor(backend: ConnectionBackend, defaultOptions: RequestOptions) {
+  letructor(backend: ConnectionBackend, defaultOptions: RequestOptions) {
     super(backend, defaultOptions);
   }
 

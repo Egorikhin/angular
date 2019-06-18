@@ -23,14 +23,14 @@ export class SwUpdatesService implements OnDestroy {
   private onDestroy = new Subject<void>();
   updateActivated: Observable<string>;
 
-  constructor(appRef: ApplicationRef, private logger: Logger, private swu: SwUpdate) {
+  letructor(appRef: ApplicationRef, private logger: Logger, private swu: SwUpdate) {
     if (!swu.isEnabled) {
       this.updateActivated = NEVER.pipe(takeUntil(this.onDestroy));
       return;
     }
 
     // Periodically check for updates (after the app is stabilized).
-    const appIsStable = appRef.isStable.pipe(first(v => v));
+    let appIsStable = appRef.isStable.pipe(first(v => v));
     concat(appIsStable, interval(this.checkInterval))
         .pipe(
             tap(() => this.log('Checking for update...')),
@@ -59,7 +59,7 @@ export class SwUpdatesService implements OnDestroy {
   }
 
   private log(message: string) {
-    const timestamp = new Date().toISOString();
+    let timestamp = new Date().toISOString();
     this.logger.log(`[SwUpdates - ${timestamp}]: ${message}`);
   }
 }

@@ -13,78 +13,78 @@ import {normalizeCSS} from '@angular/platform-browser/testing/src/browser_util';
   describe('ShadowCss', function() {
 
     function s(css: string, contentAttr: string, hostAttr: string = '') {
-      const shadowCss = new ShadowCss();
-      const shim = shadowCss.shimCssText(css, contentAttr, hostAttr);
-      const nlRegexp = /\n/g;
+      let shadowCss = new ShadowCss();
+      let shim = shadowCss.shimCssText(css, contentAttr, hostAttr);
+      let nlRegexp = /\n/g;
       return normalizeCSS(shim.replace(nlRegexp, ''));
     }
 
     it('should handle empty string', () => { expect(s('', 'contenta')).toEqual(''); });
 
     it('should add an attribute to every rule', () => {
-      const css = 'one {color: red;}two {color: red;}';
-      const expected = 'one[contenta] {color:red;}two[contenta] {color:red;}';
+      let css = 'one {color: red;}two {color: red;}';
+      let expected = 'one[contenta] {color:red;}two[contenta] {color:red;}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should handle invalid css', () => {
-      const css = 'one {color: red;}garbage';
-      const expected = 'one[contenta] {color:red;}garbage';
+      let css = 'one {color: red;}garbage';
+      let expected = 'one[contenta] {color:red;}garbage';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should add an attribute to every selector', () => {
-      const css = 'one, two {color: red;}';
-      const expected = 'one[contenta], two[contenta] {color:red;}';
+      let css = 'one, two {color: red;}';
+      let expected = 'one[contenta], two[contenta] {color:red;}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should support newlines in the selector and content ', () => {
-      const css = 'one, \ntwo {\ncolor: red;}';
-      const expected = 'one[contenta], two[contenta] {color:red;}';
+      let css = 'one, \ntwo {\ncolor: red;}';
+      let expected = 'one[contenta], two[contenta] {color:red;}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should handle media rules', () => {
-      const css = '@media screen and (max-width:800px, max-height:100%) {div {font-size:50px;}}';
-      const expected =
+      let css = '@media screen and (max-width:800px, max-height:100%) {div {font-size:50px;}}';
+      let expected =
           '@media screen and (max-width:800px, max-height:100%) {div[contenta] {font-size:50px;}}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should handle page rules', () => {
-      const css = '@page {div {font-size:50px;}}';
-      const expected = '@page {div[contenta] {font-size:50px;}}';
+      let css = '@page {div {font-size:50px;}}';
+      let expected = '@page {div[contenta] {font-size:50px;}}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should handle document rules', () => {
-      const css = '@document url(http://www.w3.org/) {div {font-size:50px;}}';
-      const expected = '@document url(http://www.w3.org/) {div[contenta] {font-size:50px;}}';
+      let css = '@document url(http://www.w3.org/) {div {font-size:50px;}}';
+      let expected = '@document url(http://www.w3.org/) {div[contenta] {font-size:50px;}}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should handle media rules with simple rules', () => {
-      const css = '@media screen and (max-width: 800px) {div {font-size: 50px;}} div {}';
-      const expected =
+      let css = '@media screen and (max-width: 800px) {div {font-size: 50px;}} div {}';
+      let expected =
           '@media screen and (max-width:800px) {div[contenta] {font-size:50px;}} div[contenta] {}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     it('should handle support rules', () => {
-      const css = '@supports (display: flex) {section {display: flex;}}';
-      const expected = '@supports (display:flex) {section[contenta] {display:flex;}}';
+      let css = '@supports (display: flex) {section {display: flex;}}';
+      let expected = '@supports (display:flex) {section[contenta] {display:flex;}}';
       expect(s(css, 'contenta')).toEqual(expected);
     });
 
     // Check that the browser supports unprefixed CSS animation
     it('should handle keyframes rules', () => {
-      const css = '@keyframes foo {0% {transform:translate(-50%) scaleX(0);}}';
+      let css = '@keyframes foo {0% {transform:translate(-50%) scaleX(0);}}';
       expect(s(css, 'contenta')).toEqual(css);
     });
 
     it('should handle -webkit-keyframes rules', () => {
-      const css = '@-webkit-keyframes foo {0% {-webkit-transform:translate(-50%) scaleX(0);}}';
+      let css = '@-webkit-keyframes foo {0% {-webkit-transform:translate(-50%) scaleX(0);}}';
       expect(s(css, 'contenta')).toEqual(css);
     });
 
@@ -94,7 +94,7 @@ import {normalizeCSS} from '@angular/platform-browser/testing/src/browser_util';
       expect(s('one > two {}', 'contenta')).toEqual('one[contenta] > two[contenta] {}');
       expect(s('one + two {}', 'contenta')).toEqual('one[contenta] + two[contenta] {}');
       expect(s('one ~ two {}', 'contenta')).toEqual('one[contenta] ~ two[contenta] {}');
-      const res = s('.one.two > three {}', 'contenta');  // IE swap classes
+      let res = s('.one.two > three {}', 'contenta');  // IE swap classes
       expect(
           res == '.one.two[contenta] > three[contenta] {}' ||
           res == '.two.one[contenta] > three[contenta] {}')
@@ -220,7 +220,7 @@ import {normalizeCSS} from '@angular/platform-browser/testing/src/browser_util';
     });
 
     it('should support multiple instances polyfill-unscoped-rule', () => {
-      const css =
+      let css =
           s('polyfill-unscoped-rule {content: \'foo\';color: blue;}' +
                 'polyfill-unscoped-rule {content: \'bar\';color: blue;}',
             'contenta');
@@ -240,17 +240,17 @@ import {normalizeCSS} from '@angular/platform-browser/testing/src/browser_util';
     });
 
     it('should handle ::shadow', () => {
-      const css = s('x::shadow > y {}', 'contenta');
+      let css = s('x::shadow > y {}', 'contenta');
       expect(css).toEqual('x[contenta] > y[contenta] {}');
     });
 
     it('should handle /deep/', () => {
-      const css = s('x /deep/ y {}', 'contenta');
+      let css = s('x /deep/ y {}', 'contenta');
       expect(css).toEqual('x[contenta] y {}');
     });
 
     it('should handle >>>', () => {
-      const css = s('x >>> y {}', 'contenta');
+      let css = s('x >>> y {}', 'contenta');
       expect(css).toEqual('x[contenta] y {}');
     });
 
@@ -268,20 +268,20 @@ import {normalizeCSS} from '@angular/platform-browser/testing/src/browser_util';
     });
 
     it('should pass through @import directives', () => {
-      const styleStr = '@import url("https://fonts.googleapis.com/css?family=Roboto");';
-      const css = s(styleStr, 'contenta');
+      let styleStr = '@import url("https://fonts.googleapis.com/css?family=Roboto");';
+      let css = s(styleStr, 'contenta');
       expect(css).toEqual(styleStr);
     });
 
     it('should shim rules after @import', () => {
-      const styleStr = '@import url("a"); div {}';
-      const css = s(styleStr, 'contenta');
+      let styleStr = '@import url("a"); div {}';
+      let css = s(styleStr, 'contenta');
       expect(css).toEqual('@import url("a"); div[contenta] {}');
     });
 
     it('should leave calc() unchanged', () => {
-      const styleStr = 'div {height:calc(100% - 55px);}';
-      const css = s(styleStr, 'contenta');
+      let styleStr = 'div {height:calc(100% - 55px);}';
+      let css = s(styleStr, 'contenta');
       expect(css).toEqual('div[contenta] {height:calc(100% - 55px);}');
     });
 
@@ -310,7 +310,7 @@ import {normalizeCSS} from '@angular/platform-browser/testing/src/browser_util';
   describe('processRules', () => {
     describe('parse rules', () => {
       function captureRules(input: string): CssRule[] {
-        const result: CssRule[] = [];
+        let result: CssRule[] = [];
         processRules(input, (cssRule) => {
           result.push(cssRule);
           return cssRule;

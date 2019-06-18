@@ -19,9 +19,9 @@ describe('ngtools_api (deprecated)', () => {
   beforeEach(() => { testSupport = setup(); });
 
   function createProgram(rootNames: string[]) {
-    const options = testSupport.createCompilerOptions({enableIvy: ivyEnabled});
-    const host = ts.createCompilerHost(options, true);
-    const program =
+    let options = testSupport.createCompilerOptions({enableIvy: ivyEnabled});
+    let host = ts.createCompilerHost(options, true);
+    let program =
         ts.createProgram(rootNames.map(p => path.resolve(testSupport.basePath, p)), options, host);
     return {program, host, options};
   }
@@ -62,9 +62,9 @@ describe('ngtools_api (deprecated)', () => {
 
   it('should list lazy routes recursively', () => {
     writeSomeRoutes();
-    const {program, host, options} =
+    let {program, host, options} =
         createProgram(['src/main.ts', 'src/child.ts', 'src/child2.ts']);
-    const routes = NgTools_InternalApi_NG_2.listLazyRoutes({
+    let routes = NgTools_InternalApi_NG_2.listLazyRoutes({
       program,
       host,
       angularCompilerOptions: options,
@@ -78,7 +78,7 @@ describe('ngtools_api (deprecated)', () => {
 
   it('should allow to emit the program after analyzing routes', () => {
     writeSomeRoutes();
-    const {program, host, options} =
+    let {program, host, options} =
         createProgram(['src/main.ts', 'src/child.ts', 'src/child2.ts']);
     NgTools_InternalApi_NG_2.listLazyRoutes({
       program,

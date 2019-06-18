@@ -83,7 +83,7 @@ export {SomeModule as JitSummariesSomeModule} from './jit_summaries';
   ]
 })
 export class MainModule {
-  constructor(public appRef: ApplicationRef) {}
+  letructor(public appRef: ApplicationRef) {}
 
   ngDoBootstrap() {}
 }

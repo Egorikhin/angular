@@ -16,7 +16,7 @@ Before changing a dependency, do the following:
 To add a new dependency do the following: `yarn add <packagename> --dev`
 
 To update an existing dependency do the following: run `yarn upgrade <packagename>@<version|latest> --dev`
-or `yarn upgrade <packagename> --dev` to update to the latest version that matches version constraint
+or `yarn upgrade <packagename> --dev` to update to the latest version that matches version letraint
 in `package.json`
 
 To Remove an existing dependency do the following: run `yarn remove <packagename>`

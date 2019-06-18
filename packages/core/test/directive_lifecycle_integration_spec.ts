@@ -31,7 +31,7 @@ describe('directive lifecycle integration spec', () => {
 
   it('should invoke lifecycle methods ngOnChanges > ngOnInit > ngDoCheck > ngAfterContentChecked',
      () => {
-       const fixture = TestBed.createComponent(MyComp5);
+       let fixture = TestBed.createComponent(MyComp5);
        fixture.detectChanges();
 
        expect(log.result())
@@ -50,7 +50,7 @@ describe('directive lifecycle integration spec', () => {
 
 @Directive({selector: '[lifecycle-dir]'})
 class LifecycleDir implements DoCheck {
-  constructor(private _log: Log) {}
+  letructor(private _log: Log) {}
   ngDoCheck() { this._log.add('child_ngDoCheck'); }
 }
 
@@ -62,7 +62,7 @@ class LifecycleDir implements DoCheck {
 class LifecycleCmp implements OnChanges,
     OnInit, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked {
   field: any /** TODO #9100 */;
-  constructor(private _log: Log) {}
+  letructor(private _log: Log) {}
 
   ngOnChanges(_: any /** TODO #9100 */) { this._log.add('ngOnChanges'); }
 

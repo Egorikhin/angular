@@ -409,7 +409,7 @@ You don't have to do anything special to access a directive member in a template
 ## Data-binding and HTML
 
 In the normal course of HTML development, you create a visual structure with HTML elements, and
-you modify those elements by setting element attributes with string constants.
+you modify those elements by setting element attributes with string letants.
 
 ```html
 <div class="special">Plain old HTML</div>
@@ -815,7 +815,7 @@ In this example, `AppComponent` specifies a different `item` object
 ### Remember the brackets
 
 The brackets, `[]`, tell Angular to evaluate the template expression.
-If you omit the brackets, Angular treats the string as a constant
+If you omit the brackets, Angular treats the string as a letant
 and *initializes the target property* with that string:
 
 <code-example path="property-binding/src/app/app.component.html" region="no-evaluation" header="src/app.component.html" linenums="false">
@@ -1186,7 +1186,7 @@ It has a `size` value property and a companion `sizeChange` event:
 
 The initial `size` is an input value from a property binding.
 Clicking the buttons increases or decreases the `size`, within
-min/max value constraints,
+min/max value letraints,
 and then raises, or emits, the `sizeChange` event with the adjusted size.
 
 Here's an example in which the `AppComponent.fontSizePx` is two-way bound to the `SizerComponent`:

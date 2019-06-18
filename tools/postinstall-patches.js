@@ -20,9 +20,9 @@ try {
   process.exit(0);
 }
 
-const {set, cd, sed, rm} = require('shelljs');
-const path = require('path');
-const log = console.log;
+let {set, cd, sed, rm} = require('shelljs');
+let path = require('path');
+let log = console.log;
 
 // COMMENTED OUT BECAUSE WE CURRENTLY REQUIRE NO PATCHES
 // UNCOMMENT TO REENABLE PATCHING AND LOG OUTPUT

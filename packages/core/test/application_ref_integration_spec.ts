@@ -36,11 +36,11 @@ ivyEnabled && describe('ApplicationRef bootstrap', () => {
   }
 
   it('should bootstrap hello world', withBody('<hello-world></hello-world>', async() => {
-       const MyAppModuleFactory = new NgModuleFactory(MyAppModule);
-       const moduleRef =
+       let MyAppModuleFactory = new NgModuleFactory(MyAppModule);
+       let moduleRef =
            await getTestBed().platform.bootstrapModuleFactory(MyAppModuleFactory, {ngZone: 'noop'});
-       const appRef = moduleRef.injector.get(ApplicationRef);
-       const helloWorldComponent = appRef.components[0].instance as HelloWorldComponent;
+       let appRef = moduleRef.injector.get(ApplicationRef);
+       let helloWorldComponent = appRef.components[0].instance as HelloWorldComponent;
        expect(document.body.innerHTML)
            .toEqual(
                '<hello-world ng-version="0.0.0-PLACEHOLDER"><div>Hello World</div></hello-world>');
@@ -54,7 +54,7 @@ ivyEnabled && describe('ApplicationRef bootstrap', () => {
        expect(helloWorldComponent.log).toEqual(['OnInit', 'DoCheck', 'DoCheck']);
 
        // Cleanup TestabilityRegistry
-       const registry: TestabilityRegistry = getTestBed().get(TestabilityRegistry);
+       let registry: TestabilityRegistry = getTestBed().get(TestabilityRegistry);
        registry.unregisterAllApplications();
      }));
 

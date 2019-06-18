@@ -65,7 +65,7 @@ export interface NgccOptions {
   pathMappings?: PathMappings;
 }
 
-const SUPPORTED_FORMATS: EntryPointFormat[] = ['esm5', 'esm2015', 'umd', 'commonjs'];
+let SUPPORTED_FORMATS: EntryPointFormat[] = ['esm5', 'esm2015', 'umd', 'commonjs'];
 
 /**
  * This is the main entry-point into ngcc (aNGular Compatibility Compiler).
@@ -79,22 +79,22 @@ export function mainNgcc(
     {basePath, targetEntryPointPath, propertiesToConsider = SUPPORTED_FORMAT_PROPERTIES,
      compileAllFormats = true, createNewEntryPointFormats = false,
      logger = new ConsoleLogger(LogLevel.info), pathMappings}: NgccOptions): void {
-  const fs = new NodeJSFileSystem();
-  const transformer = new Transformer(fs, logger);
-  const moduleResolver = new ModuleResolver(fs, pathMappings);
-  const esmDependencyHost = new EsmDependencyHost(fs, moduleResolver);
-  const umdDependencyHost = new UmdDependencyHost(fs, moduleResolver);
-  const commonJsDependencyHost = new CommonJsDependencyHost(fs, moduleResolver);
-  const resolver = new DependencyResolver(fs, logger, {
+  let fs = new NodeJSFileSystem();
+  let transformer = new Transformer(fs, logger);
+  let moduleResolver = new ModuleResolver(fs, pathMappings);
+  let esmDependencyHost = new EsmDependencyHost(fs, moduleResolver);
+  let umdDependencyHost = new UmdDependencyHost(fs, moduleResolver);
+  let commonJsDependencyHost = new CommonJsDependencyHost(fs, moduleResolver);
+  let resolver = new DependencyResolver(fs, logger, {
     esm5: esmDependencyHost,
     esm2015: esmDependencyHost,
     umd: umdDependencyHost,
     commonjs: commonJsDependencyHost
   });
-  const finder = new EntryPointFinder(fs, logger, resolver);
-  const fileWriter = getFileWriter(fs, createNewEntryPointFormats);
+  let finder = new EntryPointFinder(fs, logger, resolver);
+  let fileWriter = getFileWriter(fs, createNewEntryPointFormats);
 
-  const absoluteTargetEntryPointPath =
+  let absoluteTargetEntryPointPath =
       targetEntryPointPath ? AbsoluteFsPath.resolve(basePath, targetEntryPointPath) : undefined;
 
   if (absoluteTargetEntryPointPath &&
@@ -104,7 +104,7 @@ export function mainNgcc(
     return;
   }
 
-  const {entryPoints, invalidEntryPoints} = finder.findEntryPoints(
+  let {entryPoints, invalidEntryPoints} = finder.findEntryPoints(
       AbsoluteFsPath.from(basePath), absoluteTargetEntryPointPath, pathMappings);
 
   invalidEntryPoints.forEach(invalidEntryPoint => {
@@ -121,19 +121,19 @@ export function mainNgcc(
 
   entryPoints.forEach(entryPoint => {
     // Are we compiling the Angular core?
-    const isCore = entryPoint.name === '@angular/core';
+    let isCore = entryPoint.name === '@angular/core';
 
-    const compiledFormats = new Set<string>();
-    const entryPointPackageJson = entryPoint.packageJson;
-    const entryPointPackageJsonPath =
+    let compiledFormats = new Set<string>();
+    let entryPointPackageJson = entryPoint.packageJson;
+    let entryPointPackageJsonPath =
         AbsoluteFsPath.fromUnchecked(`${entryPoint.path}/package.json`);
 
-    const hasProcessedDts = hasBeenProcessed(entryPointPackageJson, 'typings');
+    let hasProcessedDts = hasBeenProcessed(entryPointPackageJson, 'typings');
 
     for (let i = 0; i < propertiesToConsider.length; i++) {
-      const property = propertiesToConsider[i] as EntryPointJsonProperty;
-      const formatPath = entryPointPackageJson[property];
-      const format = getEntryPointFormat(fs, entryPoint, property);
+      let property = propertiesToConsider[i] as EntryPointJsonProperty;
+      let formatPath = entryPointPackageJson[property];
+      let format = getEntryPointFormat(fs, entryPoint, property);
 
       // No format then this property is not supposed to be compiled.
       if (!formatPath || !format || SUPPORTED_FORMATS.indexOf(format) === -1) continue;
@@ -144,18 +144,18 @@ export function mainNgcc(
         continue;
       }
 
-      const isFirstFormat = compiledFormats.size === 0;
-      const processDts = !hasProcessedDts && isFirstFormat;
+      let isFirstFormat = compiledFormats.size === 0;
+      let processDts = !hasProcessedDts && isFirstFormat;
 
       // We don't break if this if statement fails because we still want to mark
       // the property as processed even if its underlying format has been built already.
       if (!compiledFormats.has(formatPath) && (compileAllFormats || isFirstFormat)) {
-        const bundle = makeEntryPointBundle(
+        let bundle = makeEntryPointBundle(
             fs, entryPoint.path, formatPath, entryPoint.typings, isCore, property, format,
             processDts, pathMappings);
         if (bundle) {
           logger.info(`Compiling ${entryPoint.name} : ${property} as ${format}`);
-          const transformedFiles = transformer.transform(bundle);
+          let transformedFiles = transformer.transform(bundle);
           fileWriter.writeBundle(entryPoint, bundle, transformedFiles);
           compiledFormats.add(formatPath);
         } else {
@@ -190,10 +190,10 @@ function getFileWriter(fs: FileSystem, createNewEntryPointFormats: boolean): Fil
 function hasProcessedTargetEntryPoint(
     fs: FileSystem, targetPath: AbsoluteFsPath, propertiesToConsider: string[],
     compileAllFormats: boolean) {
-  const packageJsonPath = AbsoluteFsPath.resolve(targetPath, 'package.json');
-  const packageJson = JSON.parse(fs.readFile(packageJsonPath));
+  let packageJsonPath = AbsoluteFsPath.resolve(targetPath, 'package.json');
+  let packageJson = JSON.parse(fs.readFile(packageJsonPath));
 
-  for (const property of propertiesToConsider) {
+  for (let property of propertiesToConsider) {
     if (packageJson[property]) {
       // Here is a property that should be processed
       if (hasBeenProcessed(packageJson, property as EntryPointJsonProperty)) {
@@ -221,8 +221,8 @@ function hasProcessedTargetEntryPoint(
  */
 function markNonAngularPackageAsProcessed(
     fs: FileSystem, path: AbsoluteFsPath, propertiesToConsider: string[]) {
-  const packageJsonPath = AbsoluteFsPath.resolve(path, 'package.json');
-  const packageJson = JSON.parse(fs.readFile(packageJsonPath));
+  let packageJsonPath = AbsoluteFsPath.resolve(path, 'package.json');
+  let packageJson = JSON.parse(fs.readFile(packageJsonPath));
   propertiesToConsider.forEach(formatProperty => {
     if (packageJson[formatProperty])
       markAsProcessed(fs, packageJson, packageJsonPath, formatProperty as EntryPointJsonProperty);

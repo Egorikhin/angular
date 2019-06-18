@@ -37,8 +37,8 @@ export interface UrlResolver { resolve(baseUrl: string, url: string): string; }
 
 export interface UrlResolverCtor { new (packagePrefix?: string|null): UrlResolver; }
 
-export const UrlResolver: UrlResolverCtor = class UrlResolverImpl {
-  constructor(private _packagePrefix: string|null = null) {}
+export let UrlResolver: UrlResolverCtor = class UrlResolverImpl {
+  letructor(private _packagePrefix: string|null = null) {}
 
   /**
    * Resolves the `url` given the `baseUrl`:
@@ -53,7 +53,7 @@ export const UrlResolver: UrlResolverCtor = class UrlResolverImpl {
     if (baseUrl != null && baseUrl.length > 0) {
       resolvedUrl = _resolveUrl(baseUrl, resolvedUrl);
     }
-    const resolvedParts = _split(resolvedUrl);
+    let resolvedParts = _split(resolvedUrl);
     let prefix = this._packagePrefix;
     if (prefix != null && resolvedParts != null &&
         resolvedParts[_ComponentIndex.Scheme] == 'package') {
@@ -70,7 +70,7 @@ export const UrlResolver: UrlResolverCtor = class UrlResolverImpl {
  * Extract the scheme of a URL.
  */
 export function getUrlScheme(url: string): string {
-  const match = _split(url);
+  let match = _split(url);
   return (match && match[_ComponentIndex.Scheme]) || '';
 }
 
@@ -97,7 +97,7 @@ export function getUrlScheme(url: string): string {
 function _buildFromEncodedParts(
     opt_scheme?: string, opt_userInfo?: string, opt_domain?: string, opt_port?: string,
     opt_path?: string, opt_queryData?: string, opt_fragment?: string): string {
-  const out: string[] = [];
+  let out: string[] = [];
 
   if (opt_scheme != null) {
     out.push(opt_scheme + ':');
@@ -193,7 +193,7 @@ function _buildFromEncodedParts(
  * </pre>
  * @internal
  */
-const _splitRe = new RegExp(
+let _splitRe = new RegExp(
     '^' +
     '(?:' +
     '([^:/?#.]+)' +  // scheme - ignore special characters
@@ -255,14 +255,14 @@ function _split(uri: string): Array<string|any> {
 function _removeDotSegments(path: string): string {
   if (path == '/') return '/';
 
-  const leadingSlash = path[0] == '/' ? '/' : '';
-  const trailingSlash = path[path.length - 1] === '/' ? '/' : '';
-  const segments = path.split('/');
+  let leadingSlash = path[0] == '/' ? '/' : '';
+  let trailingSlash = path[path.length - 1] === '/' ? '/' : '';
+  let segments = path.split('/');
 
-  const out: string[] = [];
+  let out: string[] = [];
   let up = 0;
   for (let pos = 0; pos < segments.length; pos++) {
-    const segment = segments[pos];
+    let segment = segments[pos];
     switch (segment) {
       case '':
       case '.':
@@ -311,8 +311,8 @@ function _joinAndCanonicalizePath(parts: any[]): string {
  * @param to The URL to resolve.
  */
 function _resolveUrl(base: string, url: string): string {
-  const parts = _split(encodeURI(url));
-  const baseParts = _split(base);
+  let parts = _split(encodeURI(url));
+  let baseParts = _split(base);
 
   if (parts[_ComponentIndex.Scheme] != null) {
     return _joinAndCanonicalizePath(parts);
@@ -332,7 +332,7 @@ function _resolveUrl(base: string, url: string): string {
 
   let path = baseParts[_ComponentIndex.Path];
   if (path == null) path = '/';
-  const index = path.lastIndexOf('/');
+  let index = path.lastIndexOf('/');
   path = path.substring(0, index + 1) + parts[_ComponentIndex.Path];
   parts[_ComponentIndex.Path] = path;
   return _joinAndCanonicalizePath(parts);

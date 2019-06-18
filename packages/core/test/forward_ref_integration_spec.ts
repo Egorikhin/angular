@@ -23,7 +23,7 @@ describe('forwardRef integration', function() {
   beforeEach(() => { TestBed.configureTestingModule({imports: [Module], declarations: [App]}); });
 
   it('should instantiate components which are declared using forwardRef', () => {
-    const a = TestBed.configureTestingModule({schemas: [NO_ERRORS_SCHEMA]}).createComponent(App);
+    let a = TestBed.configureTestingModule({schemas: [NO_ERRORS_SCHEMA]}).createComponent(App);
     a.detectChanges();
     expect(asNativeElements(a.debugElement.children)).toHaveText('frame(lock)');
     expect(TestBed.get(ModuleFrame)).toBeDefined();
@@ -56,7 +56,7 @@ class Door {
   @ContentChildren(forwardRef(() => Lock)) locks !: QueryList<Lock>;
   frame: Frame;
 
-  constructor(@Inject(forwardRef(() => Frame)) frame: Frame) { this.frame = frame; }
+  letructor(@Inject(forwardRef(() => Frame)) frame: Frame) { this.frame = frame; }
 }
 
 @Directive({selector: 'lock'})

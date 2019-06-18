@@ -33,7 +33,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
 
     describe('switch value changes', () => {
       it('should switch amongst when values', () => {
-        const template = '<ul [ngSwitch]="switchValue">' +
+        let template = '<ul [ngSwitch]="switchValue">' +
             '<li *ngSwitchCase="\'a\'">when a</li>' +
             '<li *ngSwitchCase="\'b\'">when b</li>' +
             '</ul>';
@@ -50,7 +50,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
       });
 
       it('should switch amongst when values with fallback to default', () => {
-        const template = '<ul [ngSwitch]="switchValue">' +
+        let template = '<ul [ngSwitch]="switchValue">' +
             '<li *ngSwitchCase="\'a\'">when a</li>' +
             '<li *ngSwitchDefault>when default</li>' +
             '</ul>';
@@ -69,7 +69,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
       });
 
       it('should support multiple whens with the same value', () => {
-        const template = '<ul [ngSwitch]="switchValue">' +
+        let template = '<ul [ngSwitch]="switchValue">' +
             '<li *ngSwitchCase="\'a\'">when a1;</li>' +
             '<li *ngSwitchCase="\'b\'">when b1;</li>' +
             '<li *ngSwitchCase="\'a\'">when a2;</li>' +
@@ -91,7 +91,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
 
     describe('when values changes', () => {
       it('should switch amongst when values', () => {
-        const template = '<ul [ngSwitch]="switchValue">' +
+        let template = '<ul [ngSwitch]="switchValue">' +
             '<li *ngSwitchCase="when1">when 1;</li>' +
             '<li *ngSwitchCase="when2">when 2;</li>' +
             '<li *ngSwitchDefault>when default;</li>' +
@@ -120,20 +120,20 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
     describe('corner cases', () => {
 
       it('should not create the default case if another case matches', () => {
-        const log: string[] = [];
+        let log: string[] = [];
 
         @Directive({selector: '[test]'})
         class TestDirective {
-          constructor(@Attribute('test') test: string) { log.push(test); }
+          letructor(@Attribute('test') test: string) { log.push(test); }
         }
 
-        const template = '<div [ngSwitch]="switchValue">' +
+        let template = '<div [ngSwitch]="switchValue">' +
             '<div *ngSwitchCase="\'a\'" test="aCase"></div>' +
             '<div *ngSwitchDefault test="defaultCase"></div>' +
             '</div>';
 
         TestBed.configureTestingModule({declarations: [TestDirective]});
-        const fixture = createTestComponent(template);
+        let fixture = createTestComponent(template);
         fixture.componentInstance.switchValue = 'a';
 
         fixture.detectChanges();
@@ -142,7 +142,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
       });
 
       it('should create the default case if there is no other case', () => {
-        const template = '<ul [ngSwitch]="switchValue">' +
+        let template = '<ul [ngSwitch]="switchValue">' +
             '<li *ngSwitchDefault>when default1;</li>' +
             '<li *ngSwitchDefault>when default2;</li>' +
             '</ul>';
@@ -153,7 +153,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
       });
 
       it('should allow defaults before cases', () => {
-        const template = '<ul [ngSwitch]="switchValue">' +
+        let template = '<ul [ngSwitch]="switchValue">' +
             '<li *ngSwitchDefault>when default1;</li>' +
             '<li *ngSwitchDefault>when default2;</li>' +
             '<li *ngSwitchCase="\'a\'">when a1;</li>' +

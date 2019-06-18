@@ -9,7 +9,7 @@
 /* tslint:disable:no-console  */
 import {browser} from 'protractor';
 
-const yargs = require('yargs');
+let yargs = require('yargs');
 import * as webdriver from 'selenium-webdriver';
 
 let cmdArgs: {'bundles': boolean};
@@ -17,11 +17,11 @@ let cmdArgs: {'bundles': boolean};
 declare var expect: any;
 
 export function readCommandLine(extraOptions?: {[key: string]: any}) {
-  const options: {[key: string]: any} = {
+  let options: {[key: string]: any} = {
     'bundles': {describe: 'Whether to use the angular bundles or not.', default: false}
   };
   if (extraOptions) {
-    for (const key in extraOptions) {
+    for (let key in extraOptions) {
       options[key] = extraOptions[key];
     }
   }
@@ -43,9 +43,9 @@ export function openBrowser(config: {
     params = params.concat([{name: 'bundles', value: cmdArgs.bundles}]);
   }
 
-  const urlParams: string[] = [];
+  let urlParams: string[] = [];
   params.forEach((param) => { urlParams.push(param.name + '=' + param.value); });
-  const url = encodeURI(config.url + '?' + urlParams.join('&'));
+  let url = encodeURI(config.url + '?' + urlParams.join('&'));
   browser.get(url);
   if (config.ignoreBrowserSynchronization) {
     browser.sleep(2000);
@@ -60,7 +60,7 @@ export function verifyNoBrowserErrors() {
   // so that the browser logs can be read out!
   browser.executeScript('1+1');
   browser.manage().logs().get('browser').then(function(browserLog: any) {
-    const filteredLog = browserLog.filter(function(logEntry: any) {
+    let filteredLog = browserLog.filter(function(logEntry: any) {
       if (logEntry.level.value >= webdriver.logging.Level.INFO.value) {
         console.log('>> ' + logEntry.message);
       }

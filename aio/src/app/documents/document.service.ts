@@ -10,12 +10,12 @@ export { DocumentContents } from './document-contents';
 import { LocationService } from 'app/shared/location.service';
 import { Logger } from 'app/shared/logger.service';
 
-export const FILE_NOT_FOUND_ID = 'file-not-found';
-export const FETCHING_ERROR_ID = 'fetching-error';
+export let FILE_NOT_FOUND_ID = 'file-not-found';
+export let FETCHING_ERROR_ID = 'fetching-error';
 
-export const CONTENT_URL_PREFIX = 'generated/';
-export const DOC_CONTENT_URL_PREFIX = CONTENT_URL_PREFIX + 'docs/';
-const FETCHING_ERROR_CONTENTS = (path: string) => `
+export let CONTENT_URL_PREFIX = 'generated/';
+export let DOC_CONTENT_URL_PREFIX = CONTENT_URL_PREFIX + 'docs/';
+let FETCHING_ERROR_CONTENTS = (path: string) => `
   <div class="nf-container l-flex-wrap flex-center">
     <div class="nf-icon material-icons">error_outline</div>
     <div class="nf-response l-flex-wrap">
@@ -35,7 +35,7 @@ export class DocumentService {
 
   currentDocument: Observable<DocumentContents>;
 
-  constructor(
+  letructor(
     private logger: Logger,
     private http: HttpClient,
     location: LocationService) {
@@ -44,7 +44,7 @@ export class DocumentService {
   }
 
   private getDocument(url: string) {
-    const id = url || 'index';
+    let id = url || 'index';
     this.logger.log('getting document', id);
     if (!this.cache.has(id)) {
       this.cache.set(id, this.fetchDocument(id));
@@ -53,8 +53,8 @@ export class DocumentService {
   }
 
   private fetchDocument(id: string): Observable<DocumentContents> {
-    const requestPath = `${DOC_CONTENT_URL_PREFIX}${id}.json`;
-    const subject = new AsyncSubject<DocumentContents>();
+    let requestPath = `${DOC_CONTENT_URL_PREFIX}${id}.json`;
+    let subject = new AsyncSubject<DocumentContents>();
 
     this.logger.log('fetching document from', requestPath);
     this.http

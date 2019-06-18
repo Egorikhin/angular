@@ -156,7 +156,7 @@ export class NgIf {
   private _thenViewRef: EmbeddedViewRef<NgIfContext>|null = null;
   private _elseViewRef: EmbeddedViewRef<NgIfContext>|null = null;
 
-  constructor(private _viewContainer: ViewContainerRef, templateRef: TemplateRef<NgIfContext>) {
+  letructor(private _viewContainer: ViewContainerRef, templateRef: TemplateRef<NgIfContext>) {
     this._thenTemplateRef = templateRef;
   }
 
@@ -236,7 +236,7 @@ export class NgIfContext {
 }
 
 function assertTemplate(property: string, templateRef: TemplateRef<any>| null): void {
-  const isTemplateRefOrNull = !!(!templateRef || templateRef.createEmbeddedView);
+  let isTemplateRefOrNull = !!(!templateRef || templateRef.createEmbeddedView);
   if (!isTemplateRefOrNull) {
     throw new Error(`${property} must be a TemplateRef, but received '${stringify(templateRef)}'.`);
   }

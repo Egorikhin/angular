@@ -87,26 +87,26 @@ export class NgTools_InternalApi_NG_2 {
       NgTools_InternalApi_NG_2_LazyRouteMap {
     // TODO(tbosch): Also throwNotSupportedError once Angular CLI 1.5.1 ships,
     // as we only needed this to support Angular CLI 1.5.0 rc.*
-    const ngProgram = createProgram({
+    let ngProgram = createProgram({
       rootNames: options.program.getRootFileNames(),
       options: {...options.angularCompilerOptions, collectAllErrors: true},
       host: options.host
     });
-    const lazyRoutes = ngProgram.listLazyRoutes(options.entryModule);
+    let lazyRoutes = ngProgram.listLazyRoutes(options.entryModule);
 
     // reset the referencedFiles that the ng.Program added to the SourceFiles
     // as the host might be caching the source files!
-    for (const sourceFile of options.program.getSourceFiles()) {
-      const originalReferences = getOriginalReferences(sourceFile);
+    for (let sourceFile of options.program.getSourceFiles()) {
+      let originalReferences = getOriginalReferences(sourceFile);
       if (originalReferences) {
         sourceFile.referencedFiles = originalReferences;
       }
     }
 
-    const result: NgTools_InternalApi_NG_2_LazyRouteMap = {};
+    let result: NgTools_InternalApi_NG_2_LazyRouteMap = {};
     lazyRoutes.forEach(lazyRoute => {
-      const route = lazyRoute.route;
-      const referencedFilePath = lazyRoute.referencedModule.filePath;
+      let route = lazyRoute.route;
+      let referencedFilePath = lazyRoute.referencedModule.filePath;
       if (result[route] && result[route] != referencedFilePath) {
         throw new Error(
             `Duplicated path in loadChildren detected: "${route}" is used in 2 loadChildren, ` +

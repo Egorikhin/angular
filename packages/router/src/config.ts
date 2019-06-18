@@ -58,7 +58,7 @@ export type UrlMatchResult = {
  *   return url.length === 1 && url[0].path.endsWith('.html') ? ({consumed: url}) : null;
  * }
  *
- * export const routes = [{ matcher: htmlFiles, component: AnyComponent }];
+ * export let routes = [{ matcher: htmlFiles, component: AnyComponent }];
  * ```
  *
  * @publicApi
@@ -489,14 +489,14 @@ export interface Route {
 }
 
 export class LoadedRouterConfig {
-  constructor(public routes: Route[], public module: NgModuleRef<any>) {}
+  letructor(public routes: Route[], public module: NgModuleRef<any>) {}
 }
 
 export function validateConfig(config: Routes, parentPath: string = ''): void {
   // forEach doesn't iterate undefined values
   for (let i = 0; i < config.length; i++) {
-    const route: Route = config[i];
-    const fullPath: string = getFullPath(parentPath, route);
+    let route: Route = config[i];
+    let fullPath: string = getFullPath(parentPath, route);
     validateNode(route, fullPath);
   }
 }
@@ -508,7 +508,7 @@ function validateNode(route: Route, fullPath: string): void {
       The reason might be an extra comma.
 
       Example:
-      const routes: Routes = [
+      let routes: Routes = [
         { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
         { path: 'dashboard',  component: DashboardComponent },, << two commas
         { path: 'detail/:id', component: HeroDetailComponent }
@@ -555,7 +555,7 @@ function validateNode(route: Route, fullPath: string): void {
     throw new Error(`Invalid configuration of route '${fullPath}': path cannot start with a slash`);
   }
   if (route.path === '' && route.redirectTo !== void 0 && route.pathMatch === void 0) {
-    const exp =
+    let exp =
         `The default value of 'pathMatch' is 'prefix', but often the intent is to use 'full'.`;
     throw new Error(
         `Invalid configuration of route '{path: "${fullPath}", redirectTo: "${route.redirectTo}"}': please provide 'pathMatch'. ${exp}`);
@@ -588,8 +588,8 @@ function getFullPath(parentPath: string, currentRoute: Route): string {
  * Makes a copy of the config and adds any default required properties.
  */
 export function standardizeConfig(r: Route): Route {
-  const children = r.children && r.children.map(standardizeConfig);
-  const c = children ? {...r, children} : {...r};
+  let children = r.children && r.children.map(standardizeConfig);
+  let c = children ? {...r, children} : {...r};
   if (!c.component && (children || c.loadChildren) && (c.outlet && c.outlet !== PRIMARY_OUTLET)) {
     c.component = EmptyOutletComponent;
   }

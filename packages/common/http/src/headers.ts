@@ -43,20 +43,20 @@ export class HttpHeaders {
    */
   private lazyUpdate: Update[]|null = null;
 
-  /**  Constructs a new HTTP header object with the given values.*/
+  /**  letructs a new HTTP header object with the given values.*/
 
-  constructor(headers?: string|{[name: string]: string | string[]}) {
+  letructor(headers?: string|{[name: string]: string | string[]}) {
     if (!headers) {
       this.headers = new Map<string, string[]>();
     } else if (typeof headers === 'string') {
       this.lazyInit = () => {
         this.headers = new Map<string, string[]>();
         headers.split('\n').forEach(line => {
-          const index = line.indexOf(':');
+          let index = line.indexOf(':');
           if (index > 0) {
-            const name = line.slice(0, index);
-            const key = name.toLowerCase();
-            const value = line.slice(index + 1).trim();
+            let name = line.slice(0, index);
+            let key = name.toLowerCase();
+            let value = line.slice(index + 1).trim();
             this.maybeSetNormalizedName(name, key);
             if (this.headers.has(key)) {
               this.headers.get(key) !.push(value);
@@ -71,7 +71,7 @@ export class HttpHeaders {
         this.headers = new Map<string, string[]>();
         Object.keys(headers).forEach(name => {
           let values: string|string[] = headers[name];
-          const key = name.toLowerCase();
+          let key = name.toLowerCase();
           if (typeof values === 'string') {
             values = [values];
           }
@@ -107,7 +107,7 @@ export class HttpHeaders {
   get(name: string): string|null {
     this.init();
 
-    const values = this.headers.get(name.toLowerCase());
+    let values = this.headers.get(name.toLowerCase());
     return values && values.length > 0 ? values[0] : null;
   }
 
@@ -201,7 +201,7 @@ export class HttpHeaders {
   }
 
   private clone(update: Update): HttpHeaders {
-    const clone = new HttpHeaders();
+    let clone = new HttpHeaders();
     clone.lazyInit =
         (!!this.lazyInit && this.lazyInit instanceof HttpHeaders) ? this.lazyInit : this;
     clone.lazyUpdate = (this.lazyUpdate || []).concat([update]);
@@ -209,7 +209,7 @@ export class HttpHeaders {
   }
 
   private applyUpdate(update: Update): void {
-    const key = update.name.toLowerCase();
+    let key = update.name.toLowerCase();
     switch (update.op) {
       case 'a':
       case 's':
@@ -221,12 +221,12 @@ export class HttpHeaders {
           return;
         }
         this.maybeSetNormalizedName(update.name, key);
-        const base = (update.op === 'a' ? this.headers.get(key) : undefined) || [];
+        let base = (update.op === 'a' ? this.headers.get(key) : undefined) || [];
         base.push(...value);
         this.headers.set(key, base);
         break;
       case 'd':
-        const toDelete = update.value as string | undefined;
+        let toDelete = update.value as string | undefined;
         if (!toDelete) {
           this.headers.delete(key);
           this.normalizedNames.delete(key);

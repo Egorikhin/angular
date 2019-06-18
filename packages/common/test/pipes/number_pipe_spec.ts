@@ -54,7 +54,7 @@ import {beforeEach, describe, expect, it} from '@angular/core/testing/src/testin
 
       describe('transform with custom locales', () => {
         it('should return the correct format for es-US', () => {
-          const pipe = new DecimalPipe('es-US');
+          let pipe = new DecimalPipe('es-US');
           expect(pipe.transform('9999999.99', '1.2-2')).toEqual('9,999,999.99');
         });
       });
@@ -118,7 +118,7 @@ import {beforeEach, describe, expect, it} from '@angular/core/testing/src/testin
         });
 
         it('should warn if you are using the v4 signature', () => {
-          const warnSpy = spyOn(console, 'warn');
+          let warnSpy = spyOn(console, 'warn');
           pipe.transform(123, 'USD', true);
           expect(warnSpy).toHaveBeenCalledWith(
               `Warning: the currency pipe has been changed in Angular v5. The symbolDisplay option (third parameter) is now a string instead of a boolean. The accepted values are "code", "symbol" or "symbol-narrow".`);

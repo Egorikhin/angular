@@ -10,24 +10,24 @@ import {DomElementSchemaRegistry} from '@angular/compiler';
 import {SchemaInformation} from '../src/html_info';
 
 describe('html_info', () => {
-  const domRegistry = new DomElementSchemaRegistry();
+  let domRegistry = new DomElementSchemaRegistry();
 
   it('should have the same elements as the dom registry', () => {
-    // If this test fails, replace the SCHEMA constant in html_info with the one
+    // If this test fails, replace the SCHEMA letant in html_info with the one
     // from dom_element_schema_registry and also verify the code to interpret
     // the schema is the same.
-    const domElements = domRegistry.allKnownElementNames();
-    const infoElements = SchemaInformation.instance.allKnownElements();
-    const uniqueToDom = uniqueElements(infoElements, domElements);
-    const uniqueToInfo = uniqueElements(domElements, infoElements);
+    let domElements = domRegistry.allKnownElementNames();
+    let infoElements = SchemaInformation.instance.allKnownElements();
+    let uniqueToDom = uniqueElements(infoElements, domElements);
+    let uniqueToInfo = uniqueElements(domElements, infoElements);
     expect(uniqueToDom).toEqual([]);
     expect(uniqueToInfo).toEqual([]);
   });
 
   it('should have at least a sub-set of properties', () => {
-    const elements = SchemaInformation.instance.allKnownElements();
-    for (const element of elements) {
-      for (const prop of SchemaInformation.instance.propertiesOf(element)) {
+    let elements = SchemaInformation.instance.allKnownElements();
+    for (let element of elements) {
+      for (let prop of SchemaInformation.instance.propertiesOf(element)) {
         expect(domRegistry.hasProperty(element, prop, []));
       }
     }
@@ -36,13 +36,13 @@ describe('html_info', () => {
 });
 
 function uniqueElements<T>(a: T[], b: T[]): T[] {
-  const s = new Set<T>();
-  for (const aItem of a) {
+  let s = new Set<T>();
+  for (let aItem of a) {
     s.add(aItem);
   }
-  const result: T[] = [];
-  const reported = new Set<T>();
-  for (const bItem of b) {
+  let result: T[] = [];
+  let reported = new Set<T>();
+  for (let bItem of b) {
     if (!s.has(bItem) && !reported.has(bItem)) {
       reported.add(bItem);
       result.push(bItem);

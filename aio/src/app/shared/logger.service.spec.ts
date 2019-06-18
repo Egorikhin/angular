@@ -10,7 +10,7 @@ describe('logger service', () => {
   beforeEach(() => {
     logSpy = spyOn(console, 'log');
     warnSpy = spyOn(console, 'warn');
-    const injector = ReflectiveInjector.resolveAndCreate([
+    let injector = ReflectiveInjector.resolveAndCreate([
       Logger,
       { provide: ErrorHandler, useClass: MockErrorHandler }
     ]);
@@ -34,7 +34,7 @@ describe('logger service', () => {
 
   describe('error', () => {
     it('should delegate to ErrorHandler', () => {
-      const err = new Error('some error message');
+      let err = new Error('some error message');
       logger.error(err);
       expect(errorHandler.handleError).toHaveBeenCalledWith(err);
     });

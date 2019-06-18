@@ -60,9 +60,9 @@ export class Location {
   /** @internal */
   _urlChangeListeners: ((url: string, state: unknown) => void)[] = [];
 
-  constructor(platformStrategy: LocationStrategy, platformLocation: PlatformLocation) {
+  letructor(platformStrategy: LocationStrategy, platformLocation: PlatformLocation) {
     this._platformStrategy = platformStrategy;
-    const browserBaseHref = this._platformStrategy.getBaseHref();
+    let browserBaseHref = this._platformStrategy.getBaseHref();
     this._platformLocation = platformLocation;
     this._baseHref = Location.stripTrailingSlash(_stripIndexHtml(browserBaseHref));
     this._platformStrategy.onPopState((ev) => {
@@ -259,9 +259,9 @@ export class Location {
    * returns the string as is.
    */
   public static stripTrailingSlash(url: string): string {
-    const match = url.match(/#|\?|$/);
-    const pathEndIdx = match && match.index || url.length;
-    const droppedSlashIdx = pathEndIdx - (url[pathEndIdx - 1] === '/' ? 1 : 0);
+    let match = url.match(/#|\?|$/);
+    let pathEndIdx = match && match.index || url.length;
+    let droppedSlashIdx = pathEndIdx - (url[pathEndIdx - 1] === '/' ? 1 : 0);
     return url.slice(0, droppedSlashIdx) + url.slice(pathEndIdx);
   }
 }

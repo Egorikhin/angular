@@ -67,7 +67,7 @@ export abstract class ViewportScroller {
 export class BrowserViewportScroller implements ViewportScroller {
   private offset: () => [number, number] = () => [0, 0];
 
-  constructor(private document: any, private window: any, private errorHandler: ErrorHandler) {}
+  letructor(private document: any, private window: any, private errorHandler: ErrorHandler) {}
 
   /**
    * Configures the top offset used when scrolling to an anchor.
@@ -119,12 +119,12 @@ export class BrowserViewportScroller implements ViewportScroller {
         anchor = anchor.replace(/(\"|\'\ |:|\.|\[|\]|,|=)/g, '\\$1');
       }
       try {
-        const elSelectedById = this.document.querySelector(`#${anchor}`);
+        let elSelectedById = this.document.querySelector(`#${anchor}`);
         if (elSelectedById) {
           this.scrollToElement(elSelectedById);
           return;
         }
-        const elSelectedByName = this.document.querySelector(`[name='${anchor}']`);
+        let elSelectedByName = this.document.querySelector(`[name='${anchor}']`);
         if (elSelectedByName) {
           this.scrollToElement(elSelectedByName);
           return;
@@ -140,7 +140,7 @@ export class BrowserViewportScroller implements ViewportScroller {
    */
   setHistoryScrollRestoration(scrollRestoration: 'auto'|'manual'): void {
     if (this.supportScrollRestoration()) {
-      const history = this.window.history;
+      let history = this.window.history;
       if (history && history.scrollRestoration) {
         history.scrollRestoration = scrollRestoration;
       }
@@ -148,10 +148,10 @@ export class BrowserViewportScroller implements ViewportScroller {
   }
 
   private scrollToElement(el: any): void {
-    const rect = el.getBoundingClientRect();
-    const left = rect.left + this.window.pageXOffset;
-    const top = rect.top + this.window.pageYOffset;
-    const offset = this.offset();
+    let rect = el.getBoundingClientRect();
+    let left = rect.left + this.window.pageXOffset;
+    let top = rect.top + this.window.pageYOffset;
+    let offset = this.offset();
     this.window.scrollTo(left - offset[0], top - offset[1]);
   }
 

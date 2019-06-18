@@ -143,9 +143,9 @@ In either style, the template data bindings have the same access to the componen
 </div>
 
 
-## Constructor or variable initialization?
+## letructor or variable initialization?
 
-Although this example uses variable assignment to initialize the components, you could instead declare and initialize the properties using a constructor:
+Although this example uses variable assignment to initialize the components, you could instead declare and initialize the properties using a letructor:
 
 
 <code-example path="displaying-data/src/app/app-ctor.component.1.ts" linenums="false" region="class">
@@ -257,10 +257,10 @@ With the following code:
 
 
 
-You've defined a class with a constructor and two properties: `id` and `name`.
+You've defined a class with a letructor and two properties: `id` and `name`.
 
 It might not look like the class has properties, but it does.
-The declaration of the constructor parameters takes advantage of a TypeScript shortcut.
+The declaration of the letructor parameters takes advantage of a TypeScript shortcut.
 
 Consider the first parameter:
 
@@ -273,7 +273,7 @@ Consider the first parameter:
 
 That brief syntax does a lot:
 
-* Declares a constructor parameter and its type.
+* Declares a letructor parameter and its type.
 * Declares a public property of the same name.
 * Initializes that property with the corresponding argument when creating an instance of the class.
 

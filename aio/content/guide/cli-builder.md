@@ -88,7 +88,7 @@ function _commandBuilder(
   options: JsonObject,
   context: BuilderContext,
 ): Promise<BuilderOutput> {
-  const child = childProcess.spawn(options.command, options.args);
+  let child = childProcess.spawn(options.command, options.args);
   return new Promise<BuilderOutput>(resolve => {
     child.on('close', code => {
       resolve({success: code === 0});
@@ -115,7 +115,7 @@ function _commandBuilder(
   options: JsonObject,
   context: BuilderContext,
 ): Promise<BuilderOutput> {
-  const child = childProcess.spawn(options.command, options.args, {stdio: 'pipe'});
+  let child = childProcess.spawn(options.command, options.args, {stdio: 'pipe'});
   child.stdout.on('data', (data) => {
     context.logger.info(data.toString());
   });
@@ -158,7 +158,7 @@ function _commandBuilder(
   context: BuilderContext,
 ): Promise<BuilderOutput> {
   context.reportStatus(`Executing "${options.command}"...`);
-  const child = childProcess.spawn(options.command, options.args, {stdio: 'pipe'});
+  let child = childProcess.spawn(options.command, options.args, {stdio: 'pipe'});
 
   child.stdout.on('data', (data) => {
     context.logger.info(data.toString());
@@ -259,7 +259,7 @@ Using one of our `options` is very straightforward, we did this in the previous 
 
 <code-example format="." language="typescript" linenums="false">
     context.reportStatus(`Executing "${options.command}"...`);
-    const child = childProcess.spawn(options.command, options.args, { stdio: 'pipe' });
+    let child = childProcess.spawn(options.command, options.args, { stdio: 'pipe' });
 
 </code-example>
 
@@ -507,7 +507,7 @@ describe('Command Runner Builder', () => {
   let architectHost: ArchitectHost;
 
   beforeEach(async () => {
-    const registry = new schema.CoreSchemaRegistry();
+    let registry = new schema.CoreSchemaRegistry();
     registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 
     // TestingArchitectHost() takes workspace and current directories.
@@ -523,18 +523,18 @@ describe('Command Runner Builder', () => {
   // This might not work in Windows.
   it('can run ls', async () => {
     // Create a logger that keeps an array of all messages that were logged.
-    const logger = new logging.Logger('');
-    const logs = [];
+    let logger = new logging.Logger('');
+    let logs = [];
     logger.subscribe(ev => logs.push(ev.message));
 
     // A "run" can have multiple outputs, and contains progress information.
-    const run = await architect.scheduleBuilder('@example/command-runner:command', {
+    let run = await architect.scheduleBuilder('@example/command-runner:command', {
       command: 'ls',
       args: [__dirname],
     }, { logger });  // We pass the logger for checking later.
 
     // The "result" member (of type BuilderOutput) is the next output.
-    const output = await run.result;
+    let output = await run.result;
 
     // Stop the builder from running. This stops Architect from keeping
     // the builder-associated states in memory, since builders keep waiting

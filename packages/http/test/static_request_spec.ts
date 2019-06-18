@@ -18,14 +18,14 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
   describe('Request', () => {
     describe('detectContentType', () => {
       it('should return ContentType.NONE', () => {
-        const req =
+        let req =
             new Request(new RequestOptions({url: 'test', method: 'GET', body: null}) as any);
 
         expect(req.detectContentType()).toEqual(ContentType.NONE);
       });
 
       it('should return ContentType.JSON', () => {
-        const req = new Request(new RequestOptions({
+        let req = new Request(new RequestOptions({
           url: 'test',
           method: 'GET',
           body: null,
@@ -36,7 +36,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
       });
 
       it('should return ContentType.FORM', () => {
-        const req = new Request(new RequestOptions({
+        let req = new Request(new RequestOptions({
           url: 'test',
           method: 'GET',
           body: null,
@@ -47,7 +47,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
       });
 
       it('should return ContentType.FORM_DATA', () => {
-        const req = new Request(new RequestOptions({
+        let req = new Request(new RequestOptions({
           url: 'test',
           method: 'GET',
           body: null,
@@ -58,7 +58,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
       });
 
       it('should return ContentType.TEXT', () => {
-        const req = new Request(new RequestOptions({
+        let req = new Request(new RequestOptions({
           url: 'test',
           method: 'GET',
           body: null,
@@ -69,7 +69,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
       });
 
       it('should return ContentType.BLOB', () => {
-        const req = new Request(new RequestOptions({
+        let req = new Request(new RequestOptions({
           url: 'test',
           method: 'GET',
           body: null,
@@ -80,7 +80,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
       });
 
       it('should not create a blob out of ArrayBuffer', () => {
-        const req = new Request(new RequestOptions({
+        let req = new Request(new RequestOptions({
           url: 'test',
           method: 'GET',
           body: new ArrayBuffer(1),
@@ -92,7 +92,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
     });
 
     it('should return empty string if no body is present', () => {
-      const req = new Request(new RequestOptions({
+      let req = new Request(new RequestOptions({
         url: 'test',
         method: 'GET',
         body: null,
@@ -103,32 +103,32 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
     });
 
     it('should return empty string if body is undefined', () => {
-      const reqOptions = new RequestOptions(
+      let reqOptions = new RequestOptions(
           {url: 'test', method: 'GET', headers: new Headers({'content-type': 'application/json'})});
       delete reqOptions.body;
-      const req = new Request(reqOptions as any);
+      let req = new Request(reqOptions as any);
 
       expect(req.text()).toEqual('');
     });
 
     it('should use object params', () => {
-      const req = new Request({url: 'http://test.com', params: {'a': 3, 'b': ['x', 'y']}});
+      let req = new Request({url: 'http://test.com', params: {'a': 3, 'b': ['x', 'y']}});
       expect(req.url).toBe('http://test.com?a=3&b=x&b=y');
     });
 
     it('should use search if present', () => {
-      const req = new Request({url: 'http://test.com', search: 'a=1&b=2'});
+      let req = new Request({url: 'http://test.com', search: 'a=1&b=2'});
       expect(req.url).toBe('http://test.com?a=1&b=2');
     });
 
     if (getDOM().supportsWebAnimation()) {
       it('should serialize an ArrayBuffer to string via legacy encoding', () => {
-        const str = '\u89d2\u5ea6';
+        let str = '\u89d2\u5ea6';
         expect(new Request({body: stringToArrayBuffer(str), url: '/'}).text()).toEqual(str);
       });
 
       it('should serialize an ArrayBuffer to string via iso-8859 encoding', () => {
-        const str = 'abcd';
+        let str = 'abcd';
         expect(new Request({body: stringToArrayBuffer8(str), url: '/'}).text('iso-8859'))
             .toEqual(str);
       });

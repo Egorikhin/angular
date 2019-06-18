@@ -101,7 +101,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
       function ngLocaleLocalizationTests(
           getPluralCase: ((locale: string, value: number | string) => Plural) | null) {
         it('should return the correct values for the "en" locale', () => {
-          const l10n = new NgLocaleLocalization('en-US', getPluralCase);
+          let l10n = new NgLocaleLocalization('en-US', getPluralCase);
 
           expect(l10n.getPluralCategory(0)).toEqual('other');
           expect(l10n.getPluralCategory(1)).toEqual('one');
@@ -109,7 +109,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
         });
 
         it('should return the correct values for the "ro" locale', () => {
-          const l10n = new NgLocaleLocalization('ro', getPluralCase);
+          let l10n = new NgLocaleLocalization('ro', getPluralCase);
 
           expect(l10n.getPluralCategory(0)).toEqual('few');
           expect(l10n.getPluralCategory(1)).toEqual('one');
@@ -121,7 +121,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
         });
 
         it('should return the correct values for the "sr" locale', () => {
-          const l10n = new NgLocaleLocalization('sr', getPluralCase);
+          let l10n = new NgLocaleLocalization('sr', getPluralCase);
 
           expect(l10n.getPluralCategory(1)).toEqual('one');
           expect(l10n.getPluralCategory(31)).toEqual('one');
@@ -168,7 +168,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
         });
 
         it('should return the default value for a locale with no rule', () => {
-          const l10n = new NgLocaleLocalization('zgh', getPluralCase);
+          let l10n = new NgLocaleLocalization('zgh', getPluralCase);
 
           expect(l10n.getPluralCategory(0)).toEqual('other');
           expect(l10n.getPluralCategory(1)).toEqual('other');
@@ -185,7 +185,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
     function pluralCategoryTests(
         getPluralCase: ((locale: string, value: number | string) => Plural) | null) {
       it('should return plural category', () => {
-        const l10n = new NgLocaleLocalization('fr', getPluralCase);
+        let l10n = new NgLocaleLocalization('fr', getPluralCase);
 
         expect(getPluralCategory(0, ['one', 'other'], l10n)).toEqual('one');
         expect(getPluralCategory(1, ['one', 'other'], l10n)).toEqual('one');
@@ -193,7 +193,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
       });
 
       it('should return discrete cases', () => {
-        const l10n = new NgLocaleLocalization('fr', getPluralCase);
+        let l10n = new NgLocaleLocalization('fr', getPluralCase);
 
         expect(getPluralCategory(0, ['one', 'other', '=0'], l10n)).toEqual('=0');
         expect(getPluralCategory(1, ['one', 'other'], l10n)).toEqual('one');
@@ -202,7 +202,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
       });
 
       it('should fallback to other when the case is not present', () => {
-        const l10n = new NgLocaleLocalization('ro', getPluralCase);
+        let l10n = new NgLocaleLocalization('ro', getPluralCase);
         expect(getPluralCategory(1, ['one', 'other'], l10n)).toEqual('one');
         // 2 -> 'few'
         expect(getPluralCategory(2, ['one', 'other'], l10n)).toEqual('other');
@@ -211,7 +211,7 @@ import {registerLocaleData} from '../../src/i18n/locale_data';
       describe('errors', () => {
         it('should report an error when the "other" category is not present', () => {
           expect(() => {
-            const l10n = new NgLocaleLocalization('ro', getPluralCase);
+            let l10n = new NgLocaleLocalization('ro', getPluralCase);
             // 2 -> 'few'
             getPluralCategory(2, ['one'], l10n);
           }).toThrowError('No plural message found for value "2"');

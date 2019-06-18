@@ -54,7 +54,7 @@ function routerFactory($q, $location, $browser, $rootScope, $injector, $routerRo
   // the contents of the compiled TypeScript classes.
   //{{SHARED_CODE}}
 
-  function getComponentConstructor(name) {
+  function getComponentletructor(name) {
     var serviceName = name + 'Directive';
     if ($injector.has(serviceName)) {
       var definitions = $injector.get(serviceName);
@@ -69,7 +69,7 @@ function routerFactory($q, $location, $browser, $rootScope, $injector, $routerRo
 
   //TODO: this is a hack to replace the exiting implementation at run-time
   exports.getCanActivateHook = function (directiveName) {
-    var controller = getComponentConstructor(directiveName);
+    var controller = getComponentletructor(directiveName);
     return controller.$canActivate && function (next, prev) {
       return $injector.invoke(controller.$canActivate, null, {
         $nextInstruction: next,
@@ -98,7 +98,7 @@ function routerFactory($q, $location, $browser, $rootScope, $injector, $routerRo
       if (this._rules.has(component)) {
         return;
       }
-      var controller = getComponentConstructor(component);
+      var controller = getComponentletructor(component);
       if (angular.isArray(controller.$routeConfig)) {
         controller.$routeConfig.forEach(function (config) {
           var loader = config.loader;

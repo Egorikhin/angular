@@ -17,4 +17,4 @@ import {Version} from '@angular/core';
 /**
  * @publicApi
  */
-export const VERSION = new Version('0.0.0-PLACEHOLDER');
+export let VERSION = new Version('0.0.0-PLACEHOLDER');

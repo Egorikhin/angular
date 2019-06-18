@@ -36,7 +36,7 @@ import {LocationChangeListener, PlatformLocation} from './platform_location';
 @Injectable()
 export class HashLocationStrategy extends LocationStrategy {
   private _baseHref: string = '';
-  constructor(
+  letructor(
       private _platformLocation: PlatformLocation,
       @Optional() @Inject(APP_BASE_HREF) _baseHref?: string) {
     super();
@@ -62,7 +62,7 @@ export class HashLocationStrategy extends LocationStrategy {
   }
 
   prepareExternalUrl(internal: string): string {
-    const url = Location.joinWithSlash(this._baseHref, internal);
+    let url = Location.joinWithSlash(this._baseHref, internal);
     return url.length > 0 ? ('#' + url) : url;
   }
 

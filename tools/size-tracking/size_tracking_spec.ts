@@ -12,7 +12,7 @@ import {SourceMapGenerator} from 'source-map';
 
 import {SizeTracker} from './size_tracker';
 
-const testTempDir = process.env['TEST_TMPDIR'] !;
+let testTempDir = process.env['TEST_TMPDIR'] !;
 
 describe('size tracking', () => {
   let generator: SourceMapGenerator;
@@ -20,7 +20,7 @@ describe('size tracking', () => {
   beforeEach(() => { generator = new SourceMapGenerator(); });
 
   function writeFile(filePath: string, content: string): string {
-    const tmpFilePath = join(testTempDir, filePath);
+    let tmpFilePath = join(testTempDir, filePath);
     writeFileSync(tmpFilePath, content);
     return tmpFilePath;
   }
@@ -33,10 +33,10 @@ describe('size tracking', () => {
     });
 
     // A => origin-a (2 bytes), U => unmapped (1 byte)
-    const mapPath = writeFile('/test.map', generator.toString());
-    const inputPath = writeFile('/test.js', `UAA`);
+    let mapPath = writeFile('/test.map', generator.toString());
+    let inputPath = writeFile('/test.js', `UAA`);
 
-    const {sizeResult} = new SizeTracker(inputPath, mapPath);
+    let {sizeResult} = new SizeTracker(inputPath, mapPath);
 
     expect(sizeResult.unmapped).toBe(1);
     expect(sizeResult.files).toEqual({
@@ -59,10 +59,10 @@ describe('size tracking', () => {
     });
 
     // A => origin-a (1 byte), B => origin-b (two bytes)
-    const mapPath = writeFile('/test.map', generator.toString());
-    const inputPath = writeFile('/test.js', `ABB`);
+    let mapPath = writeFile('/test.map', generator.toString());
+    let inputPath = writeFile('/test.js', `ABB`);
 
-    const {sizeResult} = new SizeTracker(inputPath, mapPath);
+    let {sizeResult} = new SizeTracker(inputPath, mapPath);
 
     expect(sizeResult.unmapped).toBe(0);
     expect(sizeResult.files).toEqual({
@@ -92,10 +92,10 @@ describe('size tracking', () => {
     });
 
     // A => render3/a.ts (2 bytes), B => render3/b.ts (1 byte), C => c.ts (1 byte)
-    const mapPath = writeFile('/test.map', generator.toString());
-    const inputPath = writeFile('/test.js', `AABC`);
+    let mapPath = writeFile('/test.map', generator.toString());
+    let inputPath = writeFile('/test.js', `AABC`);
 
-    const {sizeResult} = new SizeTracker(inputPath, mapPath);
+    let {sizeResult} = new SizeTracker(inputPath, mapPath);
 
     expect(sizeResult.unmapped).toBe(0);
     expect(sizeResult.files).toEqual({

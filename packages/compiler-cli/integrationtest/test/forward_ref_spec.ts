@@ -18,12 +18,12 @@ import {createComponent, createModule} from './util';
 
 describe('template codegen output', () => {
   it('should support forwardRef with useValue in components', () => {
-    const compFixture = createComponent(CompWithProviders);
+    let compFixture = createComponent(CompWithProviders);
     expect(compFixture.componentInstance.ctxProp).toBe('strValue');
   });
 
   it('should support forwardRef with useValue in modules', () => {
-    const modRef = createModule();
+    let modRef = createModule();
     expect(modRef.injector.get(CUSTOM).name).toBe('some name');
   });
 });

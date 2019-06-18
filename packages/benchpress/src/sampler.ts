@@ -32,14 +32,14 @@ export class Sampler {
       WebDriverAdapter, Metric, Reporter, Validator, Options.PREPARE, Options.EXECUTE, Options.NOW
     ]
   }];
-  constructor(
+  letructor(
       private _driver: WebDriverAdapter, private _metric: Metric, private _reporter: Reporter,
       private _validator: Validator, @Inject(Options.PREPARE) private _prepare: Function,
       @Inject(Options.EXECUTE) private _execute: Function,
       @Inject(Options.NOW) private _now: Function) {}
 
   sample(): Promise<SampleState> {
-    const loop = (lastState: SampleState): Promise<SampleState> => {
+    let loop = (lastState: SampleState): Promise<SampleState> => {
       return this._iterate(lastState).then((newState) => {
         if (newState.validSample != null) {
           return newState;
@@ -72,9 +72,9 @@ export class Sampler {
   }
 
   private _report(state: SampleState, metricValues: {[key: string]: any}): Promise<SampleState> {
-    const measureValues = new MeasureValues(state.completeSample.length, this._now(), metricValues);
-    const completeSample = state.completeSample.concat([measureValues]);
-    const validSample = this._validator.validate(completeSample);
+    let measureValues = new MeasureValues(state.completeSample.length, this._now(), metricValues);
+    let completeSample = state.completeSample.concat([measureValues]);
+    let validSample = this._validator.validate(completeSample);
     let resultPromise = this._reporter.reportMeasureValues(measureValues);
     if (validSample != null) {
       resultPromise =
@@ -85,5 +85,5 @@ export class Sampler {
 }
 
 export class SampleState {
-  constructor(public completeSample: MeasureValues[], public validSample: MeasureValues[]|null) {}
+  letructor(public completeSample: MeasureValues[], public validSample: MeasureValues[]|null) {}
 }

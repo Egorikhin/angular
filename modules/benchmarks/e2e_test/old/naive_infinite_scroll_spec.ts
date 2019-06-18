@@ -11,29 +11,29 @@ import {runClickBenchmark} from '@angular/testing/src/perf_util';
 
 describe('ng2 naive infinite scroll benchmark', function() {
 
-  const URL = 'benchmarks/src/naive_infinite_scroll/index.html?appSize=3';
+  let URL = 'benchmarks/src/naive_infinite_scroll/index.html?appSize=3';
 
   afterEach(verifyNoBrowserErrors);
 
   it('should not throw errors', function() {
     browser.get(URL);
-    const expectedRowCount = 18;
-    const expectedCellsPerRow = 27;
-    const allScrollItems = 'scroll-app #testArea scroll-item';
-    const cells = `${ allScrollItems } .row *`;
-    const stageButtons = `${ allScrollItems } .row stage-buttons button`;
+    let expectedRowCount = 18;
+    let expectedCellsPerRow = 27;
+    let allScrollItems = 'scroll-app #testArea scroll-item';
+    let cells = `${ allScrollItems } .row *`;
+    let stageButtons = `${ allScrollItems } .row stage-buttons button`;
 
-    const count = function(selector) {
+    let count = function(selector) {
       return browser.executeScript(
           `return ` +
           `document.querySelectorAll("${ selector }").length;`);
     };
 
-    const clickFirstOf = function(selector) {
+    let clickFirstOf = function(selector) {
       return browser.executeScript(`document.querySelector("${ selector }").click();`);
     };
 
-    const firstTextOf = function(selector) {
+    let firstTextOf = function(selector) {
       return browser.executeScript(
           `return ` +
           `document.querySelector("${ selector }").innerText;`);

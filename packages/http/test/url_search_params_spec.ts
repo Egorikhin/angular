@@ -12,8 +12,8 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
 {
   describe('URLSearchParams', () => {
     it('should conform to spec', () => {
-      const paramsString = 'q=URLUtils.searchParams&topic=api';
-      const searchParams = new URLSearchParams(paramsString);
+      let paramsString = 'q=URLUtils.searchParams&topic=api';
+      let searchParams = new URLSearchParams(paramsString);
 
       // Tests borrowed from example at
       // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
@@ -29,24 +29,24 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
       searchParams.delete('topic');
       expect(searchParams.toString()).toEqual('q=URLUtils.searchParams');
 
-      // Test default constructor
+      // Test default letructor
       expect(new URLSearchParams().toString()).toBe('');
     });
 
 
     it('should optionally accept a custom parser', () => {
-      const fooEveryThingParser = {
+      let fooEveryThingParser = {
         encodeKey() { return 'I AM KEY'; },
         encodeValue() { return 'I AM VALUE'; }
       };
-      const params = new URLSearchParams('', fooEveryThingParser);
+      let params = new URLSearchParams('', fooEveryThingParser);
       params.set('myKey', 'myValue');
       expect(params.toString()).toBe('I AM KEY=I AM VALUE');
     });
 
 
     it('should encode special characters in params', () => {
-      const searchParams = new URLSearchParams();
+      let searchParams = new URLSearchParams();
       searchParams.append('a', '1+1');
       searchParams.append('b c', '2');
       searchParams.append('d%', '3$');
@@ -88,8 +88,8 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
 
 
     it('should support map-like merging operation via setAll()', () => {
-      const mapA = new URLSearchParams('a=1&a=2&a=3&c=8');
-      const mapB = new URLSearchParams('a=4&a=5&a=6&b=7');
+      let mapA = new URLSearchParams('a=1&a=2&a=3&c=8');
+      let mapB = new URLSearchParams('a=4&a=5&a=6&b=7');
       mapA.setAll(mapB);
       expect(mapA.has('a')).toBe(true);
       expect(mapA.has('b')).toBe(true);
@@ -102,8 +102,8 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
 
 
     it('should support multimap-like merging operation via appendAll()', () => {
-      const mapA = new URLSearchParams('a=1&a=2&a=3&c=8');
-      const mapB = new URLSearchParams('a=4&a=5&a=6&b=7');
+      let mapA = new URLSearchParams('a=1&a=2&a=3&c=8');
+      let mapB = new URLSearchParams('a=4&a=5&a=6&b=7');
       mapA.appendAll(mapB);
       expect(mapA.has('a')).toBe(true);
       expect(mapA.has('b')).toBe(true);
@@ -116,8 +116,8 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
 
 
     it('should support multimap-like merging operation via replaceAll()', () => {
-      const mapA = new URLSearchParams('a=1&a=2&a=3&c=8');
-      const mapB = new URLSearchParams('a=4&a=5&a=6&b=7');
+      let mapA = new URLSearchParams('a=1&a=2&a=3&c=8');
+      let mapB = new URLSearchParams('a=4&a=5&a=6&b=7');
       mapA.replaceAll(mapB);
       expect(mapA.has('a')).toBe(true);
       expect(mapA.has('b')).toBe(true);
@@ -129,20 +129,20 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
     });
 
     it('should support a clone operation via clone()', () => {
-      const fooQueryEncoder = {
+      let fooQueryEncoder = {
         encodeKey(k: string) { return encodeURIComponent(k); },
         encodeValue(v: string) { return encodeURIComponent(v); }
       };
-      const paramsA = new URLSearchParams('', fooQueryEncoder);
+      let paramsA = new URLSearchParams('', fooQueryEncoder);
       paramsA.set('a', '2');
       paramsA.set('q', '4+');
       paramsA.set('c', '8');
-      const paramsB = new URLSearchParams();
+      let paramsB = new URLSearchParams();
       paramsB.set('a', '2');
       paramsB.set('q', '4+');
       paramsB.set('c', '8');
       expect(paramsB.toString()).toEqual('a=2&q=4+&c=8');
-      const paramsC = paramsA.clone();
+      let paramsC = paramsA.clone();
       expect(paramsC.has('a')).toBe(true);
       expect(paramsC.has('b')).toBe(false);
       expect(paramsC.has('c')).toBe(true);
@@ -150,7 +150,7 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
     });
 
     it('should remove the parameter when set to undefined or null', () => {
-      const params = new URLSearchParams('q=Q');
+      let params = new URLSearchParams('q=Q');
       params.set('q', undefined !);
       expect(params.has('q')).toBe(false);
       expect(params.toString()).toEqual('');
@@ -160,7 +160,7 @@ import {URLSearchParams} from '@angular/http/src/url_search_params';
     });
 
     it('should ignore the value when append undefined or null', () => {
-      const params = new URLSearchParams('q=Q');
+      let params = new URLSearchParams('q=Q');
       params.append('q', undefined !);
       expect(params.toString()).toEqual('q=Q');
       params.append('q', null !);

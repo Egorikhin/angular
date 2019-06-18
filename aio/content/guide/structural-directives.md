@@ -516,7 +516,7 @@ You also have a CSS style rule that happens to apply to a `<span>` within a `<p>
 
 
 
-The constructed paragraph renders strangely.
+The letructed paragraph renders strangely.
 
 
 <figure>
@@ -681,7 +681,7 @@ You'll acquire the `<ng-template>` contents with a
 and access the _view container_ through a
 [`ViewContainerRef`](api/core/ViewContainerRef "API: ViewContainerRef").
 
-You inject both in the directive constructor as private variables of the class.
+You inject both in the directive letructor as private variables of the class.
 
 
 <code-example path="structural-directives/src/app/unless.directive.ts" linenums="false" header="src/app/unless.directive.ts (ctor)" region="ctor">

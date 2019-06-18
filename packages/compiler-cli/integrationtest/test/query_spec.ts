@@ -14,8 +14,8 @@ import {createComponent} from './util';
 
 describe('child queries', () => {
   it('should support compiling child queries', () => {
-    const childQueryCompFixture = createComponent(CompWithChildQuery);
-    const debugElement = childQueryCompFixture.debugElement;
+    let childQueryCompFixture = createComponent(CompWithChildQuery);
+    let debugElement = childQueryCompFixture.debugElement;
     debugElement.query(By.directive(CompWithChildQuery));
     expect(childQueryCompFixture.componentInstance.child).toBeDefined();
     expect(childQueryCompFixture.componentInstance.child instanceof CompForChildQuery).toBe(true);
@@ -23,8 +23,8 @@ describe('child queries', () => {
   });
 
   it('should support compiling children queries', () => {
-    const childQueryCompFixture = createComponent(CompWithChildQuery);
-    const debugElement = childQueryCompFixture.debugElement;
+    let childQueryCompFixture = createComponent(CompWithChildQuery);
+    let debugElement = childQueryCompFixture.debugElement;
     debugElement.query(By.directive(CompWithChildQuery));
 
     childQueryCompFixture.detectChanges();

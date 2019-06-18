@@ -22,29 +22,29 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
     });
 
     it('should not interpolate children', async(() => {
-         const template = '<div>{{text}}<span ngNonBindable>{{text}}</span></div>';
-         const fixture = createTestComponent(template);
+         let template = '<div>{{text}}<span ngNonBindable>{{text}}</span></div>';
+         let fixture = createTestComponent(template);
 
          fixture.detectChanges();
          expect(fixture.nativeElement).toHaveText('foo{{text}}');
        }));
 
     it('should ignore directives on child nodes', async(() => {
-         const template = '<div ngNonBindable><span id=child test-dec>{{text}}</span></div>';
-         const fixture = createTestComponent(template);
+         let template = '<div ngNonBindable><span id=child test-dec>{{text}}</span></div>';
+         let fixture = createTestComponent(template);
          fixture.detectChanges();
 
          // We must use getDOM().querySelector instead of fixture.query here
          // since the elements inside are not compiled.
-         const span = getDOM().querySelector(fixture.nativeElement, '#child');
+         let span = getDOM().querySelector(fixture.nativeElement, '#child');
          expect(getDOM().hasClass(span, 'compiled')).toBeFalsy();
        }));
 
     it('should trigger directives on the same node', async(() => {
-         const template = '<div><span id=child ngNonBindable test-dec>{{text}}</span></div>';
-         const fixture = createTestComponent(template);
+         let template = '<div><span id=child ngNonBindable test-dec>{{text}}</span></div>';
+         let fixture = createTestComponent(template);
          fixture.detectChanges();
-         const span = getDOM().querySelector(fixture.nativeElement, '#child');
+         let span = getDOM().querySelector(fixture.nativeElement, '#child');
          expect(getDOM().hasClass(span, 'compiled')).toBeTruthy();
        }));
   });
@@ -52,13 +52,13 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
 
 @Directive({selector: '[test-dec]'})
 class TestDirective {
-  constructor(el: ElementRef) { getDOM().addClass(el.nativeElement, 'compiled'); }
+  letructor(el: ElementRef) { getDOM().addClass(el.nativeElement, 'compiled'); }
 }
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   text: string;
-  constructor() { this.text = 'foo'; }
+  letructor() { this.text = 'foo'; }
 }
 
 function createTestComponent(template: string): ComponentFixture<TestComponent> {

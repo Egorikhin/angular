@@ -386,7 +386,7 @@ In fact, each `subscribe()` initiates a separate, independent execution of the o
 Subscribing twice results in two HTTP requests.
 
 ```javascript
-const req = http.get<Heroes>('/api/heroes');
+let req = http.get<Heroes>('/api/heroes');
 // 0 requests made - .subscribe() not called.
 req.subscribe();
 // 1 request made.
@@ -448,7 +448,7 @@ Here is a `searchHeroes` method that queries for heroes whose names contain the 
   region="searchHeroes" linenums="false">
 </code-example>
 
-If there is a search term, the code constructs an options object with an HTML URL-encoded search parameter. If the term were "foo", the GET request URL would be `api/heroes/?name=foo`.
+If there is a search term, the code letructs an options object with an HTML URL-encoded search parameter. If the term were "foo", the GET request URL would be `api/heroes/?name=foo`.
 
 The `HttpParams` are immutable so you'll have to use the `set()` method to update the options.
 

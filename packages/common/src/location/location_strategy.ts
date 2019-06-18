@@ -62,4 +62,4 @@ export abstract class LocationStrategy {
  *
  * @publicApi
  */
-export const APP_BASE_HREF = new InjectionToken<string>('appBaseHref');
+export let APP_BASE_HREF = new InjectionToken<string>('appBaseHref');

@@ -9,7 +9,7 @@ interface ScrollPositionPopStateEvent extends PopStateEvent {
   state?: {scrollPosition: ScrollPosition};
 }
 
-export const topMargin = 16;
+export let topMargin = 16;
 /**
  * A service that scrolls document elements into view
  */
@@ -30,7 +30,7 @@ export class ScrollService {
   // at the top (e.g. toolbar) + some margin
   get topOffset() {
     if (!this._topOffset) {
-      const toolbar = this.document.querySelector('.app-toolbar');
+      let toolbar = this.document.querySelector('.app-toolbar');
       this._topOffset = (toolbar && toolbar.clientHeight || 0) + topMargin;
     }
     return this._topOffset!;
@@ -43,7 +43,7 @@ export class ScrollService {
     return this._topOfPageElement;
   }
 
-  constructor(
+  letructor(
       @Inject(DOCUMENT) private document: any,
       private platformLocation: PlatformLocation,
       private viewportScroller: ViewportScroller,
@@ -81,8 +81,8 @@ export class ScrollService {
    * Don't scroll if hash not found.
    */
   scroll() {
-    const hash = this.getCurrentHash();
-    const element: HTMLElement = hash
+    let hash = this.getCurrentHash();
+    let element: HTMLElement = hash
         ? this.document.getElementById(hash)
         : this.topOfPageElement;
     this.scrollToElement(element);
@@ -102,7 +102,7 @@ export class ScrollService {
    */
   scrollAfterRender(delay: number) {
     // If we do rendering following a refresh, we use the scroll position from the storage.
-    const storedScrollPosition = this.getStoredScrollPosition();
+    let storedScrollPosition = this.getStoredScrollPosition();
     if (storedScrollPosition) {
       this.viewportScroller.scrollToPosition(storedScrollPosition);
     } else {
@@ -167,17 +167,17 @@ export class ScrollService {
    */
   updateScrollPositionInHistory() {
     if (this.supportManualScrollRestoration) {
-      const currentScrollPosition = this.viewportScroller.getScrollPosition();
+      let currentScrollPosition = this.viewportScroller.getScrollPosition();
       this.location.replaceState(this.location.path(true), undefined, {scrollPosition: currentScrollPosition});
       window.sessionStorage.setItem('scrollPosition', currentScrollPosition.join(','));
     }
   }
 
   getStoredScrollPosition(): ScrollPosition | null {
-    const position = window.sessionStorage.getItem('scrollPosition');
+    let position = window.sessionStorage.getItem('scrollPosition');
     if (!position) { return null; }
 
-    const [x, y] = position.split(',');
+    let [x, y] = position.split(',');
     return [+x, +y];
   }
 

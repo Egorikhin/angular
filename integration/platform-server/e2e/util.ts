@@ -12,9 +12,9 @@ declare var expect: any;
 
 export function verifyNoBrowserErrors() {
   browser.manage().logs().get('browser').then(function(browserLog: any[]) {
-    const errors: any[] = [];
+    let errors: any[] = [];
     browserLog.filter(logEntry => {
-      const msg = logEntry.message;
+      let msg = logEntry.message;
       console.log('>> ' + msg);
       if (logEntry.level.value >= webdriver.logging.Level.INFO.value) {
         errors.push(msg);

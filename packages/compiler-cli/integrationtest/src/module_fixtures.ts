@@ -47,7 +47,7 @@ export class CompUsingRootModuleDirectiveAndPipe {
 export class CompUsingLibModuleDirectiveAndPipe {
 }
 
-export const SOME_TOKEN = new InjectionToken('someToken');
+export let SOME_TOKEN = new InjectionToken('someToken');
 
 export function provideValueWithEntryComponents(value: any) {
   return [

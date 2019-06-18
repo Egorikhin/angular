@@ -47,7 +47,7 @@ export class AotSummaryResolver implements SummaryResolver<StaticSymbol> {
   private importAs = new Map<StaticSymbol, StaticSymbol>();
   private knownFileNameToModuleNames = new Map<string, string>();
 
-  constructor(private host: AotSummaryResolverHost, private staticSymbolCache: StaticSymbolCache) {}
+  letructor(private host: AotSummaryResolverHost, private staticSymbolCache: StaticSymbolCache) {}
 
   isLibraryFile(filePath: string): boolean {
     // Note: We need to strip the .ngfactory. file path,
@@ -65,7 +65,7 @@ export class AotSummaryResolver implements SummaryResolver<StaticSymbol> {
   }
 
   resolveSummary(staticSymbol: StaticSymbol): Summary<StaticSymbol>|null {
-    const rootSymbol = staticSymbol.members.length ?
+    let rootSymbol = staticSymbol.members.length ?
         this.staticSymbolCache.get(staticSymbol.filePath, staticSymbol.name) :
         staticSymbol;
     let summary = this.summaryCache.get(rootSymbol);
@@ -104,7 +104,7 @@ export class AotSummaryResolver implements SummaryResolver<StaticSymbol> {
     }
     let json: string|null = null;
     if (this.isLibraryFile(filePath)) {
-      const summaryFilePath = summaryFileName(filePath);
+      let summaryFilePath = summaryFileName(filePath);
       try {
         json = this.host.loadSummary(summaryFilePath);
       } catch (e) {
@@ -115,7 +115,7 @@ export class AotSummaryResolver implements SummaryResolver<StaticSymbol> {
     hasSummary = json != null;
     this.loadedFilePaths.set(filePath, hasSummary);
     if (json) {
-      const {moduleName, summaries, importAs} =
+      let {moduleName, summaries, importAs} =
           deserializeSummaries(this.staticSymbolCache, this, filePath, json);
       summaries.forEach((summary) => this.summaryCache.set(summary.symbol, summary));
       if (moduleName) {

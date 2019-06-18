@@ -38,7 +38,7 @@ import {toArray} from 'rxjs/operators';
       });
       it('with headers', done => {
         client.get('/test', {headers: {'X-Option': 'true'}}).subscribe(() => done());
-        const req = backend.expectOne('/test');
+        let req = backend.expectOne('/test');
         expect(req.request.headers.get('X-Option')).toEqual('true');
         req.flush({});
       });
@@ -47,7 +47,7 @@ import {toArray} from 'rxjs/operators';
         backend.expectOne('/test?test=true').flush({});
       });
       it('for an arraybuffer', done => {
-        const body = new ArrayBuffer(4);
+        let body = new ArrayBuffer(4);
         client.get('/test', {responseType: 'arraybuffer'}).subscribe(res => {
           expect(res).toBe(body);
           done();
@@ -56,7 +56,7 @@ import {toArray} from 'rxjs/operators';
       });
       if (typeof Blob !== 'undefined') {
         it('for a blob', done => {
-          const body = new Blob([new ArrayBuffer(4)]);
+          let body = new Blob([new ArrayBuffer(4)]);
           client.get('/test', {responseType: 'blob'}).subscribe(res => {
             expect(res).toBe(body);
             done();
@@ -65,7 +65,7 @@ import {toArray} from 'rxjs/operators';
         });
       }
       it('that returns a response', done => {
-        const body = {'data': 'hello world'};
+        let body = {'data': 'hello world'};
         client.get('/test', {observe: 'response'}).subscribe(res => {
           expect(res instanceof HttpResponse).toBe(true);
           expect(res.body).toBe(body);
@@ -86,7 +86,7 @@ import {toArray} from 'rxjs/operators';
       });
       it('with progress events enabled', done => {
         client.get('/test', {reportProgress: true}).subscribe(() => done());
-        const req = backend.expectOne('/test');
+        let req = backend.expectOne('/test');
         expect(req.request.reportProgress).toEqual(true);
         req.flush({});
       });
@@ -102,13 +102,13 @@ import {toArray} from 'rxjs/operators';
         backend.expectOne('/test').flush('hello world');
       });
       it('with json data', done => {
-        const body = {data: 'json body'};
+        let body = {data: 'json body'};
         client.post('/test', body, {observe: 'response', responseType: 'text'}).subscribe(res => {
           expect(res.ok).toBeTruthy();
           expect(res.status).toBe(200);
           done();
         });
-        const testReq = backend.expectOne('/test');
+        let testReq = backend.expectOne('/test');
         expect(testReq.request.body).toBe(body);
         testReq.flush('hello world');
       });
@@ -118,7 +118,7 @@ import {toArray} from 'rxjs/operators';
           expect(res.status).toBe(200);
           done();
         });
-        const testReq = backend.expectOne('/test');
+        let testReq = backend.expectOne('/test');
         expect(testReq.request.body).toBe(false);
         testReq.flush('hello world');
       });
@@ -128,18 +128,18 @@ import {toArray} from 'rxjs/operators';
           expect(res.status).toBe(200);
           done();
         });
-        const testReq = backend.expectOne('/test');
+        let testReq = backend.expectOne('/test');
         expect(testReq.request.body).toBe(0);
         testReq.flush('hello world');
       });
       it('with an arraybuffer', done => {
-        const body = new ArrayBuffer(4);
+        let body = new ArrayBuffer(4);
         client.post('/test', body, {observe: 'response', responseType: 'text'}).subscribe(res => {
           expect(res.ok).toBeTruthy();
           expect(res.status).toBe(200);
           done();
         });
-        const testReq = backend.expectOne('/test');
+        let testReq = backend.expectOne('/test');
         expect(testReq.request.body).toBe(body);
         testReq.flush('hello world');
       });

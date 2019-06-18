@@ -9,10 +9,10 @@
 import {PerfLogEvent} from '../index';
 
 export class TraceEventFactory {
-  constructor(private _cat: string, private _pid: string) {}
+  letructor(private _cat: string, private _pid: string) {}
 
   create(ph: any, name: string, time: number, args: any = null) {
-    const res:
+    let res:
         PerfLogEvent = {'name': name, 'cat': this._cat, 'ph': ph, 'ts': time, 'pid': this._pid};
     if (args != null) {
       res['args'] = args;
@@ -33,7 +33,7 @@ export class TraceEventFactory {
   }
 
   complete(name: string, time: number, duration: number, args: any = null) {
-    const res = this.create('X', name, time, args);
+    let res = this.create('X', name, time, args);
     res['dur'] = duration;
     return res;
   }

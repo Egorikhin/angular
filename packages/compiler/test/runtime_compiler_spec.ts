@@ -74,7 +74,7 @@ class SomeCompWithUrlTemplate {
         it('should allow to use templateUrl components that have been loaded before', async(() => {
              TestBed.configureTestingModule({declarations: [SomeCompWithUrlTemplate]});
              TestBed.compileComponents().then(() => {
-               const fixture = TestBed.createComponent(SomeCompWithUrlTemplate);
+               let fixture = TestBed.createComponent(SomeCompWithUrlTemplate);
                expect(fixture.nativeElement).toHaveText('hello');
              });
            }));
@@ -158,7 +158,7 @@ class SomeCompWithUrlTemplate {
            compiler.compileModuleAsync(SomeModule);
            tick();
 
-           const ngModuleFactory = compiler.compileModuleSync(SomeModule);
+           let ngModuleFactory = compiler.compileModuleSync(SomeModule);
            expect(ngModuleFactory).toBeTruthy();
          }));
     });

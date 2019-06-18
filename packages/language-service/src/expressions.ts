@@ -15,8 +15,8 @@ import {inSpan} from './utils';
 type AstPath = AstPathBase<AST>;
 
 function findAstAt(ast: AST, position: number, excludeEmpty: boolean = false): AstPath {
-  const path: AST[] = [];
-  const visitor = new class extends NullAstVisitor {
+  let path: AST[] = [];
+  let visitor = new class extends NullAstVisitor {
     visit(ast: AST) {
       if ((!excludeEmpty || ast.span.start < ast.span.end) && inSpan(position, ast.span)) {
         path.push(ast);
@@ -38,9 +38,9 @@ function findAstAt(ast: AST, position: number, excludeEmpty: boolean = false): A
 
 export function getExpressionCompletions(
     scope: SymbolTable, ast: AST, position: number, query: SymbolQuery): Symbol[]|undefined {
-  const path = findAstAt(ast, position);
+  let path = findAstAt(ast, position);
   if (path.empty) return undefined;
-  const tail = path.tail !;
+  let tail = path.tail !;
   let result: SymbolTable|undefined = scope;
 
   function getType(ast: AST): Symbol { return new AstType(scope, query, {}).getType(ast); }
@@ -71,11 +71,11 @@ export function getExpressionCompletions(
     visitPrefixNot(ast) {},
     visitNonNullAssert(ast) {},
     visitPropertyRead(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       result = receiverType ? receiverType.members() : scope;
     },
     visitPropertyWrite(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       result = receiverType ? receiverType.members() : scope;
     },
     visitQuote(ast) {
@@ -83,11 +83,11 @@ export function getExpressionCompletions(
       result = query.getBuiltinType(BuiltinType.Any).members();
     },
     visitSafeMethodCall(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       result = receiverType ? receiverType.members() : scope;
     },
     visitSafePropertyRead(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       result = receiverType ? receiverType.members() : scope;
     },
   });
@@ -98,9 +98,9 @@ export function getExpressionCompletions(
 export function getExpressionSymbol(
     scope: SymbolTable, ast: AST, position: number,
     query: SymbolQuery): {symbol: Symbol, span: Span}|undefined {
-  const path = findAstAt(ast, position, /* excludeEmpty */ true);
+  let path = findAstAt(ast, position, /* excludeEmpty */ true);
   if (path.empty) return undefined;
-  const tail = path.tail !;
+  let tail = path.tail !;
 
   function getType(ast: AST): Symbol { return new AstType(scope, query, {}).getType(ast); }
 
@@ -123,7 +123,7 @@ export function getExpressionSymbol(
     visitLiteralMap(ast) {},
     visitLiteralPrimitive(ast) {},
     visitMethodCall(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       symbol = receiverType && receiverType.members().get(ast.name);
       span = ast.span;
     },
@@ -131,7 +131,7 @@ export function getExpressionSymbol(
       if (position >= ast.exp.span.end &&
           (!ast.args || !ast.args.length || position < (<AST>ast.args[0]).span.start)) {
         // We are in a position a pipe name is expected.
-        const pipes = query.getPipes();
+        let pipes = query.getPipes();
         if (pipes) {
           symbol = pipes.get(ast.name);
           span = ast.span;
@@ -141,23 +141,23 @@ export function getExpressionSymbol(
     visitPrefixNot(ast) {},
     visitNonNullAssert(ast) {},
     visitPropertyRead(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       symbol = receiverType && receiverType.members().get(ast.name);
       span = ast.span;
     },
     visitPropertyWrite(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       symbol = receiverType && receiverType.members().get(ast.name);
       span = ast.span;
     },
     visitQuote(ast) {},
     visitSafeMethodCall(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       symbol = receiverType && receiverType.members().get(ast.name);
       span = ast.span;
     },
     visitSafePropertyRead(ast) {
-      const receiverType = getType(ast.receiver);
+      let receiverType = getType(ast.receiver);
       symbol = receiverType && receiverType.members().get(ast.name);
       span = ast.span;
     },

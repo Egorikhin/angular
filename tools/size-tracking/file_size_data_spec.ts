@@ -10,7 +10,7 @@ import {FileSizeData, omitCommonPathPrefix, sortFileSizeData} from './file_size_
 
 describe('file size data', () => {
   it('should be able to properly omit the common path prefix', () => {
-    const data: FileSizeData = {
+    let data: FileSizeData = {
       unmapped: 0,
       files: {
         size: 3,
@@ -43,7 +43,7 @@ describe('file size data', () => {
   });
 
   it('should be able to properly sort file size data in alphabetical order', () => {
-    const data: FileSizeData = {
+    let data: FileSizeData = {
       unmapped: 0,
       files: {
         size: 7,

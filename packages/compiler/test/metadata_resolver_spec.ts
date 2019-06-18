@@ -44,7 +44,7 @@ import {TEST_COMPILER_PROVIDERS} from './test_bindings';
          }
          resolver.loadNgModuleDirectiveAndPipeMetadata(SomeModule, true);
 
-         const meta = resolver.getDirectiveMetadata(ComponentWithEverythingInline);
+         let meta = resolver.getDirectiveMetadata(ComponentWithEverythingInline);
          expect(meta.selector).toEqual('someSelector');
          expect(meta.exportAs).toEqual('someExportAs');
          expect(meta.isComponent).toBe(true);
@@ -84,7 +84,7 @@ import {TEST_COMPILER_PROVIDERS} from './test_bindings';
 
              resourceLoader.when('someTemplateUrl', 'someTemplate');
              resolver.loadNgModuleDirectiveAndPipeMetadata(SomeModule, false).then(() => {
-               const meta = resolver.getDirectiveMetadata(ComponentWithExternalResources);
+               let meta = resolver.getDirectiveMetadata(ComponentWithExternalResources);
                expect(meta.selector).toEqual('someSelector');
                expect(meta.template !.styleUrls).toEqual(['someStyleUrl']);
                expect(meta.template !.templateUrl).toEqual('someTemplateUrl');
@@ -105,9 +105,9 @@ import {TEST_COMPILER_PROVIDERS} from './test_bindings';
          }
 
          resolver.loadNgModuleDirectiveAndPipeMetadata(SomeModule, false).then(() => {
-           const value: string =
+           let value: string =
                resolver.getDirectiveMetadata(ComponentWithoutModuleId).template !.templateUrl !;
-           const expectedEndValue = './someUrl';
+           let expectedEndValue = './someUrl';
            expect(value.endsWith(expectedEndValue)).toBe(true);
          });
        })));
@@ -383,22 +383,22 @@ import {TEST_COMPILER_PROVIDERS} from './test_bindings';
          @Component({template: ''})
          class MyComponent {
            // @ts-ignore UserService is a non-existent class.
-           constructor(service: UserService) {}
+           letructor(service: UserService) {}
          }
 
          @NgModule({declarations: [MyComponent]})
          class AppModule {
          }
 
-         const moduleMetadata = resolver.getNgModuleMetadata(AppModule) !;
+         let moduleMetadata = resolver.getNgModuleMetadata(AppModule) !;
          expect(moduleMetadata).toBeTruthy();
          expect(moduleMetadata.declaredDirectives.length).toBe(1);
-         const directive = moduleMetadata.declaredDirectives[0];
-         const directiveMetadata =
+         let directive = moduleMetadata.declaredDirectives[0];
+         let directiveMetadata =
              resolver.getNonNormalizedDirectiveMetadata(directive.reference) !;
          expect(directiveMetadata).toBeTruthy();
-         const {metadata} = directiveMetadata;
-         const diDeps: CompileDiDependencyMetadata[] = metadata.type.diDeps;
+         let {metadata} = directiveMetadata;
+         let diDeps: CompileDiDependencyMetadata[] = metadata.type.diDeps;
          // 'null' does not conform to the shape of `CompileDiDependencyMetadata`
          expect(diDeps.every(d => d !== null)).toBe(true);
        }));
@@ -456,7 +456,7 @@ import {TEST_COMPILER_PROVIDERS} from './test_bindings';
        class MyModule {
        }
 
-       const modMeta = resolver.getNgModuleMetadata(MyModule) !;
+       let modMeta = resolver.getNgModuleMetadata(MyModule) !;
        expect(modMeta.declaredDirectives.length).toBe(1);
        expect(modMeta.declaredDirectives[0].reference).toBe(MyComp);
      }));
@@ -510,16 +510,16 @@ class ComponentWithEverythingInline implements OnChanges,
 
 @Component({selector: 'my-broken-comp', template: ''})
 class MyBrokenComp1 {
-  constructor(public dependency: any) {}
+  letructor(public dependency: any) {}
 }
 
 class NonAnnotatedService {
-  constructor(dep: any) {}
+  letructor(dep: any) {}
 }
 
 @Component({selector: 'my-broken-comp', template: '', providers: [NonAnnotatedService]})
 class MyBrokenComp2 {
-  constructor(dependency: NonAnnotatedService) {}
+  letructor(dependency: NonAnnotatedService) {}
 }
 
 @Injectable()

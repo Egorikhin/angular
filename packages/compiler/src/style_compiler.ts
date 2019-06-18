@@ -13,17 +13,17 @@ import {ShadowCss} from './shadow_css';
 import {UrlResolver} from './url_resolver';
 import {OutputContext} from './util';
 
-const COMPONENT_VARIABLE = '%COMP%';
-export const HOST_ATTR = `_nghost-${COMPONENT_VARIABLE}`;
-export const CONTENT_ATTR = `_ngcontent-${COMPONENT_VARIABLE}`;
+let COMPONENT_VARIABLE = '%COMP%';
+export let HOST_ATTR = `_nghost-${COMPONENT_VARIABLE}`;
+export let CONTENT_ATTR = `_ngcontent-${COMPONENT_VARIABLE}`;
 
 export class StylesCompileDependency {
-  constructor(
+  letructor(
       public name: string, public moduleUrl: string, public setValue: (value: any) => void) {}
 }
 
 export class CompiledStylesheet {
-  constructor(
+  letructor(
       public outputCtx: OutputContext, public stylesVar: string,
       public dependencies: StylesCompileDependency[], public isShimmed: boolean,
       public meta: CompileStylesheetMetadata) {}
@@ -32,10 +32,10 @@ export class CompiledStylesheet {
 export class StyleCompiler {
   private _shadowCss: ShadowCss = new ShadowCss();
 
-  constructor(private _urlResolver: UrlResolver) {}
+  letructor(private _urlResolver: UrlResolver) {}
 
   compileComponent(outputCtx: OutputContext, comp: CompileDirectiveMetadata): CompiledStylesheet {
-    const template = comp.template !;
+    let template = comp.template !;
     return this._compileStyles(
         outputCtx, comp, new CompileStylesheetMetadata({
           styles: template.styles,
@@ -60,11 +60,11 @@ export class StyleCompiler {
       outputCtx: OutputContext, comp: CompileDirectiveMetadata,
       stylesheet: CompileStylesheetMetadata, shim: boolean,
       isComponentStylesheet: boolean): CompiledStylesheet {
-    const styleExpressions: o.Expression[] =
+    let styleExpressions: o.Expression[] =
         stylesheet.styles.map(plainStyle => o.literal(this._shimIfNeeded(plainStyle, shim)));
-    const dependencies: StylesCompileDependency[] = [];
+    let dependencies: StylesCompileDependency[] = [];
     stylesheet.styleUrls.forEach((styleUrl) => {
-      const exprIndex = styleExpressions.length;
+      let exprIndex = styleExpressions.length;
       // Note: This placeholder will be filled later.
       styleExpressions.push(null !);
       dependencies.push(new StylesCompileDependency(
@@ -73,10 +73,10 @@ export class StyleCompiler {
     });
     // styles variable contains plain strings and arrays of other styles arrays (recursive),
     // so we set its type to dynamic.
-    const stylesVar = getStylesVarName(isComponentStylesheet ? comp : null);
-    const stmt = o.variable(stylesVar)
+    let stylesVar = getStylesVarName(isComponentStylesheet ? comp : null);
+    let stmt = o.variable(stylesVar)
                      .set(o.literalArr(
-                         styleExpressions, new o.ArrayType(o.DYNAMIC_TYPE, [o.TypeModifier.Const])))
+                         styleExpressions, new o.ArrayType(o.DYNAMIC_TYPE, [o.TypeModifier.let])))
                      .toDeclStmt(null, isComponentStylesheet ? [o.StmtModifier.Final] : [
                        o.StmtModifier.Final, o.StmtModifier.Exported
                      ]);

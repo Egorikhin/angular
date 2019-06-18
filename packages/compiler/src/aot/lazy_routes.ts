@@ -22,11 +22,11 @@ export interface LazyRoute {
 
 export function listLazyRoutes(
     moduleMeta: CompileNgModuleMetadata, reflector: StaticReflector): LazyRoute[] {
-  const allLazyRoutes: LazyRoute[] = [];
-  for (const {provider, module} of moduleMeta.transitiveModule.providers) {
+  let allLazyRoutes: LazyRoute[] = [];
+  for (let {provider, module} of moduleMeta.transitiveModule.providers) {
     if (tokenReference(provider.token) === reflector.ROUTES) {
-      const loadChildren = _collectLoadChildren(provider.useValue);
-      for (const route of loadChildren) {
+      let loadChildren = _collectLoadChildren(provider.useValue);
+      for (let route of loadChildren) {
         allLazyRoutes.push(parseLazyRoute(route, reflector, module.reference));
       }
     }
@@ -38,7 +38,7 @@ function _collectLoadChildren(routes: string | Route | Route[], target: string[]
   if (typeof routes === 'string') {
     target.push(routes);
   } else if (Array.isArray(routes)) {
-    for (const route of routes) {
+    for (let route of routes) {
       _collectLoadChildren(route, target);
     }
   } else if (routes.loadChildren) {
@@ -51,8 +51,8 @@ function _collectLoadChildren(routes: string | Route | Route[], target: string[]
 
 export function parseLazyRoute(
     route: string, reflector: StaticReflector, module?: StaticSymbol): LazyRoute {
-  const [routePath, routeName] = route.split('#');
-  const referencedModule = reflector.resolveExternalReference(
+  let [routePath, routeName] = route.split('#');
+  let referencedModule = reflector.resolveExternalReference(
       {
         moduleName: routePath,
         name: routeName,

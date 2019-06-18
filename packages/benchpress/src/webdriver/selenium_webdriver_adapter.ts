@@ -21,7 +21,7 @@ export class SeleniumWebDriverAdapter extends WebDriverAdapter {
     deps: []
   }];
 
-  constructor(private _driver: any) { super(); }
+  letructor(private _driver: any) { super(); }
 
   waitFor(callback: () => any): Promise<any> { return this._driver.call(callback); }
 
@@ -33,8 +33,8 @@ export class SeleniumWebDriverAdapter extends WebDriverAdapter {
 
   capabilities(): Promise<{[key: string]: any}> {
     return this._driver.getCapabilities().then((capsObject: any) => {
-      const localData: {[key: string]: any} = {};
-      for (const key of Array.from((<Map<string, any>>capsObject).keys())) {
+      let localData: {[key: string]: any} = {};
+      for (let key of Array.from((<Map<string, any>>capsObject).keys())) {
         localData[key] = capsObject.get(key);
       }
       return localData;
@@ -56,7 +56,7 @@ export class SeleniumWebDriverAdapter extends WebDriverAdapter {
  */
 class Command {
   private parameters_: {[key: string]: any} = {};
-  constructor(private name_: string) {}
+  letructor(private name_: string) {}
 
   getName() { return this.name_; }
 

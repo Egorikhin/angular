@@ -40,7 +40,7 @@ export {
  * A collection of Angular directives that are likely to be used in each and every Angular
  * application.
  */
-export const COMMON_DIRECTIVES: Provider[] = [
+export let COMMON_DIRECTIVES: Provider[] = [
   NgClass,
   NgComponentOutlet,
   NgForOf,

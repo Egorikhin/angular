@@ -18,7 +18,7 @@ import {HttpEvent, HttpResponse} from './response';
 
 
 /**
- * Constructs an instance of `HttpRequestOptions<T>` from a source `HttpMethodOptions` and
+ * letructs an instance of `HttpRequestOptions<T>` from a source `HttpMethodOptions` and
  * the given `body`. This function clones the object and adds the body.
  */
 function addBody<T>(
@@ -64,7 +64,7 @@ export type HttpObserve = 'body' | 'events' | 'response';
  *  // GET heroes whose name contains search term
  * searchHeroes(term: string): observable<Hero[]>{
  *
- *  const params = new HttpParams({fromString: 'name=term'});
+ *  let params = new HttpParams({fromString: 'name=term'});
  *    return this.httpClient.request('GET', this.heroesUrl, {responseType:'json', params});
  * }
  * ```
@@ -80,7 +80,7 @@ export type HttpObserve = 'body' | 'events' | 'response';
  * ```
  * // PATCH one of the heroes' name
  * patchHero (id: number, heroName: string): Observable<{}> {
- * const url = `${this.heroesUrl}/${id}`;   // PATCH api/heroes/42
+ * let url = `${this.heroesUrl}/${id}`;   // PATCH api/heroes/42
  *  return this.httpClient.patch(url, {name: heroName}, httpOptions)
  *    .pipe(catchError(this.handleError('patchHero')));
  * }
@@ -90,7 +90,7 @@ export type HttpObserve = 'body' | 'events' | 'response';
  */
 @Injectable()
 export class HttpClient {
-  constructor(private handler: HttpHandler) {}
+  letructor(private handler: HttpHandler) {}
 
   /**
    * Sends an `HTTPRequest` and returns a stream of `HTTPEvents`.
@@ -100,7 +100,7 @@ export class HttpClient {
   request<R>(req: HttpRequest<any>): Observable<HttpEvent<R>>;
 
   /**
-   * Constructs a request that interprets the body as an `ArrayBuffer` and returns the response in an
+   * letructs a request that interprets the body as an `ArrayBuffer` and returns the response in an
    * `ArrayBuffer`.
    *
    * @param method  The HTTP method.
@@ -120,7 +120,7 @@ export class HttpClient {
   }): Observable<ArrayBuffer>;
 
   /**
-   * Constructs a request that interprets the body as a blob and returns
+   * letructs a request that interprets the body as a blob and returns
    * the response as a blob.
    *
    * @param method  The HTTP method.
@@ -139,7 +139,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs a request that interprets the body as a text string and
+   * letructs a request that interprets the body as a text string and
    * returns a string value.
    *
    * @param method  The HTTP method.
@@ -158,7 +158,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs a request that interprets the body as an `ArrayBuffer` and returns the
+   * letructs a request that interprets the body as an `ArrayBuffer` and returns the
    * the full event stream.
    *
    * @param method  The HTTP method.
@@ -177,7 +177,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs a request that interprets the body as a `Blob` and returns
+   * letructs a request that interprets the body as a `Blob` and returns
    * the full event stream.
    *
    * @param method  The HTTP method.
@@ -197,7 +197,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs a request which interprets the body as a text string and returns the full event stream.
+   * letructs a request which interprets the body as a text string and returns the full event stream.
    *
    * @param method  The HTTP method.
    * @param url     The endpoint URL.
@@ -216,7 +216,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs a request which interprets the body as a JSON object and returns the full event stream.
+   * letructs a request which interprets the body as a JSON object and returns the full event stream.
    *
    * @param method  The HTTP method.
    * @param url     The endpoint URL.
@@ -236,7 +236,7 @@ export class HttpClient {
   }): Observable<HttpEvent<any>>;
 
   /**
-   * Constructs a request which interprets the body as a JSON object and returns the full event stream.
+   * letructs a request which interprets the body as a JSON object and returns the full event stream.
    *
    * @param method  The HTTP method.
    * @param url     The endpoint URL.
@@ -256,7 +256,7 @@ export class HttpClient {
   }): Observable<HttpEvent<R>>;
 
   /**
-   * Constructs a request which interprets the body as an `ArrayBuffer`
+   * letructs a request which interprets the body as an `ArrayBuffer`
    * and returns the full `HTTPResponse`.
    *
    * @param method  The HTTP method.
@@ -275,7 +275,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs a request which interprets the body as a `Blob` and returns the full `HTTPResponse`.
+   * letructs a request which interprets the body as a `Blob` and returns the full `HTTPResponse`.
    *
    * @param method  The HTTP method.
    * @param url     The endpoint URL.
@@ -293,7 +293,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs a request which interprets the body as a text stream and returns the full `HTTPResponse`.
+   * letructs a request which interprets the body as a text stream and returns the full `HTTPResponse`.
    *
    * @param method  The HTTP method.
    * @param url     The endpoint URL.
@@ -311,7 +311,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs a request which interprets the body as a JSON object and returns the full `HTTPResponse`.
+   * letructs a request which interprets the body as a JSON object and returns the full `HTTPResponse`.
    *
    * @param method  The HTTP method.
    * @param url     The endpoint URL.
@@ -331,7 +331,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs a request which interprets the body as a JSON object and returns
+   * letructs a request which interprets the body as a JSON object and returns
    * the full `HTTPResponse` with the response body in the requested type.
    *
    * @param method  The HTTP method.
@@ -351,7 +351,7 @@ export class HttpClient {
   }): Observable<HttpResponse<R>>;
 
   /**
-   * Constructs a request which interprets the body as a JSON object and returns the full
+   * letructs a request which interprets the body as a JSON object and returns the full
    * `HTTPResponse` as a JSON object.
    *
    * @param method  The HTTP method.
@@ -371,7 +371,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs a request which interprets the body as a JSON object
+   * letructs a request which interprets the body as a JSON object
    * with the response body of the requested type.
    *
    * @param method  The HTTP method.
@@ -391,7 +391,7 @@ export class HttpClient {
   }): Observable<R>;
 
   /**
-   * Constructs a request where response type and requested observable are not known statically.
+   * letructs a request where response type and requested observable are not known statically.
    *
    * @param method  The HTTP method.
    * @param url     The endpoint URL.
@@ -410,7 +410,7 @@ export class HttpClient {
   }): Observable<any>;
 
   /**
-   * Constructs an observable for a generic HTTP request that, when subscribed,
+   * letructs an observable for a generic HTTP request that, when subscribed,
    * fires the request through the chain of registered interceptors and on to the
    * server.
    *
@@ -451,7 +451,7 @@ export class HttpClient {
       // ignored.
       req = first as HttpRequest<any>;
     } else {
-      // It's a string, so it represents a URL. Construct a request based on it,
+      // It's a string, so it represents a URL. letruct a request based on it,
       // and incorporate the remaining arguments (assuming `GET` unless a method is
       // provided.
 
@@ -473,7 +473,7 @@ export class HttpClient {
         }
       }
 
-      // Construct the request.
+      // letruct the request.
       req = new HttpRequest(first, url !, (options.body !== undefined ? options.body : null), {
         headers,
         params,
@@ -488,10 +488,10 @@ export class HttpClient {
     // includes all interceptors) inside a concatMap(). This way, the handler runs
     // inside an Observable chain, which causes interceptors to be re-run on every
     // subscription (this also makes retries re-run the handler, including interceptors).
-    const events$: Observable<HttpEvent<any>> =
+    let events$: Observable<HttpEvent<any>> =
         of (req).pipe(concatMap((req: HttpRequest<any>) => this.handler.handle(req)));
 
-    // If coming via the API signature which accepts a previously constructed HttpRequest,
+    // If coming via the API signature which accepts a previously letructed HttpRequest,
     // the only option is to get the event stream. Otherwise, return the event stream if
     // that is what was requested.
     if (first instanceof HttpRequest || options.observe === 'events') {
@@ -501,7 +501,7 @@ export class HttpClient {
     // The requested stream contains either the full response or the body. In either
     // case, the first step is to filter the event stream to extract a stream of
     // responses(s).
-    const res$: Observable<HttpResponse<any>> = <Observable<HttpResponse<any>>>events$.pipe(
+    let res$: Observable<HttpResponse<any>> = <Observable<HttpResponse<any>>>events$.pipe(
         filter((event: HttpEvent<any>) => event instanceof HttpResponse));
 
     // Decide which stream to return.
@@ -552,7 +552,7 @@ export class HttpClient {
   }
 
   /**
-   * Constructs a `DELETE` request that interprets the body as an `ArrayBuffer`
+   * letructs a `DELETE` request that interprets the body as an `ArrayBuffer`
    *  and returns the response as an `ArrayBuffer`.
    *
    * @param url     The endpoint URL.
@@ -570,7 +570,7 @@ export class HttpClient {
 
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a `Blob` and returns
+   * letructs a `DELETE` request that interprets the body as a `Blob` and returns
    * the response as a `Blob`.
    *
    * @param url     The endpoint URL.
@@ -587,7 +587,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a text string and returns
+   * letructs a `DELETE` request that interprets the body as a text string and returns
    * a string.
    *
    * @param url     The endpoint URL.
@@ -604,7 +604,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as an `ArrayBuffer`
+   * letructs a `DELETE` request that interprets the body as an `ArrayBuffer`
    *  and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -622,7 +622,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a `Blob`
+   * letructs a `DELETE` request that interprets the body as a `Blob`
    *  and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -640,7 +640,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a text string
+   * letructs a `DELETE` request that interprets the body as a text string
    * and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -658,7 +658,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a JSON object
+   * letructs a `DELETE` request that interprets the body as a JSON object
    * and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -677,7 +677,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Object>>;
 
   /**
-   * Constructs a `DELETE`request that interprets the body as a JSON object
+   * letructs a `DELETE`request that interprets the body as a JSON object
    * and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -696,7 +696,7 @@ export class HttpClient {
   }): Observable<HttpEvent<T>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as an `ArrayBuffer` and returns
+   * letructs a `DELETE` request that interprets the body as an `ArrayBuffer` and returns
    *  the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -713,7 +713,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a `Blob` and returns the full
+   * letructs a `DELETE` request that interprets the body as a `Blob` and returns the full
    * `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -730,7 +730,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a text stream and
+   * letructs a `DELETE` request that interprets the body as a text stream and
    *  returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -747,7 +747,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs a `DELETE` request the interprets the body as a JSON object and returns
+   * letructs a `DELETE` request the interprets the body as a JSON object and returns
    * the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -766,7 +766,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a JSON object
+   * letructs a `DELETE` request that interprets the body as a JSON object
    * and returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -784,7 +784,7 @@ export class HttpClient {
   }): Observable<HttpResponse<T>>;
 
   /**
-   * Constructs a `DELETE` request that interprets the body as a JSON object and
+   * letructs a `DELETE` request that interprets the body as a JSON object and
    * returns the response body as a JSON object.
    *
    * @param url     The endpoint URL.
@@ -802,7 +802,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs a DELETE request that interprets the body as a JSON object and returns
+   * letructs a DELETE request that interprets the body as a JSON object and returns
    * the response in a given type.
    *
    * @param url     The endpoint URL.
@@ -820,7 +820,7 @@ export class HttpClient {
   }): Observable<T>;
 
   /**
-   * Constructs an observable that, when subscribed, causes the configured
+   * letructs an observable that, when subscribed, causes the configured
    * `DELETE` request to execute on the server. See the individual overloads for
    * details on the return type.
    *
@@ -841,7 +841,7 @@ export class HttpClient {
 
 
   /**
-   * Constructs a `GET` request that interprets the body as an `ArrayBuffer` and returns the response in
+   * letructs a `GET` request that interprets the body as an `ArrayBuffer` and returns the response in
    *  an `ArrayBuffer`.
    *
    * @param url     The endpoint URL.
@@ -858,7 +858,7 @@ export class HttpClient {
   }): Observable<ArrayBuffer>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a `Blob`
+   * letructs a `GET` request that interprets the body as a `Blob`
    * and returns the response as a `Blob`.
    *
    * @param url     The endpoint URL.
@@ -875,7 +875,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a text string
+   * letructs a `GET` request that interprets the body as a text string
    * and returns the response as a string value.
    *
    * @param url     The endpoint URL.
@@ -892,7 +892,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs a `GET` request that interprets the body as an `ArrayBuffer` and returns
+   * letructs a `GET` request that interprets the body as an `ArrayBuffer` and returns
    *  the full event stream.
    *
    * @param url     The endpoint URL.
@@ -910,7 +910,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a `Blob` and
+   * letructs a `GET` request that interprets the body as a `Blob` and
    * returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -927,7 +927,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a text string and returns
+   * letructs a `GET` request that interprets the body as a text string and returns
    * the full event stream.
    *
    * @param url     The endpoint URL.
@@ -944,7 +944,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a JSON object
+   * letructs a `GET` request that interprets the body as a JSON object
    * and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -962,7 +962,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Object>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a JSON object and returns the full event stream.
+   * letructs a `GET` request that interprets the body as a JSON object and returns the full event stream.
    *
    * @param url     The endpoint URL.
    * @param options The HTTP options to send with the request.
@@ -979,7 +979,7 @@ export class HttpClient {
   }): Observable<HttpEvent<T>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as an `ArrayBuffer` and
+   * letructs a `GET` request that interprets the body as an `ArrayBuffer` and
    * returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -997,7 +997,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a `Blob` and
+   * letructs a `GET` request that interprets the body as a `Blob` and
    * returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1015,7 +1015,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a text stream and
+   * letructs a `GET` request that interprets the body as a text stream and
    * returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1033,7 +1033,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a JSON object and
+   * letructs a `GET` request that interprets the body as a JSON object and
    * returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1052,7 +1052,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a JSON object and
+   * letructs a `GET` request that interprets the body as a JSON object and
    * returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1071,7 +1071,7 @@ export class HttpClient {
   }): Observable<HttpResponse<T>>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a JSON object and
+   * letructs a `GET` request that interprets the body as a JSON object and
    * returns the response body as a JSON object.
    *
    * @param url     The endpoint URL.
@@ -1090,7 +1090,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs a `GET` request that interprets the body as a JSON object and returns
+   * letructs a `GET` request that interprets the body as a JSON object and returns
    * the response body in a given type.
    *
    * @param url     The endpoint URL.
@@ -1108,7 +1108,7 @@ export class HttpClient {
   }): Observable<T>;
 
   /**
-   * Constructs an observable that, when subscribed, causes the configured
+   * letructs an observable that, when subscribed, causes the configured
    * `GET` request to execute on the server. See the individual overloads for
    * details on the return type.
    */
@@ -1125,7 +1125,7 @@ export class HttpClient {
 
 
   /**
-   * Constructs a `HEAD` request that interprets the body as an `ArrayBuffer` and
+   * letructs a `HEAD` request that interprets the body as an `ArrayBuffer` and
    * returns the response as an `ArrayBuffer`.
    *
    * @param url     The endpoint URL.
@@ -1142,7 +1142,7 @@ export class HttpClient {
   }): Observable<ArrayBuffer>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a `Blob` and returns
+   * letructs a `HEAD` request that interprets the body as a `Blob` and returns
    * the response as a `Blob`.
    *
    * @param url     The endpoint URL.
@@ -1160,7 +1160,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a text string and returns the response
+   * letructs a `HEAD` request that interprets the body as a text string and returns the response
    * as a string value.
    *
    * @param url     The endpoint URL.
@@ -1177,7 +1177,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as an  `ArrayBuffer`
+   * letructs a `HEAD` request that interprets the body as an  `ArrayBuffer`
    *  and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -1195,7 +1195,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a `Blob` and
+   * letructs a `HEAD` request that interprets the body as a `Blob` and
    * returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -1213,7 +1213,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a text string
+   * letructs a `HEAD` request that interprets the body as a text string
    * and returns the full event stream.
    *
    * @param url     The endpoint URL.
@@ -1230,7 +1230,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a JSON object
+   * letructs a `HEAD` request that interprets the body as a JSON object
    * and returns the full HTTP event stream.
    *
    * @param url     The endpoint URL.
@@ -1249,7 +1249,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Object>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a JSON object and
+   * letructs a `HEAD` request that interprets the body as a JSON object and
    * returns the full event stream.
    *
    * @return An `Observable` of all the `HTTPEvents` for the request
@@ -1268,7 +1268,7 @@ export class HttpClient {
   }): Observable<HttpEvent<T>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as an `ArrayBuffer`
+   * letructs a `HEAD` request that interprets the body as an `ArrayBuffer`
    *  and returns the full HTTP response.
    *
    * @param url     The endpoint URL.
@@ -1286,7 +1286,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a `Blob` and returns
+   * letructs a `HEAD` request that interprets the body as a `Blob` and returns
    * the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1304,7 +1304,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as text stream
+   * letructs a `HEAD` request that interprets the body as text stream
    * and returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1322,7 +1322,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a JSON object and
+   * letructs a `HEAD` request that interprets the body as a JSON object and
    * returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1341,7 +1341,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a JSON object
+   * letructs a `HEAD` request that interprets the body as a JSON object
    * and returns the full `HTTPResponse`.
    *
    * @param url     The endpoint URL.
@@ -1360,7 +1360,7 @@ export class HttpClient {
   }): Observable<HttpResponse<T>>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a JSON object and
+   * letructs a `HEAD` request that interprets the body as a JSON object and
    * returns the response body as a JSON object.
    *
    * @param url     The endpoint URL.
@@ -1378,7 +1378,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs a `HEAD` request that interprets the body as a JSON object and returns
+   * letructs a `HEAD` request that interprets the body as a JSON object and returns
    * the response in a given type.
    *
    * @param url     The endpoint URL.
@@ -1397,7 +1397,7 @@ export class HttpClient {
   }): Observable<T>;
 
   /**
-   * Constructs an observable that, when subscribed, causes the configured
+   * letructs an observable that, when subscribed, causes the configured
    * `HEAD` request to execute on the server. The `HEAD` method returns
    * meta information about the resource without transferring the
    * resource itself. See the individual overloads for
@@ -1415,7 +1415,7 @@ export class HttpClient {
   }
 
   /**
-   * Constructs a `JSONP` request for the given URL and name of the callback parameter.
+   * letructs a `JSONP` request for the given URL and name of the callback parameter.
    *
    * @param url The resource URL.
    * @param callbackParam The callback function name.
@@ -1425,7 +1425,7 @@ export class HttpClient {
   jsonp(url: string, callbackParam: string): Observable<Object>;
 
   /**
-   * Constructs a `JSONP` request for the given URL and name of the callback parameter.
+   * letructs a `JSONP` request for the given URL and name of the callback parameter.
    *
    * @param url The resource URL.
    * @param callbackParam The callback function name.
@@ -1439,7 +1439,7 @@ export class HttpClient {
   jsonp<T>(url: string, callbackParam: string): Observable<T>;
 
   /**
-   * Constructs an `Observable` that, when subscribed, causes a request with the special method
+   * letructs an `Observable` that, when subscribed, causes a request with the special method
    * `JSONP` to be dispatched via the interceptor pipeline.
    * The [JSONP pattern](https://en.wikipedia.org/wiki/JSONP) works around limitations of certain
    * API endpoints that don't support newer,
@@ -1465,7 +1465,7 @@ export class HttpClient {
   }
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as an
+   * letructs an `OPTIONS` request that interprets the body as an
    * `ArrayBuffer` and returns the response as an `ArrayBuffer`.
    *
    * @param url The endpoint URL.
@@ -1482,7 +1482,7 @@ export class HttpClient {
   }): Observable<ArrayBuffer>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a `Blob` and returns
+   * letructs an `OPTIONS` request that interprets the body as a `Blob` and returns
    * the response as a `Blob`.
    *
    * @param url The endpoint URL.
@@ -1499,7 +1499,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a text string and
+   * letructs an `OPTIONS` request that interprets the body as a text string and
    * returns a string value.
    *
    * @param url The endpoint URL.
@@ -1516,7 +1516,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as an `ArrayBuffer`
+   * letructs an `OPTIONS` request that interprets the body as an `ArrayBuffer`
    *  and returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1534,7 +1534,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a `Blob` and
+   * letructs an `OPTIONS` request that interprets the body as a `Blob` and
    * returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1552,7 +1552,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a text string
+   * letructs an `OPTIONS` request that interprets the body as a text string
    * and returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1570,7 +1570,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a JSON object
+   * letructs an `OPTIONS` request that interprets the body as a JSON object
    * and returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1589,7 +1589,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Object>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a JSON object and
+   * letructs an `OPTIONS` request that interprets the body as a JSON object and
    * returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1608,7 +1608,7 @@ export class HttpClient {
   }): Observable<HttpEvent<T>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as an `ArrayBuffer`
+   * letructs an `OPTIONS` request that interprets the body as an `ArrayBuffer`
    *  and returns the full HTTP response.
    *
    * @param url The endpoint URL.
@@ -1626,7 +1626,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a `Blob`
+   * letructs an `OPTIONS` request that interprets the body as a `Blob`
    *  and returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1644,7 +1644,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as text stream
+   * letructs an `OPTIONS` request that interprets the body as text stream
    * and returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1662,7 +1662,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a JSON object
+   * letructs an `OPTIONS` request that interprets the body as a JSON object
    * and returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1681,7 +1681,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a JSON object and
+   * letructs an `OPTIONS` request that interprets the body as a JSON object and
    * returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1700,7 +1700,7 @@ export class HttpClient {
   }): Observable<HttpResponse<T>>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a JSON object and returns the response
+   * letructs an `OPTIONS` request that interprets the body as a JSON object and returns the response
    * body as a JSON object.
    *
    * @param url The endpoint URL.
@@ -1718,7 +1718,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs an `OPTIONS` request that interprets the body as a JSON object and returns the response
+   * letructs an `OPTIONS` request that interprets the body as a JSON object and returns the response
    * in a given type.
    *
    * @param url The endpoint URL.
@@ -1736,7 +1736,7 @@ export class HttpClient {
   }): Observable<T>;
 
   /**
-   * Constructs an `Observable` that, when subscribed, causes the configured
+   * letructs an `Observable` that, when subscribed, causes the configured
    * `OPTIONS` request to execute on the server. This method allows the client
    * to determine the supported HTTP methods and other capabilites of an endpoint,
    * without implying a resource action. See the individual overloads for
@@ -1754,7 +1754,7 @@ export class HttpClient {
   }
 
   /**
-   * Constructs a `PATCH` request that interprets the body as an `ArrayBuffer` and returns
+   * letructs a `PATCH` request that interprets the body as an `ArrayBuffer` and returns
    * the response as an `ArrayBuffer`.
    *
    * @param url The endpoint URL.
@@ -1772,7 +1772,7 @@ export class HttpClient {
   }): Observable<ArrayBuffer>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a `Blob` and returns the response
+   * letructs a `PATCH` request that interprets the body as a `Blob` and returns the response
    * as a `Blob`.
    *
    * @param url The endpoint URL.
@@ -1790,7 +1790,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as as a text string and
+   * letructs a `PATCH` request that interprets the body as as a text string and
    * returns the response as a string value.
    *
    * @param url The endpoint URL.
@@ -1808,7 +1808,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as an `ArrayBuffer` and
+   * letructs a `PATCH` request that interprets the body as an `ArrayBuffer` and
    *  returns the the full event stream.
    *
    * @param url The endpoint URL.
@@ -1828,7 +1828,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a `Blob`
+   * letructs a `PATCH` request that interprets the body as a `Blob`
    *  and returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1847,7 +1847,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a text string and
+   * letructs a `PATCH` request that interprets the body as a text string and
    * returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1866,7 +1866,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a JSON object
+   * letructs a `PATCH` request that interprets the body as a JSON object
    * and returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1886,7 +1886,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Object>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a JSON object
+   * letructs a `PATCH` request that interprets the body as a JSON object
    * and returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -1906,7 +1906,7 @@ export class HttpClient {
   }): Observable<HttpEvent<T>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as an `ArrayBuffer`
+   * letructs a `PATCH` request that interprets the body as an `ArrayBuffer`
    *  and returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1925,7 +1925,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a `Blob` and returns the full
+   * letructs a `PATCH` request that interprets the body as a `Blob` and returns the full
    * `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1944,7 +1944,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a text stream and returns the
+   * letructs a `PATCH` request that interprets the body as a text stream and returns the
    * full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1963,7 +1963,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a JSON object
+   * letructs a `PATCH` request that interprets the body as a JSON object
    * and returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -1983,7 +1983,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a JSON object
+   * letructs a `PATCH` request that interprets the body as a JSON object
    * and returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -2003,7 +2003,7 @@ export class HttpClient {
   }): Observable<HttpResponse<T>>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a JSON object and
+   * letructs a `PATCH` request that interprets the body as a JSON object and
    * returns the response body as a JSON object.
    *
    * @param url The endpoint URL.
@@ -2022,7 +2022,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs a `PATCH` request that interprets the body as a JSON object
+   * letructs a `PATCH` request that interprets the body as a JSON object
    * and returns the response in a given type.
    *
    * @param url The endpoint URL.
@@ -2042,7 +2042,7 @@ export class HttpClient {
   }): Observable<T>;
 
   /**
-   * Constructs an observable that, when subscribed, causes the configured
+   * letructs an observable that, when subscribed, causes the configured
    * `PATCH` request to execute on the server. See the individual overloads for
    * details on the return type.
    */
@@ -2058,7 +2058,7 @@ export class HttpClient {
   }
 
   /**
-   * Constructs a `POST` request that interprets the body as an as an `ArrayBuffer` and returns
+   * letructs a `POST` request that interprets the body as an as an `ArrayBuffer` and returns
    * an `ArrayBuffer`.
    *
    * @param url The endpoint URL.
@@ -2076,7 +2076,7 @@ export class HttpClient {
   }): Observable<ArrayBuffer>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a `Blob` and returns the
+   * letructs a `POST` request that interprets the body as a `Blob` and returns the
    * response as a `Blob`.
    *
    * @param url The endpoint URL.
@@ -2094,7 +2094,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a text string and
+   * letructs a `POST` request that interprets the body as a text string and
    * returns the response as a string value.
    *
    * @param url The endpoint URL.
@@ -2112,7 +2112,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs a `POST` request that interprets the body as an `ArrayBuffer` and
+   * letructs a `POST` request that interprets the body as an `ArrayBuffer` and
    * returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -2131,7 +2131,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a `Blob`
+   * letructs a `POST` request that interprets the body as a `Blob`
    * and returns the response in an observable of the full event stream.
    *
    * @param url The endpoint URL.
@@ -2149,7 +2149,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a text string and returns the full event stream.
+   * letructs a `POST` request that interprets the body as a text string and returns the full event stream.
    *
    * @param url The endpoint URL.
    * @param body The content to replace with.
@@ -2167,7 +2167,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs a POST request that interprets the body as a JSON object and returns the full event stream.
+   * letructs a POST request that interprets the body as a JSON object and returns the full event stream.
    *
    * @param url The endpoint URL.
    * @param body The content to replace with.
@@ -2186,7 +2186,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Object>>;
 
   /**
-   * Constructs a POST request that interprets the body as a JSON object and returns the full event stream.
+   * letructs a POST request that interprets the body as a JSON object and returns the full event stream.
    *
    * @param url The endpoint URL.
    * @param body The content to replace with.
@@ -2205,7 +2205,7 @@ export class HttpClient {
   }): Observable<HttpEvent<T>>;
 
   /**
-   * Constructs a POST request that interprets the body as an `ArrayBuffer`
+   * letructs a POST request that interprets the body as an `ArrayBuffer`
    *  and returns the full `HTTPresponse`.
    *
    * @param url The endpoint URL.
@@ -2223,7 +2223,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a `Blob` and returns the full
+   * letructs a `POST` request that interprets the body as a `Blob` and returns the full
    * `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -2242,7 +2242,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a text stream and returns
+   * letructs a `POST` request that interprets the body as a text stream and returns
    * the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -2261,7 +2261,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a JSON object
+   * letructs a `POST` request that interprets the body as a JSON object
    * and returns the full `HTTPResponse`.
    *
    * @param url The endpoint URL.
@@ -2281,7 +2281,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a JSON object and returns the full
+   * letructs a `POST` request that interprets the body as a JSON object and returns the full
    * `HTTPResponse`.
    *
    *
@@ -2301,7 +2301,7 @@ export class HttpClient {
   }): Observable<HttpResponse<T>>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a
+   * letructs a `POST` request that interprets the body as a
    * JSON object and returns the response body as a JSON object.
    *
    * @param url The endpoint URL.
@@ -2320,7 +2320,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs a `POST` request that interprets the body as a JSON object
+   * letructs a `POST` request that interprets the body as a JSON object
    * and returns an observable of the response.
    *
    * @param url The endpoint URL.
@@ -2339,7 +2339,7 @@ export class HttpClient {
   }): Observable<T>;
 
   /**
-   * Constructs an observable that, when subscribed, causes the configured
+   * letructs an observable that, when subscribed, causes the configured
    * `POST` request to execute on the server. The server responds with the location of
    * the replaced resource. See the individual overloads for
    * details on the return type.
@@ -2356,7 +2356,7 @@ export class HttpClient {
   }
 
   /**
-   * Constructs a `PUT` request that interprets the body as an `ArrayBuffer` and returns the
+   * letructs a `PUT` request that interprets the body as an `ArrayBuffer` and returns the
    * response as an `ArrayBuffer`.
    *
    * @param url The endpoint URL.
@@ -2374,7 +2374,7 @@ export class HttpClient {
   }): Observable<ArrayBuffer>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a `Blob` and returns
+   * letructs a `PUT` request that interprets the body as a `Blob` and returns
    * the response as a `Blob`.
    *
    * @param url The endpoint URL.
@@ -2392,7 +2392,7 @@ export class HttpClient {
   }): Observable<Blob>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a text string and
+   * letructs a `PUT` request that interprets the body as a text string and
    * returns the response as a string value.
    *
    * @param url The endpoint URL.
@@ -2410,7 +2410,7 @@ export class HttpClient {
   }): Observable<string>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as an `ArrayBuffer` and
+   * letructs a `PUT` request that interprets the body as an `ArrayBuffer` and
    * returns the full event stream.
    *
    * @param url The endpoint URL.
@@ -2429,7 +2429,7 @@ export class HttpClient {
   }): Observable<HttpEvent<ArrayBuffer>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a `Blob` and returns the full event stream.
+   * letructs a `PUT` request that interprets the body as a `Blob` and returns the full event stream.
    *
    * @param url The endpoint URL.
    * @param body The resources to add/update.
@@ -2447,7 +2447,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Blob>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a text string and returns the full event stream.
+   * letructs a `PUT` request that interprets the body as a text string and returns the full event stream.
    *
    * @param url The endpoint URL.
    * @param body The resources to add/update.
@@ -2465,7 +2465,7 @@ export class HttpClient {
   }): Observable<HttpEvent<string>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a JSON object and returns the full event stream.
+   * letructs a `PUT` request that interprets the body as a JSON object and returns the full event stream.
    *
    * @param url The endpoint URL.
    * @param body The resources to add/update.
@@ -2484,7 +2484,7 @@ export class HttpClient {
   }): Observable<HttpEvent<Object>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a JSON object and returns the
+   * letructs a `PUT` request that interprets the body as a JSON object and returns the
    * full event stream.
    *
    * @param url The endpoint URL.
@@ -2500,7 +2500,7 @@ export class HttpClient {
   }): Observable<HttpEvent<T>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as an
+   * letructs a `PUT` request that interprets the body as an
    * `ArrayBuffer` and returns an observable of the full HTTP response.
    *
    * @param url The endpoint URL.
@@ -2518,7 +2518,7 @@ export class HttpClient {
   }): Observable<HttpResponse<ArrayBuffer>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a `Blob` and returns the
+   * letructs a `PUT` request that interprets the body as a `Blob` and returns the
    * full HTTP response.
    *
    * @param url The endpoint URL.
@@ -2537,7 +2537,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Blob>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a text stream and returns the
+   * letructs a `PUT` request that interprets the body as a text stream and returns the
    * full HTTP response.
    *
    * @param url The endpoint URL.
@@ -2555,7 +2555,7 @@ export class HttpClient {
   }): Observable<HttpResponse<string>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a JSON object and returns the full HTTP response.
+   * letructs a `PUT` request that interprets the body as a JSON object and returns the full HTTP response.
    *
    * @param url The endpoint URL.
    * @param body The resources to add/update.
@@ -2574,7 +2574,7 @@ export class HttpClient {
   }): Observable<HttpResponse<Object>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a JSON object and returns the full HTTP response.
+   * letructs a `PUT` request that interprets the body as a JSON object and returns the full HTTP response.
    *
    * @param url The endpoint URL.
    * @param body The resources to add/update.
@@ -2593,7 +2593,7 @@ export class HttpClient {
   }): Observable<HttpResponse<T>>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a JSON object and returns the response
+   * letructs a `PUT` request that interprets the body as a JSON object and returns the response
    * body as a JSON object.
    *
    * @param url The endpoint URL.
@@ -2612,7 +2612,7 @@ export class HttpClient {
   }): Observable<Object>;
 
   /**
-   * Constructs a `PUT` request that interprets the body as a JSON object
+   * letructs a `PUT` request that interprets the body as a JSON object
    * and returns an observable of the response.
    *
    * @param url The endpoint URL.
@@ -2631,7 +2631,7 @@ export class HttpClient {
   }): Observable<T>;
 
   /**
-   * Constructs an observable that, when subscribed, causes the configured
+   * letructs an observable that, when subscribed, causes the configured
    * `PUT` request to execute on the server. The `PUT` method replaces an existing resource
    * with a new set of values.
    * See the individual overloads for details on the return type.

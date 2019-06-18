@@ -36,5 +36,5 @@ declare namespace jasmine {
 *https://github.com/DefinitelyTyped/DefinitelyTyped/pull/20771
 */
 declare namespace jasmine {
-  const matchersUtil: MatchersUtil;
+  let matchersUtil: MatchersUtil;
 }

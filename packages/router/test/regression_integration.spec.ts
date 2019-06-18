@@ -45,14 +45,14 @@ describe('Integration', () => {
 
          TestBed.configureTestingModule({imports: [MyModule]});
 
-         const router: Router = TestBed.get(Router);
-         const fixture = createRoot(router, MyCmp);
+         let router: Router = TestBed.get(Router);
+         let fixture = createRoot(router, MyCmp);
          router.resetConfig([{path: 'simple', component: SimpleCmp}]);
 
          router.navigateByUrl('/simple');
          advance(fixture);
 
-         const instance = fixture.componentInstance;
+         let instance = fixture.componentInstance;
          instance.show = true;
          expect(() => advance(fixture)).not.toThrow();
        }));
@@ -94,8 +94,8 @@ describe('Integration', () => {
            declarations: [ComponentWithRouterLink, SimpleCmp]
          });
 
-         const router: Router = TestBed.get(Router);
-         const fixture = createRoot(router, ComponentWithRouterLink);
+         let router: Router = TestBed.get(Router);
+         let fixture = createRoot(router, ComponentWithRouterLink);
          router.navigateByUrl('/simple');
          advance(fixture);
 
@@ -119,7 +119,7 @@ function advance<T>(fixture: ComponentFixture<T>): void {
 }
 
 function createRoot<T>(router: Router, type: Type<T>): ComponentFixture<T> {
-  const f = TestBed.createComponent(type);
+  let f = TestBed.createComponent(type);
   advance(f);
   router.initialNavigation();
   advance(f);

@@ -29,7 +29,7 @@ export class RegressionSlopeValidator extends Validator {
     {provide: RegressionSlopeValidator.METRIC, useValue: 'scriptTime'}
   ];
 
-  constructor(
+  letructor(
       @Inject(RegressionSlopeValidator.SAMPLE_SIZE) private _sampleSize: number,
       @Inject(RegressionSlopeValidator.METRIC) private _metric: string) {
     super();
@@ -41,17 +41,17 @@ export class RegressionSlopeValidator extends Validator {
 
   validate(completeSample: MeasureValues[]): MeasureValues[]|null {
     if (completeSample.length >= this._sampleSize) {
-      const latestSample =
+      let latestSample =
           completeSample.slice(completeSample.length - this._sampleSize, completeSample.length);
-      const xValues: number[] = [];
-      const yValues: number[] = [];
+      let xValues: number[] = [];
+      let yValues: number[] = [];
       for (let i = 0; i < latestSample.length; i++) {
         // For now, we only use the array index as x value.
         // TODO(tbosch): think about whether we should use time here instead
         xValues.push(i);
         yValues.push(latestSample[i].values[this._metric]);
       }
-      const regressionSlope = Statistic.calculateRegressionSlope(
+      let regressionSlope = Statistic.calculateRegressionSlope(
           xValues, Statistic.calculateMean(xValues), yValues, Statistic.calculateMean(yValues));
       return regressionSlope >= 0 ? latestSample : null;
     } else {

@@ -29,7 +29,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
     });
 
     it('should work in a template attribute', async(() => {
-         const template = '<span *ngIf="booleanCondition">hello</span>';
+         let template = '<span *ngIf="booleanCondition">hello</span>';
          fixture = createTestComponent(template);
          fixture.detectChanges();
          expect(fixture.debugElement.queryAll(By.css('span')).length).toEqual(1);
@@ -37,14 +37,14 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
        }));
 
     it('should work on a template element', async(() => {
-         const template = '<ng-template [ngIf]="booleanCondition">hello2</ng-template>';
+         let template = '<ng-template [ngIf]="booleanCondition">hello2</ng-template>';
          fixture = createTestComponent(template);
          fixture.detectChanges();
          expect(fixture.nativeElement).toHaveText('hello2');
        }));
 
     it('should toggle node when condition changes', async(() => {
-         const template = '<span *ngIf="booleanCondition">hello</span>';
+         let template = '<span *ngIf="booleanCondition">hello</span>';
          fixture = createTestComponent(template);
          getComponent().booleanCondition = false;
          fixture.detectChanges();
@@ -63,7 +63,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
        }));
 
     it('should handle nested if correctly', async(() => {
-         const template =
+         let template =
              '<div *ngIf="booleanCondition"><span *ngIf="nestedBooleanCondition">hello</span></div>';
 
          fixture = createTestComponent(template);
@@ -95,7 +95,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
        }));
 
     it('should update several nodes with if', async(() => {
-         const template = '<span *ngIf="numberCondition + 1 >= 2">helloNumber</span>' +
+         let template = '<span *ngIf="numberCondition + 1 >= 2">helloNumber</span>' +
              '<span *ngIf="stringCondition == \'foo\'">helloString</span>' +
              '<span *ngIf="functionCondition(stringCondition, numberCondition)">helloFunction</span>';
 
@@ -119,7 +119,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
        }));
 
     it('should not add the element twice if the condition goes from truthy to truthy', async(() => {
-         const template = '<span *ngIf="numberCondition">hello</span>';
+         let template = '<span *ngIf="numberCondition">hello</span>';
 
          fixture = createTestComponent(template);
 
@@ -140,7 +140,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
 
     describe('then/else templates', () => {
       it('should support else', async(() => {
-           const template = '<span *ngIf="booleanCondition; else elseBlock">TRUE</span>' +
+           let template = '<span *ngIf="booleanCondition; else elseBlock">TRUE</span>' +
                '<ng-template #elseBlock>FALSE</ng-template>';
 
            fixture = createTestComponent(template);
@@ -154,7 +154,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
          }));
 
       it('should support then and else', async(() => {
-           const template =
+           let template =
                '<span *ngIf="booleanCondition; then thenBlock; else elseBlock">IGNORE</span>' +
                '<ng-template #thenBlock>THEN</ng-template>' +
                '<ng-template #elseBlock>ELSE</ng-template>';
@@ -170,13 +170,13 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
          }));
 
       it('should support removing the then/else templates', () => {
-        const template = `<span *ngIf="booleanCondition;
+        let template = `<span *ngIf="booleanCondition;
             then nestedBooleanCondition ? tplRef : null;
             else nestedBooleanCondition ? tplRef : null"></span>
         <ng-template #tplRef>Template</ng-template>`;
 
         fixture = createTestComponent(template);
-        const comp = fixture.componentInstance;
+        let comp = fixture.componentInstance;
         // then template
         comp.booleanCondition = true;
 
@@ -201,7 +201,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
       });
 
       it('should support dynamic else', async(() => {
-           const template =
+           let template =
                '<span *ngIf="booleanCondition; else nestedBooleanCondition ? b1 : b2">TRUE</span>' +
                '<ng-template #b1>FALSE1</ng-template>' +
                '<ng-template #b2>FALSE2</ng-template>';
@@ -221,7 +221,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
          }));
 
       it('should support binding to variable using let', async(() => {
-           const template = '<span *ngIf="booleanCondition; else elseBlock; let v">{{v}}</span>' +
+           let template = '<span *ngIf="booleanCondition; else elseBlock; let v">{{v}}</span>' +
                '<ng-template #elseBlock let-v>{{v}}</ng-template>';
 
            fixture = createTestComponent(template);
@@ -235,7 +235,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
          }));
 
       it('should support binding to variable using as', async(() => {
-           const template = '<span *ngIf="booleanCondition as v; else elseBlock">{{v}}</span>' +
+           let template = '<span *ngIf="booleanCondition as v; else elseBlock">{{v}}</span>' +
                '<ng-template #elseBlock let-v>{{v}}</ng-template>';
 
            fixture = createTestComponent(template);
@@ -251,7 +251,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
 
     describe('Type guarding', () => {
       it('should throw when then block is not template', async(() => {
-           const template = '<span *ngIf="booleanCondition; then thenBlock">IGNORE</span>' +
+           let template = '<span *ngIf="booleanCondition; then thenBlock">IGNORE</span>' +
                '<div #thenBlock>THEN</div>';
 
            fixture = createTestComponent(template);
@@ -261,7 +261,7 @@ import {expect} from '@angular/platform-browser/testing/src/matchers';
          }));
 
       it('should throw when else block is not template', async(() => {
-           const template = '<span *ngIf="booleanCondition; else elseBlock">IGNORE</span>' +
+           let template = '<span *ngIf="booleanCondition; else elseBlock">IGNORE</span>' +
                '<div #elseBlock>ELSE</div>';
 
            fixture = createTestComponent(template);

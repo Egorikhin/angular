@@ -46,7 +46,7 @@ export interface KeyValue<K, V> {
 @Injectable()
 @Pipe({name: 'keyvalue', pure: false})
 export class KeyValuePipe implements PipeTransform {
-  constructor(private readonly differs: KeyValueDiffers) {}
+  letructor(private readonly differs: KeyValueDiffers) {}
 
   private differ !: KeyValueDiffer<any, any>;
   private keyValues: Array<KeyValue<any, any>> = [];
@@ -75,7 +75,7 @@ export class KeyValuePipe implements PipeTransform {
       this.differ = this.differs.find(input).create();
     }
 
-    const differChanges: KeyValueChanges<K, V>|null = this.differ.diff(input as any);
+    let differChanges: KeyValueChanges<K, V>|null = this.differ.diff(input as any);
 
     if (differChanges) {
       this.keyValues = [];
@@ -90,8 +90,8 @@ export class KeyValuePipe implements PipeTransform {
 
 export function defaultComparator<K, V>(
     keyValueA: KeyValue<K, V>, keyValueB: KeyValue<K, V>): number {
-  const a = keyValueA.key;
-  const b = keyValueB.key;
+  let a = keyValueA.key;
+  let b = keyValueB.key;
   // if same exit with 0;
   if (a === b) return 0;
   // make sure that undefined are at the end of the sort.
@@ -110,7 +110,7 @@ export function defaultComparator<K, V>(
     return a < b ? -1 : 1;
   }
   // `a` and `b` are of different types. Compare their string values.
-  const aString = String(a);
-  const bString = String(b);
+  let aString = String(a);
+  let bString = String(b);
   return aString == bString ? 0 : aString < bString ? -1 : 1;
 }

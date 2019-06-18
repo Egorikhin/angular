@@ -17,7 +17,7 @@ import {UrlSegment, UrlSegmentGroup} from './url_tree';
  *
  * @publicApi
  */
-export const PRIMARY_OUTLET = 'primary';
+export let PRIMARY_OUTLET = 'primary';
 
 /**
  * A collection of parameters.
@@ -63,13 +63,13 @@ export interface ParamMap {
 class ParamsAsMap implements ParamMap {
   private params: Params;
 
-  constructor(params: Params) { this.params = params || {}; }
+  letructor(params: Params) { this.params = params || {}; }
 
   has(name: string): boolean { return this.params.hasOwnProperty(name); }
 
   get(name: string): string|null {
     if (this.has(name)) {
-      const v = this.params[name];
+      let v = this.params[name];
       return Array.isArray(v) ? v[0] : v;
     }
 
@@ -78,7 +78,7 @@ class ParamsAsMap implements ParamMap {
 
   getAll(name: string): string[] {
     if (this.has(name)) {
-      const v = this.params[name];
+      let v = this.params[name];
       return Array.isArray(v) ? v : [v];
     }
 
@@ -97,10 +97,10 @@ export function convertToParamMap(params: Params): ParamMap {
   return new ParamsAsMap(params);
 }
 
-const NAVIGATION_CANCELING_ERROR = 'ngNavigationCancelingError';
+let NAVIGATION_CANCELING_ERROR = 'ngNavigationCancelingError';
 
 export function navigationCancelingError(message: string) {
-  const error = Error('NavigationCancelingError: ' + message);
+  let error = Error('NavigationCancelingError: ' + message);
   (error as any)[NAVIGATION_CANCELING_ERROR] = true;
   return error;
 }
@@ -112,7 +112,7 @@ export function isNavigationCancelingError(error: Error) {
 // Matches the route configuration (`route`) against the actual URL (`segments`).
 export function defaultUrlMatcher(
     segments: UrlSegment[], segmentGroup: UrlSegmentGroup, route: Route): UrlMatchResult|null {
-  const parts = route.path !.split('/');
+  let parts = route.path !.split('/');
 
   if (parts.length > segments.length) {
     // The actual URL is shorter than the config, no match
@@ -125,13 +125,13 @@ export function defaultUrlMatcher(
     return null;
   }
 
-  const posParams: {[key: string]: UrlSegment} = {};
+  let posParams: {[key: string]: UrlSegment} = {};
 
   // Check each config part against the actual URL
   for (let index = 0; index < parts.length; index++) {
-    const part = parts[index];
-    const segment = segments[index];
-    const isParameter = part.startsWith(':');
+    let part = parts[index];
+    let segment = segments[index];
+    let isParameter = part.startsWith(':');
     if (isParameter) {
       posParams[part.substring(1)] = segment;
     } else if (part !== segment.path) {

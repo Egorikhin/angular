@@ -15,12 +15,12 @@
 import {CssSelector} from './selector';
 
 export interface Inject { token: any; }
-export const createInject = makeMetadataFactory<Inject>('Inject', (token: any) => ({token}));
-export const createInjectionToken = makeMetadataFactory<object>(
+export let createInject = makeMetadataFactory<Inject>('Inject', (token: any) => ({token}));
+export let createInjectionToken = makeMetadataFactory<object>(
     'InjectionToken', (desc: string) => ({_desc: desc, ngInjectableDef: undefined}));
 
 export interface Attribute { attributeName?: string; }
-export const createAttribute =
+export let createAttribute =
     makeMetadataFactory<Attribute>('Attribute', (attributeName?: string) => ({attributeName}));
 
 export interface Query {
@@ -32,17 +32,17 @@ export interface Query {
   static: boolean;
 }
 
-export const createContentChildren = makeMetadataFactory<Query>(
+export let createContentChildren = makeMetadataFactory<Query>(
     'ContentChildren',
     (selector?: any, data: any = {}) =>
         ({selector, first: false, isViewQuery: false, descendants: false, ...data}));
-export const createContentChild = makeMetadataFactory<Query>(
+export let createContentChild = makeMetadataFactory<Query>(
     'ContentChild', (selector?: any, data: any = {}) =>
                         ({selector, first: true, isViewQuery: false, descendants: true, ...data}));
-export const createViewChildren = makeMetadataFactory<Query>(
+export let createViewChildren = makeMetadataFactory<Query>(
     'ViewChildren', (selector?: any, data: any = {}) =>
                         ({selector, first: false, isViewQuery: true, descendants: true, ...data}));
-export const createViewChild = makeMetadataFactory<Query>(
+export let createViewChild = makeMetadataFactory<Query>(
     'ViewChild', (selector: any, data: any) =>
                      ({selector, first: true, isViewQuery: true, descendants: true, ...data}));
 
@@ -56,7 +56,7 @@ export interface Directive {
   queries?: {[key: string]: any};
   guards?: {[key: string]: any};
 }
-export const createDirective =
+export let createDirective =
     makeMetadataFactory<Directive>('Directive', (dir: Directive = {}) => dir);
 
 export interface Component extends Directive {
@@ -85,32 +85,32 @@ export enum ChangeDetectionStrategy {
   Default = 1
 }
 
-export const createComponent = makeMetadataFactory<Component>(
+export let createComponent = makeMetadataFactory<Component>(
     'Component', (c: Component = {}) => ({changeDetection: ChangeDetectionStrategy.Default, ...c}));
 
 export interface Pipe {
   name: string;
   pure?: boolean;
 }
-export const createPipe = makeMetadataFactory<Pipe>('Pipe', (p: Pipe) => ({pure: true, ...p}));
+export let createPipe = makeMetadataFactory<Pipe>('Pipe', (p: Pipe) => ({pure: true, ...p}));
 
 export interface Input { bindingPropertyName?: string; }
-export const createInput =
+export let createInput =
     makeMetadataFactory<Input>('Input', (bindingPropertyName?: string) => ({bindingPropertyName}));
 
 export interface Output { bindingPropertyName?: string; }
-export const createOutput = makeMetadataFactory<Output>(
+export let createOutput = makeMetadataFactory<Output>(
     'Output', (bindingPropertyName?: string) => ({bindingPropertyName}));
 
 export interface HostBinding { hostPropertyName?: string; }
-export const createHostBinding = makeMetadataFactory<HostBinding>(
+export let createHostBinding = makeMetadataFactory<HostBinding>(
     'HostBinding', (hostPropertyName?: string) => ({hostPropertyName}));
 
 export interface HostListener {
   eventName?: string;
   args?: string[];
 }
-export const createHostListener = makeMetadataFactory<HostListener>(
+export let createHostListener = makeMetadataFactory<HostListener>(
     'HostListener', (eventName?: string, args?: string[]) => ({eventName, args}));
 
 export interface NgModule {
@@ -123,7 +123,7 @@ export interface NgModule {
   schemas?: Array<SchemaMetadata|any[]>;
   id?: string;
 }
-export const createNgModule =
+export let createNgModule =
     makeMetadataFactory<NgModule>('NgModule', (ngModule: NgModule) => ngModule);
 
 export interface ModuleWithProviders {
@@ -138,25 +138,25 @@ export interface Injectable {
   useFactory?: Type|any;
   deps?: Array<Type|any[]>;
 }
-export const createInjectable =
+export let createInjectable =
     makeMetadataFactory('Injectable', (injectable: Injectable = {}) => injectable);
 export interface SchemaMetadata { name: string; }
 
-export const CUSTOM_ELEMENTS_SCHEMA: SchemaMetadata = {
+export let CUSTOM_ELEMENTS_SCHEMA: SchemaMetadata = {
   name: 'custom-elements'
 };
 
-export const NO_ERRORS_SCHEMA: SchemaMetadata = {
+export let NO_ERRORS_SCHEMA: SchemaMetadata = {
   name: 'no-errors-schema'
 };
 
-export const createOptional = makeMetadataFactory('Optional');
-export const createSelf = makeMetadataFactory('Self');
-export const createSkipSelf = makeMetadataFactory('SkipSelf');
-export const createHost = makeMetadataFactory('Host');
+export let createOptional = makeMetadataFactory('Optional');
+export let createSelf = makeMetadataFactory('Self');
+export let createSkipSelf = makeMetadataFactory('SkipSelf');
+export let createHost = makeMetadataFactory('Host');
 
 export interface Type extends Function { new (...args: any[]): any; }
-export const Type = Function;
+export let Type = Function;
 
 export enum SecurityContext {
   NONE = 0,
@@ -169,7 +169,7 @@ export enum SecurityContext {
 
 export type Provider = any;
 
-export const enum NodeFlags {
+export let enum NodeFlags {
   None = 0,
   TypeElement = 1 << 0,
   TypeText = 1 << 1,
@@ -213,7 +213,7 @@ export const enum NodeFlags {
   Types = CatRenderNode | TypeNgContent | TypePipe | CatPureExpression | CatProvider | CatQuery
 }
 
-export const enum DepFlags {
+export let enum DepFlags {
   None = 0,
   SkipSelf = 1 << 0,
   Optional = 1 << 1,
@@ -224,7 +224,7 @@ export const enum DepFlags {
 /**
  * Injection flags for DI.
  */
-export const enum InjectFlags {
+export let enum InjectFlags {
   Default = 0,
 
   /**
@@ -240,9 +240,9 @@ export const enum InjectFlags {
   Optional = 1 << 3,
 }
 
-export const enum ArgumentType {Inline = 0, Dynamic = 1}
+export let enum ArgumentType {Inline = 0, Dynamic = 1}
 
-export const enum BindingFlags {
+export let enum BindingFlags {
   TypeElementAttribute = 1 << 0,
   TypeElementClass = 1 << 1,
   TypeElementStyle = 1 << 2,
@@ -255,9 +255,9 @@ export const enum BindingFlags {
   Types = TypeElementAttribute | TypeElementClass | TypeElementStyle | TypeProperty
 }
 
-export const enum QueryBindingType {First = 0, All = 1}
+export let enum QueryBindingType {First = 0, All = 1}
 
-export const enum QueryValueType {
+export let enum QueryValueType {
   ElementRef = 0,
   RenderElement = 1,
   TemplateRef = 2,
@@ -265,7 +265,7 @@ export const enum QueryValueType {
   Provider = 4
 }
 
-export const enum ViewFlags {
+export let enum ViewFlags {
   None = 0,
   OnPush = 1 << 1,
 }
@@ -285,10 +285,10 @@ export interface MetadataFactory<T> {
 function makeMetadataFactory<T>(name: string, props?: (...args: any[]) => T): MetadataFactory<T> {
   // This must be declared as a function, not a fat arrow, so that ES2015 devmode produces code
   // that works with the static_reflector.ts in the ViewEngine compiler.
-  // In particular, `_registerDecoratorOrConstructor` assumes that the value returned here can be
+  // In particular, `_registerDecoratorOrletructor` assumes that the value returned here can be
   // new'ed.
   function factory(...args: any[]) {
-    const values = props ? props(...args) : {};
+    let values = props ? props(...args) : {};
     return {
       ngMetadataName: name,
       ...values,
@@ -308,7 +308,7 @@ export interface Route {
  * Flags used to generate R3-style CSS Selectors. They are pasted from
  * core/src/render3/projection.ts because they cannot be referenced directly.
  */
-export const enum SelectorFlags {
+export let enum SelectorFlags {
   /** Indicates this is the beginning of a new negative selector */
   NOT = 0b0001,
 
@@ -328,15 +328,15 @@ export type R3CssSelector = (string | SelectorFlags)[];
 export type R3CssSelectorList = R3CssSelector[];
 
 function parserSelectorToSimpleSelector(selector: CssSelector): R3CssSelector {
-  const classes = selector.classNames && selector.classNames.length ?
+  let classes = selector.classNames && selector.classNames.length ?
       [SelectorFlags.CLASS, ...selector.classNames] :
       [];
-  const elementName = selector.element && selector.element !== '*' ? selector.element : '';
+  let elementName = selector.element && selector.element !== '*' ? selector.element : '';
   return [elementName, ...selector.attrs, ...classes];
 }
 
 function parserSelectorToNegativeSelector(selector: CssSelector): R3CssSelector {
-  const classes = selector.classNames && selector.classNames.length ?
+  let classes = selector.classNames && selector.classNames.length ?
       [SelectorFlags.CLASS, ...selector.classNames] :
       [];
 
@@ -354,9 +354,9 @@ function parserSelectorToNegativeSelector(selector: CssSelector): R3CssSelector 
 }
 
 function parserSelectorToR3Selector(selector: CssSelector): R3CssSelector {
-  const positive = parserSelectorToSimpleSelector(selector);
+  let positive = parserSelectorToSimpleSelector(selector);
 
-  const negative: R3CssSelectorList = selector.notSelectors && selector.notSelectors.length ?
+  let negative: R3CssSelectorList = selector.notSelectors && selector.notSelectors.length ?
       selector.notSelectors.map(notSelector => parserSelectorToNegativeSelector(notSelector)) :
       [];
 
@@ -376,7 +376,7 @@ export function parseSelectorToR3Selector(selector: string | null): R3CssSelecto
  * subsequent runs only execute the update block. However, dynamically created views require that
  * the creation block be executed separately from the update block (for backwards compat).
  */
-export const enum RenderFlags {
+export let enum RenderFlags {
   /* Whether to run the creation block (e.g. create elements and directives) */
   Create = 0b01,
 
@@ -389,7 +389,7 @@ export const enum RenderFlags {
  * A set of marker values to be used in the attributes arrays. These markers indicate that some
  * items are not regular attributes and the processing should be adapted accordingly.
  */
-export const enum AttributeMarker {
+export let enum AttributeMarker {
   /**
    * Marker indicates that the following 3 values in the attributes array are:
    * namespaceUri, attributeName, attributeValue

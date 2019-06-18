@@ -45,7 +45,7 @@ describe('completions', () => {
      () => { contains('/app/test.ng', 'div-attributes', '(click)', '[ngClass]'); });
 
   it('should be able to get completions in some random garbage', () => {
-    const fileName = '/app/test.ng';
+    let fileName = '/app/test.ng';
     mockHost.override(fileName, ' > {{tle<\n  {{retl  ><bel/beled}}di>\n   la</b  </d    &a  ');
     expect(() => ngService.getCompletionsAt(fileName, 31)).not.toThrow();
     mockHost.override(fileName, undefined !);
@@ -82,7 +82,7 @@ describe('completions', () => {
   });
 
   it('should be able to complete every character in the file', () => {
-    const fileName = '/app/test.ng';
+    let fileName = '/app/test.ng';
 
     expect(() => {
       let chance = 0.05;
@@ -99,11 +99,11 @@ describe('completions', () => {
         }
       }
       try {
-        const originalContent = mockHost.getFileContent(fileName) !;
+        let originalContent = mockHost.getFileContent(fileName) !;
 
         // For each character in the file, add it to the file and request a completion after it.
         for (let index = 0, len = originalContent.length; index < len; index++) {
-          const content = originalContent.substr(0, index);
+          let content = originalContent.substr(0, index);
           mockHost.override(fileName, content);
           tryCompletionsAt(index);
         }
@@ -117,11 +117,11 @@ describe('completions', () => {
         // Delete random characters in the file until we get an empty file.
         let content = originalContent;
         while (content.length > 0) {
-          const deleteIndex = Math.floor(Math.random() * content.length);
+          let deleteIndex = Math.floor(Math.random() * content.length);
           content = content.slice(0, deleteIndex - 1) + content.slice(deleteIndex + 1);
           mockHost.override(fileName, content);
 
-          const requestIndex = Math.floor(Math.random() * content.length);
+          let requestIndex = Math.floor(Math.random() * content.length);
           tryCompletionsAt(requestIndex);
         }
 
@@ -139,7 +139,7 @@ describe('completions', () => {
   describe('with regression tests', () => {
     it('should not crash with an incomplete component', () => {
       expect(() => {
-        const code = `
+        let code = `
 @Component({
   template: '~{inside-template}'
 })
@@ -207,9 +207,9 @@ export class MyComponent {
   });
 
   function addCode(code: string, cb: (fileName: string, content?: string) => void) {
-    const fileName = '/app/app.component.ts';
-    const originalContent = mockHost.getFileContent(fileName);
-    const newContent = originalContent + code;
+    let fileName = '/app/app.component.ts';
+    let originalContent = mockHost.getFileContent(fileName);
+    let newContent = originalContent + code;
     mockHost.override(fileName, originalContent + code);
     ngHost.updateAnalyzedModules();
     try {

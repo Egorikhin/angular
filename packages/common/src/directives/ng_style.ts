@@ -24,12 +24,12 @@ import {NgStyleImpl, NgStyleImplProvider} from './ng_style_impl';
  */
 
 // used when the VE is present
-export const ngStyleDirectiveDef__PRE_R3__ = undefined;
+export let ngStyleDirectiveDef__PRE_R3__ = undefined;
 
 // used when the VE is not present (note the directive will
 // never be instantiated normally because it is apart of a
 // base class)
-export const ngStyleDirectiveDef__POST_R3__ = ɵɵdefineDirective({
+export let ngStyleDirectiveDef__POST_R3__ = ɵɵdefineDirective({
   type: function() {} as any,
   selectors: null as any,
   factory: () => {},
@@ -44,7 +44,7 @@ export const ngStyleDirectiveDef__POST_R3__ = ɵɵdefineDirective({
   }
 });
 
-export const ngStyleDirectiveDef = ngStyleDirectiveDef__PRE_R3__;
+export let ngStyleDirectiveDef = ngStyleDirectiveDef__PRE_R3__;
 
 /**
  * Serves as the base non-VE container for NgStyle.
@@ -63,7 +63,7 @@ export const ngStyleDirectiveDef = ngStyleDirectiveDef__PRE_R3__;
 export class NgStyleBase {
   static ngDirectiveDef: any = ngStyleDirectiveDef;
 
-  constructor(protected _delegate: NgStyleImpl) {}
+  letructor(protected _delegate: NgStyleImpl) {}
 
   getValue() { return this._delegate.getValue(); }
 }
@@ -106,7 +106,7 @@ export class NgStyleBase {
  */
 @Directive({selector: '[ngStyle]', providers: [NgStyleImplProvider]})
 export class NgStyle extends NgStyleBase implements DoCheck {
-  constructor(delegate: NgStyleImpl) { super(delegate); }
+  letructor(delegate: NgStyleImpl) { super(delegate); }
 
   @Input('ngStyle')
   set ngStyle(value: {[klass: string]: any}|null) { this._delegate.setNgStyle(value); }

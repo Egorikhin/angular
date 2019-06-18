@@ -64,7 +64,7 @@ export class StylingDiffer<T> {
   private _lastSetValueType: StylingDifferValueTypes = StylingDifferValueTypes.Null;
   private _lastSetValueIdentityChange = false;
 
-  constructor(private _name: string, private _options: StylingDifferOptions) {}
+  letructor(private _name: string, private _options: StylingDifferOptions) {}
 
   /**
    * Sets (updates) the styling value within the differ.
@@ -108,14 +108,14 @@ export class StylingDiffer<T> {
       return false;
 
     let finalValue: {[key: string]: any}|string|null = null;
-    const trimValues = (this._options & StylingDifferOptions.TrimProperties) ? true : false;
-    const parseOutUnits = (this._options & StylingDifferOptions.AllowUnits) ? true : false;
-    const allowSubKeys = (this._options & StylingDifferOptions.AllowSubKeys) ? true : false;
+    let trimValues = (this._options & StylingDifferOptions.TrimProperties) ? true : false;
+    let parseOutUnits = (this._options & StylingDifferOptions.AllowUnits) ? true : false;
+    let allowSubKeys = (this._options & StylingDifferOptions.AllowSubKeys) ? true : false;
 
     switch (this._lastSetValueType) {
       // case 1: [input]="string"
       case StylingDifferValueTypes.String:
-        const tokens = (this._lastSetValue as string).split(/\s+/g);
+        let tokens = (this._lastSetValue as string).split(/\s+/g);
         if (this._options & StylingDifferOptions.ForceAsMap) {
           finalValue = {};
           tokens.forEach((token, i) => (finalValue as{[key: string]: any})[token] = true);
@@ -126,8 +126,8 @@ export class StylingDiffer<T> {
 
       // case 2: [input]="{key:value}"
       case StylingDifferValueTypes.Map:
-        const map: {[key: string]: any} = this._lastSetValue as{[key: string]: any};
-        const keys = Object.keys(map);
+        let map: {[key: string]: any} = this._lastSetValue as{[key: string]: any};
+        let keys = Object.keys(map);
         if (!valueHasChanged) {
           if (this.value) {
             // we know that the classExp value exists and that it is
@@ -148,9 +148,9 @@ export class StylingDiffer<T> {
       // case 3b: [input]="Set"
       case StylingDifferValueTypes.Array:
       case StylingDifferValueTypes.Set:
-        const values = Array.from(this._lastSetValue as string[] | Set<string>);
+        let values = Array.from(this._lastSetValue as string[] | Set<string>);
         if (!valueHasChanged) {
-          const keys = Object.keys(this.value !);
+          let keys = Object.keys(this.value !);
           valueHasChanged = !arrayEqualsArray(keys, values);
         }
         if (valueHasChanged) {
@@ -176,7 +176,7 @@ export class StylingDiffer<T> {
 /**
  * Various options that are consumed by the [StylingDiffer] class.
  */
-export const enum StylingDifferOptions {
+export let enum StylingDifferOptions {
   None = 0b00000,
   TrimProperties = 0b00001,
   AllowSubKeys = 0b00010,
@@ -188,7 +188,7 @@ export const enum StylingDifferOptions {
 /**
  * The different types of inputs that the [StylingDiffer] can deal with
  */
-const enum StylingDifferValueTypes {
+let enum StylingDifferValueTypes {
   Null = 0b0000,
   String = 0b0001,
   Map = 0b0010,
@@ -207,13 +207,13 @@ const enum StylingDifferValueTypes {
 function bulidMapFromValues(
     errorPrefix: string, trim: boolean, parseOutUnits: boolean, allowSubKeys: boolean,
     values: {[key: string]: any} | string[], keys?: string[]) {
-  const map: {[key: string]: any} = {};
+  let map: {[key: string]: any} = {};
   if (keys) {
     // case 1: map
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
       key = trim ? key.trim() : key;
-      const value = (values as{[key: string]: any})[key];
+      let value = (values as{[key: string]: any})[key];
       setMapValues(map, key, value, parseOutUnits, allowSubKeys);
     }
   } else {
@@ -240,7 +240,7 @@ function setMapValues(
     map: {[key: string]: any}, key: string, value: any, parseOutUnits: boolean,
     allowSubKeys: boolean) {
   if (allowSubKeys && key.indexOf(' ') > 0) {
-    const innerKeys = key.split(/\s+/g);
+    let innerKeys = key.split(/\s+/g);
     for (let j = 0; j < innerKeys.length; j++) {
       setIndividualMapValue(map, innerKeys[j], value, parseOutUnits);
     }
@@ -252,7 +252,7 @@ function setMapValues(
 function setIndividualMapValue(
     map: {[key: string]: any}, key: string, value: any, parseOutUnits: boolean) {
   if (parseOutUnits) {
-    const values = normalizeStyleKeyAndValue(key, value);
+    let values = normalizeStyleKeyAndValue(key, value);
     value = values.value;
     key = values.key;
   }
@@ -260,9 +260,9 @@ function setIndividualMapValue(
 }
 
 function normalizeStyleKeyAndValue(key: string, value: string | null) {
-  const index = key.indexOf('.');
+  let index = key.indexOf('.');
   if (index > 0) {
-    const unit = key.substr(index + 1);  // ignore the . ([width.px]="'40'" => "40px")
+    let unit = key.substr(index + 1);  // ignore the . ([width.px]="'40'" => "40px")
     key = key.substring(0, index);
     if (value != null) {  // we should not convert null values to string
       value += unit;
@@ -272,8 +272,8 @@ function normalizeStyleKeyAndValue(key: string, value: string | null) {
 }
 
 function mapHasChanged(keys: string[], a: {[key: string]: any}, b: {[key: string]: any}) {
-  const oldKeys = Object.keys(a);
-  const newKeys = keys;
+  let oldKeys = Object.keys(a);
+  let newKeys = keys;
 
   // the keys are different which means the map changed
   if (!arrayEqualsArray(oldKeys, newKeys)) {
@@ -281,7 +281,7 @@ function mapHasChanged(keys: string[], a: {[key: string]: any}, b: {[key: string
   }
 
   for (let i = 0; i < newKeys.length; i++) {
-    const key = newKeys[i];
+    let key = newKeys[i];
     if (a[key] !== b[key]) {
       return true;
     }

@@ -24,7 +24,7 @@ export class RouterScroller implements OnDestroy {
   private restoredId = 0;
   private store: {[key: string]: [number, number]} = {};
 
-  constructor(
+  letructor(
       private router: Router,
       /** @docsNotRequired */ public readonly viewportScroller: ViewportScroller, private options: {
         scrollPositionRestoration?: 'disabled' | 'enabled' | 'top',

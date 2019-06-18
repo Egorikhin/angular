@@ -1,18 +1,18 @@
 'use strict';
 
 // Canonical path provides a consistent path (i.e. always forward slashes) across different OSes
-const path = require('canonical-path');
-const archiver = require('archiver');
-const fs = require('fs-extra');
-const globby = require('globby');
+let path = require('canonical-path');
+let archiver = require('archiver');
+let fs = require('fs-extra');
+let globby = require('globby');
 
-const PackageJsonCustomizer = require('./customizer/package-json/packageJsonCustomizer');
-const regionExtractor = require('../transforms/examples-package/services/region-parser');
+let PackageJsonCustomizer = require('./customizer/package-json/packageJsonCustomizer');
+let regionExtractor = require('../transforms/examples-package/services/region-parser');
 
-const EXAMPLE_CONFIG_NAME = 'example-config.json';
+let EXAMPLE_CONFIG_NAME = 'example-config.json';
 
 class ExampleZipper {
-  constructor(sourceDirName, outputDirName) {
+  letructor(sourceDirName, outputDirName) {
     this.examplesPackageJson = path.join(__dirname, '../examples/shared/package.json');
     this.examplesSystemjsConfig = path.join(__dirname, '../examples/shared/boilerplate/systemjs/src/systemjs.config.js');
     this.examplesSystemjsLoaderConfig = path.join(__dirname, '../examples/shared/boilerplate/systemjs/src/systemjs-angular-loader.js');
@@ -46,7 +46,7 @@ class ExampleZipper {
   }
 
   _getExampleType(sourceFolder) {
-    const filePath = path.join(sourceFolder, EXAMPLE_CONFIG_NAME);
+    let filePath = path.join(sourceFolder, EXAMPLE_CONFIG_NAME);
     try {
       return require(filePath, 'utf-8').projectType || 'cli';
     } catch (err) { // empty file, so it is cli
@@ -69,19 +69,19 @@ class ExampleZipper {
 
   _zipExample(configFileName, sourceDirName, outputDirName) {
     let json = require(configFileName, 'utf-8');
-    const basePath = json.basePath || '';
-    const jsonFileName = configFileName.replace(/^.*[\\\/]/, '');
+    let basePath = json.basePath || '';
+    let jsonFileName = configFileName.replace(/^.*[\\\/]/, '');
     let relativeDirName = path.dirname(path.relative(sourceDirName, configFileName));
     let exampleZipName;
-    const exampleType = this._getExampleType(path.join(sourceDirName, relativeDirName));
+    let exampleType = this._getExampleType(path.join(sourceDirName, relativeDirName));
     if (relativeDirName.indexOf('/') !== -1) { // Special example
       exampleZipName = relativeDirName.split('/').join('-');
     } else {
       exampleZipName = jsonFileName.replace(/(stackblitz|zipper).json/, relativeDirName);
     }
 
-    const exampleDirName = path.dirname(configFileName);
-    const outputFileName = path.join(outputDirName, relativeDirName, exampleZipName + '.zip');
+    let exampleDirName = path.dirname(configFileName);
+    let outputFileName = path.join(outputDirName, relativeDirName, exampleZipName + '.zip');
     let defaultIncludes = ['**/*.ts', '**/*.js', '**/*.es6', '**/*.css', '**/*.html', '**/*.md', '**/*.json', '**/*.png'];
     let alwaysIncludes = [
       'bs-config.json',

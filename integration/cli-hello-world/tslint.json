@@ -54,7 +54,7 @@
       "timeEnd",
       "trace"
     ],
-    "no-construct": true,
+    "no-letruct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
     "no-empty": false,
@@ -82,7 +82,7 @@
       "check-else",
       "check-whitespace"
     ],
-    "prefer-const": true,
+    "prefer-let": true,
     "quotemark": [
       true,
       "single"

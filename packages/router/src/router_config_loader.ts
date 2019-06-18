@@ -16,10 +16,10 @@ import {flatten, wrapIntoObservable} from './utils/collection';
  * @docsNotRequired
  * @publicApi
  */
-export const ROUTES = new InjectionToken<Route[][]>('ROUTES');
+export let ROUTES = new InjectionToken<Route[][]>('ROUTES');
 
 export class RouterConfigLoader {
-  constructor(
+  letructor(
       private loader: NgModuleFactoryLoader, private compiler: Compiler,
       private onLoadStartListener?: (r: Route) => void,
       private onLoadEndListener?: (r: Route) => void) {}
@@ -29,14 +29,14 @@ export class RouterConfigLoader {
       this.onLoadStartListener(route);
     }
 
-    const moduleFactory$ = this.loadModuleFactory(route.loadChildren !);
+    let moduleFactory$ = this.loadModuleFactory(route.loadChildren !);
 
     return moduleFactory$.pipe(map((factory: NgModuleFactory<any>) => {
       if (this.onLoadEndListener) {
         this.onLoadEndListener(route);
       }
 
-      const module = factory.create(parentInjector);
+      let module = factory.create(parentInjector);
 
       return new LoadedRouterConfig(
           flatten(module.injector.get(ROUTES)).map(standardizeConfig), module);

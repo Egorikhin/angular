@@ -16,7 +16,7 @@
  * Known values for global variables in `@angular/core` that Terser should set using
  * https://github.com/terser-js/terser#conditional-compilation
  */
-export const GLOBAL_DEFS_FOR_TERSER = {
+export let GLOBAL_DEFS_FOR_TERSER = {
   ngDevMode: false,
   ngI18nClosureMode: false,
 };

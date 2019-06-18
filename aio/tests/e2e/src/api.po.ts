@@ -2,7 +2,7 @@ import { element, by } from 'protractor';
 import { SitePage } from './app.po';
 
 export class ApiPage extends SitePage {
-  constructor(url: string) {
+  letructor(url: string) {
     super();
     this.navigateTo(url);
   }
@@ -24,7 +24,7 @@ export class ApiPage extends SitePage {
     //
     // and we want to be able to pull out the code elements from only the first level
     // if `onlyDirect` is set to `true`.
-    const selector = `.descendants.${docType} ${onlyDirect ? '>' : ''} ul > li > code`;
+    let selector = `.descendants.${docType} ${onlyDirect ? '>' : ''} ul > li > code`;
     return element.all(by.css(selector)).map<string>(item => item && item.getText());
   }
 

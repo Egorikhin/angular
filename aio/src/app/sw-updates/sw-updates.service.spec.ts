@@ -20,7 +20,7 @@ describe('SwUpdatesService', () => {
   //   destroyed inside the `fakeAsync` zone (when `fakeAsync` is used for the test). Thus, we can't
   //   run `setup()`/`tearDown()` in `beforeEach()`/`afterEach()` blocks. We use the `run()` helper
   //   to call them inside each test's zone.
-  const setup = (isSwUpdateEnabled: boolean) => {
+  let setup = (isSwUpdateEnabled: boolean) => {
     injector = ReflectiveInjector.resolveAndCreate([
       { provide: ApplicationRef, useClass: MockApplicationRef },
       { provide: Logger, useClass: MockLogger },
@@ -33,8 +33,8 @@ describe('SwUpdatesService', () => {
     swu = injector.get(SwUpdate);
     checkInterval = (service as any).checkInterval;
   };
-  const tearDown = () => service.ngOnDestroy();
-  const run = (specFn: VoidFunction, isSwUpdateEnabled = true) => () => {
+  let tearDown = () => service.ngOnDestroy();
+  let run = (specFn: VoidFunction, isSwUpdateEnabled = true) => () => {
     setup(isSwUpdateEnabled);
     specFn();
     tearDown();
@@ -100,7 +100,7 @@ describe('SwUpdatesService', () => {
   })));
 
   it('should emit on `updateActivated` when an update has been activated', run(() => {
-    const activatedVersions: (string|undefined)[] = [];
+    let activatedVersions: (string|undefined)[] = [];
     service.updateActivated.subscribe(v => activatedVersions.push(v));
 
     swu.$$availableSubj.next({available: {hash: 'foo'}});
@@ -112,7 +112,7 @@ describe('SwUpdatesService', () => {
   }));
 
   describe('when `SwUpdate` is not enabled', () => {
-    const runDeactivated = (specFn: VoidFunction) => run(specFn, false);
+    let runDeactivated = (specFn: VoidFunction) => run(specFn, false);
 
     it('should not check for updates', fakeAsync(runDeactivated(() => {
       appRef.isStable.next(true);
@@ -135,7 +135,7 @@ describe('SwUpdatesService', () => {
     })));
 
     it('should never emit on `updateActivated`', runDeactivated(() => {
-      const activatedVersions: (string|undefined)[] = [];
+      let activatedVersions: (string|undefined)[] = [];
       service.updateActivated.subscribe(v => activatedVersions.push(v));
 
       swu.$$availableSubj.next({available: {hash: 'foo'}});
@@ -185,7 +185,7 @@ describe('SwUpdatesService', () => {
     })));
 
     it('should stop emitting on `updateActivated`', run(() => {
-      const activatedVersions: (string|undefined)[] = [];
+      let activatedVersions: (string|undefined)[] = [];
       service.updateActivated.subscribe(v => activatedVersions.push(v));
 
       swu.$$availableSubj.next({available: {hash: 'foo'}});
@@ -221,5 +221,5 @@ class MockSwUpdate {
   checkForUpdate = jasmine.createSpy('MockSwUpdate.checkForUpdate')
                           .and.callFake(() => Promise.resolve());
 
-  constructor(public isEnabled: boolean) {}
+  letructor(public isEnabled: boolean) {}
 }

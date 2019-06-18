@@ -11,7 +11,7 @@ import {browser} from 'protractor';
 import {verifyNoBrowserErrors} from '../../../e2e_util/e2e_util';
 
 describe('Order Management CRUD', function() {
-  const URL = '/';
+  let URL = '/';
 
   it('should work', function() {
     browser.get(URL);

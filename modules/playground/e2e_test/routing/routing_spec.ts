@@ -20,7 +20,7 @@ describe('routing inbox-app', () => {
   afterEach(verifyNoBrowserErrors);
 
   describe('index view', () => {
-    const URL = '/';
+    let URL = '/';
 
     it('should list out the current collection of items', () => {
       browser.get(URL);

@@ -13,8 +13,8 @@
 import {isElement, matchesSelector} from './utils';
 
 export function extractProjectableNodes(host: HTMLElement, ngContentSelectors: string[]): Node[][] {
-  const nodes = host.childNodes;
-  const projectableNodes: Node[][] = ngContentSelectors.map(() => []);
+  let nodes = host.childNodes;
+  let projectableNodes: Node[][] = ngContentSelectors.map(() => []);
   let wildcardIndex = -1;
 
   ngContentSelectors.some((selector, i) => {
@@ -26,8 +26,8 @@ export function extractProjectableNodes(host: HTMLElement, ngContentSelectors: s
   });
 
   for (let i = 0, ii = nodes.length; i < ii; ++i) {
-    const node = nodes[i];
-    const ngContentIndex = findMatchingIndex(node, ngContentSelectors, wildcardIndex);
+    let node = nodes[i];
+    let ngContentIndex = findMatchingIndex(node, ngContentSelectors, wildcardIndex);
 
     if (ngContentIndex !== -1) {
       projectableNodes[ngContentIndex].push(node);

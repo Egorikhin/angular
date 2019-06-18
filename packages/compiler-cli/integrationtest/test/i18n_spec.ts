@@ -11,7 +11,7 @@ import './init';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const EXPECTED_XMB = `<?xml version="1.0" encoding="UTF-8" ?>
+let EXPECTED_XMB = `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE messagebundle [
 <!ELEMENT messagebundle (msg)*>
 <!ATTLIST messagebundle class CDATA #IMPLIED>
@@ -41,7 +41,7 @@ multi-lines</msg>
 </messagebundle>
 `;
 
-const EXPECTED_XLIFF = `<?xml version="1.0" encoding="UTF-8" ?>
+let EXPECTED_XLIFF = `<?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="fr" datatype="plaintext" original="ng2.template">
     <body>
@@ -78,7 +78,7 @@ multi-lines</source>
 </xliff>
 `;
 
-const EXPECTED_XLIFF2 = `<?xml version="1.0" encoding="UTF-8" ?>
+let EXPECTED_XLIFF2 = `<?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
   <file original="ng.template" id="ngi18n">
     <unit id="126808141597411718">
@@ -114,31 +114,31 @@ multi-lines</source>
 `;
 
 describe('template i18n extraction output', () => {
-  const outputDir = path.join(__dirname, '../xi18n-out');
+  let outputDir = path.join(__dirname, '../xi18n-out');
 
   it('should extract i18n messages as xmb', () => {
-    const xmbOutput = path.join(outputDir, 'custom_file.xmb');
+    let xmbOutput = path.join(outputDir, 'custom_file.xmb');
     expect(fs.existsSync(xmbOutput)).toBeTruthy();
-    const xmb = fs.readFileSync(xmbOutput, {encoding: 'utf-8'});
+    let xmb = fs.readFileSync(xmbOutput, {encoding: 'utf-8'});
     expect(xmb).toEqual(EXPECTED_XMB);
   });
 
   it('should extract i18n messages as xliff', () => {
-    const xlfOutput = path.join(outputDir, 'messages.xlf');
+    let xlfOutput = path.join(outputDir, 'messages.xlf');
     expect(fs.existsSync(xlfOutput)).toBeTruthy();
-    const xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
+    let xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
     expect(xlf).toEqual(EXPECTED_XLIFF);
   });
 
   it('should extract i18n messages as xliff version 2.0', () => {
-    const xlfOutput = path.join(outputDir, 'messages.xliff2.xlf');
+    let xlfOutput = path.join(outputDir, 'messages.xliff2.xlf');
     expect(fs.existsSync(xlfOutput)).toBeTruthy();
-    const xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
+    let xlf = fs.readFileSync(xlfOutput, {encoding: 'utf-8'});
     expect(xlf).toEqual(EXPECTED_XLIFF2);
   });
 
   it('should not emit js', () => {
-    const files = fs.readdirSync(outputDir);
+    let files = fs.readdirSync(outputDir);
     files.forEach(f => expect(f).not.toMatch(/\.js$/));
   });
 });

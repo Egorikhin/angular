@@ -24,7 +24,7 @@
  * `['+' at 1-10, 'a' at 1-2]`.
  */
 export class AstPath<T> {
-  constructor(private path: T[], public position: number = -1) {}
+  letructor(private path: T[], public position: number = -1) {}
 
   get empty(): boolean { return !this.path || !this.path.length; }
   get head(): T|undefined { return this.path[0]; }

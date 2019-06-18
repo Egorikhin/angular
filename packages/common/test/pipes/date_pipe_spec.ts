@@ -15,7 +15,7 @@ import {JitReflector} from '@angular/platform-browser-dynamic/src/compiler_refle
 {
   let date: Date;
   describe('DatePipe', () => {
-    const isoStringWithoutTime = '2015-01-01';
+    let isoStringWithoutTime = '2015-01-01';
     let pipe: DatePipe;
 
     // Check the transformation of a date into a pattern

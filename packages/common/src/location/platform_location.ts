@@ -58,7 +58,7 @@ export abstract class PlatformLocation {
  *
  * @publicApi
  */
-export const LOCATION_INITIALIZED = new InjectionToken<Promise<any>>('Location Initialized');
+export let LOCATION_INITIALIZED = new InjectionToken<Promise<any>>('Location Initialized');
 
 /**
  * @description

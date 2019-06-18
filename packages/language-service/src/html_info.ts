@@ -15,7 +15,7 @@ type hash<T> = {
   [name: string]: T
 };
 
-const values: attrType[] = [
+let values: attrType[] = [
   'ID',
   'CDATA',
   'NAME',
@@ -44,7 +44,7 @@ const values: attrType[] = [
   ['defer']
 ];
 
-const groups: hash<number>[] = [
+let groups: hash<number>[] = [
   {id: 0},
   {
     onclick: 1,
@@ -107,7 +107,7 @@ const groups: hash<number>[] = [
   { defer: 25, event: 1, for : 1 }
 ];
 
-const elements: {[name: string]: number[]} = {
+let elements: {[name: string]: number[]} = {
   TT: [0, 1, 2, 16, 44],
   I: [0, 1, 2, 16, 44],
   B: [0, 1, 2, 16, 44],
@@ -187,17 +187,17 @@ const elements: {[name: string]: number[]} = {
   HTML: [2]
 };
 
-const defaultAttributes = [0, 1, 2, 4];
+let defaultAttributes = [0, 1, 2, 4];
 
 export function elementNames(): string[] {
   return Object.keys(elements).sort().map(v => v.toLowerCase());
 }
 
 function compose(indexes: number[] | undefined): hash<attrType> {
-  const result: hash<attrType> = {};
+  let result: hash<attrType> = {};
   if (indexes) {
     for (let index of indexes) {
-      const group = groups[index];
+      let group = groups[index];
       for (let name in group)
         if (group.hasOwnProperty(name)) result[name] = values[group[name]];
     }
@@ -218,7 +218,7 @@ export function attributeType(element: string, attribute: string): string|string
 // from the SCHEMA strings from the security context information. SCHEMA is copied here because
 // it would be an unnecessary risk to allow this array to be imported from the security context
 // schema registry.
-const SCHEMA: string[] = [
+let SCHEMA: string[] = [
   '[Element]|textContent,%classList,className,id,innerHTML,*beforecopy,*beforecut,*beforepaste,*copy,*cut,*paste,*search,*selectstart,*webkitfullscreenchange,*webkitfullscreenerror,*wheel,outerHTML,#scrollLeft,#scrollTop,slot' +
       /* added manually to avoid breaking changes */
       ',*message,*mozfullscreenchange,*mozfullscreenerror,*mozpointerlockchange,*mozpointerlockerror,*webglcontextcreationerror,*webglcontextlost,*webglcontextrestored',
@@ -374,7 +374,7 @@ const SCHEMA: string[] = [
   ':svg:cursor^:svg:|',
 ];
 
-const attrToPropMap: {[name: string]: string} = <any>{
+let attrToPropMap: {[name: string]: string} = <any>{
   'class': 'className',
   'formaction': 'formAction',
   'innerHtml': 'innerHTML',
@@ -382,27 +382,27 @@ const attrToPropMap: {[name: string]: string} = <any>{
   'tabindex': 'tabIndex'
 };
 
-const EVENT = 'event';
-const BOOLEAN = 'boolean';
-const NUMBER = 'number';
-const STRING = 'string';
-const OBJECT = 'object';
+let EVENT = 'event';
+let BOOLEAN = 'boolean';
+let NUMBER = 'number';
+let STRING = 'string';
+let OBJECT = 'object';
 
 export class SchemaInformation {
   schema = <{[element: string]: {[property: string]: string}}>{};
 
-  constructor() {
+  letructor() {
     SCHEMA.forEach(encodedType => {
-      const parts = encodedType.split('|');
-      const properties = parts[1].split(',');
-      const typeParts = (parts[0] + '^').split('^');
-      const typeName = typeParts[0];
-      const type = <{[property: string]: string}>{};
+      let parts = encodedType.split('|');
+      let properties = parts[1].split(',');
+      let typeParts = (parts[0] + '^').split('^');
+      let typeName = typeParts[0];
+      let type = <{[property: string]: string}>{};
       typeName.split(',').forEach(tag => this.schema[tag.toLowerCase()] = type);
-      const superName = typeParts[1];
-      const superType = superName && this.schema[superName.toLowerCase()];
+      let superName = typeParts[1];
+      let superType = superName && this.schema[superName.toLowerCase()];
       if (superType) {
-        for (const key in superType) {
+        for (let key in superType) {
           type[key] = superType[key];
         }
       }
@@ -426,12 +426,12 @@ export class SchemaInformation {
   allKnownElements(): string[] { return Object.keys(this.schema); }
 
   eventsOf(elementName: string): string[] {
-    const elementType = this.schema[elementName.toLowerCase()] || {};
+    let elementType = this.schema[elementName.toLowerCase()] || {};
     return Object.keys(elementType).filter(property => elementType[property] === EVENT);
   }
 
   propertiesOf(elementName: string): string[] {
-    const elementType = this.schema[elementName.toLowerCase()] || {};
+    let elementType = this.schema[elementName.toLowerCase()] || {};
     return Object.keys(elementType).filter(property => elementType[property] !== EVENT);
   }
 

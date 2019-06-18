@@ -119,7 +119,7 @@ class SomeDirectiveWithoutMetadata {}
     beforeEach(() => { resolver = new DirectiveResolver(new JitReflector()); });
 
     it('should read out the Directive metadata', () => {
-      const directiveMetadata = resolver.resolve(SomeDirective);
+      let directiveMetadata = resolver.resolve(SomeDirective);
       expect(directiveMetadata).toEqual(core.createDirective({
         selector: 'someDirective',
         inputs: [],
@@ -174,12 +174,12 @@ class SomeDirectiveWithoutMetadata {}
 
     describe('inputs', () => {
       it('should append directive inputs', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithInputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithInputs);
         expect(directiveMetadata.inputs).toEqual(['c', 'a', 'b: renamed']);
       });
 
       it('should work with getters and setters', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithSetterProps);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithSetterProps);
         expect(directiveMetadata.inputs).toEqual(['a: renamed']);
       });
 
@@ -188,7 +188,7 @@ class SomeDirectiveWithoutMetadata {}
         class SomeDirectiveWithDuplicateInputs {
         }
 
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateInputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateInputs);
         expect(directiveMetadata.inputs).toEqual(['a']);
       });
 
@@ -197,7 +197,7 @@ class SomeDirectiveWithoutMetadata {}
         class SomeDirectiveWithDuplicateInputs {
         }
 
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateInputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateInputs);
         expect(directiveMetadata.inputs).toEqual(['localA: a']);
       });
 
@@ -207,7 +207,7 @@ class SomeDirectiveWithoutMetadata {}
           @Input('a')
           propA: any;
         }
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateInputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateInputs);
         expect(directiveMetadata.inputs).toEqual(['propA: a']);
       });
 
@@ -227,19 +227,19 @@ class SomeDirectiveWithoutMetadata {}
           p3: any;
         }
 
-        const directiveMetadata = resolver.resolve(Child);
+        let directiveMetadata = resolver.resolve(Child);
         expect(directiveMetadata.inputs).toEqual(['p1', 'p2: p22', 'p3']);
       });
     });
 
     describe('outputs', () => {
       it('should append directive outputs', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithOutputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithOutputs);
         expect(directiveMetadata.outputs).toEqual(['c', 'a', 'b: renamed']);
       });
 
       it('should work with getters and setters', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithGetterOutputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithGetterOutputs);
         expect(directiveMetadata.outputs).toEqual(['a: renamed']);
       });
 
@@ -248,7 +248,7 @@ class SomeDirectiveWithoutMetadata {}
         class SomeDirectiveWithDuplicateOutputs {
         }
 
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateOutputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateOutputs);
         expect(directiveMetadata.outputs).toEqual(['a']);
       });
 
@@ -257,7 +257,7 @@ class SomeDirectiveWithoutMetadata {}
         class SomeDirectiveWithDuplicateOutputs {
         }
 
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateOutputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateOutputs);
         expect(directiveMetadata.outputs).toEqual(['localA: a']);
       });
 
@@ -267,7 +267,7 @@ class SomeDirectiveWithoutMetadata {}
           @Output('a')
           propA: any;
         }
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateOutputs);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithDuplicateOutputs);
         expect(directiveMetadata.outputs).toEqual(['propA: a']);
       });
 
@@ -287,25 +287,25 @@ class SomeDirectiveWithoutMetadata {}
           p3: any;
         }
 
-        const directiveMetadata = resolver.resolve(Child);
+        let directiveMetadata = resolver.resolve(Child);
         expect(directiveMetadata.outputs).toEqual(['p1', 'p2: p22', 'p3']);
       });
     });
 
     describe('host', () => {
       it('should append host bindings', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithHostBindings);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithHostBindings);
         expect(directiveMetadata.host).toEqual({'[c]': 'c', '[a]': 'a', '[renamed]': 'b'});
       });
 
       it('should append host binding and input on the same property', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithSameHostBindingAndInput);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithSameHostBindingAndInput);
         expect(directiveMetadata.host).toEqual({'[decorator]': 'decorator', '[prop]': 'prop'});
         expect(directiveMetadata.inputs).toEqual(['decorator', 'prop']);
       });
 
       it('should append host listeners', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithHostListeners);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithHostListeners);
         expect(directiveMetadata.host)
             .toEqual({'(c)': 'onC()', '(a)': 'onA()', '(b)': 'onB($event.value)'});
       });
@@ -337,7 +337,7 @@ class SomeDirectiveWithoutMetadata {}
           p3: any;
         }
 
-        const directiveMetadata = resolver.resolve(Child);
+        let directiveMetadata = resolver.resolve(Child);
         expect(directiveMetadata.host)
             .toEqual({'[p1]': 'p1', '[p21]': 'p2', '[p22]': 'p2', '[p3]': 'p3'});
       });
@@ -358,7 +358,7 @@ class SomeDirectiveWithoutMetadata {}
           p3() {}
         }
 
-        const directiveMetadata = resolver.resolve(Child);
+        let directiveMetadata = resolver.resolve(Child);
         expect(directiveMetadata.host)
             .toEqual({'(p1)': 'p1()', '(p21)': 'p2()', '(p22)': 'p2()', '(p3)': 'p3()'});
       });
@@ -381,7 +381,7 @@ class SomeDirectiveWithoutMetadata {}
           p2: any;
         }
 
-        const directiveMetadata = resolver.resolve(Child);
+        let directiveMetadata = resolver.resolve(Child);
         expect(directiveMetadata.host).toEqual({
           '(p11)': 'p1()',
           '(p12)': 'p1()',
@@ -395,19 +395,19 @@ class SomeDirectiveWithoutMetadata {}
 
     describe('queries', () => {
       it('should append ContentChildren', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithContentChildren);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithContentChildren);
         expect(directiveMetadata.queries)
             .toEqual({'cs': new ContentChildren('c'), 'as': new ContentChildren('a')});
       });
 
       it('should append ViewChildren', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithViewChildren);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithViewChildren);
         expect(directiveMetadata.queries)
             .toEqual({'cs': new ViewChildren('c'), 'as': new ViewChildren('a')});
       });
 
       it('should append ContentChild', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithContentChild);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithContentChild);
         expect(directiveMetadata.queries).toEqual({
           'c': new ContentChild('c', {static: false}),
           'a': new ContentChild('a', {static: false})
@@ -415,7 +415,7 @@ class SomeDirectiveWithoutMetadata {}
       });
 
       it('should append ViewChild', () => {
-        const directiveMetadata = resolver.resolve(SomeDirectiveWithViewChild);
+        let directiveMetadata = resolver.resolve(SomeDirectiveWithViewChild);
         expect(directiveMetadata.queries).toEqual({
           'c': new ViewChild('c', {static: false}),
           'a': new ViewChild('a', {static: false})
@@ -438,7 +438,7 @@ class SomeDirectiveWithoutMetadata {}
           p3: any;
         }
 
-        const directiveMetadata = resolver.resolve(Child);
+        let directiveMetadata = resolver.resolve(Child);
         expect(directiveMetadata.queries).toEqual({
           'p1': new ContentChild('p1', {static: false}),
           'p2': new ContentChild('p22', {static: false}),
@@ -449,7 +449,7 @@ class SomeDirectiveWithoutMetadata {}
 
     describe('Component', () => {
       it('should read out the template related metadata from the Component metadata', () => {
-        const compMetadata: Component = resolver.resolve(ComponentWithTemplate);
+        let compMetadata: Component = resolver.resolve(ComponentWithTemplate);
         expect(compMetadata.template).toEqual('some template');
         expect(compMetadata.styles).toEqual(['some styles']);
         expect(compMetadata.preserveWhitespaces).toBe(true);

@@ -1,20 +1,20 @@
 'use strict';
 
-const chalk = require('chalk');
-const fs = require('fs-extra');
-const lockfile = require('@yarnpkg/lockfile');
-const path = require('canonical-path');
-const semver = require('semver');
-const shelljs = require('shelljs');
-const yargs = require('yargs');
+let chalk = require('chalk');
+let fs = require('fs-extra');
+let lockfile = require('@yarnpkg/lockfile');
+let path = require('canonical-path');
+let semver = require('semver');
+let shelljs = require('shelljs');
+let yargs = require('yargs');
 
-const PACKAGE_JSON = 'package.json';
-const YARN_LOCK = 'yarn.lock';
-const LOCAL_MARKER_PATH = 'node_modules/_local_.json';
-const PACKAGE_JSON_REGEX = /^[^/]+\/package\.json$/;
+let PACKAGE_JSON = 'package.json';
+let YARN_LOCK = 'yarn.lock';
+let LOCAL_MARKER_PATH = 'node_modules/_local_.json';
+let PACKAGE_JSON_REGEX = /^[^/]+\/package\.json$/;
 
-const ANGULAR_ROOT_DIR = path.resolve(__dirname, '../../..');
-const ANGULAR_DIST_PACKAGES = path.resolve(ANGULAR_ROOT_DIR, 'dist/packages-dist');
+let ANGULAR_ROOT_DIR = path.resolve(__dirname, '../../..');
+let ANGULAR_DIST_PACKAGES = path.resolve(ANGULAR_ROOT_DIR, 'dist/packages-dist');
 
 /**
  * A tool that can install Angular dependencies for a project from NPM or from the
@@ -36,7 +36,7 @@ class NgPackagesInstaller {
    *                           * `ignorePackages` (`string[]`) - a collection of names of packages
    *                                                   that should not be copied over.
    */
-  constructor(projectDir, options = {}) {
+  letructor(projectDir, options = {}) {
     this.debug = options.debug;
     this.force = options.force;
     this.ignorePackages = options.ignorePackages || [];
@@ -66,25 +66,25 @@ class NgPackagesInstaller {
    */
   installLocalDependencies() {
     if (this.force || !this._checkLocalMarker()) {
-      const pathToPackageConfig = path.resolve(this.projectDir, PACKAGE_JSON);
-      const pathToLockfile = path.resolve(this.projectDir, YARN_LOCK);
-      const parsedLockfile = this._parseLockfile(pathToLockfile);
-      const packages = this._getDistPackages();
+      let pathToPackageConfig = path.resolve(this.projectDir, PACKAGE_JSON);
+      let pathToLockfile = path.resolve(this.projectDir, YARN_LOCK);
+      let parsedLockfile = this._parseLockfile(pathToLockfile);
+      let packages = this._getDistPackages();
 
       try {
         // Overwrite local Angular packages dependencies to other Angular packages with local files.
         Object.keys(packages).forEach(key => {
-          const pkg = packages[key];
-          const tmpConfig = JSON.parse(JSON.stringify(pkg.config));
+          let pkg = packages[key];
+          let tmpConfig = JSON.parse(JSON.stringify(pkg.config));
 
           // Prevent accidental publishing of the package, if something goes wrong.
           tmpConfig.private = true;
 
           // Overwrite project dependencies/devDependencies to Angular packages with local files.
           ['dependencies', 'devDependencies'].forEach(prop => {
-            const deps = tmpConfig[prop] || {};
+            let deps = tmpConfig[prop] || {};
             Object.keys(deps).forEach(key2 => {
-              const pkg2 = packages[key2];
+              let pkg2 = packages[key2];
               if (pkg2) {
                 // point the core Angular packages at the distributable folder
                 deps[key2] = `file:${pkg2.parentDir}/${key2.replace('@angular/', '')}`;
@@ -96,18 +96,18 @@ class NgPackagesInstaller {
           fs.writeFileSync(pkg.packageJsonPath, JSON.stringify(tmpConfig, null, 2));
         });
 
-        const packageConfigFile = fs.readFileSync(pathToPackageConfig, 'utf8');
-        const packageConfig = JSON.parse(packageConfigFile);
+        let packageConfigFile = fs.readFileSync(pathToPackageConfig, 'utf8');
+        let packageConfig = JSON.parse(packageConfigFile);
 
-        const [dependencies, peers] = this._collectDependencies(packageConfig.dependencies || {}, packages);
-        const [devDependencies, devPeers] = this._collectDependencies(packageConfig.devDependencies || {}, packages);
+        let [dependencies, peers] = this._collectDependencies(packageConfig.dependencies || {}, packages);
+        let [devDependencies, devPeers] = this._collectDependencies(packageConfig.devDependencies || {}, packages);
 
         this._assignPeerDependencies(peers, dependencies, devDependencies, parsedLockfile);
         this._assignPeerDependencies(devPeers, dependencies, devDependencies, parsedLockfile);
 
-        const localPackageConfig = Object.assign(Object.create(null), packageConfig, { dependencies, devDependencies });
+        let localPackageConfig = Object.assign(Object.create(null), packageConfig, { dependencies, devDependencies });
         localPackageConfig.__angular = { local: true };
-        const localPackageConfigJson = JSON.stringify(localPackageConfig, null, 2);
+        let localPackageConfigJson = JSON.stringify(localPackageConfig, null, 2);
 
         try {
           this._log(`Writing temporary local ${PACKAGE_JSON} to ${pathToPackageConfig}`);
@@ -122,7 +122,7 @@ class NgPackagesInstaller {
         // Restore local Angular packages dependencies to other Angular packages.
         this._log(`Restoring original ${PACKAGE_JSON} for local Angular packages.`);
         Object.keys(packages).forEach(key => {
-          const pkg = packages[key];
+          let pkg = packages[key];
           fs.writeFileSync(pkg.packageJsonPath, JSON.stringify(pkg.config, null, 2));
         });
       }
@@ -141,11 +141,11 @@ class NgPackagesInstaller {
 
   _assignPeerDependencies(peerDependencies, dependencies, devDependencies, parsedLockfile) {
     Object.keys(peerDependencies).forEach(key => {
-      const peerDepRange = peerDependencies[key];
+      let peerDepRange = peerDependencies[key];
 
       // Ignore peerDependencies whose range is already satisfied by current version in lockfile.
-      const originalRange = dependencies[key] || devDependencies[key];
-      const lockfileVersion = originalRange && parsedLockfile[`${key}@${originalRange}`].version;
+      let originalRange = dependencies[key] || devDependencies[key];
+      let lockfileVersion = originalRange && parsedLockfile[`${key}@${originalRange}`].version;
 
       if (lockfileVersion && semver.satisfies(lockfileVersion, peerDepRange)) return;
 
@@ -161,17 +161,17 @@ class NgPackagesInstaller {
   }
 
   _collectDependencies(dependencies, packages) {
-    const peerDependencies = Object.create(null);
-    const mergedDependencies = Object.assign(Object.create(null), dependencies);
+    let peerDependencies = Object.create(null);
+    let mergedDependencies = Object.assign(Object.create(null), dependencies);
 
     Object.keys(dependencies).forEach(key => {
-      const sourcePackage = packages[key];
+      let sourcePackage = packages[key];
       if (sourcePackage) {
         // point the core Angular packages at the distributable folder
         mergedDependencies[key] = `file:${sourcePackage.parentDir}/${key.replace('@angular/', '')}`;
         this._log(`Overriding dependency with local package: ${key}: ${mergedDependencies[key]}`);
         // grab peer dependencies
-        const sourcePackagePeerDeps = sourcePackage.config.peerDependencies || {};
+        let sourcePackagePeerDeps = sourcePackage.config.peerDependencies || {};
         Object.keys(sourcePackagePeerDeps)
           // ignore peerDependencies which are already core Angular packages
           .filter(key => !packages[key])
@@ -187,7 +187,7 @@ class NgPackagesInstaller {
    * (Detected as directories in '/packages/' that contain a top-level 'package.json' file.)
    */
   _getDistPackages() {
-    const packageConfigs = Object.create(null);
+    let packageConfigs = Object.create(null);
 
     [ANGULAR_DIST_PACKAGES].forEach(distDir => {
       this._log(`Angular distributable directory: ${distDir}.`);
@@ -196,9 +196,9 @@ class NgPackagesInstaller {
         .map(filePath => filePath.slice(distDir.length + 1))
         .filter(filePath => PACKAGE_JSON_REGEX.test(filePath))
         .forEach(packagePath => {
-          const packageName = `@angular/${packagePath.slice(0, -PACKAGE_JSON.length -1)}`;
+          let packageName = `@angular/${packagePath.slice(0, -PACKAGE_JSON.length -1)}`;
           if (this.ignorePackages.indexOf(packageName) === -1) {
-            const packageConfig = require(path.resolve(distDir, packagePath));
+            let packageConfig = require(path.resolve(distDir, packagePath));
             packageConfigs[packageName] = {
               parentDir: distDir,
               packageJsonPath: path.resolve(distDir, packagePath),
@@ -216,7 +216,7 @@ class NgPackagesInstaller {
   }
 
   _installDeps(...options) {
-    const command = 'yarn install ' + options.join(' ');
+    let command = 'yarn install ' + options.join(' ');
     this._log('Installing dependencies with:', command);
     shelljs.exec(command, {cwd: this.projectDir});
   }
@@ -227,9 +227,9 @@ class NgPackagesInstaller {
    */
   _log(...messages) {
     if (this.debug) {
-      const header = `  [${NgPackagesInstaller.name}]: `;
-      const indent = ' '.repeat(header.length);
-      const message = messages.join(' ');
+      let header = `  [${NgPackagesInstaller.name}]: `;
+      let indent = ' '.repeat(header.length);
+      let message = messages.join(' ');
       console.info(`${header}${message.split('\n').join(`\n${indent}`)}`);
     }
   }
@@ -238,8 +238,8 @@ class NgPackagesInstaller {
    * Parse and return a `yarn.lock` file.
    */
   _parseLockfile(lockfilePath) {
-    const lockfileContent = fs.readFileSync(lockfilePath, 'utf8');
-    const parsed = lockfile.parse(lockfileContent);
+    let lockfileContent = fs.readFileSync(lockfilePath, 'utf8');
+    let parsed = lockfile.parse(lockfileContent);
 
     if (parsed.type !== 'success') {
       throw new Error(`[${NgPackagesInstaller.name}]: Error parsing lockfile '${lockfilePath}' (result type: ${parsed.type}).`);
@@ -249,9 +249,9 @@ class NgPackagesInstaller {
   }
 
   _printWarning() {
-    const relativeScriptPath = path.relative('.', __filename.replace(/\.js$/, ''));
-    const absoluteProjectDir = path.resolve(this.projectDir);
-    const restoreCmd = `node ${relativeScriptPath} restore ${absoluteProjectDir}`;
+    let relativeScriptPath = path.relative('.', __filename.replace(/\.js$/, ''));
+    let absoluteProjectDir = path.resolve(this.projectDir);
+    let restoreCmd = `node ${relativeScriptPath} restore ${absoluteProjectDir}`;
 
     // Log a warning.
     console.warn(chalk.yellow([
@@ -295,15 +295,15 @@ function main() {
     .option('ignore-packages', { describe: 'List of Angular packages that should not be used in local mode.', default: [], array: true })
 
     .command('overwrite <projectDir> [--force] [--debug] [--ignore-packages package1 package2]', 'Install dependencies from the locally built Angular distributables.', () => {}, argv => {
-      const installer = new NgPackagesInstaller(argv.projectDir, argv);
+      let installer = new NgPackagesInstaller(argv.projectDir, argv);
       installer.installLocalDependencies();
     })
     .command('restore <projectDir> [--debug]', 'Install dependencies from the npm registry.', () => {}, argv => {
-      const installer = new NgPackagesInstaller(argv.projectDir, argv);
+      let installer = new NgPackagesInstaller(argv.projectDir, argv);
       installer.restoreNpmDependencies();
     })
     .command('check <projectDir> [--debug]', 'Check that dependencies came from npm. Otherwise display a warning message.', () => {}, argv => {
-      const installer = new NgPackagesInstaller(argv.projectDir, argv);
+      let installer = new NgPackagesInstaller(argv.projectDir, argv);
       installer.checkDependencies();
     })
     .demandCommand(1, 'Please supply a command from the list above.')

@@ -68,7 +68,7 @@ The second kind of entry component occurs in a route definition like
 this:
 
 ```typescript
-const routes: Routes = [
+let routes: Routes = [
   {
     path: '',
     component: CustomerListComponent

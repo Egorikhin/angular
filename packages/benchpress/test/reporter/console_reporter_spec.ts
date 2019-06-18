@@ -30,7 +30,7 @@ import {ConsoleReporter, Injector, MeasureValues, SampleDescription} from '../..
       if (sampleId == null) {
         sampleId = 'null';
       }
-      const providers: StaticProvider[] = [
+      let providers: StaticProvider[] = [
         ConsoleReporter.PROVIDERS, {
           provide: SampleDescription,
           useValue: new SampleDescription(sampleId, descriptions, metrics !)

@@ -39,15 +39,15 @@ export function setup(
       bazelBin?: string,
       tsconfig?: string,
     } = {}): TestSupport {
-  const runfilesPath = process.env['TEST_SRCDIR'];
+  let runfilesPath = process.env['TEST_SRCDIR'];
 
-  const basePath = makeTempDir(runfilesPath);
+  let basePath = makeTempDir(runfilesPath);
 
-  const bazelBinPath = path.resolve(basePath, bazelBin);
+  let bazelBinPath = path.resolve(basePath, bazelBin);
   fs.mkdirSync(bazelBinPath);
 
-  const angularCorePath = path.dirname(require.resolve('angular/packages/core'));
-  const tsConfigJsonPath = path.resolve(basePath, tsconfig);
+  let angularCorePath = path.dirname(require.resolve('angular/packages/core'));
+  let tsConfigJsonPath = path.resolve(basePath, tsconfig);
 
   return {
     basePath,
@@ -66,7 +66,7 @@ export function setup(
   // helpers
 
   function mkdirp(dirname: string) {
-    const parent = path.dirname(dirname);
+    let parent = path.dirname(dirname);
     if (!fs.existsSync(parent)) {
       mkdirp(parent);
     }
@@ -74,9 +74,9 @@ export function setup(
   }
 
   function write(fileName: string, content: string) {
-    const dir = path.dirname(fileName);
+    let dir = path.dirname(fileName);
     if (dir != '.') {
-      const newDir = path.resolve(basePath, dir);
+      let newDir = path.resolve(basePath, dir);
       if (!fs.existsSync(newDir)) mkdirp(newDir);
     }
     fs.writeFileSync(path.resolve(basePath, fileName), content, {encoding: 'utf-8'});
@@ -99,9 +99,9 @@ export function setup(
     pathMapping?: Array<{moduleName: string; path: string;}>,
   }) {
     srcTargetPath = path.resolve(basePath, srcTargetPath);
-    const compilationTargetSrc = listFilesRecursive(srcTargetPath);
-    const target = '//' + path.relative(basePath, srcTargetPath);
-    const files = [...compilationTargetSrc];
+    let compilationTargetSrc = listFilesRecursive(srcTargetPath);
+    let target = '//' + path.relative(basePath, srcTargetPath);
+    let files = [...compilationTargetSrc];
 
     depPaths = depPaths.concat([angularCorePath]);
     pathMapping = pathMapping.concat([
@@ -109,21 +109,21 @@ export function setup(
       {moduleName: 'angular/packages/core', path: angularCorePath}
     ]);
 
-    for (const depPath of depPaths) {
+    for (let depPath of depPaths) {
       files.push(...listFilesRecursive(depPath).filter(f => f.endsWith('.d.ts')));
     }
 
-    const pathMappingObj = {};
-    for (const mapping of pathMapping) {
+    let pathMappingObj = {};
+    for (let mapping of pathMapping) {
       pathMappingObj[mapping.moduleName] = [mapping.path];
       pathMappingObj[path.posix.join(mapping.moduleName, '*')] =
           [path.posix.join(mapping.path, '*')];
     }
 
-    const emptyTsConfig = ts.readConfigFile(
+    let emptyTsConfig = ts.readConfigFile(
         require.resolve('angular/packages/bazel/test/ngc-wrapped/empty/empty_tsconfig.json'), read);
 
-    const tsconfig = createTsConfig({
+    let tsconfig = createTsConfig({
       defaultTsConfig: emptyTsConfig.config,
       rootDir: basePath,
       target: target,
@@ -151,8 +151,8 @@ export function setup(
 }
 
 function makeTempDir(baseDir: string): string {
-  const id = (Math.random() * 1000000).toFixed(0);
-  const dir = path.join(baseDir, `tmp.${id}`);
+  let id = (Math.random() * 1000000).toFixed(0);
+  let dir = path.join(baseDir, `tmp.${id}`);
   fs.mkdirSync(dir);
   return dir;
 }

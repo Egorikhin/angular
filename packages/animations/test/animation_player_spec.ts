@@ -13,9 +13,9 @@ import {scheduleMicroTask} from '../src/util';
 {
   describe('NoopAnimationPlayer', function() {
     it('should finish after the next microtask once started', fakeAsync(() => {
-         const log: string[] = [];
+         let log: string[] = [];
 
-         const player = new NoopAnimationPlayer();
+         let player = new NoopAnimationPlayer();
          player.onStart(() => log.push('started'));
          player.onDone(() => log.push('done'));
          flushMicrotasks();
@@ -29,9 +29,9 @@ import {scheduleMicroTask} from '../src/util';
        }));
 
     it('should fire all callbacks when destroyed', () => {
-      const log: string[] = [];
+      let log: string[] = [];
 
-      const player = new NoopAnimationPlayer();
+      let player = new NoopAnimationPlayer();
       player.onStart(() => log.push('started'));
       player.onDone(() => log.push('done'));
       player.onDestroy(() => log.push('destroy'));
@@ -42,9 +42,9 @@ import {scheduleMicroTask} from '../src/util';
     });
 
     it('should fire start/done callbacks manually when called directly', fakeAsync(() => {
-         const log: string[] = [];
+         let log: string[] = [];
 
-         const player = new NoopAnimationPlayer();
+         let player = new NoopAnimationPlayer();
          player.onStart(() => log.push('started'));
          player.onDone(() => log.push('done'));
          flushMicrotasks();
@@ -66,9 +66,9 @@ import {scheduleMicroTask} from '../src/util';
        }));
 
     it('should fire off start callbacks before triggering the finish callback', fakeAsync(() => {
-         const log: string[] = [];
+         let log: string[] = [];
 
-         const player = new NoopAnimationPlayer();
+         let player = new NoopAnimationPlayer();
          player.onStart(() => { scheduleMicroTask(() => log.push('started')); });
          player.onDone(() => log.push('done'));
          expect(log).toEqual([]);

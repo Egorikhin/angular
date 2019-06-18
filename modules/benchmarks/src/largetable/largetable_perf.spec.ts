@@ -17,13 +17,13 @@ interface Worker {
   work(): void;
 }
 
-const CreateOnlyWorker: Worker = {
+let CreateOnlyWorker: Worker = {
   id: 'createOnly',
   prepare: () => $('#destroyDom').click(),
   work: () => $('#createDom').click()
 };
 
-const CreateAndDestroyWorker: Worker = {
+let CreateAndDestroyWorker: Worker = {
   id: 'createDestroy',
   work: () => {
     $('#createDom').click();
@@ -31,7 +31,7 @@ const CreateAndDestroyWorker: Worker = {
   }
 };
 
-const UpdateWorker: Worker = {
+let UpdateWorker: Worker = {
   id: 'update',
   work: () => $('#createDom').click()
 };
@@ -42,7 +42,7 @@ const UpdateWorker: Worker = {
 // name. e.g. "largeTable.ng2_switch.createDestroy". We determine the name of the
 // Bazel package where this test runs from the current test target. The Bazel target
 // looks like: "//modules/benchmarks/src/largetable/{pkg_name}:{target_name}".
-const testPackageName = process.env['BAZEL_TARGET'] !.split(':')[0].split('/').pop();
+let testPackageName = process.env['BAZEL_TARGET'] !.split(':')[0].split('/').pop();
 
 describe('largetable benchmark perf', () => {
 

@@ -29,25 +29,25 @@ export function recognize(
 }
 
 class Recognizer {
-  constructor(
+  letructor(
       private rootComponentType: Type<any>|null, private config: Routes, private urlTree: UrlTree,
       private url: string, private paramsInheritanceStrategy: ParamsInheritanceStrategy,
       private relativeLinkResolution: 'legacy'|'corrected') {}
 
   recognize(): Observable<RouterStateSnapshot> {
     try {
-      const rootSegmentGroup =
+      let rootSegmentGroup =
           split(this.urlTree.root, [], [], this.config, this.relativeLinkResolution).segmentGroup;
 
-      const children = this.processSegmentGroup(this.config, rootSegmentGroup, PRIMARY_OUTLET);
+      let children = this.processSegmentGroup(this.config, rootSegmentGroup, PRIMARY_OUTLET);
 
-      const root = new ActivatedRouteSnapshot(
+      let root = new ActivatedRouteSnapshot(
           [], Object.freeze({}), Object.freeze({...this.urlTree.queryParams}),
           this.urlTree.fragment !, {}, PRIMARY_OUTLET, this.rootComponentType, null,
           this.urlTree.root, -1, {});
 
-      const rootNode = new TreeNode<ActivatedRouteSnapshot>(root, children);
-      const routeState = new RouterStateSnapshot(this.url, rootNode);
+      let rootNode = new TreeNode<ActivatedRouteSnapshot>(root, children);
+      let routeState = new RouterStateSnapshot(this.url, rootNode);
       this.inheritParamsAndData(routeState._root);
       return of (routeState);
 
@@ -58,9 +58,9 @@ class Recognizer {
   }
 
   inheritParamsAndData(routeNode: TreeNode<ActivatedRouteSnapshot>): void {
-    const route = routeNode.value;
+    let route = routeNode.value;
 
-    const i = inheritedParamsDataResolve(route, this.paramsInheritanceStrategy);
+    let i = inheritedParamsDataResolve(route, this.paramsInheritanceStrategy);
     route.params = Object.freeze(i.params);
     route.data = Object.freeze(i.data);
 
@@ -78,7 +78,7 @@ class Recognizer {
 
   processChildren(config: Route[], segmentGroup: UrlSegmentGroup):
       TreeNode<ActivatedRouteSnapshot>[] {
-    const children = mapChildrenIntoArray(
+    let children = mapChildrenIntoArray(
         segmentGroup, (child, childOutlet) => this.processSegmentGroup(config, child, childOutlet));
     checkOutletNameUniqueness(children);
     sortActivatedRouteSnapshots(children);
@@ -88,7 +88,7 @@ class Recognizer {
   processSegment(
       config: Route[], segmentGroup: UrlSegmentGroup, segments: UrlSegment[],
       outlet: string): TreeNode<ActivatedRouteSnapshot>[] {
-    for (const r of config) {
+    for (let r of config) {
       try {
         return this.processSegmentAgainstRoute(r, segmentGroup, segments, outlet);
       } catch (e) {
@@ -119,13 +119,13 @@ class Recognizer {
     let rawSlicedSegments: UrlSegment[] = [];
 
     if (route.path === '**') {
-      const params = segments.length > 0 ? last(segments) !.parameters : {};
+      let params = segments.length > 0 ? last(segments) !.parameters : {};
       snapshot = new ActivatedRouteSnapshot(
           segments, params, Object.freeze({...this.urlTree.queryParams}), this.urlTree.fragment !,
           getData(route), outlet, route.component !, route, getSourceSegmentGroup(rawSegment),
           getPathIndexShift(rawSegment) + segments.length, getResolve(route));
     } else {
-      const result: MatchResult = match(rawSegment, route, segments);
+      let result: MatchResult = match(rawSegment, route, segments);
       consumedSegments = result.consumedSegments;
       rawSlicedSegments = segments.slice(result.lastChild);
 
@@ -136,13 +136,13 @@ class Recognizer {
           getPathIndexShift(rawSegment) + consumedSegments.length, getResolve(route));
     }
 
-    const childConfig: Route[] = getChildConfig(route);
+    let childConfig: Route[] = getChildConfig(route);
 
-    const {segmentGroup, slicedSegments} = split(
+    let {segmentGroup, slicedSegments} = split(
         rawSegment, consumedSegments, rawSlicedSegments, childConfig, this.relativeLinkResolution);
 
     if (slicedSegments.length === 0 && segmentGroup.hasChildren()) {
-      const children = this.processChildren(childConfig, segmentGroup);
+      let children = this.processChildren(childConfig, segmentGroup);
       return [new TreeNode<ActivatedRouteSnapshot>(snapshot, children)];
     }
 
@@ -150,7 +150,7 @@ class Recognizer {
       return [new TreeNode<ActivatedRouteSnapshot>(snapshot, [])];
     }
 
-    const children = this.processSegment(childConfig, segmentGroup, slicedSegments, PRIMARY_OUTLET);
+    let children = this.processSegment(childConfig, segmentGroup, slicedSegments, PRIMARY_OUTLET);
     return [new TreeNode<ActivatedRouteSnapshot>(snapshot, children)];
   }
 }
@@ -190,13 +190,13 @@ function match(segmentGroup: UrlSegmentGroup, route: Route, segments: UrlSegment
     return {consumedSegments: [], lastChild: 0, parameters: {}};
   }
 
-  const matcher = route.matcher || defaultUrlMatcher;
-  const res = matcher(segments, segmentGroup, route);
+  let matcher = route.matcher || defaultUrlMatcher;
+  let res = matcher(segments, segmentGroup, route);
   if (!res) throw new NoMatch();
 
-  const posParams: {[n: string]: string} = {};
+  let posParams: {[n: string]: string} = {};
   forEach(res.posParams !, (v: UrlSegment, k: string) => { posParams[k] = v.path; });
-  const parameters = res.consumed.length > 0 ?
+  let parameters = res.consumed.length > 0 ?
       {...posParams, ...res.consumed[res.consumed.length - 1].parameters} :
       posParams;
 
@@ -204,12 +204,12 @@ function match(segmentGroup: UrlSegmentGroup, route: Route, segments: UrlSegment
 }
 
 function checkOutletNameUniqueness(nodes: TreeNode<ActivatedRouteSnapshot>[]): void {
-  const names: {[k: string]: ActivatedRouteSnapshot} = {};
+  let names: {[k: string]: ActivatedRouteSnapshot} = {};
   nodes.forEach(n => {
-    const routeWithSameOutletName = names[n.value.outlet];
+    let routeWithSameOutletName = names[n.value.outlet];
     if (routeWithSameOutletName) {
-      const p = routeWithSameOutletName.url.map(s => s.toString()).join('/');
-      const c = n.value.url.map(s => s.toString()).join('/');
+      let p = routeWithSameOutletName.url.map(s => s.toString()).join('/');
+      let c = n.value.url.map(s => s.toString()).join('/');
       throw new Error(`Two segments cannot have the same outlet name: '${p}' and '${c}'.`);
     }
     names[n.value.outlet] = n.value;
@@ -239,7 +239,7 @@ function split(
     config: Route[], relativeLinkResolution: 'legacy' | 'corrected') {
   if (slicedSegments.length > 0 &&
       containsEmptyPathMatchesWithNamedOutlets(segmentGroup, slicedSegments, config)) {
-    const s = new UrlSegmentGroup(
+    let s = new UrlSegmentGroup(
         consumedSegments, createChildrenForEmptyPaths(
                               segmentGroup, consumedSegments, config,
                               new UrlSegmentGroup(slicedSegments, segmentGroup.children)));
@@ -250,7 +250,7 @@ function split(
 
   if (slicedSegments.length === 0 &&
       containsEmptyPathMatches(segmentGroup, slicedSegments, config)) {
-    const s = new UrlSegmentGroup(
+    let s = new UrlSegmentGroup(
         segmentGroup.segments, addEmptyPathsToChildrenIfNeeded(
                                    segmentGroup, consumedSegments, slicedSegments, config,
                                    segmentGroup.children, relativeLinkResolution));
@@ -259,7 +259,7 @@ function split(
     return {segmentGroup: s, slicedSegments};
   }
 
-  const s = new UrlSegmentGroup(segmentGroup.segments, segmentGroup.children);
+  let s = new UrlSegmentGroup(segmentGroup.segments, segmentGroup.children);
   s._sourceSegment = segmentGroup;
   s._segmentIndexShift = consumedSegments.length;
   return {segmentGroup: s, slicedSegments};
@@ -269,10 +269,10 @@ function addEmptyPathsToChildrenIfNeeded(
     segmentGroup: UrlSegmentGroup, consumedSegments: UrlSegment[], slicedSegments: UrlSegment[],
     routes: Route[], children: {[name: string]: UrlSegmentGroup},
     relativeLinkResolution: 'legacy' | 'corrected'): {[name: string]: UrlSegmentGroup} {
-  const res: {[name: string]: UrlSegmentGroup} = {};
-  for (const r of routes) {
+  let res: {[name: string]: UrlSegmentGroup} = {};
+  for (let r of routes) {
     if (emptyPathMatch(segmentGroup, slicedSegments, r) && !children[getOutlet(r)]) {
-      const s = new UrlSegmentGroup([], {});
+      let s = new UrlSegmentGroup([], {});
       s._sourceSegment = segmentGroup;
       if (relativeLinkResolution === 'legacy') {
         s._segmentIndexShift = segmentGroup.segments.length;
@@ -288,14 +288,14 @@ function addEmptyPathsToChildrenIfNeeded(
 function createChildrenForEmptyPaths(
     segmentGroup: UrlSegmentGroup, consumedSegments: UrlSegment[], routes: Route[],
     primarySegment: UrlSegmentGroup): {[name: string]: UrlSegmentGroup} {
-  const res: {[name: string]: UrlSegmentGroup} = {};
+  let res: {[name: string]: UrlSegmentGroup} = {};
   res[PRIMARY_OUTLET] = primarySegment;
   primarySegment._sourceSegment = segmentGroup;
   primarySegment._segmentIndexShift = consumedSegments.length;
 
-  for (const r of routes) {
+  for (let r of routes) {
     if (r.path === '' && getOutlet(r) !== PRIMARY_OUTLET) {
-      const s = new UrlSegmentGroup([], {});
+      let s = new UrlSegmentGroup([], {});
       s._sourceSegment = segmentGroup;
       s._segmentIndexShift = consumedSegments.length;
       res[getOutlet(r)] = s;

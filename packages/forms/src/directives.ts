@@ -46,7 +46,7 @@ export {FormArrayName, FormGroupName} from './directives/reactive_directives/for
 export {NgSelectOption, SelectControlValueAccessor} from './directives/select_control_value_accessor';
 export {NgSelectMultipleOption, SelectMultipleControlValueAccessor} from './directives/select_multiple_control_value_accessor';
 
-export const SHARED_FORM_DIRECTIVES: Type<any>[] = [
+export let SHARED_FORM_DIRECTIVES: Type<any>[] = [
   NgNoValidate,
   NgSelectOption,
   NgSelectMultipleOption,
@@ -67,10 +67,10 @@ export const SHARED_FORM_DIRECTIVES: Type<any>[] = [
   EmailValidator,
 ];
 
-export const TEMPLATE_DRIVEN_DIRECTIVES: Type<any>[] =
+export let TEMPLATE_DRIVEN_DIRECTIVES: Type<any>[] =
     [NgModel, NgModelGroup, NgForm, NgFormSelectorWarning];
 
-export const REACTIVE_DRIVEN_DIRECTIVES: Type<any>[] =
+export let REACTIVE_DRIVEN_DIRECTIVES: Type<any>[] =
     [FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName];
 
 /**

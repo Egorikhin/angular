@@ -18,7 +18,7 @@ import {ivyEnabled, modifiedInIvy, obsoleteInIvy, onlyInIvy} from '@angular/priv
 @Injectable()
 class ChildComp {
   childBinding: string;
-  constructor() { this.childBinding = 'Child'; }
+  letructor() { this.childBinding = 'Child'; }
 }
 
 @Component({selector: 'child-comp', template: `<span>Mock</span>`})
@@ -52,7 +52,7 @@ class ChildChildComp {
 @Injectable()
 class ChildWithChildComp {
   childBinding: string;
-  constructor() { this.childBinding = 'Child'; }
+  letructor() { this.childBinding = 'Child'; }
 }
 
 class FancyService {
@@ -73,7 +73,7 @@ class MockFancyService extends FancyService {
   template: `injected value: {{fancyService.value}}`
 })
 class TestProvidersComp {
-  constructor(private fancyService: FancyService) {}
+  letructor(private fancyService: FancyService) {}
 }
 
 @Component({
@@ -82,7 +82,7 @@ class TestProvidersComp {
   template: `injected value: {{fancyService.value}}`
 })
 class TestViewProvidersComp {
-  constructor(private fancyService: FancyService) {}
+  letructor(private fancyService: FancyService) {}
 }
 
 @Directive({selector: '[someDir]', host: {'[title]': 'someDir'}})
@@ -132,13 +132,13 @@ class CompWithUrlTemplate {
          async(function() { setTimeout(() => this.actuallyDone = true, 0); }));
 
       it('should run async tests with promises', async(function() {
-           const p = new Promise((resolve, reject) => setTimeout(resolve, 10));
+           let p = new Promise((resolve, reject) => setTimeout(resolve, 10));
            p.then(() => this.actuallyDone = true);
          }));
     });
 
     describe('basic context passing to inject, fakeAsync and withModule helpers', () => {
-      const moduleConfig = {
+      let moduleConfig = {
         providers: [FancyService],
       };
 
@@ -198,7 +198,7 @@ class CompWithUrlTemplate {
           it('should allow use of "done"', (done) => {
             inject([FancyService], (service: FancyService) => {
               let count = 0;
-              const id = setInterval(() => {
+              let id = setInterval(() => {
                 count++;
                 if (count > 2) {
                   clearInterval(id);
@@ -233,7 +233,7 @@ class CompWithUrlTemplate {
     });
 
     describe('using the test injector with modules', () => {
-      const moduleConfig = {
+      let moduleConfig = {
         providers: [FancyService],
         imports: [SomeLibModule],
         declarations: [SomeDirective, SomePipe, CompUsingModuleDirectiveAndPipe],
@@ -247,13 +247,13 @@ class CompWithUrlTemplate {
            }));
 
         it('should be able to create any declared components', () => {
-          const compFixture = TestBed.createComponent(CompUsingModuleDirectiveAndPipe);
+          let compFixture = TestBed.createComponent(CompUsingModuleDirectiveAndPipe);
           expect(compFixture.componentInstance).toBeAnInstanceOf(CompUsingModuleDirectiveAndPipe);
         });
 
         it('should use set up directives and pipes', () => {
-          const compFixture = TestBed.createComponent(CompUsingModuleDirectiveAndPipe);
-          const el = compFixture.debugElement;
+          let compFixture = TestBed.createComponent(CompUsingModuleDirectiveAndPipe);
+          let el = compFixture.debugElement;
 
           compFixture.detectChanges();
           expect(el.children[0].properties['title']).toBe('transformed someValue');
@@ -289,8 +289,8 @@ class CompWithUrlTemplate {
            }));
 
         it('should use set up directives and pipes', withModule(moduleConfig, () => {
-             const compFixture = TestBed.createComponent(CompUsingModuleDirectiveAndPipe);
-             const el = compFixture.debugElement;
+             let compFixture = TestBed.createComponent(CompUsingModuleDirectiveAndPipe);
+             let el = compFixture.debugElement;
 
              compFixture.detectChanges();
              expect(el.children[0].properties['title']).toBe('transformed someValue');
@@ -311,7 +311,7 @@ class CompWithUrlTemplate {
         isBrowser &&
             it('should allow to createSync components with templateUrl after explicit async compilation',
                () => {
-                 const fixture = TestBed.createComponent(CompWithUrlTemplate);
+                 let fixture = TestBed.createComponent(CompWithUrlTemplate);
                  expect(fixture.nativeElement).toHaveText('from external template');
                });
       });
@@ -370,7 +370,7 @@ class CompWithUrlTemplate {
                     SomeDirective, {set: {selector: '[someDir]', host: {'[title]': 'someProp'}}});
           });
           it('should work', () => {
-            const compFixture = TestBed.createComponent(SomeComponent);
+            let compFixture = TestBed.createComponent(SomeComponent);
             compFixture.detectChanges();
             expect(compFixture.debugElement.children[0].properties['title']).toEqual('hello');
           });
@@ -385,7 +385,7 @@ class CompWithUrlTemplate {
                 .overridePipe(SomePipe, {add: {pure: false}});
           });
           it('should work', () => {
-            const compFixture = TestBed.createComponent(SomeComponent);
+            let compFixture = TestBed.createComponent(SomeComponent);
             compFixture.detectChanges();
             expect(compFixture.nativeElement).toHaveText('transformed hello');
           });
@@ -398,7 +398,7 @@ class CompWithUrlTemplate {
             TestBed.overrideTemplate(SomeComponent, 'newText');
           });
           it(`should override component's template`, () => {
-            const fixture = TestBed.createComponent(SomeComponent);
+            let fixture = TestBed.createComponent(SomeComponent);
             expect(fixture.nativeElement).toHaveText('newText');
             expect(testBedSpy).toHaveBeenCalledWith(SomeComponent, {
               set: {template: 'newText', templateUrl: null}
@@ -469,8 +469,8 @@ class CompWithUrlTemplate {
             TestBed.configureTestingModule(
                 {providers: [{provide: 'dep', useValue: 'parentDepValue'}]});
 
-            const compiler = TestBed.get(Compiler) as Compiler;
-            const modFactory = compiler.compileModuleSync(MyModule);
+            let compiler = TestBed.get(Compiler) as Compiler;
+            let modFactory = compiler.compileModuleSync(MyModule);
             expect(modFactory.create(getTestBed()).injector.get('a')).toBe('mockA: parentDepValue');
           });
 
@@ -479,7 +479,7 @@ class CompWithUrlTemplate {
 
             @NgModule()
             class SomeModule {
-              constructor() { someModule = this; }
+              letructor() { someModule = this; }
             }
 
             TestBed.configureTestingModule({
@@ -503,7 +503,7 @@ class CompWithUrlTemplate {
             })
             class MyModule {
               // NgModule is eager, which makes all of its deps eager
-              constructor(@Inject('a') a: any, @Inject('b') b: any) {}
+              letructor(@Inject('a') a: any, @Inject('b') b: any) {}
             }
 
             it('should inject providers that were declared before', () => {
@@ -536,7 +536,7 @@ class CompWithUrlTemplate {
             }
 
             TestBed.overrideProvider('a', {useValue: 'mockValue'});
-            const ctx =
+            let ctx =
                 TestBed.configureTestingModule({declarations: [MComp]}).createComponent(MComp);
 
             expect(ctx.debugElement.injector.get('a')).toBe('mockValue');
@@ -555,7 +555,7 @@ class CompWithUrlTemplate {
 
             TestBed.overrideProvider(
                 'a', {useFactory: (dep: any) => `mockA: ${dep}`, deps: ['dep']});
-            const ctx =
+            let ctx =
                 TestBed.configureTestingModule({declarations: [MyComp]}).createComponent(MyComp);
 
             expect(ctx.debugElement.injector.get('a')).toBe('mockA: depValue');
@@ -573,7 +573,7 @@ class CompWithUrlTemplate {
 
             TestBed.overrideProvider(
                 'a', {useFactory: (dep: any) => `mockA: ${dep}`, deps: [[new Optional(), 'dep']]});
-            const ctx =
+            let ctx =
                 TestBed.configureTestingModule({declarations: [MyComp]}).createComponent(MyComp);
 
             expect(ctx.debugElement.injector.get('a')).toBe('mockA: null');
@@ -592,7 +592,7 @@ class CompWithUrlTemplate {
 
             TestBed.overrideProvider(
                 'a', {useFactory: (dep: any) => `mockA: ${dep}`, deps: [[new Optional(), 'dep']]});
-            const ctx =
+            let ctx =
                 TestBed.configureTestingModule({declarations: [MyComp]}).createComponent(MyComp);
 
             expect(ctx.debugElement.injector.get('a')).toBe('mockA: depValue');
@@ -620,7 +620,7 @@ class CompWithUrlTemplate {
 
             TestBed.overrideProvider(
                 'a', {useFactory: (dep: any) => `mockA: ${dep}`, deps: [[new SkipSelf(), 'dep']]});
-            const ctx = TestBed.configureTestingModule({declarations: [MyComp, MyDir]})
+            let ctx = TestBed.configureTestingModule({declarations: [MyComp, MyDir]})
                             .createComponent(MyComp);
             expect(ctx.debugElement.children[0].injector.get('a')).toBe('mockA: parentDepValue');
           });
@@ -651,7 +651,7 @@ class CompWithUrlTemplate {
             }
 
             TestBed.overrideProvider('a', {useValue: 'mockA'});
-            const ctx = TestBed.configureTestingModule({declarations: [MyComp, MyDir1, MyDir2]})
+            let ctx = TestBed.configureTestingModule({declarations: [MyComp, MyDir1, MyDir2]})
                             .createComponent(MyComp);
             expect(ctx.debugElement.children[0].injector.get('a')).toBe('mockA');
             expect(ctx.debugElement.children[1].injector.get('a')).toBe('mockA');
@@ -667,13 +667,13 @@ class CompWithUrlTemplate {
             })
             class MyComp {
               // Component is eager, which makes all of its deps eager
-              constructor(@Inject('a') a: any, @Inject('b') b: any) {}
+              letructor(@Inject('a') a: any, @Inject('b') b: any) {}
             }
 
             it('should inject providers that were declared before it', () => {
               TestBed.overrideProvider(
                   'b', {useFactory: (a: string) => `mockB: ${a}`, deps: ['a']});
-              const ctx =
+              let ctx =
                   TestBed.configureTestingModule({declarations: [MyComp]}).createComponent(MyComp);
 
               expect(ctx.debugElement.injector.get('b')).toBe('mockB: aValue');
@@ -682,7 +682,7 @@ class CompWithUrlTemplate {
             it('should inject providers that were declared after it', () => {
               TestBed.overrideProvider(
                   'a', {useFactory: (b: string) => `mockA: ${b}`, deps: ['b']});
-              const ctx =
+              let ctx =
                   TestBed.configureTestingModule({declarations: [MyComp]}).createComponent(MyComp);
 
               expect(ctx.debugElement.injector.get('a')).toBe('mockA: bValue');
@@ -709,7 +709,7 @@ class CompWithUrlTemplate {
 
           @Directive({selector: '[test]'})
           class TestDir {
-            constructor() { testDir = this; }
+            letructor() { testDir = this; }
 
             // TODO(issue/24571): remove '!'.
             @Input('test')
@@ -719,7 +719,7 @@ class CompWithUrlTemplate {
           TestBed.overrideTemplateUsingTestingModule(
               MyComponent, '<div [test]="prop">Hello world!</div>');
 
-          const fixture = TestBed.configureTestingModule({declarations: [MyComponent, TestDir]})
+          let fixture = TestBed.configureTestingModule({declarations: [MyComponent, TestDir]})
                               .createComponent(MyComponent);
           fixture.detectChanges();
           expect(fixture.nativeElement).toHaveText('Hello world!');
@@ -746,7 +746,7 @@ class CompWithUrlTemplate {
 
           TestBed.overrideTemplateUsingTestingModule(MyComponent, 'b');
 
-          const fixture = TestBed.resetTestingModule()
+          let fixture = TestBed.resetTestingModule()
                               .configureTestingModule({declarations: [MyComponent]})
                               .createComponent(MyComponent);
           expect(fixture.nativeElement).toHaveText('a');
@@ -769,7 +769,7 @@ class CompWithUrlTemplate {
                class InternalCompWithUrlTemplate {
                }
 
-               const resourceLoaderGet = jasmine.createSpy('resourceLoaderGet')
+               let resourceLoaderGet = jasmine.createSpy('resourceLoaderGet')
                                              .and.returnValue(Promise.resolve('Hello world!'));
                TestBed.configureTestingModule({declarations: [InternalCompWithUrlTemplate]});
                TestBed.configureCompiler(
@@ -777,7 +777,7 @@ class CompWithUrlTemplate {
 
                TestBed.compileComponents();
                tick();
-               const compFixture = TestBed.createComponent(InternalCompWithUrlTemplate);
+               let compFixture = TestBed.createComponent(InternalCompWithUrlTemplate);
                expect(compFixture.nativeElement).toHaveText('Hello world!');
              }));
         });
@@ -805,16 +805,16 @@ class CompWithUrlTemplate {
       let originalJasmineIt: (description: string, func: () => void) => jasmine.Spec;
       let originalJasmineBeforeEach: (beforeEachFunction: (done: DoneFn) => void) => void;
 
-      const patchJasmineIt = () => {
+      let patchJasmineIt = () => {
         let resolve: (result: any) => void;
         let reject: (error: any) => void;
-        const promise = new Promise((res, rej) => {
+        let promise = new Promise((res, rej) => {
           resolve = res;
           reject = rej;
         });
         originalJasmineIt = jasmine.getEnv().it;
         jasmine.getEnv().it = (description: string, fn: (done: DoneFn) => void): any => {
-          const done = <DoneFn>(() => resolve(null));
+          let done = <DoneFn>(() => resolve(null));
           done.fail = (err) => reject(err);
           fn(done);
           return null;
@@ -822,30 +822,30 @@ class CompWithUrlTemplate {
         return promise;
       };
 
-      const restoreJasmineIt = () => jasmine.getEnv().it = originalJasmineIt;
+      let restoreJasmineIt = () => jasmine.getEnv().it = originalJasmineIt;
 
-      const patchJasmineBeforeEach = () => {
+      let patchJasmineBeforeEach = () => {
         let resolve: (result: any) => void;
         let reject: (error: any) => void;
-        const promise = new Promise((res, rej) => {
+        let promise = new Promise((res, rej) => {
           resolve = res;
           reject = rej;
         });
         originalJasmineBeforeEach = jasmine.getEnv().beforeEach;
         jasmine.getEnv().beforeEach = (fn: (done: DoneFn) => void) => {
-          const done = <DoneFn>(() => resolve(null));
+          let done = <DoneFn>(() => resolve(null));
           done.fail = (err) => reject(err);
           fn(done);
         };
         return promise;
       };
 
-      const restoreJasmineBeforeEach = () => jasmine.getEnv().beforeEach =
+      let restoreJasmineBeforeEach = () => jasmine.getEnv().beforeEach =
           originalJasmineBeforeEach;
 
       it('should fail when an asynchronous error is thrown', (done) => {
-        const itPromise = patchJasmineIt();
-        const barError = new Error('bar');
+        let itPromise = patchJasmineIt();
+        let barError = new Error('bar');
 
         it('throws an async error',
            async(inject([], () => setTimeout(() => { throw barError; }, 0))));
@@ -858,12 +858,12 @@ class CompWithUrlTemplate {
       });
 
       it('should fail when a returned promise is rejected', (done) => {
-        const itPromise = patchJasmineIt();
+        let itPromise = patchJasmineIt();
 
         it('should fail with an error from a promise', async(inject([], () => {
              let reject: (error: any) => void = undefined !;
-             const promise = new Promise((_, rej) => reject = rej);
-             const p = promise.then(() => expect(1).toEqual(2));
+             let promise = new Promise((_, rej) => reject = rej);
+             let p = promise.then(() => expect(1).toEqual(2));
 
              reject('baz');
              return p;
@@ -887,7 +887,7 @@ class CompWithUrlTemplate {
 
         it('should report an error for declared components with templateUrl which never call TestBed.compileComponents',
            () => {
-             const itPromise = patchJasmineIt();
+             let itPromise = patchJasmineIt();
 
              @Component({
                selector: 'comp',
@@ -921,7 +921,7 @@ Did you run and wait for 'resolveComponentResources()'?` :
             class ComponentUsingInvalidProperty {
             }
 
-            const itPromise = patchJasmineIt();
+            let itPromise = patchJasmineIt();
 
             expect(
                 () =>
@@ -940,14 +940,14 @@ Did you run and wait for 'resolveComponentResources()'?` :
             class ComponentUsingInvalidProperty {
             }
 
-            const itPromise = patchJasmineIt();
+            let itPromise = patchJasmineIt();
 
             expect(
                 () => it(
                     'should fail', withModule(
                                        {declarations: [ComponentUsingInvalidProperty]},
                                        () => {
-                                         const fixture =
+                                         let fixture =
                                              TestBed.createComponent(ComponentUsingInvalidProperty);
                                          fixture.detectChanges();
                                        })))
@@ -973,14 +973,14 @@ Did you run and wait for 'resolveComponentResources()'?` :
       });
 
       it('should instantiate a component with valid DOM', async(() => {
-           const fixture = TestBed.createComponent(ChildComp);
+           let fixture = TestBed.createComponent(ChildComp);
            fixture.detectChanges();
 
            expect(fixture.nativeElement).toHaveText('Original Child');
          }));
 
       it('should allow changing members of the component', async(() => {
-           const componentFixture = TestBed.createComponent(MyIfComp);
+           let componentFixture = TestBed.createComponent(MyIfComp);
            componentFixture.detectChanges();
            expect(componentFixture.nativeElement).toHaveText('MyIf()');
 
@@ -991,7 +991,7 @@ Did you run and wait for 'resolveComponentResources()'?` :
 
       it('should override a template', async(() => {
            TestBed.overrideComponent(ChildComp, {set: {template: '<span>Mock</span>'}});
-           const componentFixture = TestBed.createComponent(ChildComp);
+           let componentFixture = TestBed.createComponent(ChildComp);
            componentFixture.detectChanges();
            expect(componentFixture.nativeElement).toHaveText('Mock');
 
@@ -1001,7 +1001,7 @@ Did you run and wait for 'resolveComponentResources()'?` :
            TestBed.overrideComponent(
                TestProvidersComp,
                {set: {providers: [{provide: FancyService, useClass: MockFancyService}]}});
-           const componentFixture = TestBed.createComponent(TestProvidersComp);
+           let componentFixture = TestBed.createComponent(TestProvidersComp);
            componentFixture.detectChanges();
            expect(componentFixture.nativeElement).toHaveText('injected value: mocked out value');
          }));
@@ -1012,7 +1012,7 @@ Did you run and wait for 'resolveComponentResources()'?` :
                TestViewProvidersComp,
                {set: {viewProviders: [{provide: FancyService, useClass: MockFancyService}]}});
 
-           const componentFixture = TestBed.createComponent(TestViewProvidersComp);
+           let componentFixture = TestBed.createComponent(TestViewProvidersComp);
            componentFixture.detectChanges();
            expect(componentFixture.nativeElement).toHaveText('injected value: mocked out value');
          }));
@@ -1028,7 +1028,7 @@ Did you run and wait for 'resolveComponentResources()'?` :
       });
 
       it('should override component dependencies', async(() => {
-           const componentFixture = TestBed.createComponent(ParentComp);
+           let componentFixture = TestBed.createComponent(ParentComp);
            componentFixture.detectChanges();
            expect(componentFixture.nativeElement).toHaveText('Parent(Mock)');
          }));

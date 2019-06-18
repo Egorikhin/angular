@@ -17,8 +17,8 @@ describe('reflector_host_spec', () => {
 
   // Regression #21811
   it('should be able to find angular under windows', () => {
-    const originalJoin = path.join;
-    const originalPosixJoin = path.posix.join;
+    let originalJoin = path.join;
+    let originalPosixJoin = path.posix.join;
     let mockHost =
         new MockTypescriptHost(['/app/main.ts', '/app/parsing-cases.ts'], toh, 'app/node_modules', {
           ...path,
@@ -26,7 +26,7 @@ describe('reflector_host_spec', () => {
           posix:
               {...path.posix, join: (...args: string[]) => originalPosixJoin.apply(path, args)}
         });
-    const reflectorHost = new ReflectorHost(() => undefined as any, mockHost, {basePath: '\\app'});
+    let reflectorHost = new ReflectorHost(() => undefined as any, mockHost, {basePath: '\\app'});
 
     if (process.platform !== 'win32') {
       // If we call this in Windows it will cause a 'Maximum call stack size exceeded error'
@@ -34,7 +34,7 @@ describe('reflector_host_spec', () => {
       spyOn(path, 'join').and.callFake((...args: string[]) => { return path.win32.join(...args); });
     }
 
-    const result = reflectorHost.moduleNameToFileName('@angular/core');
+    let result = reflectorHost.moduleNameToFileName('@angular/core');
     expect(result).not.toBeNull('could not find @angular/core using path.win32');
   });
 });

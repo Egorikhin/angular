@@ -5,18 +5,18 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const path = require('path');
-const Package = require('dgeni').Package;
+let path = require('path');
+let Package = require('dgeni').Package;
 
-const jsdocPackage = require('dgeni-packages/jsdoc');
-const nunjucksPackage = require('dgeni-packages/nunjucks');
-const linksPackage = require('../links-package');
-const examplesPackage = require('../examples-package');
-const targetPackage = require('../target-package');
-const remarkPackage = require('../remark-package');
-const postProcessPackage = require('../post-process-package');
+let jsdocPackage = require('dgeni-packages/jsdoc');
+let nunjucksPackage = require('dgeni-packages/nunjucks');
+let linksPackage = require('../links-package');
+let examplesPackage = require('../examples-package');
+let targetPackage = require('../target-package');
+let remarkPackage = require('../remark-package');
+let postProcessPackage = require('../post-process-package');
 
-const { PROJECT_ROOT, CONTENTS_PATH, OUTPUT_PATH, DOCS_OUTPUT_PATH, TEMPLATES_PATH, AIO_PATH, requireFolder } = require('../config');
+let { PROJECT_ROOT, CONTENTS_PATH, OUTPUT_PATH, DOCS_OUTPUT_PATH, TEMPLATES_PATH, AIO_PATH, requireFolder } = require('../config');
 
 module.exports = new Package('angular-base', [
   jsdocPackage, nunjucksPackage, linksPackage, examplesPackage, targetPackage, remarkPackage, postProcessPackage
@@ -67,8 +67,8 @@ module.exports = new Package('angular-base', [
 
   // Target environments
   .config(function(targetEnvironments) {
-    const ALLOWED_LANGUAGES = ['ts', 'js', 'dart'];
-    const TARGET_LANGUAGE = 'ts';
+    let ALLOWED_LANGUAGES = ['ts', 'js', 'dart'];
+    let TARGET_LANGUAGE = 'ts';
 
     ALLOWED_LANGUAGES.forEach(target => targetEnvironments.addAllowed(target));
     targetEnvironments.activate(TARGET_LANGUAGE);

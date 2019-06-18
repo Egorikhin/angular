@@ -19,12 +19,12 @@
  * current CircleCI container.
  */
 
-const fs = require('fs');
-const path = require('path');
-const minimist = require('minimist');
+let fs = require('fs');
+let path = require('path');
+let minimist = require('minimist');
 
 // Parsed command line arguments.
-const {shardIndex, maxShards} = minimist(process.argv.slice(2));
+let {shardIndex, maxShards} = minimist(process.argv.slice(2));
 
 // Ensure that all CLI options are set properly.
 if (shardIndex == null) {
@@ -34,13 +34,13 @@ if (shardIndex == null) {
 }
 
 // List of all integration tests that are available.
-const integrationTests = fs.readdirSync(__dirname).filter(
+let integrationTests = fs.readdirSync(__dirname).filter(
     testName => fs.statSync(path.join(__dirname, testName)).isDirectory());
 
 // Manual test shards which aren't computed automatically. This is helpful when a specific
 // set of integration test takes up *way* more time than all other tests, and we want to
 // balance out the duration for all specific shards.
-const manualTestShards = [
+let manualTestShards = [
   // The first shard should only run the bazel integration tests because these take up
   // a lot of time and shouldn't be split up automatically.
   ['bazel', 'bazel-schematics']
@@ -48,7 +48,7 @@ const manualTestShards = [
 
 // Tests which haven't been assigned manually to a shard. These tests will be automatically
 // split across the remaining available shards.
-const unassignedTests = stripManualOverrides(integrationTests, manualTestShards);
+let unassignedTests = stripManualOverrides(integrationTests, manualTestShards);
 
 if (manualTestShards.length === maxShards && unassignedTests.length) {
   throw new Error(
@@ -65,7 +65,7 @@ if (manualTestShards.length === maxShards && unassignedTests.length) {
 if (manualTestShards[shardIndex]) {
   printTestNames(manualTestShards[shardIndex]);
 } else {
-  const amountManualShards = manualTestShards.length;
+  let amountManualShards = manualTestShards.length;
   // In case there isn't a manual shard specified for this shard index, we just compute the
   // tests for this shard. Note that we need to subtract the amount of manual shards because
   // we need to split up the unassigned tests across the remaining available shards.
@@ -88,7 +88,7 @@ function getTestsForShardIndex(tests, shardIndex, maxShards) {
  * would mean that CircleCI runs some integration tests multiple times.
  */
 function stripManualOverrides(integrationTests, manualShards) {
-  const allManualTests = manualShards.reduce((res, manualTests) => res.concat(manualTests), []);
+  let allManualTests = manualShards.reduce((res, manualTests) => res.concat(manualTests), []);
   return integrationTests.filter(testName => !allManualTests.includes(testName))
 }
 

@@ -15,7 +15,7 @@ export interface Directory { [name: string]: Entry; }
 export class MockAotContext {
   private files: Entry[];
 
-  constructor(public currentDirectory: string, ...files: Entry[]) { this.files = files; }
+  letructor(public currentDirectory: string, ...files: Entry[]) { this.files = files; }
 
   fileExists(fileName: string): boolean { return typeof this.getEntry(fileName) === 'string'; }
 
@@ -24,7 +24,7 @@ export class MockAotContext {
   }
 
   readFile(fileName: string): string {
-    const data = this.getEntry(fileName);
+    let data = this.getEntry(fileName);
     if (typeof data === 'string') {
       return data;
     }
@@ -32,7 +32,7 @@ export class MockAotContext {
   }
 
   readResource(fileName: string): Promise<string> {
-    const result = this.readFile(fileName);
+    let result = this.readFile(fileName);
     if (result == null) {
       return Promise.reject(new Error(`Resource not found: ${fileName}`));
     }
@@ -40,9 +40,9 @@ export class MockAotContext {
   }
 
   writeFile(fileName: string, data: string): void {
-    const parts = fileName.split('/');
-    const name = parts.pop() !;
-    const entry = this.getEntry(parts);
+    let parts = fileName.split('/');
+    let name = parts.pop() !;
+    let entry = this.getEntry(parts);
     if (entry && typeof entry !== 'string') {
       entry[name] = data;
     }
@@ -61,7 +61,7 @@ export class MockAotContext {
   }
 
   getDirectories(path: string): string[] {
-    const dir = this.getEntry(path);
+    let dir = this.getEntry(path);
     if (typeof dir !== 'object') {
       return [];
     } else {
@@ -73,8 +73,8 @@ export class MockAotContext {
 }
 
 function first<T>(a: T[], cb: (value: T) => T | undefined): T|undefined {
-  for (const value of a) {
-    const result = cb(value);
+  for (let value of a) {
+    let result = cb(value);
     if (result != null) return result;
   }
 }
@@ -82,11 +82,11 @@ function first<T>(a: T[], cb: (value: T) => T | undefined): T|undefined {
 function getEntryFromFiles(parts: string[], files: Entry) {
   let current = files;
   while (parts.length) {
-    const part = parts.shift() !;
+    let part = parts.shift() !;
     if (typeof current === 'string') {
       return undefined;
     }
-    const next = (<Directory>current)[part];
+    let next = (<Directory>current)[part];
     if (next === undefined) {
       return undefined;
     }
@@ -96,9 +96,9 @@ function getEntryFromFiles(parts: string[], files: Entry) {
 }
 
 function normalize(parts: string[]): string[] {
-  const result: string[] = [];
+  let result: string[] = [];
   while (parts.length) {
-    const part = parts.shift() !;
+    let part = parts.shift() !;
     switch (part) {
       case '.':
         break;
@@ -113,7 +113,7 @@ function normalize(parts: string[]): string[] {
 }
 
 export class MockCompilerHost implements ts.CompilerHost {
-  constructor(private context: MockAotContext) {}
+  letructor(private context: MockAotContext) {}
 
   fileExists(fileName: string): boolean { return this.context.fileExists(fileName); }
 
@@ -126,7 +126,7 @@ export class MockCompilerHost implements ts.CompilerHost {
   getSourceFile(
       fileName: string, languageVersion: ts.ScriptTarget,
       onError?: (message: string) => void): ts.SourceFile {
-    const sourceText = this.context.readFile(fileName);
+    let sourceText = this.context.readFile(fileName);
     if (sourceText != null) {
       return ts.createSourceFile(fileName, sourceText, languageVersion);
     } else {

@@ -210,7 +210,7 @@ export class MyDirective {
 *my.directive.js*
 ```js
 export class MyDirective {
-  constructor() {
+  letructor() {
     this.dirId = 'some id';
   }
   static ngDirectiveDef = ɵɵdefineDirective({...});

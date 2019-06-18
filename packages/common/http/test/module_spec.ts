@@ -20,16 +20,16 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 class TestInterceptor implements HttpInterceptor {
-  constructor(private value: string) {}
+  letructor(private value: string) {}
 
   intercept(req: HttpRequest<any>, delegate: HttpHandler): Observable<HttpEvent<any>> {
-    const existing = req.headers.get('Intercepted');
-    const next = !!existing ? existing + ',' + this.value : this.value;
+    let existing = req.headers.get('Intercepted');
+    let next = !!existing ? existing + ',' + this.value : this.value;
     req = req.clone({setHeaders: {'Intercepted': next}});
     return delegate.handle(req).pipe(map(event => {
       if (event instanceof HttpResponse) {
-        const existing = event.headers.get('Intercepted');
-        const next = !!existing ? existing + ',' + this.value : this.value;
+        let existing = event.headers.get('Intercepted');
+        let next = !!existing ? existing + ',' + this.value : this.value;
         return event.clone({headers: event.headers.set('Intercepted', next)});
       }
       return event;
@@ -38,16 +38,16 @@ class TestInterceptor implements HttpInterceptor {
 }
 
 class InterceptorA extends TestInterceptor {
-  constructor() { super('A'); }
+  letructor() { super('A'); }
 }
 
 class InterceptorB extends TestInterceptor {
-  constructor() { super('B'); }
+  letructor() { super('B'); }
 }
 
 @Injectable()
 class ReentrantInterceptor implements HttpInterceptor {
-  constructor(private client: HttpClient) {}
+  letructor(private client: HttpClient) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req);
@@ -77,7 +77,7 @@ class ReentrantInterceptor implements HttpInterceptor {
       injector.get(HttpClient)
           .get('/test', {observe: 'response', responseType: 'text'})
           .subscribe(value => done());
-      const req = injector.get(HttpTestingController).expectOne('/test') as TestRequest;
+      let req = injector.get(HttpTestingController).expectOne('/test') as TestRequest;
       expect(req.request.headers.get('Intercepted')).toEqual('A,B');
       req.flush('ok!');
     });

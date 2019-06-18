@@ -42,8 +42,8 @@ import {AsyncTestCompleter, beforeEach, describe, expect, inject, it} from '@ang
 
     it('should return a response from the definitions',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const url = '/foo';
-         const response = 'bar';
+         let url = '/foo';
+         let response = 'bar';
          resourceLoader.when(url, response);
          expectResponse(resourceLoader.get(url), url, response, () => async.done());
          resourceLoader.flush();
@@ -51,8 +51,8 @@ import {AsyncTestCompleter, beforeEach, describe, expect, inject, it} from '@ang
 
     it('should return an error from the definitions',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const url = '/foo';
-         const response: string = null !;
+         let url = '/foo';
+         let response: string = null !;
          resourceLoader.when(url, response);
          expectResponse(resourceLoader.get(url), url, response, () => async.done());
          resourceLoader.flush();
@@ -60,8 +60,8 @@ import {AsyncTestCompleter, beforeEach, describe, expect, inject, it} from '@ang
 
     it('should return a response from the expectations',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const url = '/foo';
-         const response = 'bar';
+         let url = '/foo';
+         let response = 'bar';
          resourceLoader.expect(url, response);
          expectResponse(resourceLoader.get(url), url, response, () => async.done());
          resourceLoader.flush();
@@ -69,16 +69,16 @@ import {AsyncTestCompleter, beforeEach, describe, expect, inject, it} from '@ang
 
     it('should return an error from the expectations',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const url = '/foo';
-         const response: string = null !;
+         let url = '/foo';
+         let response: string = null !;
          resourceLoader.expect(url, response);
          expectResponse(resourceLoader.get(url), url, response, () => async.done());
          resourceLoader.flush();
        }));
 
     it('should not reuse expectations', () => {
-      const url = '/foo';
-      const response = 'bar';
+      let url = '/foo';
+      let response = 'bar';
       resourceLoader.expect(url, response);
       resourceLoader.get(url);
       resourceLoader.get(url);
@@ -87,7 +87,7 @@ import {AsyncTestCompleter, beforeEach, describe, expect, inject, it} from '@ang
 
     it('should return expectations before definitions',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const url = '/foo';
+         let url = '/foo';
          resourceLoader.when(url, 'when');
          resourceLoader.expect(url, 'expect');
          expectResponse(resourceLoader.get(url), url, 'expect');

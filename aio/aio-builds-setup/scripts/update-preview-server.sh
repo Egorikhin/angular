@@ -12,7 +12,7 @@ readonly HOST_SECRETS_DIR=$3
 readonly HOST_BUILDS_DIR=$4
 readonly HOST_LOGS_DIR=$5
 
-# Constants
+# letants
 readonly PROVISIONAL_IMAGE_NAME=aio-builds:provisional
 readonly LATEST_IMAGE_NAME=aio-builds:latest
 readonly CONTAINER_NAME=aio

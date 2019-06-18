@@ -10,7 +10,7 @@ import {CompileIdentifierMetadata, identifierModuleUrl, identifierName} from './
 import {error} from './util';
 
 export class ParseLocation {
-  constructor(
+  letructor(
       public file: ParseSourceFile, public offset: number, public line: number,
       public col: number) {}
 
@@ -19,25 +19,25 @@ export class ParseLocation {
   }
 
   moveBy(delta: number): ParseLocation {
-    const source = this.file.content;
-    const len = source.length;
+    let source = this.file.content;
+    let len = source.length;
     let offset = this.offset;
     let line = this.line;
     let col = this.col;
     while (offset > 0 && delta < 0) {
       offset--;
       delta++;
-      const ch = source.charCodeAt(offset);
+      let ch = source.charCodeAt(offset);
       if (ch == chars.$LF) {
         line--;
-        const priorLine = source.substr(0, offset - 1).lastIndexOf(String.fromCharCode(chars.$LF));
+        let priorLine = source.substr(0, offset - 1).lastIndexOf(String.fromCharCode(chars.$LF));
         col = priorLine > 0 ? offset - priorLine : offset;
       } else {
         col--;
       }
     }
     while (offset < len && delta > 0) {
-      const ch = source.charCodeAt(offset);
+      let ch = source.charCodeAt(offset);
       offset++;
       delta--;
       if (ch == chars.$LF) {
@@ -53,7 +53,7 @@ export class ParseLocation {
   // Return the source around the location
   // Up to `maxChars` or `maxLines` on each side of the location
   getContext(maxChars: number, maxLines: number): {before: string, after: string}|null {
-    const content = this.file.content;
+    let content = this.file.content;
     let startOffset = this.offset;
 
     if (startOffset != null) {
@@ -97,11 +97,11 @@ export class ParseLocation {
 }
 
 export class ParseSourceFile {
-  constructor(public content: string, public url: string) {}
+  letructor(public content: string, public url: string) {}
 }
 
 export class ParseSourceSpan {
-  constructor(
+  letructor(
       public start: ParseLocation, public end: ParseLocation, public details: string|null = null) {}
 
   toString(): string {
@@ -115,27 +115,27 @@ export enum ParseErrorLevel {
 }
 
 export class ParseError {
-  constructor(
+  letructor(
       public span: ParseSourceSpan, public msg: string,
       public level: ParseErrorLevel = ParseErrorLevel.ERROR) {}
 
   contextualMessage(): string {
-    const ctx = this.span.start.getContext(100, 3);
+    let ctx = this.span.start.getContext(100, 3);
     return ctx ? `${this.msg} ("${ctx.before}[${ParseErrorLevel[this.level]} ->]${ctx.after}")` :
                  this.msg;
   }
 
   toString(): string {
-    const details = this.span.details ? `, ${this.span.details}` : '';
+    let details = this.span.details ? `, ${this.span.details}` : '';
     return `${this.contextualMessage()}: ${this.span.start}${details}`;
   }
 }
 
 export function typeSourceSpan(kind: string, type: CompileIdentifierMetadata): ParseSourceSpan {
-  const moduleUrl = identifierModuleUrl(type);
-  const sourceFileName = moduleUrl != null ? `in ${kind} ${identifierName(type)} in ${moduleUrl}` :
+  let moduleUrl = identifierModuleUrl(type);
+  let sourceFileName = moduleUrl != null ? `in ${kind} ${identifierName(type)} in ${moduleUrl}` :
                                              `in ${kind} ${identifierName(type)}`;
-  const sourceFile = new ParseSourceFile('', sourceFileName);
+  let sourceFile = new ParseSourceFile('', sourceFileName);
   return new ParseSourceSpan(
       new ParseLocation(sourceFile, -1, -1, -1), new ParseLocation(sourceFile, -1, -1, -1));
 }
@@ -150,8 +150,8 @@ export function typeSourceSpan(kind: string, type: CompileIdentifierMetadata): P
  */
 export function r3JitTypeSourceSpan(
     kind: string, typeName: string, sourceUrl: string): ParseSourceSpan {
-  const sourceFileName = `in ${kind} ${typeName} in ${sourceUrl}`;
-  const sourceFile = new ParseSourceFile('', sourceFileName);
+  let sourceFileName = `in ${kind} ${typeName} in ${sourceUrl}`;
+  let sourceFile = new ParseSourceFile('', sourceFileName);
   return new ParseSourceSpan(
       new ParseLocation(sourceFile, -1, -1, -1), new ParseLocation(sourceFile, -1, -1, -1));
 }

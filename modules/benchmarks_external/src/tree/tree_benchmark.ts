@@ -32,11 +32,11 @@ angular.module('app', [])
                  '$compile',
                  '$parse',
                  function($compile, $parse) {
-                   const transcludeFn;
+                   let transcludeFn;
                    return {
                      compile: function(element, attrs) {
-                       const expr = $parse('!!' + attrs.treeIf);
-                       const template = '<tree data="' + attrs.treeIf + '"></tree>';
+                       let expr = $parse('!!' + attrs.treeIf);
+                       let template = '<tree data="' + attrs.treeIf + '"></tree>';
                        let transclude;
                        return function($scope, $element, $attrs) {
                          if (!transclude) {
@@ -71,7 +71,7 @@ angular.module('app', [])
       '$rootScope',
       function($rootScope) {
         let count = 0;
-        const maxDepth = getIntParameter('depth');
+        let maxDepth = getIntParameter('depth');
 
         bindAction('#destroyDom', destroyDom);
         bindAction('#createDom', createDom);
@@ -81,7 +81,7 @@ angular.module('app', [])
         }
 
         function createDom() {
-          const values = count++ % 2 == 0 ? ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*'] :
+          let values = count++ % 2 == 0 ? ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '*'] :
                                           ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', '-'];
 
           $rootScope.$apply(function() { $rootScope.initData = buildTree(maxDepth, values, 0); });
@@ -93,7 +93,7 @@ class TreeNode {
   value: string;
   left: TreeNode;
   right: TreeNode;
-  constructor(value, left, right) {
+  letructor(value, left, right) {
     this.value = value;
     this.left = left;
     this.right = right;

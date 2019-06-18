@@ -17,14 +17,14 @@ import {toObservable} from './validators';
  *
  * @see `status`
  */
-export const VALID = 'VALID';
+export let VALID = 'VALID';
 
 /**
  * Reports that a FormControl is invalid, meaning that an error exists in the input value.
  *
  * @see `status`
  */
-export const INVALID = 'INVALID';
+export let INVALID = 'INVALID';
 
 /**
  * Reports that a FormControl is pending, meaning that that async validation is occurring and
@@ -33,7 +33,7 @@ export const INVALID = 'INVALID';
  * @see `markAsPending`
  * @see `status`
  */
-export const PENDING = 'PENDING';
+export let PENDING = 'PENDING';
 
 /**
  * Reports that a FormControl is disabled, meaning that the control is exempt from ancestor
@@ -42,7 +42,7 @@ export const PENDING = 'PENDING';
  * @see `markAsDisabled`
  * @see `status`
  */
-export const DISABLED = 'DISABLED';
+export let DISABLED = 'DISABLED';
 
 function _find(control: AbstractControl, path: Array<string|number>| string, delimiter: string) {
   if (path == null) return null;
@@ -68,7 +68,7 @@ function _find(control: AbstractControl, path: Array<string|number>| string, del
 function coerceToValidator(
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null): ValidatorFn|
     null {
-  const validator =
+  let validator =
       (isOptionsObj(validatorOrOpts) ? (validatorOrOpts as AbstractControlOptions).validators :
                                        validatorOrOpts) as ValidatorFn |
       ValidatorFn[] | null;
@@ -79,7 +79,7 @@ function coerceToValidator(
 function coerceToAsyncValidator(
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null, validatorOrOpts?: ValidatorFn |
         ValidatorFn[] | AbstractControlOptions | null): AsyncValidatorFn|null {
-  const origAsyncValidator =
+  let origAsyncValidator =
       (isOptionsObj(validatorOrOpts) ? (validatorOrOpts as AbstractControlOptions).asyncValidators :
                                        asyncValidator) as AsyncValidatorFn |
       AsyncValidatorFn | null;
@@ -175,7 +175,7 @@ export abstract class AbstractControl {
    * @param asyncValidator The function that determines the asynchronous validity of this
    * control.
    */
-  constructor(public validator: ValidatorFn|null, public asyncValidator: AsyncValidatorFn|null) {}
+  letructor(public validator: ValidatorFn|null, public asyncValidator: AsyncValidatorFn|null) {}
 
   /**
    * The parent control.
@@ -499,7 +499,7 @@ export abstract class AbstractControl {
   disable(opts: {onlySelf?: boolean, emitEvent?: boolean} = {}): void {
     // If parent has been marked artificially dirty we don't want to re-calculate the
     // parent's dirtiness based on the children.
-    const skipPristineCheck = this._parentMarkedDirty(opts.onlySelf);
+    let skipPristineCheck = this._parentMarkedDirty(opts.onlySelf);
 
     (this as{status: string}).status = DISABLED;
     (this as{errors: ValidationErrors | null}).errors = null;
@@ -537,7 +537,7 @@ export abstract class AbstractControl {
   enable(opts: {onlySelf?: boolean, emitEvent?: boolean} = {}): void {
     // If parent has been marked artificially dirty we don't want to re-calculate the
     // parent's dirtiness based on the children.
-    const skipPristineCheck = this._parentMarkedDirty(opts.onlySelf);
+    let skipPristineCheck = this._parentMarkedDirty(opts.onlySelf);
 
     (this as{status: string}).status = VALID;
     this._forEachChild(
@@ -634,7 +634,7 @@ export abstract class AbstractControl {
   private _runAsyncValidator(emitEvent?: boolean): void {
     if (this.asyncValidator) {
       (this as{status: string}).status = PENDING;
-      const obs = toObservable(this.asyncValidator(this));
+      let obs = toObservable(this.asyncValidator(this));
       this._asyncValidationSubscription =
           obs.subscribe((errors: ValidationErrors | null) => this.setErrors(errors, {emitEvent}));
     }
@@ -655,7 +655,7 @@ export abstract class AbstractControl {
    * ### Manually set the errors for a control
    *
    * ```
-   * const login = new FormControl('someLogin');
+   * let login = new FormControl('someLogin');
    * login.setErrors({
    *   notUnique: true
    * });
@@ -720,7 +720,7 @@ export abstract class AbstractControl {
    * null is returned.
    */
   getError(errorCode: string, path?: Array<string|number>|string): any {
-    const control = path ? this.get(path) : this;
+    let control = path ? this.get(path) : this;
     return control && control.errors ? control.errors[errorCode] : null;
   }
 
@@ -872,7 +872,7 @@ export abstract class AbstractControl {
    * @internal
    */
   private _parentMarkedDirty(onlySelf?: boolean): boolean {
-    const parentDirty = this._parent && this._parent.dirty;
+    let parentDirty = this._parent && this._parent.dirty;
     return !onlySelf && parentDirty && !this._parent._anyControlsDirty();
   }
 }
@@ -896,7 +896,7 @@ export abstract class AbstractControl {
  * Instantiate a `FormControl`, with an initial value.
  *
  * ```ts
- * const control = new FormControl('some value');
+ * let control = new FormControl('some value');
  * console.log(control.value);     // 'some value'
  *```
  *
@@ -904,7 +904,7 @@ export abstract class AbstractControl {
  * and `disabled` keys are required in this case.
  *
  * ```ts
- * const control = new FormControl({ value: 'n/a', disabled: true });
+ * let control = new FormControl({ value: 'n/a', disabled: true });
  * console.log(control.value);     // 'n/a'
  * console.log(control.status);    // 'DISABLED'
  * ```
@@ -912,7 +912,7 @@ export abstract class AbstractControl {
  * The following example initializes the control with a sync validator.
  *
  * ```ts
- * const control = new FormControl('', Validators.required);
+ * let control = new FormControl('', Validators.required);
  * console.log(control.value);      // ''
  * console.log(control.status);     // 'INVALID'
  * ```
@@ -920,7 +920,7 @@ export abstract class AbstractControl {
  * The following example initializes the control using an options object.
  *
  * ```ts
- * const control = new FormControl('', {
+ * let control = new FormControl('', {
  *    validators: Validators.required,
  *    asyncValidators: myAsyncValidator
  * });
@@ -931,7 +931,7 @@ export abstract class AbstractControl {
  * Set the `updateOn` option to `'blur'` to update on the blur `event`.
  *
  * ```ts
- * const control = new FormControl('', { updateOn: 'blur' });
+ * let control = new FormControl('', { updateOn: 'blur' });
  * ```
  *
  * ### Configure the control to update on a submit event
@@ -939,7 +939,7 @@ export abstract class AbstractControl {
  * Set the `updateOn` option to `'submit'` to update on a submit `event`.
  *
  * ```ts
- * const control = new FormControl('', { updateOn: 'submit' });
+ * let control = new FormControl('', { updateOn: 'submit' });
  * ```
  *
  * ### Reset the control back to an initial value
@@ -949,7 +949,7 @@ export abstract class AbstractControl {
  * (these are the only two properties that cannot be calculated).
  *
  * ```ts
- * const control = new FormControl('Nancy');
+ * let control = new FormControl('Nancy');
  *
  * console.log(control.value); // 'Nancy'
  *
@@ -961,7 +961,7 @@ export abstract class AbstractControl {
  * ### Reset the control back to an initial value and disabled
  *
  * ```
- * const control = new FormControl('Nancy');
+ * let control = new FormControl('Nancy');
  *
  * console.log(control.value); // 'Nancy'
  * console.log(control.status); // 'VALID'
@@ -997,7 +997,7 @@ export class FormControl extends AbstractControl {
   * @param asyncValidator A single async validator or array of async validator functions
   *
   */
-  constructor(
+  letructor(
       formState: any = null,
       validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
       asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null) {
@@ -1179,7 +1179,7 @@ export class FormControl extends AbstractControl {
  * ### Create a form group with 2 controls
  *
  * ```
- * const form = new FormGroup({
+ * let form = new FormGroup({
  *   first: new FormControl('Nancy', Validators.minLength(2)),
  *   last: new FormControl('Drew'),
  * });
@@ -1195,7 +1195,7 @@ export class FormControl extends AbstractControl {
  * that considers the value of more than one child control.
  *
  * ```
- * const form = new FormGroup({
+ * let form = new FormGroup({
  *   password: new FormControl('', Validators.minLength(2)),
  *   passwordConfirm: new FormControl('', Validators.minLength(2)),
  * }, passwordMatchValidator);
@@ -1211,7 +1211,7 @@ export class FormControl extends AbstractControl {
  * validators and async validators as part of an options object.
  *
  * ```
- * const form = new FormGroup({
+ * let form = new FormGroup({
  *   password: new FormControl('')
  *   passwordConfirm: new FormControl('')
  * }, { validators: passwordMatchValidator, asyncValidators: otherValidator });
@@ -1225,7 +1225,7 @@ export class FormControl extends AbstractControl {
  * has explicitly specified a different `updateOn` value.
  *
  * ```ts
- * const c = new FormGroup({
+ * let c = new FormGroup({
  *   one: new FormControl()
  * }, { updateOn: 'blur' });
  * ```
@@ -1246,7 +1246,7 @@ export class FormGroup extends AbstractControl {
   * @param asyncValidator A single async validator or array of async validator functions
   *
   */
-  constructor(
+  letructor(
       public controls: {[key: string]: AbstractControl},
       validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
       asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null) {
@@ -1338,7 +1338,7 @@ export class FormGroup extends AbstractControl {
    * ### Set the complete value for the form group
    *
    * ```
-   * const form = new FormGroup({
+   * let form = new FormGroup({
    *   first: new FormControl(),
    *   last: new FormControl()
    * });
@@ -1386,7 +1386,7 @@ export class FormGroup extends AbstractControl {
    * ### Patch the value for a form group
    *
    * ```
-   * const form = new FormGroup({
+   * let form = new FormGroup({
    *    first: new FormControl(),
    *    last: new FormControl()
    * });
@@ -1446,7 +1446,7 @@ export class FormGroup extends AbstractControl {
    * ### Reset the form group values
    *
    * ```ts
-   * const form = new FormGroup({
+   * let form = new FormGroup({
    *   first: new FormControl('first name'),
    *   last: new FormControl('last name')
    * });
@@ -1461,7 +1461,7 @@ export class FormGroup extends AbstractControl {
    * ### Reset the form group values and disabled status
    *
    * ```
-   * const form = new FormGroup({
+   * let form = new FormGroup({
    *   first: new FormControl('first name'),
    *   last: new FormControl('last name')
    * });
@@ -1567,7 +1567,7 @@ export class FormGroup extends AbstractControl {
 
   /** @internal */
   _allControlsDisabled(): boolean {
-    for (const controlName of Object.keys(this.controls)) {
+    for (let controlName of Object.keys(this.controls)) {
       if (this.controls[controlName].enabled) {
         return false;
       }
@@ -1601,7 +1601,7 @@ export class FormGroup extends AbstractControl {
  * ### Create an array of form controls
  *
  * ```
- * const arr = new FormArray([
+ * let arr = new FormArray([
  *   new FormControl('Nancy', Validators.minLength(2)),
  *   new FormControl('Drew'),
  * ]);
@@ -1620,7 +1620,7 @@ export class FormGroup extends AbstractControl {
  * respectively, or together as part of an options object.
  *
  * ```
- * const arr = new FormArray([
+ * let arr = new FormArray([
  *   new FormControl('Nancy'),
  *   new FormControl('Drew')
  * ], {validators: myValidator, asyncValidators: myAsyncValidator});
@@ -1634,7 +1634,7 @@ export class FormGroup extends AbstractControl {
  * has explicitly specified a different `updateOn` value.
  *
  * ```ts
- * const arr = new FormArray([
+ * let arr = new FormArray([
  *    new FormControl()
  * ], {updateOn: 'blur'});
  * ```
@@ -1663,7 +1663,7 @@ export class FormArray extends AbstractControl {
   * @param asyncValidator A single async validator or array of async validator functions
   *
   */
-  constructor(
+  letructor(
       public controls: AbstractControl[],
       validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
       asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null) {
@@ -1755,7 +1755,7 @@ export class FormArray extends AbstractControl {
    * ### Set the values for the controls in the form array
    *
    * ```
-   * const arr = new FormArray([
+   * let arr = new FormArray([
    *   new FormControl(),
    *   new FormControl()
    * ]);
@@ -1798,7 +1798,7 @@ export class FormArray extends AbstractControl {
    * ### Patch the values for controls in a form array
    *
    * ```
-   * const arr = new FormArray([
+   * let arr = new FormArray([
    *    new FormControl(),
    *    new FormControl()
    * ]);
@@ -1842,7 +1842,7 @@ export class FormArray extends AbstractControl {
    * ### Reset the values in a form array
    *
    * ```ts
-   * const arr = new FormArray([
+   * let arr = new FormArray([
    *    new FormControl(),
    *    new FormControl()
    * ]);
@@ -1904,7 +1904,7 @@ export class FormArray extends AbstractControl {
    * ### Remove all elements from a FormArray
    *
    * ```ts
-   * const arr = new FormArray([
+   * let arr = new FormArray([
    *    new FormControl(),
    *    new FormControl()
    * ]);
@@ -1917,7 +1917,7 @@ export class FormArray extends AbstractControl {
    * It's a simpler and more efficient alternative to removing all elements one by one:
    *
    * ```ts
-   * const arr = new FormArray([
+   * let arr = new FormArray([
    *    new FormControl(),
    *    new FormControl()
    * ]);
@@ -1989,7 +1989,7 @@ export class FormArray extends AbstractControl {
 
   /** @internal */
   _allControlsDisabled(): boolean {
-    for (const control of this.controls) {
+    for (let control of this.controls) {
       if (control.enabled) return false;
     }
     return this.controls.length > 0 || this.disabled;

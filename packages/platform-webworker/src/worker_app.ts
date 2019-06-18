@@ -26,7 +26,7 @@ import {WorkerDomAdapter} from './web_workers/worker/worker_adapter';
  * @publicApi
  * @deprecated platform-webworker is deprecated in Angular and will be removed in version 10
  */
-export const platformWorkerApp = createPlatformFactory(
+export let platformWorkerApp = createPlatformFactory(
     platformCore, 'workerApp', [{provide: PLATFORM_ID, useValue: PLATFORM_WORKER_APP_ID}]);
 
 export function errorHandler(): ErrorHandler {
@@ -35,16 +35,16 @@ export function errorHandler(): ErrorHandler {
 
 
 // TODO(jteplitz602): remove this and compile with lib.webworker.d.ts (#3492)
-const _postMessage = {
+let _postMessage = {
   postMessage: (message: any, transferrables?: [ArrayBuffer]) => {
     (<any>postMessage)(message, transferrables);
   }
 };
 
 export function createMessageBus(zone: NgZone): MessageBus {
-  const sink = new PostMessageBusSink(_postMessage);
-  const source = new PostMessageBusSource();
-  const bus = new PostMessageBus(sink, source);
+  let sink = new PostMessageBusSink(_postMessage);
+  let source = new PostMessageBusSource();
+  let bus = new PostMessageBus(sink, source);
   bus.attachToZone(zone);
   return bus;
 }

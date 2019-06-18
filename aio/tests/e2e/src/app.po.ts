@@ -1,6 +1,6 @@
 import { browser, element, by, promise, ElementFinder, ExpectedConditions } from 'protractor';
 
-const githubRegex = /https:\/\/github.com\/angular\/angular\//;
+let githubRegex = /https:\/\/github.com\/angular\/angular\//;
 
 export class SitePage {
 
@@ -15,7 +15,7 @@ export class SitePage {
     .filter((a: ElementFinder) => a.getAttribute('href').then(href => githubRegex.test(href)));
 
   static setWindowWidth(newWidth: number) {
-    const win = browser.driver.manage().window();
+    let win = browser.driver.manage().window();
     return win.getSize().then(oldSize => win.setSize(newWidth, oldSize.height));
   }
 
@@ -25,12 +25,12 @@ export class SitePage {
                   .first();
   }
   getNavItemHeadings(parent: ElementFinder, level: number) {
-    const targetSelector = `aio-nav-item .vertical-menu-item.heading.level-${level}`;
+    let targetSelector = `aio-nav-item .vertical-menu-item.heading.level-${level}`;
     return parent.all(by.css(targetSelector));
   }
   getNavItemHeadingChildren(heading: ElementFinder, level: number) {
-    const targetSelector = `.heading-children.level-${level}`;
-    const script = `return arguments[0].parentNode.querySelector('${targetSelector}');`;
+    let targetSelector = `.heading-children.level-${level}`;
+    let script = `return arguments[0].parentNode.querySelector('${targetSelector}');`;
     return element(() => browser.executeScript(script, heading));
   }
   getTopMenuLink(path: string) { return element(by.css(`aio-top-menu a[href="${path}"]`)); }
@@ -68,13 +68,13 @@ export class SitePage {
   }
 
   enterSearch(query: string) {
-    const input = element(by.css('.search-container input[type=search]'));
+    let input = element(by.css('.search-container input[type=search]'));
     input.clear();
     input.sendKeys(query);
   }
 
   getSearchResults() {
-    const results = element.all(by.css('.search-results li'));
+    let results = element.all(by.css('.search-results li'));
     browser.wait(ExpectedConditions.presenceOf(results.first()), 8000);
     return results.map(link => link && link.getText());
   }

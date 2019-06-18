@@ -59,7 +59,7 @@ export class SwPush {
   private pushManager !: Observable<PushManager>;
   private subscriptionChanges = new Subject<PushSubscription|null>();
 
-  constructor(private sw: NgswCommChannel) {
+  letructor(private sw: NgswCommChannel) {
     if (!sw.isEnabled) {
       this.messages = NEVER;
       this.notificationClicks = NEVER;
@@ -74,7 +74,7 @@ export class SwPush {
 
     this.pushManager = this.sw.registration.pipe(map(registration => registration.pushManager));
 
-    const workerDrivenSubscriptions = this.pushManager.pipe(switchMap(pm => pm.getSubscription()));
+    let workerDrivenSubscriptions = this.pushManager.pipe(switchMap(pm => pm.getSubscription()));
     this.subscription = merge(workerDrivenSubscriptions, this.subscriptionChanges);
   }
 
@@ -82,7 +82,7 @@ export class SwPush {
     if (!this.sw.isEnabled) {
       return Promise.reject(new Error(ERR_SW_NOT_SUPPORTED));
     }
-    const pushOptions: PushSubscriptionOptionsInit = {userVisibleOnly: true};
+    let pushOptions: PushSubscriptionOptionsInit = {userVisibleOnly: true};
     let key = this.decodeBase64(options.serverPublicKey.replace(/_/g, '/').replace(/-/g, '+'));
     let applicationServerKey = new Uint8Array(new ArrayBuffer(key.length));
     for (let i = 0; i < key.length; i++) {
@@ -103,7 +103,7 @@ export class SwPush {
       return Promise.reject(new Error(ERR_SW_NOT_SUPPORTED));
     }
 
-    const doUnsubscribe = (sub: PushSubscription | null) => {
+    let doUnsubscribe = (sub: PushSubscription | null) => {
       if (sub === null) {
         throw new Error('Not subscribed to push notifications.');
       }

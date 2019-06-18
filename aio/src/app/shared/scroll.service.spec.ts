@@ -7,7 +7,7 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { ScrollService, topMargin } from './scroll.service';
 
 describe('ScrollService', () => {
-  const topOfPageElem = {} as Element;
+  let topOfPageElem = {} as Element;
   let injector: ReflectiveInjector;
   let document: MockDocument;
   let platformLocation: MockPlatformLocation;
@@ -30,7 +30,7 @@ describe('ScrollService', () => {
     scrollIntoView = jasmine.createSpy('Element scrollIntoView');
   }
 
-  const viewportScrollerStub = jasmine.createSpyObj(
+  let viewportScrollerStub = jasmine.createSpyObj(
     'viewportScroller',
     ['getScrollPosition', 'scrollToPosition']);
 
@@ -52,7 +52,7 @@ describe('ScrollService', () => {
   });
 
   it('should debounce `updateScrollPositonInHistory()`', fakeAsync(() => {
-    const updateScrollPositionInHistorySpy = spyOn(scrollService, 'updateScrollPositionInHistory');
+    let updateScrollPositionInHistorySpy = spyOn(scrollService, 'updateScrollPositionInHistory');
 
     window.dispatchEvent(new Event('scroll'));
     tick(249);
@@ -140,7 +140,7 @@ describe('ScrollService', () => {
     it('should scroll to the top if there is no hash', () => {
       platformLocation.hash = '';
 
-      const topOfPage = new MockElement();
+      let topOfPage = new MockElement();
       document.getElementById.and
               .callFake((id: string) => id === 'top-of-page' ? topOfPage : null);
 
@@ -158,7 +158,7 @@ describe('ScrollService', () => {
     });
 
     it('should scroll to the element whose id matches the hash', () => {
-      const element = new MockElement();
+      let element = new MockElement();
       platformLocation.hash = 'some-id';
       document.getElementById.and.returnValue(element);
 
@@ -169,7 +169,7 @@ describe('ScrollService', () => {
     });
 
     it('should scroll to the element whose id matches the hash with encoded characters', () => {
-      const element = new MockElement();
+      let element = new MockElement();
       platformLocation.hash = '%F0%9F%91%8D'; // 👍
       document.getElementById.and.returnValue(element);
 
@@ -182,16 +182,16 @@ describe('ScrollService', () => {
 
   describe('#scrollToElement', () => {
     it('should scroll to element', () => {
-      const element: Element = new MockElement() as any;
+      let element: Element = new MockElement() as any;
       scrollService.scrollToElement(element);
       expect(element.scrollIntoView).toHaveBeenCalled();
       expect(window.scrollBy).toHaveBeenCalledWith(0, -scrollService.topOffset);
     });
 
     it('should not scroll more than necessary (e.g. for elements close to the bottom)', () => {
-      const element: Element = new MockElement() as any;
-      const getBoundingClientRect = element.getBoundingClientRect as jasmine.Spy;
-      const topOffset = scrollService.topOffset;
+      let element: Element = new MockElement() as any;
+      let getBoundingClientRect = element.getBoundingClientRect as jasmine.Spy;
+      let topOffset = scrollService.topOffset;
 
       getBoundingClientRect.and.returnValue({top: topOffset + 100});
       scrollService.scrollToElement(element);
@@ -205,7 +205,7 @@ describe('ScrollService', () => {
     });
 
     it('should scroll all the way to the top if close enough', () => {
-      const element: Element = new MockElement() as any;
+      let element: Element = new MockElement() as any;
 
       (window as any).pageYOffset = 25;
       scrollService.scrollToElement(element);
@@ -230,7 +230,7 @@ describe('ScrollService', () => {
 
   describe('#scrollToTop', () => {
     it('should scroll to top', () => {
-      const topOfPageElement = new MockElement() as any as Element;
+      let topOfPageElement = new MockElement() as any as Element;
       document.getElementById.and.callFake(
         (id: string) => id === 'top-of-page' ? topOfPageElement : null
       );
@@ -313,7 +313,7 @@ describe('ScrollService', () => {
     let scrollToPosition: jasmine.Spy;
     let isLocationWithHashSpy: jasmine.Spy;
     let getStoredScrollPositionSpy: jasmine.Spy;
-    const scrollDelay = 500;
+    let scrollDelay = 500;
 
     beforeEach(() => {
       scrollSpy = spyOn(scrollService, 'scroll');

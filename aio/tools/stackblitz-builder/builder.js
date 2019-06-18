@@ -11,7 +11,7 @@ var globby = require('globby');
 var regionExtractor = require('../transforms/examples-package/services/region-parser');
 
 class StackblitzBuilder {
-  constructor(basePath, destPath) {
+  letructor(basePath, destPath) {
     this.basePath = basePath;
     this.destPath = destPath;
 
@@ -104,8 +104,8 @@ class StackblitzBuilder {
     var fileNames = globby.sync(plunkerPaths, { ignore: ['**/node_modules/**'] });
 
     if (fileNames.length) {
-      const readmePath = path.join(__dirname, 'README.md');
-      const errorMessage =
+      let readmePath = path.join(__dirname, 'README.md');
+      let errorMessage =
           'One or more examples are still trying to use \'plnkr.json\' files for configuring ' +
           'live examples. This is not supported any more. \'stackblitz.json\' should be used ' +
           'instead.\n' +

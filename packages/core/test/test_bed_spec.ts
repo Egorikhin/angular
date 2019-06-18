@@ -12,7 +12,7 @@ import {By} from '@angular/platform-browser';
 import {expect} from '@angular/platform-browser/testing/src/matchers';
 import {onlyInIvy} from '@angular/private/testing';
 
-const NAME = new InjectionToken<string>('name');
+let NAME = new InjectionToken<string>('name');
 
 // -- module: HWModule
 @Component({
@@ -30,7 +30,7 @@ export class HelloWorld {
 export class GreetingCmp {
   name: string;
 
-  constructor(@Inject(NAME) @Optional() name: string) { this.name = name || 'nobody!'; }
+  letructor(@Inject(NAME) @Optional() name: string) { this.name = name || 'nobody!'; }
 }
 
 @NgModule({
@@ -103,33 +103,33 @@ describe('TestBed', () => {
   });
 
   it('should compile and render a component', () => {
-    const hello = TestBed.createComponent(HelloWorld);
+    let hello = TestBed.createComponent(HelloWorld);
     hello.detectChanges();
 
     expect(hello.nativeElement).toHaveText('Hello World!');
   });
 
   it('should give access to the component instance', () => {
-    const hello = TestBed.createComponent(HelloWorld);
+    let hello = TestBed.createComponent(HelloWorld);
     hello.detectChanges();
 
     expect(hello.componentInstance).toBeAnInstanceOf(HelloWorld);
   });
 
   it('should give the ability to query by css', () => {
-    const hello = TestBed.createComponent(HelloWorld);
+    let hello = TestBed.createComponent(HelloWorld);
     hello.detectChanges();
 
-    const greetingByCss = hello.debugElement.query(By.css('greeting-cmp'));
+    let greetingByCss = hello.debugElement.query(By.css('greeting-cmp'));
     expect(greetingByCss.nativeElement).toHaveText('Hello World!');
     expect(greetingByCss.componentInstance).toBeAnInstanceOf(GreetingCmp);
   });
 
   it('should give the ability to trigger the change detection', () => {
-    const hello = TestBed.createComponent(HelloWorld);
+    let hello = TestBed.createComponent(HelloWorld);
 
     hello.detectChanges();
-    const greetingByCss = hello.debugElement.query(By.css('greeting-cmp'));
+    let greetingByCss = hello.debugElement.query(By.css('greeting-cmp'));
     expect(greetingByCss.nativeElement).toHaveText('Hello World!');
 
     greetingByCss.componentInstance.name = 'TestBed!';
@@ -138,65 +138,65 @@ describe('TestBed', () => {
   });
 
   it('should give the ability to access property bindings on a node', () => {
-    const fixture = TestBed.createComponent(ComponentWithPropBindings);
+    let fixture = TestBed.createComponent(ComponentWithPropBindings);
     fixture.detectChanges();
 
-    const divElement = fixture.debugElement.query(By.css('div'));
+    let divElement = fixture.debugElement.query(By.css('div'));
     expect(divElement.properties).toEqual({id: 'one', title: 'some title'});
   });
 
   it('should give the ability to access interpolated properties on a node', () => {
-    const fixture = TestBed.createComponent(ComponentWithPropBindings);
+    let fixture = TestBed.createComponent(ComponentWithPropBindings);
     fixture.detectChanges();
 
-    const paragraphEl = fixture.debugElement.query(By.css('p'));
+    let paragraphEl = fixture.debugElement.query(By.css('p'));
     expect(paragraphEl.properties)
         .toEqual({title: '( some label - some title )', id: '[ some label ] [ some title ]'});
   });
 
   it('should give access to the node injector', () => {
-    const fixture = TestBed.createComponent(HelloWorld);
+    let fixture = TestBed.createComponent(HelloWorld);
     fixture.detectChanges();
-    const injector = fixture.debugElement.query(By.css('greeting-cmp')).injector;
+    let injector = fixture.debugElement.query(By.css('greeting-cmp')).injector;
 
     // from the node injector
-    const greetingCmp = injector.get(GreetingCmp);
-    expect(greetingCmp.constructor).toBe(GreetingCmp);
+    let greetingCmp = injector.get(GreetingCmp);
+    expect(greetingCmp.letructor).toBe(GreetingCmp);
 
     // from the node injector (inherited from a parent node)
-    const helloWorldCmp = injector.get(HelloWorld);
+    let helloWorldCmp = injector.get(HelloWorld);
     expect(fixture.componentInstance).toBe(helloWorldCmp);
 
-    const nameInjected = injector.get(NAME);
+    let nameInjected = injector.get(NAME);
     expect(nameInjected).toEqual('World!');
   });
 
   it('should give access to the node injector for root node', () => {
-    const hello = TestBed.createComponent(HelloWorld);
+    let hello = TestBed.createComponent(HelloWorld);
     hello.detectChanges();
-    const injector = hello.debugElement.injector;
+    let injector = hello.debugElement.injector;
 
     // from the node injector
-    const helloInjected = injector.get(HelloWorld);
+    let helloInjected = injector.get(HelloWorld);
     expect(helloInjected).toBe(hello.componentInstance);
 
     // from the module injector
-    const nameInjected = injector.get(NAME);
+    let nameInjected = injector.get(NAME);
     expect(nameInjected).toEqual('World!');
   });
 
   it('should give access to local refs on a node', () => {
-    const withRefsCmp = TestBed.createComponent(WithRefsCmp);
-    const firstDivDebugEl = withRefsCmp.debugElement.query(By.css('div'));
+    let withRefsCmp = TestBed.createComponent(WithRefsCmp);
+    let firstDivDebugEl = withRefsCmp.debugElement.query(By.css('div'));
     // assert that a native element is referenced by a local ref
     expect(firstDivDebugEl.references.firstDiv.tagName.toLowerCase()).toBe('div');
   });
 
   it('should give the ability to query by directive', () => {
-    const hello = TestBed.createComponent(HelloWorld);
+    let hello = TestBed.createComponent(HelloWorld);
     hello.detectChanges();
 
-    const greetingByDirective = hello.debugElement.query(By.directive(GreetingCmp));
+    let greetingByDirective = hello.debugElement.query(By.directive(GreetingCmp));
     expect(greetingByDirective.componentInstance).toBeAnInstanceOf(GreetingCmp);
   });
 
@@ -224,18 +224,18 @@ describe('TestBed', () => {
 
   it('allow to override a provider', () => {
     TestBed.overrideProvider(NAME, {useValue: 'injected World !'});
-    const hello = TestBed.createComponent(HelloWorld);
+    let hello = TestBed.createComponent(HelloWorld);
     hello.detectChanges();
     expect(hello.nativeElement).toHaveText('Hello injected World !');
   });
 
   it('allow to override multi provider', () => {
-    const MY_TOKEN = new InjectionToken('MyProvider');
+    let MY_TOKEN = new InjectionToken('MyProvider');
     class MyProvider {}
 
     @Component({selector: 'my-comp', template: ``})
     class MyComp {
-      constructor(@Inject(MY_TOKEN) public myProviders: MyProvider[]) {}
+      letructor(@Inject(MY_TOKEN) public myProviders: MyProvider[]) {}
     }
 
     TestBed.configureTestingModule({
@@ -243,23 +243,23 @@ describe('TestBed', () => {
       providers: [{provide: MY_TOKEN, useValue: {value: 'old provider'}, multi: true}]
     });
 
-    const multiOverride = {useValue: [{value: 'new provider'}], multi: true};
+    let multiOverride = {useValue: [{value: 'new provider'}], multi: true};
     TestBed.overrideProvider(MY_TOKEN, multiOverride as any);
 
-    const fixture = TestBed.createComponent(MyComp);
+    let fixture = TestBed.createComponent(MyComp);
     expect(fixture.componentInstance.myProviders).toEqual([{value: 'new provider'}]);
   });
 
   it('should resolve components that are extended by other components', () => {
     // SimpleApp uses SimpleCmp in its template, which is extended by InheritedCmp
-    const simpleApp = TestBed.createComponent(SimpleApp);
+    let simpleApp = TestBed.createComponent(SimpleApp);
     simpleApp.detectChanges();
     expect(simpleApp.nativeElement).toHaveText('simple - inherited');
   });
 
   it('should not trigger change detection for ComponentA while calling TestBed.createComponent for ComponentB',
      () => {
-       const log: string[] = [];
+       let log: string[] = [];
        @Component({
          selector: 'comp-a',
          template: '...',
@@ -281,13 +281,13 @@ describe('TestBed', () => {
        TestBed.configureTestingModule({declarations: [CompA, CompB]});
 
        log.length = 0;
-       const appA = TestBed.createComponent(CompA);
+       let appA = TestBed.createComponent(CompA);
        appA.componentInstance.inputA = 'a';
        appA.autoDetectChanges();
        expect(log).toEqual(['CompA:ngOnInit', 'a']);
 
        log.length = 0;
-       const appB = TestBed.createComponent(CompB);
+       let appB = TestBed.createComponent(CompB);
        appB.componentInstance.inputB = 'b';
        appB.autoDetectChanges();
        expect(log).toEqual(['CompB:ngOnInit', 'b']);
@@ -341,7 +341,7 @@ describe('TestBed', () => {
     TestBed.configureTestingModule({declarations: [MyComp]});
 
     expect(() => {
-      const fixture = TestBed.createComponent(MyComp);
+      let fixture = TestBed.createComponent(MyComp);
       fixture.detectChanges();
     }).toThrowError();
   });
@@ -362,11 +362,11 @@ describe('TestBed', () => {
     }
 
     TestBed.configureTestingModule({declarations: [MyComp]});
-    const fixture = TestBed.createComponent(MyComp);
+    let fixture = TestBed.createComponent(MyComp);
     fixture.detectChanges();
 
     expect(() => {
-      const button = fixture.nativeElement.querySelector('button');
+      let button = fixture.nativeElement.querySelector('button');
       button.click();
     }).toThrowError();
   });
@@ -420,7 +420,7 @@ describe('TestBed', () => {
               imports: [Module],
             });
 
-            const fixture = TestBed.createComponent(Fixture);
+            let fixture = TestBed.createComponent(Fixture);
             // The Outer component should have its template stamped out, and that template should
             // include a correct instance of the Inner component with the 'Inner' text from its
             // template.
@@ -443,13 +443,13 @@ describe('TestBed', () => {
          * outside of TestBed) without changing TestBed state and/or Component metadata to compile
          * them via TestBed with external resources.
          */
-        const getAOTCompiledComponent = () => {
+        let getAOTCompiledComponent = () => {
           class ComponentClass {
             static ngComponentDef = defineComponent({
               type: ComponentClass,
               selectors: [['comp']],
               factory: () => new ComponentClass(),
-              consts: 1,
+              lets: 1,
               vars: 0,
               template: (rf: any, ctx: any) => {
                 if (rf & 1) {
@@ -473,23 +473,23 @@ describe('TestBed', () => {
         };
 
         it('should have an ability to override template', () => {
-          const SomeComponent = getAOTCompiledComponent();
+          let SomeComponent = getAOTCompiledComponent();
           TestBed.configureTestingModule({declarations: [SomeComponent]});
           TestBed.overrideTemplateUsingTestingModule(SomeComponent, 'Template override');
-          const fixture = TestBed.createComponent(SomeComponent);
+          let fixture = TestBed.createComponent(SomeComponent);
           expect(fixture.nativeElement.innerHTML).toBe('Template override');
         });
 
         it('should have an ability to override template with empty string', () => {
-          const SomeComponent = getAOTCompiledComponent();
+          let SomeComponent = getAOTCompiledComponent();
           TestBed.configureTestingModule({declarations: [SomeComponent]});
           TestBed.overrideTemplateUsingTestingModule(SomeComponent, '');
-          const fixture = TestBed.createComponent(SomeComponent);
+          let fixture = TestBed.createComponent(SomeComponent);
           expect(fixture.nativeElement.innerHTML).toBe('');
         });
 
         it('should allow component in both in declarations and imports', () => {
-          const SomeComponent = getAOTCompiledComponent();
+          let SomeComponent = getAOTCompiledComponent();
 
           // This is an AOT compiled module which declares (but does not export) SomeComponent.
           class ModuleClass {
@@ -519,7 +519,7 @@ describe('TestBed', () => {
             declarations: [SomeComponent, TestFixture],
             imports: [ModuleClass],
           });
-          const fixture = TestBed.createComponent(TestFixture);
+          let fixture = TestBed.createComponent(TestFixture);
           // The regex avoids any issues with styling attributes.
           expect(fixture.nativeElement.innerHTML).toMatch(/<comp[^>]*>Some template<\/comp>/);
         });
@@ -556,13 +556,13 @@ describe('TestBed', () => {
               {set: {template: `<span someDirective>{{'hello' | somePipe}}</span>`}});
           TestBed.createComponent(SomeComponent);
 
-          const defBeforeReset = (SomeComponent as any).ngComponentDef;
+          let defBeforeReset = (SomeComponent as any).ngComponentDef;
           expect(defBeforeReset.pipeDefs().length).toEqual(1);
           expect(defBeforeReset.directiveDefs().length).toEqual(2);  // directive + component
 
           TestBed.resetTestingModule();
 
-          const defAfterReset = (SomeComponent as any).ngComponentDef;
+          let defAfterReset = (SomeComponent as any).ngComponentDef;
           expect(defAfterReset.pipeDefs).toBe(null);
           expect(defAfterReset.directiveDefs).toBe(null);
         });

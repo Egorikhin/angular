@@ -233,11 +233,11 @@ export function getLocaleId(locale: string): string {
  */
 export function getLocaleDayPeriods(
     locale: string, formStyle: FormStyle, width: TranslationWidth): [string, string] {
-  const data = findLocaleData(locale);
-  const amPmData = <[
+  let data = findLocaleData(locale);
+  let amPmData = <[
     string, string
   ][][]>[data[LocaleDataIndex.DayPeriodsFormat], data[LocaleDataIndex.DayPeriodsStandalone]];
-  const amPm = getLastDefinedValue(amPmData, formStyle);
+  let amPm = getLastDefinedValue(amPmData, formStyle);
   return getLastDefinedValue(amPm, width);
 }
 
@@ -255,10 +255,10 @@ export function getLocaleDayPeriods(
  */
 export function getLocaleDayNames(
     locale: string, formStyle: FormStyle, width: TranslationWidth): string[] {
-  const data = findLocaleData(locale);
-  const daysData =
+  let data = findLocaleData(locale);
+  let daysData =
       <string[][][]>[data[LocaleDataIndex.DaysFormat], data[LocaleDataIndex.DaysStandalone]];
-  const days = getLastDefinedValue(daysData, formStyle);
+  let days = getLastDefinedValue(daysData, formStyle);
   return getLastDefinedValue(days, width);
 }
 
@@ -276,10 +276,10 @@ export function getLocaleDayNames(
  */
 export function getLocaleMonthNames(
     locale: string, formStyle: FormStyle, width: TranslationWidth): string[] {
-  const data = findLocaleData(locale);
-  const monthsData =
+  let data = findLocaleData(locale);
+  let monthsData =
       <string[][][]>[data[LocaleDataIndex.MonthsFormat], data[LocaleDataIndex.MonthsStandalone]];
-  const months = getLastDefinedValue(monthsData, formStyle);
+  let months = getLastDefinedValue(monthsData, formStyle);
   return getLastDefinedValue(months, width);
 }
 
@@ -296,8 +296,8 @@ export function getLocaleMonthNames(
  * @publicApi
  */
 export function getLocaleEraNames(locale: string, width: TranslationWidth): [string, string] {
-  const data = findLocaleData(locale);
-  const erasData = <[string, string][]>data[LocaleDataIndex.Eras];
+  let data = findLocaleData(locale);
+  let erasData = <[string, string][]>data[LocaleDataIndex.Eras];
   return getLastDefinedValue(erasData, width);
 }
 
@@ -313,7 +313,7 @@ export function getLocaleEraNames(locale: string, width: TranslationWidth): [str
  * @publicApi
  */
 export function getLocaleFirstDayOfWeek(locale: string): WeekDay {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return data[LocaleDataIndex.FirstDayOfWeek];
 }
 
@@ -327,7 +327,7 @@ export function getLocaleFirstDayOfWeek(locale: string): WeekDay {
  * @publicApi
  */
 export function getLocaleWeekEndRange(locale: string): [WeekDay, WeekDay] {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return data[LocaleDataIndex.WeekendRange];
 }
 
@@ -343,7 +343,7 @@ export function getLocaleWeekEndRange(locale: string): [WeekDay, WeekDay] {
  * @publicApi
  */
 export function getLocaleDateFormat(locale: string, width: FormatWidth): string {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return getLastDefinedValue(data[LocaleDataIndex.DateFormat], width);
 }
 
@@ -359,7 +359,7 @@ export function getLocaleDateFormat(locale: string, width: FormatWidth): string 
  * @publicApi
  */
 export function getLocaleTimeFormat(locale: string, width: FormatWidth): string {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return getLastDefinedValue(data[LocaleDataIndex.TimeFormat], width);
 }
 
@@ -375,8 +375,8 @@ export function getLocaleTimeFormat(locale: string, width: FormatWidth): string 
  * @publicApi
  */
 export function getLocaleDateTimeFormat(locale: string, width: FormatWidth): string {
-  const data = findLocaleData(locale);
-  const dateTimeFormatData = <string[]>data[LocaleDataIndex.DateTimeFormat];
+  let data = findLocaleData(locale);
+  let dateTimeFormatData = <string[]>data[LocaleDataIndex.DateTimeFormat];
   return getLastDefinedValue(dateTimeFormatData, width);
 }
 
@@ -391,8 +391,8 @@ export function getLocaleDateTimeFormat(locale: string, width: FormatWidth): str
  * @publicApi
  */
 export function getLocaleNumberSymbol(locale: string, symbol: NumberSymbol): string {
-  const data = findLocaleData(locale);
-  const res = data[LocaleDataIndex.NumberSymbols][symbol];
+  let data = findLocaleData(locale);
+  let res = data[LocaleDataIndex.NumberSymbols][symbol];
   if (typeof res === 'undefined') {
     if (symbol === NumberSymbol.CurrencyDecimal) {
       return data[LocaleDataIndex.NumberSymbols][NumberSymbol.Decimal];
@@ -439,7 +439,7 @@ export function getLocaleNumberSymbol(locale: string, symbol: NumberSymbol): str
  * @publicApi
  */
 export function getLocaleNumberFormat(locale: string, type: NumberFormatStyle): string {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return data[LocaleDataIndex.NumberFormats][type];
 }
 
@@ -455,7 +455,7 @@ export function getLocaleNumberFormat(locale: string, type: NumberFormatStyle): 
  * @publicApi
  */
 export function getLocaleCurrencySymbol(locale: string): string|null {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return data[LocaleDataIndex.CurrencySymbol] || null;
 }
 
@@ -470,7 +470,7 @@ export function getLocaleCurrencySymbol(locale: string): string|null {
  * @publicApi
  */
 export function getLocaleCurrencyName(locale: string): string|null {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return data[LocaleDataIndex.CurrencyName] || null;
 }
 
@@ -481,7 +481,7 @@ export function getLocaleCurrencyName(locale: string): string|null {
  * @see [Internationalization (i18n) Guide](https://angular.io/guide/i18n)
  */
 function getLocaleCurrencies(locale: string): {[code: string]: CurrenciesSymbols} {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   return data[LocaleDataIndex.Currencies];
 }
 
@@ -489,7 +489,7 @@ function getLocaleCurrencies(locale: string): {[code: string]: CurrenciesSymbols
  * @alias core/ɵgetLocalePluralCase
  * @publicApi
  */
-export const getLocalePluralCase: (locale: string) => ((value: number) => Plural) =
+export let getLocalePluralCase: (locale: string) => ((value: number) => Plural) =
     ɵgetLocalePluralCase;
 
 function checkFullData(data: any) {
@@ -522,9 +522,9 @@ function checkFullData(data: any) {
  * @publicApi
  */
 export function getLocaleExtraDayPeriodRules(locale: string): (Time | [Time, Time])[] {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   checkFullData(data);
-  const rules = data[LocaleDataIndex.ExtraData][ExtraLocaleDataIndex.ExtraDayPeriodsRules] || [];
+  let rules = data[LocaleDataIndex.ExtraData][ExtraLocaleDataIndex.ExtraDayPeriodsRules] || [];
   return rules.map((rule: string | [string, string]) => {
     if (typeof rule === 'string') {
       return extractTime(rule);
@@ -552,13 +552,13 @@ export function getLocaleExtraDayPeriodRules(locale: string): (Time | [Time, Tim
  */
 export function getLocaleExtraDayPeriods(
     locale: string, formStyle: FormStyle, width: TranslationWidth): string[] {
-  const data = findLocaleData(locale);
+  let data = findLocaleData(locale);
   checkFullData(data);
-  const dayPeriodsData = <string[][][]>[
+  let dayPeriodsData = <string[][][]>[
     data[LocaleDataIndex.ExtraData][ExtraLocaleDataIndex.ExtraDayPeriodFormats],
     data[LocaleDataIndex.ExtraData][ExtraLocaleDataIndex.ExtraDayPeriodStandalone]
   ];
-  const dayPeriods = getLastDefinedValue(dayPeriodsData, formStyle) || [];
+  let dayPeriods = getLastDefinedValue(dayPeriodsData, formStyle) || [];
   return getLastDefinedValue(dayPeriods, width) || [];
 }
 
@@ -598,7 +598,7 @@ export type Time = {
  * Extracts the hours and minutes from a string like "15:45"
  */
 function extractTime(time: string): Time {
-  const [h, m] = time.split(':');
+  let [h, m] = time.split(':');
   return {hours: +h, minutes: +m};
 }
 
@@ -620,8 +620,8 @@ function extractTime(time: string): Time {
  * @publicApi
  */
 export function getCurrencySymbol(code: string, format: 'wide' | 'narrow', locale = 'en'): string {
-  const currency = getLocaleCurrencies(locale)[code] || CURRENCIES_EN[code] || [];
-  const symbolNarrow = currency[CurrencyIndex.SymbolNarrow];
+  let currency = getLocaleCurrencies(locale)[code] || CURRENCIES_EN[code] || [];
+  let symbolNarrow = currency[CurrencyIndex.SymbolNarrow];
 
   if (format === 'narrow' && typeof symbolNarrow === 'string') {
     return symbolNarrow;
@@ -631,7 +631,7 @@ export function getCurrencySymbol(code: string, format: 'wide' | 'narrow', local
 }
 
 // Most currencies have cents, that's why the default is 2
-const DEFAULT_NB_OF_CURRENCY_DIGITS = 2;
+let DEFAULT_NB_OF_CURRENCY_DIGITS = 2;
 
 /**
  * Reports the number of decimal digits for a given currency.
@@ -645,7 +645,7 @@ const DEFAULT_NB_OF_CURRENCY_DIGITS = 2;
  */
 export function getNumberOfCurrencyDigits(code: string): number {
   let digits;
-  const currency = CURRENCIES_EN[code];
+  let currency = CURRENCIES_EN[code];
   if (currency) {
     digits = currency[CurrencyIndex.NbOfDigits];
   }

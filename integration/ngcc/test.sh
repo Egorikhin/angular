@@ -55,10 +55,10 @@ if [[ $? != 0 ]]; then exit 1; fi
   grep "static ngInjectorDef: ɵngcc0.ɵɵInjectorDef<ApplicationModule>;" node_modules/@angular/core/core.d.ts
   if [[ $? != 0 ]]; then exit 1; fi
 
-# Did it generate a base factory call for synthesized constructors correctly?
-  grep "const ɵMatTable_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(MatTable);" node_modules/@angular/material/esm2015/table.js
+# Did it generate a base factory call for synthesized letructors correctly?
+  grep "let ɵMatTable_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(MatTable);" node_modules/@angular/material/esm2015/table.js
   if [[ $? != 0 ]]; then exit 1; fi
-  grep "const ɵMatTable_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(MatTable);" node_modules/@angular/material/esm5/table.es5.js
+  grep "let ɵMatTable_BaseFactory = ɵngcc0.ɵɵgetInheritedFactory(MatTable);" node_modules/@angular/material/esm5/table.es5.js
   if [[ $? != 0 ]]; then exit 1; fi
 
 # Did it generate a base definition for undecorated classes with inputs and view queries?

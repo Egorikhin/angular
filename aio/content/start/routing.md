@@ -73,7 +73,7 @@ The product details component handles the display of each product. The Angular R
         <code-example header="src/app/product-details/product-details.component.ts" path="getting-started/src/app/product-details/product-details.component.1.ts" region="imports">
         </code-example>
 
-    1. Define the `product` property and inject the `ActivatedRoute` into the constructor.
+    1. Define the `product` property and inject the `ActivatedRoute` into the letructor.
 
         <code-example header="src/app/product-details/product-details.component.ts" path="getting-started/src/app/product-details/product-details.component.1.ts" region="props-methods">
         </code-example>

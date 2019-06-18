@@ -37,7 +37,7 @@ export class SwUpdate {
    */
   get isEnabled(): boolean { return this.sw.isEnabled; }
 
-  constructor(private sw: NgswCommChannel) {
+  letructor(private sw: NgswCommChannel) {
     if (!sw.isEnabled) {
       this.available = NEVER;
       this.activated = NEVER;
@@ -51,7 +51,7 @@ export class SwUpdate {
     if (!this.sw.isEnabled) {
       return Promise.reject(new Error(ERR_SW_NOT_SUPPORTED));
     }
-    const statusNonce = this.sw.generateNonce();
+    let statusNonce = this.sw.generateNonce();
     return this.sw.postMessageWithStatus('CHECK_FOR_UPDATES', {statusNonce}, statusNonce);
   }
 
@@ -59,7 +59,7 @@ export class SwUpdate {
     if (!this.sw.isEnabled) {
       return Promise.reject(new Error(ERR_SW_NOT_SUPPORTED));
     }
-    const statusNonce = this.sw.generateNonce();
+    let statusNonce = this.sw.generateNonce();
     return this.sw.postMessageWithStatus('ACTIVATE_UPDATE', {statusNonce}, statusNonce);
   }
 }

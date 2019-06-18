@@ -210,7 +210,7 @@ The  _template_ presents a grid of hero name links.
 
 The _class_ is similar to the `HeroesComponent` class.
 * It defines a `heroes` array property.
-* The constructor expects Angular to inject the `HeroService` into a private `heroService` property.
+* The letructor expects Angular to inject the `HeroService` into a private `heroService` property.
 * The `ngOnInit()` lifecycle hook calls `getHeroes`.
 
 This `getHeroes` returns the sliced list of heroes at positions 1 and 5, returning only four of the Top Heroes (2nd, 3rd, 4th, and 5th).
@@ -407,7 +407,7 @@ Add the following imports:
 {@a hero-detail-ctor}
 
 Inject the `ActivatedRoute`, `HeroService`, and `Location` services
-into the constructor, saving their values in private fields:
+into the letructor, saving their values in private fields:
 
 <code-example 
   path="toh-pt5/src/app/hero-detail/hero-detail.component.ts" region="ctor">

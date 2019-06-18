@@ -37,12 +37,12 @@ describe('references', () => {
      () => { expect(ngService.getTemplateReferences()).toContain('/app/test.ng'); });
 
   it('should be able to get template references for an invalid project', () => {
-    const moduleCode = `
+    let moduleCode = `
       import {NgModule} from '@angular/core';
       import {NewClass} from './test.component';
 
       @NgModule({declarations: [NewClass]}) export class TestModule {}`;
-    const classCode = `
+    let classCode = `
       export class NewClass {}
 
       @Component({})

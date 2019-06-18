@@ -100,7 +100,7 @@ Full documentation for the Bazel CLI is at https://docs.bazel.build/versions/mas
 
 ## Querying the build graph
 
-Because Bazel constructs a graph out of your targets, you can find lots of useful information.
+Because Bazel letructs a graph out of your targets, you can find lots of useful information.
 
 Using the graphviz optional dependency, you'll have a program `dot`, which you can use with `bazel query`:
 

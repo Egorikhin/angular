@@ -10,7 +10,7 @@
 // as this could exit node if the help script should be printed.
 require('angular/modules/e2e_util/perf_util').readCommandLine();
 
-const CHROME_OPTIONS = {
+let CHROME_OPTIONS = {
   'args': ['--js-flags=--expose-gc', '--no-sandbox', '--headless', '--disable-dev-shm-usage'],
   'perfLoggingPrefs': {
     'traceCategories':

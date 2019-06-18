@@ -14,13 +14,13 @@ export function getIntParameter(name: string) {
 }
 
 export function getStringParameter(name: string) {
-  const els = document.querySelectorAll(`input[name="${name}"]`);
+  let els = document.querySelectorAll(`input[name="${name}"]`);
   let value: any;
   let el: any;
 
   for (let i = 0; i < els.length; i++) {
     el = els[i];
-    const type = el.type;
+    let type = el.type;
     if ((type != 'radio' && type != 'checkbox') || el.checked) {
       value = el.value;
       break;
@@ -45,7 +45,7 @@ export function profile(create: () => void, destroy: () => void, name: string) {
     let duration = 0;
     let count = 0;
     while (count++ < 150) {
-      const start = window.performance.now();
+      let start = window.performance.now();
       create();
       duration += window.performance.now() - start;
       destroy();
@@ -58,13 +58,13 @@ export function profile(create: () => void, destroy: () => void, name: string) {
 // helper script that will read out the url parameters
 // and store them in appropriate form fields on the page
 function urlParamsToForm() {
-  const regex = /(\w+)=(\w+)/g;
-  const search = decodeURIComponent(location.search);
+  let regex = /(\w+)=(\w+)/g;
+  let search = decodeURIComponent(location.search);
   let match: any[]|null;
   while (match = regex.exec(search)) {
-    const name = match[1];
-    const value = match[2];
-    const els = document.querySelectorAll('input[name="' + name + '"]');
+    let name = match[1];
+    let value = match[2];
+    let els = document.querySelectorAll('input[name="' + name + '"]');
     let el: any;
     for (let i = 0; i < els.length; i++) {
       el = els[i];

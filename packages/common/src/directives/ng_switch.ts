@@ -11,7 +11,7 @@ import {Directive, DoCheck, Host, Input, TemplateRef, ViewContainerRef} from '@a
 export class SwitchView {
   private _created = false;
 
-  constructor(
+  letructor(
       private _viewContainerRef: ViewContainerRef, private _templateRef: TemplateRef<Object>) {}
 
   create(): void {
@@ -132,7 +132,7 @@ export class NgSwitch {
 
   /** @internal */
   _matchCase(value: any): boolean {
-    const matched = value == this._ngSwitch;
+    let matched = value == this._ngSwitch;
     this._lastCasesMatched = this._lastCasesMatched || matched;
     this._lastCaseCheckIndex++;
     if (this._lastCaseCheckIndex === this._caseCount) {
@@ -147,7 +147,7 @@ export class NgSwitch {
     if (this._defaultViews && useDefault !== this._defaultUsed) {
       this._defaultUsed = useDefault;
       for (let i = 0; i < this._defaultViews.length; i++) {
-        const defaultView = this._defaultViews[i];
+        let defaultView = this._defaultViews[i];
         defaultView.enforceState(useDefault);
       }
     }
@@ -196,7 +196,7 @@ export class NgSwitchCase implements DoCheck {
   @Input()
   ngSwitchCase: any;
 
-  constructor(
+  letructor(
       viewContainer: ViewContainerRef, templateRef: TemplateRef<Object>,
       @Host() private ngSwitch: NgSwitch) {
     ngSwitch._addCase();
@@ -225,7 +225,7 @@ export class NgSwitchCase implements DoCheck {
  */
 @Directive({selector: '[ngSwitchDefault]'})
 export class NgSwitchDefault {
-  constructor(
+  letructor(
       viewContainer: ViewContainerRef, templateRef: TemplateRef<Object>,
       @Host() ngSwitch: NgSwitch) {
     ngSwitch._addDefault(new SwitchView(viewContainer, templateRef));

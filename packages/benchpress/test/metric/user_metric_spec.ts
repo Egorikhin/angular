@@ -25,7 +25,7 @@ import {Options, PerfLogEvent, PerfLogFeatures, UserMetric, WebDriverAdapter} fr
       userMetrics = {};
     }
     wdAdapter = new MockDriverAdapter();
-    const providers: StaticProvider[] = [
+    let providers: StaticProvider[] = [
       Options.DEFAULT_PROVIDERS, UserMetric.PROVIDERS,
       {provide: Options.USER_METRICS, useValue: userMetrics},
       {provide: WebDriverAdapter, useValue: wdAdapter}
@@ -45,7 +45,7 @@ import {Options, PerfLogEvent, PerfLogFeatures, UserMetric, WebDriverAdapter} fr
     describe('endMeasure', () => {
       it('should stop measuring when all properties have numeric values',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const metric = createMetric(
+           let metric = createMetric(
                [[]], new PerfLogFeatures(),
                {userMetrics: {'loadTime': 'time to load', 'content': 'time to see content'}});
            metric.beginMeasure().then(() => metric.endMeasure(true)).then(values => {
@@ -69,7 +69,7 @@ class MockDriverAdapter extends WebDriverAdapter {
   executeScript(script: string): any {
     // Just handles `return window.propName` ignores `delete window.propName`.
     if (script.indexOf('return window.') == 0) {
-      const metricName = script.substring('return window.'.length);
+      let metricName = script.substring('return window.'.length);
       return Promise.resolve(this.data[metricName]);
     } else if (script.indexOf('delete window.') == 0) {
       return Promise.resolve(null);

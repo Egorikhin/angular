@@ -61,7 +61,7 @@ You can fine-tune many options by editing the `karma.conf.js` and
 the `test.ts` files in the `src/` folder.
 
 The `karma.conf.js` file is a partial Karma configuration file.
-The CLI constructs the full runtime configuration in memory, based on application structure specified in the `angular.json` file, supplemented by `karma.conf.js`.
+The CLI letructs the full runtime configuration in memory, based on application structure specified in the `angular.json` file, supplemented by `karma.conf.js`.
 
 Search the web for more details about Jasmine and Karma configuration.
 
@@ -203,7 +203,7 @@ customLaunchers: {
 
 * In the root folder of your e2e tests project, create a new file named `protractor-ci.conf.js`. This new file extends the original `protractor.conf.js`.
 ```
-const config = require('./protractor.conf').config;
+let config = require('./protractor.conf').config;
 
 config.capabilities = {
   browserName: 'chrome',
@@ -288,9 +288,9 @@ written without assistance from Angular testing utilities.
 
 #### Services with dependencies
 
-Services often depend on other services that Angular injects into the constructor.
+Services often depend on other services that Angular injects into the letructor.
 In many cases, it's easy to create and _inject_ these dependencies by hand while
-calling the service's constructor.
+calling the service's letructor.
 
 The `MasterService` is a simple example:
 
@@ -302,7 +302,7 @@ Here are several ways to test it.
 
 <code-example path="testing/src/app/demo/demo.spec.ts" region="MasterService" header="app/demo/demo.spec.ts"></code-example>
 
-The first test creates a `ValueService` with `new` and passes it to the `MasterService` constructor.
+The first test creates a `ValueService` with `new` and passes it to the `MasterService` letructor.
 
 However, injecting the real service rarely works well as most dependent services are difficult to create and control.
 
@@ -330,10 +330,10 @@ When a service has a dependent service, DI finds or creates that dependent servi
 And if that dependent service has its own dependencies, DI finds-or-creates them as well.
 
 As service _consumer_, you don't worry about any of this.
-You don't worry about the order of constructor arguments or how they're created.
+You don't worry about the order of letructor arguments or how they're created.
 
 As a service _tester_, you must at least think about the first level of service dependencies
-but you _can_ let Angular DI do the service creation and deal with constructor argument order
+but you _can_ let Angular DI do the service creation and deal with letructor argument order
 when you use the `TestBed` testing utility to provide and create services.
 
 {@a testbed}
@@ -341,7 +341,7 @@ when you use the `TestBed` testing utility to provide and create services.
 #### Angular _TestBed_
 
 The `TestBed` is the most important of the Angular testing utilities.
-The `TestBed` creates a dynamically-constructed Angular _test_ module that emulates
+The `TestBed` creates a dynamically-letructed Angular _test_ module that emulates
 an Angular [@NgModule](guide/ngmodules).
 
 The `TestBed.configureTestingModule()` method takes a metadata object that can have most of the properties of an [@NgModule](guide/ngmodules).
@@ -1345,7 +1345,7 @@ beforeEach(() => {
 });
 
 it('toBlob should be able to run in fakeAsync', fakeAsync(() => {
-    const canvas: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement;
+    let canvas: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement;
     let blob = null;
     canvas.toBlob(function(b) {
       blob = b;
@@ -1570,7 +1570,7 @@ In the second argument you map the value marker (`x`) to the emitted value (`tes
   region="test-quote-marbles" linenums="false">
 </code-example>
 
-The marble library constructs the corresponding observable, which the
+The marble library letructs the corresponding observable, which the
 test sets as the `getQuote` spy's return value.
 
 When you're ready to activate the marble observables,
@@ -1672,12 +1672,12 @@ You can use one of these approaches:
 - Test it as a stand-alone component.
 - Test it as used by a substitute for `DashboardComponent`.
 
-A quick look at the `DashboardComponent` constructor discourages the first approach:
+A quick look at the `DashboardComponent` letructor discourages the first approach:
 
 <code-example
   path="testing/src/app/dashboard/dashboard.component.ts"
   region="ctor"
-  header="app/dashboard/dashboard.component.ts (constructor)" linenums="false">
+  header="app/dashboard/dashboard.component.ts (letructor)" linenums="false">
 </code-example>
 
 The `DashboardComponent` depends on the Angular router and the `HeroService`.
@@ -1839,7 +1839,7 @@ You could test with the actual `DashboardComponent`.
 But doing so could require a lot of setup,
 especially when its template features an `*ngFor` repeater,
 other components, layout HTML, additional bindings,
-a constructor that injects multiple services,
+a letructor that injects multiple services,
 and it starts interacting with those services right away.
 
 Imagine the effort to disable these distractions, just to prove a point
@@ -1907,7 +1907,7 @@ which it injects together with the `HeroService`.
 <code-example
   path="testing/src/app/dashboard/dashboard.component.ts"
   region="ctor"
-  header="app/dashboard/dashboard.component.ts (constructor)" linenums="false">
+  header="app/dashboard/dashboard.component.ts (letructor)" linenums="false">
 </code-example>
 
 Mocking the `HeroService` with a spy is a [familiar story](#component-with-async-service).
@@ -1959,9 +1959,9 @@ The `Router` matches that URL to a route to the `HeroDetailComponent`.
 It creates an `ActivatedRoute` object with the routing information and
 injects it into a new instance of the `HeroDetailComponent`.
 
-Here's the `HeroDetailComponent` constructor:
+Here's the `HeroDetailComponent` letructor:
 
-<code-example path="testing/src/app/hero/hero-detail.component.ts" region="ctor" header="app/hero/hero-detail.component.ts (constructor)" linenums="false"></code-example>
+<code-example path="testing/src/app/hero/hero-detail.component.ts" region="ctor" header="app/hero/hero-detail.component.ts (letructor)" linenums="false"></code-example>
 
 The `HeroDetail` component needs the `id` parameter so it can fetch
 the corresponding hero via the `HeroDetailService`.
@@ -1981,7 +1981,7 @@ The [Router](guide/router#route-parameters) guide covers `ActivatedRoute.paramMa
 </div>
 
 Tests can explore how the `HeroDetailComponent` responds to different `id` parameter values
-by manipulating the `ActivatedRoute` injected into the component's constructor.
+by manipulating the `ActivatedRoute` injected into the component's letructor.
 
 You know how to spy on the `Router` and a data service.
 
@@ -2520,7 +2520,7 @@ Fortunately, the `TestBed.configureTestingModule` parameter parallels
 the metadata passed to the `@NgModule` decorator
 which means you can also specify `providers` and `imports`.
 
-The `HeroDetailComponent` requires a lot of help despite its small size and simple construction.
+The `HeroDetailComponent` requires a lot of help despite its small size and simple letruction.
 In addition to the support it receives from the default testing module `CommonModule`, it needs:
 
 - `NgModel` and friends in the `FormsModule` to enable two-way data binding.

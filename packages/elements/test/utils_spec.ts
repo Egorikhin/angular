@@ -20,8 +20,8 @@ describe('utils', () => {
       });
 
       it('should delegate to `window.setTimeout()`', () => {
-        const cb = () => null;
-        const delay = 1337;
+        let cb = () => null;
+        let delay = 1337;
 
         scheduler.schedule(cb, delay);
 
@@ -29,7 +29,7 @@ describe('utils', () => {
       });
 
       it('should return a function for cancelling the scheduled job', () => {
-        const cancelFn = scheduler.schedule(() => null, 0);
+        let cancelFn = scheduler.schedule(() => null, 0);
         expect(clearTimeoutSpy).not.toHaveBeenCalled();
 
         cancelFn();
@@ -39,13 +39,13 @@ describe('utils', () => {
 
     describe('scheduleBeforeRender()', () => {
       if (typeof window.requestAnimationFrame === 'undefined') {
-        const mockCancelFn = () => undefined;
+        let mockCancelFn = () => undefined;
         let scheduleSpy: jasmine.Spy;
 
         beforeEach(() => scheduleSpy = spyOn(scheduler, 'schedule').and.returnValue(mockCancelFn));
 
         it('should delegate to `scheduler.schedule()`', () => {
-          const cb = () => null;
+          let cb = () => null;
           expect(scheduler.scheduleBeforeRender(cb)).toBe(mockCancelFn);
           expect(scheduleSpy).toHaveBeenCalledWith(cb, 16);
         });
@@ -59,13 +59,13 @@ describe('utils', () => {
         });
 
         it('should delegate to `window.requestAnimationFrame()`', () => {
-          const cb = () => null;
+          let cb = () => null;
           scheduler.scheduleBeforeRender(cb);
           expect(requestAnimationFrameSpy).toHaveBeenCalledWith(cb);
         });
 
         it('should return a function for cancelling the scheduled job', () => {
-          const cancelFn = scheduler.scheduleBeforeRender(() => null);
+          let cancelFn = scheduler.scheduleBeforeRender(() => null);
           expect(cancelAnimationFrameSpy).not.toHaveBeenCalled();
 
           cancelFn();
@@ -87,8 +87,8 @@ describe('utils', () => {
 
   describe('createCustomEvent()', () => {
     it('should create a custom event (with appropriate properties)', () => {
-      const value = {bar: 'baz'};
-      const event = createCustomEvent(document, 'foo', value);
+      let value = {bar: 'baz'};
+      let event = createCustomEvent(document, 'foo', value);
 
       expect(event).toEqual(jasmine.any(CustomEvent));
       expect(event).toEqual(jasmine.any(Event));
@@ -102,7 +102,7 @@ describe('utils', () => {
 
   describe('isElement()', () => {
     it('should return true for Element nodes', () => {
-      const elems = [
+      let elems = [
         document.body,
         document.createElement('div'),
         document.createElement('option'),
@@ -113,7 +113,7 @@ describe('utils', () => {
     });
 
     it('should return false for non-Element nodes', () => {
-      const nonElems = [
+      let nonElems = [
         document,
         document.createAttribute('foo'),
         document.createDocumentFragment(),
@@ -127,8 +127,8 @@ describe('utils', () => {
 
   describe('isFunction()', () => {
     it('should return true for functions', () => {
-      const obj = {foo: function() {}, bar: () => null, baz() {}};
-      const fns = [
+      let obj = {foo: function() {}, bar: () => null, baz() {}};
+      let fns = [
         function(){},
         () => null,
         obj.foo,
@@ -142,7 +142,7 @@ describe('utils', () => {
     });
 
     it('should return false for non-functions', () => {
-      const nonFns = [
+      let nonFns = [
         undefined,
         null,
         true,
@@ -171,7 +171,7 @@ describe('utils', () => {
     let li: HTMLLIElement;
 
     beforeEach(() => {
-      const div = document.createElement('div');
+      let div = document.createElement('div');
       div.innerHTML = `
         <div class="bar" id="barDiv">
           <span class="baz"></span>
@@ -202,7 +202,7 @@ describe('utils', () => {
 
   describe('strictEquals()', () => {
     it('should perform strict equality check', () => {
-      const values = [
+      let values = [
         undefined,
         null,
         true,

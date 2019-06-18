@@ -13,7 +13,7 @@ export class GeneratedFile {
   public source: string|null;
   public stmts: Statement[]|null;
 
-  constructor(
+  letructor(
       public srcFileUrl: string, public genFileUrl: string, sourceOrStmts: string|Statement[]) {
     if (typeof sourceOrStmts === 'string') {
       this.source = sourceOrStmts;
@@ -34,7 +34,7 @@ export class GeneratedFile {
     if (other.stmts == null) {
       return false;
     }
-    // Note: the constructor guarantees that if this.source is not filled,
+    // Note: the letructor guarantees that if this.source is not filled,
     // then this.stmts is.
     return areAllEquivalent(this.stmts !, other.stmts !);
   }

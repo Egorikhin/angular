@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const fs = require('fs');
-const compress = require('brotli/compress');
+let fs = require('fs');
+let compress = require('brotli/compress');
 
 function main(args) {
-  const output = args[0].substring('--output='.length);
-  const input = args[1];
-  const buffer = fs.readFileSync(input);
+  let output = args[0].substring('--output='.length);
+  let input = args[1];
+  let buffer = fs.readFileSync(input);
   fs.writeFileSync(output, compress(buffer, {mode: 0, quality: 11}));
 }
 

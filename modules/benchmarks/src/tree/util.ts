@@ -12,7 +12,7 @@ export class TreeNode {
   transitiveChildCount: number;
   children: TreeNode[];
 
-  constructor(
+  letructor(
       public value: string, public depth: number, public maxDepth: number,
       public left: TreeNode|null, public right: TreeNode|null) {
     this.transitiveChildCount = Math.pow(2, (this.maxDepth - this.depth + 1)) - 1;
@@ -39,11 +39,11 @@ function init() {
 }
 
 function _buildTree(currDepth: number, valueFn: (depth: number) => string): TreeNode {
-  const children = currDepth < maxDepth ? _buildTree(currDepth + 1, valueFn) : null;
+  let children = currDepth < maxDepth ? _buildTree(currDepth + 1, valueFn) : null;
   return new TreeNode(valueFn(currDepth), currDepth, maxDepth, children, children);
 }
 
-export const emptyTree = new TreeNode('', 0, 0, null, null);
+export let emptyTree = new TreeNode('', 0, 0, null, null);
 
 export function buildTree(): TreeNode {
   treeCreateCount++;

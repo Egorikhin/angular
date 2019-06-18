@@ -14,7 +14,7 @@ import {ɵSharedStylesHost as SharedStylesHost, ɵTRANSITION_ID, ɵgetDOM as get
 export class ServerStylesHost extends SharedStylesHost {
   private head: any = null;
 
-  constructor(
+  letructor(
       @Inject(DOCUMENT) private doc: any,
       @Optional() @Inject(ɵTRANSITION_ID) private transitionId: string) {
     super();
@@ -23,7 +23,7 @@ export class ServerStylesHost extends SharedStylesHost {
 
   private _addStyle(style: string): void {
     let adapter = getDOM();
-    const el = adapter.createElement('style');
+    let el = adapter.createElement('style');
     adapter.setText(el, style);
     if (!!this.transitionId) {
       adapter.setAttribute(el, 'ng-transition', this.transitionId);

@@ -13,12 +13,12 @@ import {createLanguageService} from './language_service';
 import {Completion, Diagnostic, DiagnosticMessageChain, Location} from './types';
 import {TypeScriptServiceHost} from './typescript_host';
 
-const projectHostMap = new WeakMap<tss.server.Project, TypeScriptServiceHost>();
+let projectHostMap = new WeakMap<tss.server.Project, TypeScriptServiceHost>();
 
 export function getExternalFiles(project: tss.server.Project): string[]|undefined {
-  const host = projectHostMap.get(project);
+  let host = projectHostMap.get(project);
   if (host) {
-    const externalFiles = host.getTemplateReferences();
+    let externalFiles = host.getTemplateReferences();
     return externalFiles;
   }
 }
@@ -52,7 +52,7 @@ function diagnosticMessageToDiagnosticMessageText(message: string | DiagnosticMe
 }
 
 function diagnosticToDiagnostic(d: Diagnostic, file: ts.SourceFile): ts.Diagnostic {
-  const result = {
+  let result = {
     file,
     start: d.span.start,
     length: d.span.end - d.span.start,
@@ -65,9 +65,9 @@ function diagnosticToDiagnostic(d: Diagnostic, file: ts.SourceFile): ts.Diagnost
 }
 
 export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
-  const oldLS: ts.LanguageService = info.languageService;
-  const proxy: ts.LanguageService = Object.assign({}, oldLS);
-  const logger = info.project.projectService.logger;
+  let oldLS: ts.LanguageService = info.languageService;
+  let proxy: ts.LanguageService = Object.assign({}, oldLS);
+  let logger = info.project.projectService.logger;
 
   function tryOperation<T>(attempting: string, callback: () => T): T|null {
     try {
@@ -79,8 +79,8 @@ export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
     }
   }
 
-  const serviceHost = new TypeScriptServiceHost(info.languageServiceHost, oldLS);
-  const ls = createLanguageService(serviceHost);
+  let serviceHost = new TypeScriptServiceHost(info.languageServiceHost, oldLS);
+  let ls = createLanguageService(serviceHost);
   serviceHost.setSite(ls);
   projectHostMap.set(info.project, serviceHost);
 
@@ -93,7 +93,7 @@ export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
       entries: []
     };
     tryOperation('get completions', () => {
-      const results = ls.getCompletionsAt(fileName, position);
+      let results = ls.getCompletionsAt(fileName, position);
       if (results && results.length) {
         if (base === undefined) {
           base = {
@@ -103,7 +103,7 @@ export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
             entries: []
           };
         }
-        for (const entry of results) {
+        for (let entry of results) {
           base.entries.push(completionToEntry(entry));
         }
       }
@@ -113,12 +113,12 @@ export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
 
   proxy.getQuickInfoAtPosition = function(fileName: string, position: number): ts.QuickInfo |
       undefined {
-        const base = oldLS.getQuickInfoAtPosition(fileName, position);
-        const ours = ls.getHoverAt(fileName, position);
+        let base = oldLS.getQuickInfoAtPosition(fileName, position);
+        let ours = ls.getHoverAt(fileName, position);
         if (!ours) {
           return base;
         }
-        const result: ts.QuickInfo = {
+        let result: ts.QuickInfo = {
           kind: ts.ScriptElementKind.unknown,
           kindModifiers: ts.ScriptElementKindModifier.none,
           textSpan: {
@@ -141,12 +141,12 @@ export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
 
   proxy.getSemanticDiagnostics = function(fileName: string) {
     let result = oldLS.getSemanticDiagnostics(fileName);
-    const base = result || [];
+    let base = result || [];
     tryOperation('get diagnostics', () => {
       logger.info(`Computing Angular semantic diagnostics...`);
-      const ours = ls.getDiagnostics(fileName);
+      let ours = ls.getDiagnostics(fileName);
       if (ours && ours.length) {
-        const file = oldLS.getProgram() !.getSourceFile(fileName);
+        let file = oldLS.getProgram() !.getSourceFile(fileName);
         if (file) {
           base.push.apply(base, ours.map(d => diagnosticToDiagnostic(d, file)));
         }
@@ -159,11 +159,11 @@ export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
   proxy.getDefinitionAtPosition = function(fileName: string, position: number):
                                       ReadonlyArray<ts.DefinitionInfo>|
       undefined {
-        const base = oldLS.getDefinitionAtPosition(fileName, position);
+        let base = oldLS.getDefinitionAtPosition(fileName, position);
         if (base && base.length) {
           return base;
         }
-        const ours = ls.getDefinitionAt(fileName, position);
+        let ours = ls.getDefinitionAt(fileName, position);
         if (ours && ours.length) {
           return ours.map((loc: Location) => {
             return {
@@ -184,11 +184,11 @@ export function create(info: tss.server.PluginCreateInfo): ts.LanguageService {
   proxy.getDefinitionAndBoundSpan = function(fileName: string, position: number):
                                         ts.DefinitionInfoAndBoundSpan |
       undefined {
-        const base = oldLS.getDefinitionAndBoundSpan(fileName, position);
+        let base = oldLS.getDefinitionAndBoundSpan(fileName, position);
         if (base && base.definitions && base.definitions.length) {
           return base;
         }
-        const ours = ls.getDefinitionAt(fileName, position);
+        let ours = ls.getDefinitionAt(fileName, position);
         if (ours && ours.length) {
           return {
             definitions: ours.map((loc: Location) => {

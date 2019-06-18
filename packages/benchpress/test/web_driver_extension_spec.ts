@@ -48,7 +48,7 @@ import {Injector, Options, WebDriverExtension} from '../index';
 })();
 
 class MockExtension extends WebDriverExtension {
-  constructor(public id: string) { super(); }
+  letructor(public id: string) { super(); }
 
   supports(capabilities: {[key: string]: any}): boolean {
     return capabilities['browser'] === this.id;

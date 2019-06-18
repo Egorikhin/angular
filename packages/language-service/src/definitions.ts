@@ -11,6 +11,6 @@ import {locateSymbol} from './locate_symbol';
 import {Definition} from './types';
 
 export function getDefinition(info: TemplateInfo): Definition {
-  const result = locateSymbol(info);
+  let result = locateSymbol(info);
   return result && result.symbol.definition;
 }

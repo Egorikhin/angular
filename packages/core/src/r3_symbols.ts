@@ -31,7 +31,7 @@ export {NgModuleFactory} from './render3/ng_module_ref';
 
 
 /**
- * The existence of this constant (in this particular file) informs the Angular compiler that the
+ * The existence of this letant (in this particular file) informs the Angular compiler that the
  * current program is actually @angular/core, which needs to be compiled specially.
  */
-export const ITS_JUST_ANGULAR = true;
+export let ITS_JUST_ANGULAR = true;

@@ -10,17 +10,17 @@ import {browser, by, element, protractor} from 'protractor';
 
 import {verifyNoBrowserErrors} from '../../../e2e_util/e2e_util';
 
-const Key = protractor.Key;
+let Key = protractor.Key;
 
 describe('key_events', function() {
 
-  const URL = '/';
+  let URL = '/';
 
   afterEach(verifyNoBrowserErrors);
   beforeEach(() => { browser.get(URL); });
 
   it('should display correct key names', function() {
-    const firstArea = element.all(by.css('.sample-area')).get(0);
+    let firstArea = element.all(by.css('.sample-area')).get(0);
     expect(firstArea.getText()).toEqual('(none)');
 
     // testing different key categories:
@@ -62,19 +62,19 @@ describe('key_events', function() {
   });
 
   it('should correctly react to the specified key', function() {
-    const secondArea = element.all(by.css('.sample-area')).get(1);
+    let secondArea = element.all(by.css('.sample-area')).get(1);
     secondArea.sendKeys(Key.SHIFT, Key.ENTER);
     expect(secondArea.getText()).toEqual('You pressed shift.enter!');
   });
 
   it('should not react to incomplete keys', function() {
-    const secondArea = element.all(by.css('.sample-area')).get(1);
+    let secondArea = element.all(by.css('.sample-area')).get(1);
     secondArea.sendKeys(Key.ENTER);
     expect(secondArea.getText()).toEqual('');
   });
 
   it('should not react to keys with more modifiers', function() {
-    const secondArea = element.all(by.css('.sample-area')).get(1);
+    let secondArea = element.all(by.css('.sample-area')).get(1);
     secondArea.sendKeys(Key.CONTROL, Key.SHIFT, Key.ENTER);
     expect(secondArea.getText()).toEqual('');
   });

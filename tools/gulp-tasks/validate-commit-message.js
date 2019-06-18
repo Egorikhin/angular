@@ -10,34 +10,34 @@
 // tslint:disable:no-console
 module.exports = (gulp) => () => {
   try {
-    const validateCommitMessage = require('../validate-commit-message');
-    const shelljs = require('shelljs');
+    let validateCommitMessage = require('../validate-commit-message');
+    let shelljs = require('shelljs');
 
     shelljs.set('-e');  // Break on error.
 
     let baseBranch = 'master';
-    const currentVersion = require('semver').parse(require('../../package.json').version);
-    const baseHead =
+    let currentVersion = require('semver').parse(require('../../package.json').version);
+    let baseHead =
         shelljs
             .exec(`git ls-remote --heads origin ${currentVersion.major}.${currentVersion.minor}.*`)
             .trim()
             .split('\n')
             .pop();
     if (baseHead) {
-      const match = /refs\/heads\/(.+)/.exec(baseHead);
+      let match = /refs\/heads\/(.+)/.exec(baseHead);
       baseBranch = match && match[1] || baseBranch;
     }
 
     // We need to fetch origin explicitly because it might be stale.
     // I couldn't find a reliable way to do this without fetch.
-    const result = shelljs.exec(
+    let result = shelljs.exec(
         `git fetch origin ${baseBranch} && git log --reverse --format=%s origin/${baseBranch}..HEAD`);
 
     if (result.code) {
       throw new Error(`Failed to fetch commits: ${result.stderr}`);
     }
 
-    const commitsByLine = result.trim().split(/\n/).filter(line => line != '');
+    let commitsByLine = result.trim().split(/\n/).filter(line => line != '');
 
     console.log(`Examining ${commitsByLine.length} commit(s) between ${baseBranch} and HEAD`);
 
@@ -45,7 +45,7 @@ module.exports = (gulp) => () => {
       console.log(`There are zero new commits between ${baseBranch} and HEAD`);
     }
 
-    const someCommitsInvalid = !commitsByLine.every(validateCommitMessage);
+    let someCommitsInvalid = !commitsByLine.every(validateCommitMessage);
 
     if (someCommitsInvalid) {
       throw new Error(

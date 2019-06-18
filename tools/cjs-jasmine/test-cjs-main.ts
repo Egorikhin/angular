@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const testingPlatformServer = require('../../all/@angular/platform-server/testing/src/server.js');
-const coreTesting = require('../../all/@angular/core/testing');
+let testingPlatformServer = require('../../all/@angular/platform-server/testing/src/server.js');
+let coreTesting = require('../../all/@angular/core/testing');
 
 coreTesting.TestBed.initTestEnvironment(
     testingPlatformServer.ServerTestingModule, testingPlatformServer.platformServerTesting());

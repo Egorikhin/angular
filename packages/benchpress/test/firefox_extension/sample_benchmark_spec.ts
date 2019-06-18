@@ -8,11 +8,11 @@
 
 import {$, browser} from 'protractor';
 
-const benchpress = require('../../index.js');
+let benchpress = require('../../index.js');
 
 // TODO: this test is currnetly failing. it seems that it didn't run on the ci for a while
 xdescribe('deep tree baseline', function() {
-  const runner = new benchpress.Runner([
+  let runner = new benchpress.Runner([
     // use protractor as Webdriver client
     benchpress.SeleniumWebDriverAdapter.PROTRACTOR_PROVIDERS,
     // use RegressionSlopeValidator to validate samples

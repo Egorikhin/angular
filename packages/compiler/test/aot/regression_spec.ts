@@ -12,7 +12,7 @@ describe('regressions', () => {
   let angularFiles = setup();
 
   it('should compile components with empty templates', () => {
-    const appDir = {
+    let appDir = {
       'app.module.ts': `
         import { Component, NgModule } from '@angular/core';
 
@@ -23,8 +23,8 @@ describe('regressions', () => {
         export class MyModule {}
       `
     };
-    const rootDir = {'app': appDir};
-    const {genFiles} = compile(
+    let rootDir = {'app': appDir};
+    let {genFiles} = compile(
         [rootDir, angularFiles], {postCompile: expectNoDiagnostics},
         {noUnusedLocals: true, noUnusedParameters: true});
     expect(genFiles.find((f) => f.genFileUrl === '/app/app.module.ngfactory.ts')).toBeTruthy();

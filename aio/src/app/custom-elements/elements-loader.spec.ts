@@ -21,7 +21,7 @@ describe('ElementsLoader', () => {
   let compiler: Compiler;
 
   beforeEach(() => {
-    const injector = TestBed.configureTestingModule({
+    let injector = TestBed.configureTestingModule({
       providers: [
         ElementsLoader,
         {
@@ -47,7 +47,7 @@ describe('ElementsLoader', () => {
     it('should attempt to load and register all contained elements', fakeAsync(() => {
       expect(loadCustomElementSpy).not.toHaveBeenCalled();
 
-      const hostEl = document.createElement('div');
+      let hostEl = document.createElement('div');
       hostEl.innerHTML = `
         <element-a-selector></element-a-selector>
         <element-b-selector></element-b-selector>
@@ -64,7 +64,7 @@ describe('ElementsLoader', () => {
     it('should attempt to load and register only contained elements', fakeAsync(() => {
       expect(loadCustomElementSpy).not.toHaveBeenCalled();
 
-      const hostEl = document.createElement('div');
+      let hostEl = document.createElement('div');
       hostEl.innerHTML = `
         <element-b-selector></element-b-selector>
       `;
@@ -77,15 +77,15 @@ describe('ElementsLoader', () => {
     }));
 
     it('should wait for all contained elements to load and register', fakeAsync(() => {
-      const deferreds = returnPromisesFromSpy(loadCustomElementSpy);
+      let deferreds = returnPromisesFromSpy(loadCustomElementSpy);
 
-      const hostEl = document.createElement('div');
+      let hostEl = document.createElement('div');
       hostEl.innerHTML = `
         <element-a-selector></element-a-selector>
         <element-b-selector></element-b-selector>
       `;
 
-      const log: any[] = [];
+      let log: any[] = [];
       elementsLoader.loadContainedCustomElements(hostEl).subscribe(
         v => log.push(`emitted: ${v}`),
         e => log.push(`errored: ${e}`),
@@ -105,15 +105,15 @@ describe('ElementsLoader', () => {
     }));
 
     it('should fail if any of the contained elements fails to load and register', fakeAsync(() => {
-      const deferreds = returnPromisesFromSpy(loadCustomElementSpy);
+      let deferreds = returnPromisesFromSpy(loadCustomElementSpy);
 
-      const hostEl = document.createElement('div');
+      let hostEl = document.createElement('div');
       hostEl.innerHTML = `
         <element-a-selector></element-a-selector>
         <element-b-selector></element-b-selector>
       `;
 
-      const log: any[] = [];
+      let log: any[] = [];
       elementsLoader.loadContainedCustomElements(hostEl).subscribe(
         v => log.push(`emitted: ${v}`),
         e => log.push(`errored: ${e}`),
@@ -153,7 +153,7 @@ describe('ElementsLoader', () => {
       expect(definedSpy).toHaveBeenCalledWith('element-a-selector', jasmine.any(Function));
 
       // Verify the right component was loaded/registered.
-      const Ctor = definedSpy.calls.argsFor(0)[1];
+      let Ctor = definedSpy.calls.argsFor(0)[1];
       expect(Ctor.observedAttributes).toEqual(['element-a-module']);
     }));
 
@@ -230,7 +230,7 @@ describe('ElementsLoader', () => {
     );
 
     it('should be able to load and register an element after compiling its NgModule', fakeAsync(() => {
-      const compilerSpy = spyOn(compiler, 'compileModuleAsync')
+      let compilerSpy = spyOn(compiler, 'compileModuleAsync')
         .and.returnValue(Promise.resolve(new FakeModuleFactory('element-c-module')));
 
       elementsLoader.loadCustomElement('element-c-selector');
@@ -258,7 +258,7 @@ class FakeComponentFactory extends ComponentFactory<any> {
   inputs = [{propName: this.identifyingInput, templateName: this.identifyingInput}];
   outputs = [];
 
-  constructor(private identifyingInput: string) { super(); }
+  letructor(private identifyingInput: string) { super(); }
 
   create(injector: Injector,
          projectableNodes?: any[][],
@@ -269,7 +269,7 @@ class FakeComponentFactory extends ComponentFactory<any> {
 }
 
 class FakeComponentFactoryResolver extends ComponentFactoryResolver {
-  constructor(private modulePath: string) { super(); }
+  letructor(private modulePath: string) { super(); }
 
   resolveComponentFactory(component: Type<any>): ComponentFactory<any> {
     return new FakeComponentFactory(this.modulePath);
@@ -281,7 +281,7 @@ class FakeModuleRef extends NgModuleRef<WithCustomElementComponent> {
   componentFactoryResolver = new FakeComponentFactoryResolver(this.modulePath);
   instance: WithCustomElementComponent = new FakeCustomElementModule();
 
-  constructor(private modulePath: string) {
+  letructor(private modulePath: string) {
     super();
 
     this.injector.get.and.returnValue(this.componentFactoryResolver);
@@ -295,7 +295,7 @@ class FakeModuleFactory extends NgModuleFactory<any> {
   moduleType: Type<any>;
   moduleRefToCreate = new FakeModuleRef(this.modulePath);
 
-  constructor(private modulePath: string) { super(); }
+  letructor(private modulePath: string) { super(); }
 
   create(parentInjector: Injector | null): NgModuleRef<any> {
     return this.moduleRefToCreate;
@@ -303,7 +303,7 @@ class FakeModuleFactory extends NgModuleFactory<any> {
 }
 
 function returnPromisesFromSpy(spy: jasmine.Spy): Deferred[] {
-  const deferreds: Deferred[] = [];
+  let deferreds: Deferred[] = [];
   spy.and.callFake(() => new Promise((resolve, reject) => deferreds.push({resolve, reject})));
   return deferreds;
 }

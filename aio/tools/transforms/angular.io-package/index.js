@@ -5,14 +5,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const Package = require('dgeni').Package;
-const gitPackage = require('dgeni-packages/git');
-const apiPackage = require('../angular-api-package');
-const contentPackage = require('../angular-content-package');
-const cliDocsPackage = require('../cli-docs-package');
-const { extname, resolve } = require('canonical-path');
-const { existsSync } = require('fs');
-const { SRC_PATH } = require('../config');
+let Package = require('dgeni').Package;
+let gitPackage = require('dgeni-packages/git');
+let apiPackage = require('../angular-api-package');
+let contentPackage = require('../angular-content-package');
+let cliDocsPackage = require('../cli-docs-package');
+let { extname, resolve } = require('canonical-path');
+let { existsSync } = require('fs');
+let { SRC_PATH } = require('../config');
 
 module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPackage, cliDocsPackage])
 

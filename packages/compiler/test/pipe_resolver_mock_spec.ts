@@ -22,13 +22,13 @@ import {MockPipeResolver} from '../testing';
 
     describe('Pipe overriding', () => {
       it('should fallback to the default PipeResolver when templates are not overridden', () => {
-        const pipe = pipeResolver.resolve(SomePipe);
+        let pipe = pipeResolver.resolve(SomePipe);
         expect(pipe.name).toEqual('somePipe');
       });
 
       it('should allow overriding the @Pipe', () => {
         pipeResolver.setPipe(SomePipe, new Pipe({name: 'someOtherName'}));
-        const pipe = pipeResolver.resolve(SomePipe);
+        let pipe = pipeResolver.resolve(SomePipe);
         expect(pipe.name).toEqual('someOtherName');
       });
     });

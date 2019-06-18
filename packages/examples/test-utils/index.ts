@@ -13,11 +13,11 @@ declare var expect: any;
 
 // TODO (juliemr): remove this method once this becomes a protractor plugin
 export async function verifyNoBrowserErrors() {
-  const browserLog = await browser.manage().logs().get('browser');
-  const collectedErrors: any[] = [];
+  let browserLog = await browser.manage().logs().get('browser');
+  let collectedErrors: any[] = [];
 
   browserLog.forEach(logEntry => {
-    const msg = logEntry.message;
+    let msg = logEntry.message;
 
     // Since we currently use the `ts_devserver` from the Bazel TypeScript rules, which does
     // fallback to the "index.html" file for HTML5 pushState routing but does always serve the

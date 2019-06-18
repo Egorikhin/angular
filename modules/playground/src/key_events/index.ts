@@ -43,8 +43,8 @@ export class KeyEventsApp {
    * @see KeyEventsPlugin.getEventFullKey
    */
   private static _getEventFullKey(event: KeyboardEvent): string {
-    const modifierKeys = ['alt', 'control', 'meta', 'shift'];
-    const modifierKeyGetters: {[key: string]: (event: KeyboardEvent) => boolean} = {
+    let modifierKeys = ['alt', 'control', 'meta', 'shift'];
+    let modifierKeyGetters: {[key: string]: (event: KeyboardEvent) => boolean} = {
       'alt': (event: KeyboardEvent) => event.altKey,
       'control': (event: KeyboardEvent) => event.ctrlKey,
       'meta': (event: KeyboardEvent) => event.metaKey,
@@ -60,7 +60,7 @@ export class KeyEventsApp {
     }
     modifierKeys.forEach(modifierName => {
       if (modifierName != key) {
-        const modifierGetter = modifierKeyGetters[modifierName];
+        let modifierGetter = modifierKeyGetters[modifierName];
         if (modifierGetter(event)) {
           fullKey += modifierName + '.';
         }

@@ -25,30 +25,30 @@ export type FormattedError = Error & {
   position?: Position;
 };
 
-const FORMATTED_MESSAGE = 'ngFormattedMessage';
+let FORMATTED_MESSAGE = 'ngFormattedMessage';
 
 function indentStr(level: number): string {
   if (level <= 0) return '';
   if (level < 6) return ['', ' ', '  ', '   ', '    ', '     '][level];
-  const half = indentStr(Math.floor(level / 2));
+  let half = indentStr(Math.floor(level / 2));
   return half + half + (level % 2 === 1 ? ' ' : '');
 }
 
 function formatChain(chain: FormattedMessageChain | undefined, indent: number = 0): string {
   if (!chain) return '';
-  const position = chain.position ?
+  let position = chain.position ?
       `${chain.position.fileName}(${chain.position.line+1},${chain.position.column+1})` :
       '';
-  const prefix = position && indent === 0 ? `${position}: ` : '';
-  const postfix = position && indent !== 0 ? ` at ${position}` : '';
-  const message = `${prefix}${chain.message}${postfix}`;
+  let prefix = position && indent === 0 ? `${position}: ` : '';
+  let postfix = position && indent !== 0 ? ` at ${position}` : '';
+  let message = `${prefix}${chain.message}${postfix}`;
 
   return `${indentStr(indent)}${message}${(chain.next && ('\n' + formatChain(chain.next, indent + 2))) || ''}`;
 }
 
 export function formattedError(chain: FormattedMessageChain): FormattedError {
-  const message = formatChain(chain) + '.';
-  const error = syntaxError(message) as FormattedError;
+  let message = formatChain(chain) + '.';
+  let error = syntaxError(message) as FormattedError;
   (error as any)[FORMATTED_MESSAGE] = true;
   error.chain = chain;
   error.position = chain.position;

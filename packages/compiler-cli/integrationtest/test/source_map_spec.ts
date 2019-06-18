@@ -13,14 +13,14 @@ import {createComponent} from './util';
 // TODO(tbosch): source maps does not currently work with the transformer pipeline
 xdescribe('source maps', () => {
   it('should report source location for binding errors', () => {
-    const comp = createComponent(BindingErrorComp);
+    let comp = createComponent(BindingErrorComp);
     let error: any;
     try {
       comp.detectChanges();
     } catch (e) {
       error = e;
     }
-    const sourcePosition = getSourcePositionForStack(error.stack);
+    let sourcePosition = getSourcePositionForStack(error.stack);
     expect(sourcePosition.line).toBe(2);
     expect(sourcePosition.column).toBe(13);
     expect(sourcePosition.source.endsWith('errors.html')).toBe(true);
@@ -28,7 +28,7 @@ xdescribe('source maps', () => {
 });
 
 function getSourcePositionForStack(stack: string): {source: string, line: number, column: number} {
-  const htmlLocations = stack
+  let htmlLocations = stack
                             .split('\n')
                             // e.g. at View_MyComp_0 (...html:153:40)
                             .map(line => /\((.*\.html):(\d+):(\d+)/.exec(line) !)

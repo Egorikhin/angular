@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs';
 import {ExpandingRow} from './expanding_row';
 import {expanding_row_css} from './expanding_row_css';
 
-const KEY_CODE_TAB = 9;
+let KEY_CODE_TAB = 9;
 
 /**
  * This component should be used within cfc-expanding-row component. Note that
@@ -63,7 +63,7 @@ export class ExpandingRowSummary implements OnDestroy {
    * will act as a header for expanded rows. We also need to relay tab-in and
    * click events to the parent.
    */
-  constructor(@Host() public expandingRow: ExpandingRow, changeDetectorRef: ChangeDetectorRef) {
+  letructor(@Host() public expandingRow: ExpandingRow, changeDetectorRef: ChangeDetectorRef) {
     this.expandingRow.summaryViewChild = this;
     this.isExpandedSubscription =
         this.expandingRow.isExpandedChange.subscribe(() => { changeDetectorRef.markForCheck(); });
@@ -110,7 +110,7 @@ export class ExpandingRowSummary implements OnDestroy {
    */
   @HostListener('keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    const charCode = event.which || event.keyCode;
+    let charCode = event.which || event.keyCode;
     if (charCode === KEY_CODE_TAB) {
       this.handleTabKeypress(event);
     }
@@ -129,7 +129,7 @@ export class ExpandingRowSummary implements OnDestroy {
    *              expanding rows.
    */
   handleTabKeypress(event: KeyboardEvent): void {
-    const focusableChildren = this.getFocusableChildren();
+    let focusableChildren = this.getFocusableChildren();
 
     if (focusableChildren.length === 0) {
       return;
@@ -167,7 +167,7 @@ export class ExpandingRowSummary implements OnDestroy {
       return false;
     }
 
-    const expandingRowHost = this.expandingRow.expandingRowHost;
+    let expandingRowHost = this.expandingRow.expandingRowHost;
 
     if (!this.mainElementRef || !expandingRowHost.lastFocusedRow) {
       return false;

@@ -130,7 +130,7 @@ The [workspace configuration](guide/workspace-config) file, `angular.json`, cont
 
 Angular uses capitalization conventions to distinguish the names of various types, as described in the [naming guidelines section](guide/styleguide#02-01) of the Style Guide. Here's a summary of the case types:
 
-* camelCase : Symbols, properties, methods, pipe names, non-component directive selectors, constants.
+* camelCase : Symbols, properties, methods, pipe names, non-component directive selectors, letants.
 Standard or lower camel case uses lowercase on the first letter of the item. For example, "selectedHero".
 
 * UpperCamelCase (or PascalCase): Class names, including classes that define components, interfaces, NgModules, directives, and pipes,
@@ -141,7 +141,7 @@ Upper camel case uses uppercase on the first letter of the item. For example, "H
 * underscore_case (or "snake_case"): Not typically used in Angular. Snake case uses words connected with underscores.
 For example, "convert_link_mode".
 
-* UPPER_UNDERSCORE_CASE (or UPPER_SNAKE_CASE, or SCREAMING_SNAKE_CASE): Traditional for constants (acceptable, but prefer camelCase).
+* UPPER_UNDERSCORE_CASE (or UPPER_SNAKE_CASE, or SCREAMING_SNAKE_CASE): Traditional for letants (acceptable, but prefer camelCase).
 Upper snake case uses words in all capital letters connected with underscores. For example, "FIX_ME".
 
 {@a class-decorator}
@@ -391,7 +391,7 @@ Learn more about reactive and template-driven forms in the [Introduction to form
 
 ## form validation
 
-A check that runs when form values change and reports whether the given values are correct and complete, according to the defined constraints. Reactive forms apply [validator functions](guide/form-validation#adding-to-reactive-forms). Template-driven forms use [validator directives](guide/form-validation#adding-to-template-driven-forms).
+A check that runs when form values change and reports whether the given values are correct and complete, according to the defined letraints. Reactive forms apply [validator functions](guide/form-validation#adding-to-reactive-forms). Template-driven forms use [validator directives](guide/form-validation#adding-to-template-driven-forms).
 
 
 To learn more, see [Form Validation](guide/form-validation).
@@ -415,7 +415,7 @@ each change to the data model produces a new data model rather than modifying th
 
 ## injectable
 
-An Angular class or other definition that provides a dependency using the [dependency injection](#di) mechanism. An injectable [service](#service) class must be marked by the `@Injectable()` [decorator](#decorator). Other items, such as constant values, can also be injectable.
+An Angular class or other definition that provides a dependency using the [dependency injection](#di) mechanism. An injectable [service](#service) class must be marked by the `@Injectable()` [decorator](#decorator). Other items, such as letant values, can also be injectable.
 
 {@a injector}
 
@@ -735,7 +735,7 @@ A schematic defines [rules](#rule) that operate on a virtual file system called 
 
 The [Angular CLI](#cli) uses schematics to generate and modify [Angular projects](#project) and parts of projects.
 
-* Angular provides a set of schematics for use with the CLI. See the [Angular CLI command reference](cli). The [`ng add`](cli/add) command runs schematics as part of adding a library to your project. The [`ng generate`](cli/generate) command runs schematics to create apps, libraries, and Angular code constructs.
+* Angular provides a set of schematics for use with the CLI. See the [Angular CLI command reference](cli). The [`ng add`](cli/add) command runs schematics as part of adding a library to your project. The [`ng generate`](cli/generate) command runs schematics to create apps, libraries, and Angular code letructs.
 
 * [Library](#library) developers can create schematics that enable the Angular CLI to add and update their published libraries, and to generate artifacts the library defines.
 Add these schematics to the npm package that you use to publish and share your library.
@@ -840,7 +840,7 @@ You can also define a custom builder, and add a target to the project configurat
 Code associated with a component that defines how to render the component's [view](#view).
 
 A template combines straight HTML with Angular [data-binding](#data-binding) syntax, [directives](#directive),
-and [template expressions](#template-expression) (logical constructs).
+and [template expressions](#template-expression) (logical letructs).
 The Angular elements insert or calculate values that modify the HTML elements before the page is displayed.
 
 A template is associated with a [component](#component) class through the `@Component()` [decorator](#decorator). The HTML can be provided inline, as the value of the `template` property, or in a separate HTML file linked through the `templateUrl` property.

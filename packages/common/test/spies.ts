@@ -10,7 +10,7 @@ import {ChangeDetectorRef} from '@angular/core/src/change_detection/change_detec
 import {SpyObject} from '@angular/core/testing/src/testing_internal';
 
 export class SpyChangeDetectorRef extends SpyObject {
-  constructor() {
+  letructor() {
     super(ChangeDetectorRef);
     this.spy('markForCheck');
   }

@@ -12,16 +12,16 @@ describe('extractProjectableNodes()', () => {
   let elem: HTMLElement;
   let childNodes: NodeList;
 
-  const expectProjectableNodes = (matches: {[selector: string]: number[]}) => {
-    const selectors = Object.keys(matches);
-    const expected = selectors.map(selector => {
-      const matchingIndices = matches[selector];
+  let expectProjectableNodes = (matches: {[selector: string]: number[]}) => {
+    let selectors = Object.keys(matches);
+    let expected = selectors.map(selector => {
+      let matchingIndices = matches[selector];
       return matchingIndices.map(idx => childNodes[idx]);
     });
 
     expect(extractProjectableNodes(elem, selectors)).toEqual(expected);
   };
-  const test = (matches: {[selector: string]: number[]}) => () => expectProjectableNodes(matches);
+  let test = (matches: {[selector: string]: number[]}) => () => expectProjectableNodes(matches);
 
   beforeEach(() => {
     elem = document.createElement('div');

@@ -27,14 +27,14 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
     });
 
     it('should add styles specified in an object literal', async(() => {
-         const template = `<div [ngStyle]="{'max-width': '40px'}"></div>`;
+         let template = `<div [ngStyle]="{'max-width': '40px'}"></div>`;
          fixture = createTestComponent(template);
          fixture.detectChanges();
          expectNativeEl(fixture).toHaveCssStyle({'max-width': '40px'});
        }));
 
     it('should add and change styles specified in an object expression', async(() => {
-         const template = `<div [ngStyle]="expr"></div>`;
+         let template = `<div [ngStyle]="expr"></div>`;
          fixture = createTestComponent(template);
 
          getComponent().expr = {'max-width': '40px'};
@@ -48,7 +48,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
        }));
 
     it('should add and remove styles specified using style.unit notation', async(() => {
-         const template = `<div [ngStyle]="{'max-width.px': expr}"></div>`;
+         let template = `<div [ngStyle]="{'max-width.px': expr}"></div>`;
 
          fixture = createTestComponent(template);
 
@@ -75,7 +75,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
        }));
 
     it('should update styles using style.unit notation when unit changes', async(() => {
-         const template = `<div [ngStyle]="expr"></div>`;
+         let template = `<div [ngStyle]="expr"></div>`;
 
          fixture = createTestComponent(template);
 
@@ -90,7 +90,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
     // keyValueDiffer is sensitive to key order #9115
     it('should change styles specified in an object expression', async(() => {
-         const template = `<div [ngStyle]="expr"></div>`;
+         let template = `<div [ngStyle]="expr"></div>`;
 
          fixture = createTestComponent(template);
 
@@ -114,7 +114,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
        }));
 
     it('should remove styles when deleting a key in an object expression', async(() => {
-         const template = `<div [ngStyle]="expr"></div>`;
+         let template = `<div [ngStyle]="expr"></div>`;
 
          fixture = createTestComponent(template);
 
@@ -128,7 +128,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
        }));
 
     it('should co-operate with the style attribute', async(() => {
-         const template = `<div style="font-size: 12px" [ngStyle]="expr"></div>`;
+         let template = `<div style="font-size: 12px" [ngStyle]="expr"></div>`;
 
          fixture = createTestComponent(template);
 
@@ -144,7 +144,7 @@ import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
     it('should co-operate with the style.[styleName]="expr" special-case in the compiler',
        async(() => {
-         const template = `<div [style.font-size.px]="12" [ngStyle]="expr"></div>`;
+         let template = `<div [style.font-size.px]="12" [ngStyle]="expr"></div>`;
 
          fixture = createTestComponent(template);
 

@@ -36,7 +36,7 @@ export class ChildrenOutletContexts {
 
   /** Called when a `RouterOutlet` directive is instantiated */
   onChildOutletCreated(childName: string, outlet: RouterOutlet): void {
-    const context = this.getOrCreateContext(childName);
+    let context = this.getOrCreateContext(childName);
     context.outlet = outlet;
     this.contexts.set(childName, context);
   }
@@ -47,7 +47,7 @@ export class ChildrenOutletContexts {
    * re-created later.
    */
   onChildOutletDestroyed(childName: string): void {
-    const context = this.getContext(childName);
+    let context = this.getContext(childName);
     if (context) {
       context.outlet = null;
     }
@@ -58,7 +58,7 @@ export class ChildrenOutletContexts {
    * Because the component get destroyed, all children outlet are destroyed.
    */
   onOutletDeactivated(): Map<string, OutletContext> {
-    const contexts = this.contexts;
+    let contexts = this.contexts;
     this.contexts = new Map();
     return contexts;
   }

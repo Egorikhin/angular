@@ -56,7 +56,7 @@ class AsyncApplication {
   multiDelayedIncrements(i: number): void {
     this.cancelMultiDelayedIncrements();
 
-    const self = this;
+    let self = this;
     function helper(_i: number) {
       if (_i <= 0) {
         self.multiTimeoutId = null;

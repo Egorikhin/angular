@@ -13,9 +13,9 @@ import * as ts from 'typescript';
 import {Symbol, SymbolExtractor} from './symbol_extractor';
 
 describe('scenarios', () => {
-  const symbolExtractorSpecDir = path.dirname(
+  let symbolExtractorSpecDir = path.dirname(
       require.resolve('angular/tools/symbol-extractor/symbol_extractor_spec/empty.json'));
-  const scenarioFiles = fs.readdirSync(symbolExtractorSpecDir);
+  let scenarioFiles = fs.readdirSync(symbolExtractorSpecDir);
   for (let i = 0; i < scenarioFiles.length; i = i + 2) {
     let jsFile = scenarioFiles[i];
     let jsonFile = scenarioFiles[i + 1];
@@ -27,11 +27,11 @@ describe('scenarios', () => {
     // if (testName !== 'hello_world_min_debug') continue;
 
     it(testName, () => {
-      const jsFileContent = fs.readFileSync(path.join(symbolExtractorSpecDir, jsFile)).toString();
-      const jsonFileContent =
+      let jsFileContent = fs.readFileSync(path.join(symbolExtractorSpecDir, jsFile)).toString();
+      let jsonFileContent =
           fs.readFileSync(path.join(symbolExtractorSpecDir, jsonFile)).toString();
-      const symbols = SymbolExtractor.parse(testName, jsFileContent);
-      const diff = SymbolExtractor.diff(symbols, jsonFileContent);
+      let symbols = SymbolExtractor.parse(testName, jsFileContent);
+      let diff = SymbolExtractor.diff(symbols, jsonFileContent);
       expect(diff).toEqual({});
     });
   }

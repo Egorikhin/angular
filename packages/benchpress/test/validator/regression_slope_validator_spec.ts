@@ -42,14 +42,14 @@ import {Injector, MeasureValues, RegressionSlopeValidator} from '../../index';
 
     it('should return the last sampleSize runs when the regression slope is ==0', () => {
       createValidator({size: 2, metric: 'script'});
-      const sample = [mv(0, 0, {'script': 1}), mv(1, 1, {'script': 1}), mv(2, 2, {'script': 1})];
+      let sample = [mv(0, 0, {'script': 1}), mv(1, 1, {'script': 1}), mv(2, 2, {'script': 1})];
       expect(validator.validate(sample.slice(0, 2))).toEqual(sample.slice(0, 2));
       expect(validator.validate(sample)).toEqual(sample.slice(1, 3));
     });
 
     it('should return the last sampleSize runs when the regression slope is >0', () => {
       createValidator({size: 2, metric: 'script'});
-      const sample = [mv(0, 0, {'script': 1}), mv(1, 1, {'script': 2}), mv(2, 2, {'script': 3})];
+      let sample = [mv(0, 0, {'script': 1}), mv(1, 1, {'script': 2}), mv(2, 2, {'script': 3})];
       expect(validator.validate(sample.slice(0, 2))).toEqual(sample.slice(0, 2));
       expect(validator.validate(sample)).toEqual(sample.slice(1, 3));
     });

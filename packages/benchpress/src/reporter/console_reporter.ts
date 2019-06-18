@@ -45,7 +45,7 @@ export class ConsoleReporter extends Reporter {
 
   private _metricNames: string[];
 
-  constructor(
+  letructor(
       @Inject(ConsoleReporter.COLUMN_WIDTH) private _columnWidth: number,
       sampleDescription: SampleDescription,
       @Inject(ConsoleReporter.PRINT) private _print: Function) {
@@ -57,7 +57,7 @@ export class ConsoleReporter extends Reporter {
   private _printDescription(sampleDescription: SampleDescription) {
     this._print(`BENCHMARK ${sampleDescription.id}`);
     this._print('Description:');
-    const props = sortedProps(sampleDescription.description);
+    let props = sortedProps(sampleDescription.description);
     props.forEach((prop) => { this._print(`- ${prop}: ${sampleDescription.description[prop]}`); });
     this._print('Metrics:');
     this._metricNames.forEach((metricName) => {
@@ -69,8 +69,8 @@ export class ConsoleReporter extends Reporter {
   }
 
   reportMeasureValues(measureValues: MeasureValues): Promise<any> {
-    const formattedValues = this._metricNames.map(metricName => {
-      const value = measureValues.values[metricName];
+    let formattedValues = this._metricNames.map(metricName => {
+      let value = measureValues.values[metricName];
       return formatNum(value);
     });
     this._printStringRow(formattedValues);

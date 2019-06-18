@@ -14,7 +14,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
 (function() {
   let commandLog: any[];
-  const eventFactory = new TraceEventFactory('timeline', 'pid0');
+  let eventFactory = new TraceEventFactory('timeline', 'pid0');
 
   function createMetric(
       perfLogs: PerfLogEvent[], perfLogFeatures: PerfLogFeatures,
@@ -34,7 +34,7 @@ import {TraceEventFactory} from '../trace_event_factory';
     if (!microMetrics) {
       microMetrics = {};
     }
-    const providers: StaticProvider[] = [
+    let providers: StaticProvider[] = [
       Options.DEFAULT_PROVIDERS, PerflogMetric.PROVIDERS,
       {provide: Options.MICRO_METRICS, useValue: microMetrics}, {
         provide: PerflogMetric.SET_TIMEOUT,
@@ -69,7 +69,7 @@ import {TraceEventFactory} from '../trace_event_factory';
   describe('perflog metric', () => {
 
     function sortedKeys(stringMap: {[key: string]: any}) {
-      const res: string[] = [];
+      let res: string[] = [];
       res.push(...Object.keys(stringMap));
       res.sort();
       return res;
@@ -105,13 +105,13 @@ import {TraceEventFactory} from '../trace_event_factory';
     });
 
     it('should describe itself based on micro metrics', () => {
-      const description =
+      let description =
           createMetric([[]], null !, {microMetrics: {'myMicroMetric': 'someDesc'}}).describe();
       expect(description['myMicroMetric']).toEqual('someDesc');
     });
 
     it('should describe itself if frame capture is requested and available', () => {
-      const description = createMetric([[]], new PerfLogFeatures({frameCapture: true}), {
+      let description = createMetric([[]], new PerfLogFeatures({frameCapture: true}), {
                             captureFrames: true
                           }).describe();
       expect(description['frameTime.mean']).not.toContain('WARNING');
@@ -121,7 +121,7 @@ import {TraceEventFactory} from '../trace_event_factory';
     });
 
     it('should describe itself if frame capture is requested and not available', () => {
-      const description = createMetric([[]], new PerfLogFeatures({frameCapture: false}), {
+      let description = createMetric([[]], new PerfLogFeatures({frameCapture: false}), {
                             captureFrames: true
                           }).describe();
       expect(description['frameTime.mean']).toContain('WARNING');
@@ -134,7 +134,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should not force gc and mark the timeline',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const metric = createMetric([[]], null !);
+           let metric = createMetric([[]], null !);
            metric.beginMeasure().then((_) => {
              expect(commandLog).toEqual([['timeBegin', 'benchpress0']]);
 
@@ -144,7 +144,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should force gc and mark the timeline',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const metric = createMetric([[]], null !, {forceGc: true});
+           let metric = createMetric([[]], null !, {forceGc: true});
            metric.beginMeasure().then((_) => {
              expect(commandLog).toEqual([['gc'], ['timeBegin', 'benchpress0']]);
 
@@ -158,11 +158,11 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should mark and aggregate events in between the marks',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const events = [[
+           let events = [[
              eventFactory.markStart('benchpress0', 0), eventFactory.start('script', 4),
              eventFactory.end('script', 6), eventFactory.markEnd('benchpress0', 10)
            ]];
-           const metric = createMetric(events, null !);
+           let metric = createMetric(events, null !);
            metric.beginMeasure().then((_) => metric.endMeasure(false)).then((data) => {
              expect(commandLog).toEqual([
                ['timeBegin', 'benchpress0'], ['timeEnd', 'benchpress0', null], 'readPerfLog'
@@ -175,13 +175,13 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should mark and aggregate events since navigationStart',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const events = [[
+           let events = [[
              eventFactory.markStart('benchpress0', 0), eventFactory.start('script', 4),
              eventFactory.end('script', 6), eventFactory.instant('navigationStart', 7),
              eventFactory.start('script', 8), eventFactory.end('script', 9),
              eventFactory.markEnd('benchpress0', 10)
            ]];
-           const metric = createMetric(events, null !);
+           let metric = createMetric(events, null !);
            metric.beginMeasure().then((_) => metric.endMeasure(false)).then((data) => {
              expect(data['scriptTime']).toBe(1);
 
@@ -191,13 +191,13 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should ignore navigationStart if ignoreNavigation is set',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const events = [[
+           let events = [[
              eventFactory.markStart('benchpress0', 0), eventFactory.start('script', 4),
              eventFactory.end('script', 6), eventFactory.instant('navigationStart', 7),
              eventFactory.start('script', 8), eventFactory.end('script', 9),
              eventFactory.markEnd('benchpress0', 10)
            ]];
-           const metric = createMetric(events, null !, {ignoreNavigation: true});
+           let metric = createMetric(events, null !, {ignoreNavigation: true});
            metric.beginMeasure().then((_) => metric.endMeasure(false)).then((data) => {
              expect(data['scriptTime']).toBe(3);
 
@@ -206,7 +206,7 @@ import {TraceEventFactory} from '../trace_event_factory';
          }));
 
       it('should restart timing', inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const events = [
+           let events = [
              [
                eventFactory.markStart('benchpress0', 0),
                eventFactory.markEnd('benchpress0', 1),
@@ -214,7 +214,7 @@ import {TraceEventFactory} from '../trace_event_factory';
              ],
              [eventFactory.markEnd('benchpress1', 3)]
            ];
-           const metric = createMetric(events, null !);
+           let metric = createMetric(events, null !);
            metric.beginMeasure()
                .then((_) => metric.endMeasure(true))
                .then((_) => metric.endMeasure(true))
@@ -230,7 +230,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should loop and aggregate until the end mark is present',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const events = [
+           let events = [
              [eventFactory.markStart('benchpress0', 0), eventFactory.start('script', 1)],
              [eventFactory.end('script', 2)],
              [
@@ -238,7 +238,7 @@ import {TraceEventFactory} from '../trace_event_factory';
                eventFactory.markEnd('benchpress0', 10)
              ]
            ];
-           const metric = createMetric(events, null !);
+           let metric = createMetric(events, null !);
            metric.beginMeasure().then((_) => metric.endMeasure(false)).then((data) => {
              expect(commandLog).toEqual([
                ['timeBegin', 'benchpress0'], ['timeEnd', 'benchpress0', null], 'readPerfLog',
@@ -252,7 +252,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should store events after the end mark for the next call',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const events = [
+           let events = [
              [
                eventFactory.markStart('benchpress0', 0), eventFactory.markEnd('benchpress0', 1),
                eventFactory.markStart('benchpress1', 1), eventFactory.start('script', 1),
@@ -263,7 +263,7 @@ import {TraceEventFactory} from '../trace_event_factory';
                eventFactory.markEnd('benchpress1', 6)
              ]
            ];
-           const metric = createMetric(events, null !);
+           let metric = createMetric(events, null !);
            metric.beginMeasure()
                .then((_) => metric.endMeasure(true))
                .then((data) => {
@@ -295,7 +295,7 @@ import {TraceEventFactory} from '../trace_event_factory';
         });
 
         it('should measure forced gc', inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-             const metric = createMetric(events, null !, {forceGc: true});
+             let metric = createMetric(events, null !, {forceGc: true});
              metric.beginMeasure().then((_) => metric.endMeasure(false)).then((data) => {
                expect(commandLog).toEqual([
                  ['gc'], ['timeBegin', 'benchpress0'], ['timeEnd', 'benchpress0', 'benchpress1'],
@@ -310,7 +310,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
         it('should restart after the forced gc if needed',
            inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-             const metric = createMetric(events, null !, {forceGc: true});
+             let metric = createMetric(events, null !, {forceGc: true});
              metric.beginMeasure().then((_) => metric.endMeasure(true)).then((data) => {
                expect(commandLog[5]).toEqual(['timeEnd', 'benchpress1', 'benchpress2']);
 
@@ -332,7 +332,7 @@ import {TraceEventFactory} from '../trace_event_factory';
       } = {}) {
         events.unshift(eventFactory.markStart('benchpress0', 0));
         events.push(eventFactory.markEnd('benchpress0', 10));
-        const metric = createMetric([events], null !, {
+        let metric = createMetric([events], null !, {
           microMetrics: microMetrics,
           captureFrames: captureFrames,
           receivedData: receivedData,
@@ -521,8 +521,8 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should ignore events from different processed as the start mark',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const otherProcessEventFactory = new TraceEventFactory('timeline', 'pid1');
-           const metric = createMetric(
+           let otherProcessEventFactory = new TraceEventFactory('timeline', 'pid1');
+           let metric = createMetric(
                [[
                  eventFactory.markStart('benchpress0', 0), eventFactory.start('script', 0, null),
                  eventFactory.end('script', 5, null),
@@ -539,8 +539,8 @@ import {TraceEventFactory} from '../trace_event_factory';
 
       it('should mark a run as invalid if the start and end marks are different',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const otherProcessEventFactory = new TraceEventFactory('timeline', 'pid1');
-           const metric = createMetric(
+           let otherProcessEventFactory = new TraceEventFactory('timeline', 'pid1');
+           let metric = createMetric(
                [[
                  eventFactory.markStart('benchpress0', 0), eventFactory.start('script', 0, null),
                  eventFactory.end('script', 5, null),
@@ -701,7 +701,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 })();
 
 class MockDriverExtension extends WebDriverExtension {
-  constructor(
+  letructor(
       private _perfLogs: any[], private _commandLog: any[],
       private _perfLogFeatures: PerfLogFeatures) {
     super();
@@ -722,7 +722,7 @@ class MockDriverExtension extends WebDriverExtension {
   readPerfLog(): Promise<any> {
     this._commandLog.push('readPerfLog');
     if (this._perfLogs.length > 0) {
-      const next = this._perfLogs[0];
+      let next = this._perfLogs[0];
       this._perfLogs.shift();
       return Promise.resolve(next);
     } else {

@@ -9,7 +9,7 @@
 import {getIntParameter} from '../util';
 
 export class TableCell {
-  constructor(public row: number, public col: number, public value: string) {}
+  letructor(public row: number, public col: number, public value: string) {}
 }
 
 let tableCreateCount: number;
@@ -27,9 +27,9 @@ function init() {
   numberData = [];
   charData = [];
   for (let r = 0; r <= maxRow; r++) {
-    const numberRow: TableCell[] = [];
+    let numberRow: TableCell[] = [];
     numberData.push(numberRow);
-    const charRow: TableCell[] = [];
+    let charRow: TableCell[] = [];
     charData.push(charRow);
     for (let c = 0; c <= maxCol; c++) {
       numberRow.push(new TableCell(r, c, `${c}/${r}`));
@@ -42,7 +42,7 @@ function charValue(i: number): string {
   return String.fromCharCode('A'.charCodeAt(0) + (i % 26));
 }
 
-export const emptyTable: TableCell[][] = [];
+export let emptyTable: TableCell[][] = [];
 
 export function buildTable(): TableCell[][] {
   tableCreateCount++;

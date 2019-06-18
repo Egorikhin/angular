@@ -11,16 +11,16 @@ import {locateSymbol} from './locate_symbol';
 import {Hover, HoverTextSection, Symbol} from './types';
 
 export function getHover(info: TemplateInfo): Hover|undefined {
-  const result = locateSymbol(info);
+  let result = locateSymbol(info);
   if (result) {
     return {text: hoverTextOf(result.symbol), span: result.span};
   }
 }
 
 function hoverTextOf(symbol: Symbol): HoverTextSection[] {
-  const result: HoverTextSection[] =
+  let result: HoverTextSection[] =
       [{text: symbol.kind}, {text: ' '}, {text: symbol.name, language: symbol.language}];
-  const container = symbol.container;
+  let container = symbol.container;
   if (container) {
     result.push({text: ' of '}, {text: container.name, language: container.language});
   }

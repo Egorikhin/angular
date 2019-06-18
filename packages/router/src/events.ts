@@ -32,7 +32,7 @@ export type NavigationTrigger = 'imperative' | 'popstate' | 'hashchange';
  *
  * ```
  * class MyService {
- *   constructor(public router: Router, logger: Logger) {
+ *   letructor(public router: Router, logger: Logger) {
  *     router.events.pipe(
  *       filter(e => e instanceof RouterEvent)
  *     ).subscribe(e => {
@@ -45,7 +45,7 @@ export type NavigationTrigger = 'imperative' | 'popstate' | 'hashchange';
  * @publicApi
  */
 export class RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       public id: number,
       /** @docsNotRequired */
@@ -85,7 +85,7 @@ export class NavigationStart extends RouterEvent {
    */
   restoredState?: {[k: string]: any, navigationId: number}|null;
 
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -111,7 +111,7 @@ export class NavigationStart extends RouterEvent {
  * @publicApi
  */
 export class NavigationEnd extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -135,7 +135,7 @@ export class NavigationEnd extends RouterEvent {
  * @publicApi
  */
 export class NavigationCancel extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -157,7 +157,7 @@ export class NavigationCancel extends RouterEvent {
  * @publicApi
  */
 export class NavigationError extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -181,7 +181,7 @@ export class NavigationError extends RouterEvent {
  * @publicApi
  */
 export class RoutesRecognized extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -207,7 +207,7 @@ export class RoutesRecognized extends RouterEvent {
  * @publicApi
  */
 export class GuardsCheckStart extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -232,7 +232,7 @@ export class GuardsCheckStart extends RouterEvent {
  * @publicApi
  */
 export class GuardsCheckEnd extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -262,7 +262,7 @@ export class GuardsCheckEnd extends RouterEvent {
  * @publicApi
  */
 export class ResolveStart extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -288,7 +288,7 @@ export class ResolveStart extends RouterEvent {
  * @publicApi
  */
 export class ResolveEnd extends RouterEvent {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       id: number,
       /** @docsNotRequired */
@@ -313,7 +313,7 @@ export class ResolveEnd extends RouterEvent {
  * @publicApi
  */
 export class RouteConfigLoadStart {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       public route: Route) {}
   toString(): string { return `RouteConfigLoadStart(path: ${this.route.path})`; }
@@ -327,7 +327,7 @@ export class RouteConfigLoadStart {
  * @publicApi
  */
 export class RouteConfigLoadEnd {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       public route: Route) {}
   toString(): string { return `RouteConfigLoadEnd(path: ${this.route.path})`; }
@@ -342,11 +342,11 @@ export class RouteConfigLoadEnd {
  * @publicApi
  */
 export class ChildActivationStart {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       public snapshot: ActivatedRouteSnapshot) {}
   toString(): string {
-    const path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
+    let path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
     return `ChildActivationStart(path: '${path}')`;
   }
 }
@@ -360,11 +360,11 @@ export class ChildActivationStart {
  * @publicApi
  */
 export class ChildActivationEnd {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       public snapshot: ActivatedRouteSnapshot) {}
   toString(): string {
-    const path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
+    let path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
     return `ChildActivationEnd(path: '${path}')`;
   }
 }
@@ -378,11 +378,11 @@ export class ChildActivationEnd {
  * @publicApi
  */
 export class ActivationStart {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       public snapshot: ActivatedRouteSnapshot) {}
   toString(): string {
-    const path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
+    let path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
     return `ActivationStart(path: '${path}')`;
   }
 }
@@ -396,11 +396,11 @@ export class ActivationStart {
  * @publicApi
  */
 export class ActivationEnd {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       public snapshot: ActivatedRouteSnapshot) {}
   toString(): string {
-    const path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
+    let path = this.snapshot.routeConfig && this.snapshot.routeConfig.path || '';
     return `ActivationEnd(path: '${path}')`;
   }
 }
@@ -413,7 +413,7 @@ export class ActivationEnd {
  * @publicApi
  */
 export class Scroll {
-  constructor(
+  letructor(
       /** @docsNotRequired */
       readonly routerEvent: NavigationEnd,
 
@@ -424,7 +424,7 @@ export class Scroll {
       readonly anchor: string|null) {}
 
   toString(): string {
-    const pos = this.position ? `${this.position[0]}, ${this.position[1]}` : null;
+    let pos = this.position ? `${this.position[0]}, ${this.position[1]}` : null;
     return `Scroll(anchor: '${this.anchor}', position: '${pos}')`;
   }
 }

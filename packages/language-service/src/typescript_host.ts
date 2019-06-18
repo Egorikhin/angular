@@ -23,8 +23,8 @@ import {Declaration, DeclarationError, Declarations, DiagnosticMessageChain, Lan
  */
 export function createLanguageServiceFromTypescript(
     host: ts.LanguageServiceHost, service: ts.LanguageService): LanguageService {
-  const ngHost = new TypeScriptServiceHost(host, service);
-  const ngServer = createLanguageService(ngHost);
+  let ngHost = new TypeScriptServiceHost(host, service);
+  let ngServer = createLanguageService(ngHost);
   ngHost.setSite(ngServer);
   return ngServer;
 }
@@ -84,7 +84,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   private collectedErrors !: Map<string, any[]>| null;
   private fileVersions = new Map<string, string>();
 
-  constructor(private host: ts.LanguageServiceHost, private tsService: ts.LanguageService) {}
+  letructor(private host: ts.LanguageServiceHost, private tsService: ts.LanguageService) {}
 
   setSite(service: LanguageService) { this.service = service; }
 
@@ -95,18 +95,18 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
     this.validate();
     let result = this._resolver;
     if (!result) {
-      const moduleResolver = new NgModuleResolver(this.reflector);
-      const directiveResolver = new DirectiveResolver(this.reflector);
-      const pipeResolver = new PipeResolver(this.reflector);
-      const elementSchemaRegistry = new DomElementSchemaRegistry();
-      const resourceLoader = new DummyResourceLoader();
-      const urlResolver = createOfflineCompileUrlResolver();
-      const htmlParser = new DummyHtmlParser();
+      let moduleResolver = new NgModuleResolver(this.reflector);
+      let directiveResolver = new DirectiveResolver(this.reflector);
+      let pipeResolver = new PipeResolver(this.reflector);
+      let elementSchemaRegistry = new DomElementSchemaRegistry();
+      let resourceLoader = new DummyResourceLoader();
+      let urlResolver = createOfflineCompileUrlResolver();
+      let htmlParser = new DummyHtmlParser();
       // This tracks the CompileConfig in codegen.ts. Currently these options
       // are hard-coded.
-      const config =
+      let config =
           new CompilerConfig({defaultEncapsulation: ViewEncapsulation.Emulated, useJit: false});
-      const directiveNormalizer =
+      let directiveNormalizer =
           new DirectiveNormalizer(resourceLoader, urlResolver, htmlParser, config);
 
       result = this._resolver = new CompileMetadataResolver(
@@ -135,7 +135,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
     } else {
       this.ensureTemplateMap();
       // TODO: Cannocalize the file?
-      const componentType = this.fileToComponent !.get(fileName);
+      let componentType = this.fileToComponent !.get(fileName);
       if (componentType) {
         return this.getSourceFromType(
             fileName, this.host.getScriptVersion(fileName), componentType);
@@ -159,8 +159,8 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
           ngModules: [],
         };
       } else {
-        const analyzeHost = {isSourceFile(filePath: string) { return true; }};
-        const programFiles = this.program !.getSourceFiles().map(sf => sf.fileName);
+        let analyzeHost = {isSourceFile(filePath: string) { return true; }};
+        let programFiles = this.program !.getSourceFiles().map(sf => sf.fileName);
         analyzedModules =
             analyzeNgModules(programFiles, analyzeHost, this.staticSymbolResolver, this.resolver);
       }
@@ -171,9 +171,9 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
 
   getTemplates(fileName: string): TemplateSources {
     this.ensureTemplateMap();
-    const componentType = this.fileToComponent !.get(fileName);
+    let componentType = this.fileToComponent !.get(fileName);
     if (componentType) {
-      const templateSource = this.getTemplateAt(fileName, 0);
+      let templateSource = this.getTemplateAt(fileName, 0);
       if (templateSource) {
         return [templateSource];
       }
@@ -201,8 +201,8 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   }
 
   getDeclarations(fileName: string): Declarations {
-    const result: Declarations = [];
-    const sourceFile = this.getSourceFile(fileName);
+    let result: Declarations = [];
+    let sourceFile = this.getSourceFile(fileName);
     if (sourceFile) {
       let visit = (child: ts.Node) => {
         let declaration = this.getDeclarationFromNode(sourceFile, child);
@@ -244,18 +244,18 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   }
 
   private validate() {
-    const program = this.program;
+    let program = this.program;
     if (this.lastProgram !== program) {
       // Invalidate file that have changed in the static symbol resolver
-      const invalidateFile = (fileName: string) =>
+      let invalidateFile = (fileName: string) =>
           this._staticSymbolResolver.invalidateFile(fileName);
       this.clearCaches();
-      const seen = new Set<string>();
+      let seen = new Set<string>();
       for (let sourceFile of this.program !.getSourceFiles()) {
-        const fileName = sourceFile.fileName;
+        let fileName = sourceFile.fileName;
         seen.add(fileName);
-        const version = this.host.getScriptVersion(fileName);
-        const lastVersion = this.fileVersions.get(fileName);
+        let version = this.host.getScriptVersion(fileName);
+        let lastVersion = this.fileVersions.get(fileName);
         if (version != lastVersion) {
           this.fileVersions.set(fileName, version);
           if (this._staticSymbolResolver) {
@@ -265,7 +265,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
       }
 
       // Remove file versions that are no longer in the file and invalidate them.
-      const missing = Array.from(this.fileVersions.keys()).filter(f => !seen.has(f));
+      let missing = Array.from(this.fileVersions.keys()).filter(f => !seen.has(f));
       missing.forEach(f => this.fileVersions.delete(f));
       if (this._staticSymbolResolver) {
         missing.forEach(invalidateFile);
@@ -285,15 +285,15 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
 
   private ensureTemplateMap() {
     if (!this.fileToComponent || !this.templateReferences) {
-      const fileToComponent = new Map<string, StaticSymbol>();
-      const templateReference: string[] = [];
-      const ngModuleSummary = this.getAnalyzedModules();
-      const urlResolver = createOfflineCompileUrlResolver();
-      for (const module of ngModuleSummary.ngModules) {
-        for (const directive of module.declaredDirectives) {
-          const {metadata} = this.resolver.getNonNormalizedDirectiveMetadata(directive.reference) !;
+      let fileToComponent = new Map<string, StaticSymbol>();
+      let templateReference: string[] = [];
+      let ngModuleSummary = this.getAnalyzedModules();
+      let urlResolver = createOfflineCompileUrlResolver();
+      for (let module of ngModuleSummary.ngModules) {
+        for (let directive of module.declaredDirectives) {
+          let {metadata} = this.resolver.getNonNormalizedDirectiveMetadata(directive.reference) !;
           if (metadata.isComponent && metadata.template && metadata.template.templateUrl) {
-            const templateName = urlResolver.resolve(
+            let templateName = urlResolver.resolve(
                 this.reflector.componentModuleUrl(directive.reference),
                 metadata.template.templateUrl);
             fileToComponent.set(templateName, directive.reference);
@@ -311,7 +311,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
       declaration: ts.ClassDeclaration, node: ts.Node, sourceFile: ts.SourceFile): TemplateSource
       |undefined {
     let queryCache: SymbolQuery|undefined = undefined;
-    const t = this;
+    let t = this;
     if (declaration) {
       return {
         version,
@@ -323,7 +323,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
         },
         get query() {
           if (!queryCache) {
-            const pipes = t.service.getPipesAt(fileName, node.getStart());
+            let pipes = t.service.getPipesAt(fileName, node.getStart());
             queryCache = getSymbolQuery(
                 t.program !, t.checker, sourceFile,
                 () => getPipesTable(sourceFile, t.program !, t.checker, pipes));
@@ -337,13 +337,13 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   private getSourceFromNode(fileName: string, version: string, node: ts.Node): TemplateSource
       |undefined {
     let result: TemplateSource|undefined = undefined;
-    const t = this;
+    let t = this;
     switch (node.kind) {
       case ts.SyntaxKind.NoSubstitutionTemplateLiteral:
       case ts.SyntaxKind.StringLiteral:
         let [declaration, decorator] = this.getTemplateClassDeclFromNode(node);
         if (declaration && declaration.name) {
-          const sourceFile = this.getSourceFile(fileName);
+          let sourceFile = this.getSourceFile(fileName);
           if (sourceFile) {
             return this.getSourceFromDeclaration(
                 fileName, version, this.stringOf(node) || '', shrink(spanOf(node)),
@@ -359,11 +359,11 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   private getSourceFromType(fileName: string, version: string, type: StaticSymbol): TemplateSource
       |undefined {
     let result: TemplateSource|undefined = undefined;
-    const declaration = this.getTemplateClassFromStaticSymbol(type);
+    let declaration = this.getTemplateClassFromStaticSymbol(type);
     if (declaration) {
-      const snapshot = this.host.getScriptSnapshot(fileName);
+      let snapshot = this.host.getScriptSnapshot(fileName);
       if (snapshot) {
-        const source = snapshot.getText(0, snapshot.getLength());
+        let source = snapshot.getText(0, snapshot.getLength());
         result = this.getSourceFromDeclaration(
             fileName, version, source, {start: 0, end: source.length}, type, declaration,
             declaration, declaration.getSourceFile());
@@ -377,7 +377,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
     if (!result) {
       if (!this.context) {
         // Make up a context by finding the first script and using that as the base dir.
-        const scriptFileNames = this.host.getScriptFileNames();
+        let scriptFileNames = this.host.getScriptFileNames();
         if (0 === scriptFileNames.length) {
           throw new Error('Internal error: no script file names found');
         }
@@ -388,15 +388,15 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
       // The host's getCurrentDirectory() is not reliable as it is always "" in
       // tsserver. We don't need the exact base directory, just one that contains
       // a source file.
-      const source = this.tsService.getProgram() !.getSourceFile(this.context);
+      let source = this.tsService.getProgram() !.getSourceFile(this.context);
       if (!source) {
         throw new Error('Internal error: no context could be determined');
       }
 
-      const tsConfigPath = findTsConfig(source.fileName);
-      const basePath = path.dirname(tsConfigPath || this.context);
-      const options: CompilerOptions = {basePath, genDir: basePath};
-      const compilerOptions = this.host.getCompilationSettings();
+      let tsConfigPath = findTsConfig(source.fileName);
+      let basePath = path.dirname(tsConfigPath || this.context);
+      let options: CompilerOptions = {basePath, genDir: basePath};
+      let compilerOptions = this.host.getCompilationSettings();
       if (compilerOptions && compilerOptions.baseUrl) {
         options.baseUrl = compilerOptions.baseUrl;
       }
@@ -445,7 +445,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   private get reflector(): StaticReflector {
     let result = this._reflector;
     if (!result) {
-      const ssr = this.staticSymbolResolver;
+      let ssr = this.staticSymbolResolver;
       result = this._reflector = new StaticReflector(
           this._summaryResolver, ssr, [], [], (e, filePath) => this.collectError(e, filePath !));
     }
@@ -453,11 +453,11 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   }
 
   private getTemplateClassFromStaticSymbol(type: StaticSymbol): ts.ClassDeclaration|undefined {
-    const source = this.getSourceFile(type.filePath);
+    let source = this.getSourceFile(type.filePath);
     if (source) {
-      const declarationNode = ts.forEachChild(source, child => {
+      let declarationNode = ts.forEachChild(source, child => {
         if (child.kind === ts.SyntaxKind.ClassDeclaration) {
-          const classDeclaration = child as ts.ClassDeclaration;
+          let classDeclaration = child as ts.ClassDeclaration;
           if (classDeclaration.name != null && classDeclaration.name.text === type.name) {
             return classDeclaration;
           }
@@ -501,7 +501,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
     if (!parentNode || parentNode.kind !== ts.SyntaxKind.CallExpression) {
       return TypeScriptServiceHost.missingTemplate;
     }
-    const callTarget = (<ts.CallExpression>parentNode).expression;
+    let callTarget = (<ts.CallExpression>parentNode).expression;
 
     let decorator = parentNode.parent;  // Decorator
     if (!decorator || decorator.kind !== ts.SyntaxKind.Decorator) {
@@ -516,11 +516,11 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   }
 
   private getCollectedErrors(defaultSpan: Span, sourceFile: ts.SourceFile): DeclarationError[] {
-    const errors = (this.collectedErrors && this.collectedErrors.get(sourceFile.fileName));
+    let errors = (this.collectedErrors && this.collectedErrors.get(sourceFile.fileName));
     return (errors && errors.map((e: any) => {
-             const line = e.line || (e.position && e.position.line);
-             const column = e.column || (e.position && e.position.column);
-             const span = spanAt(sourceFile, line, column) || defaultSpan;
+             let line = e.line || (e.position && e.position.line);
+             let column = e.column || (e.position && e.position.column);
+             let span = spanAt(sourceFile, line, column) || defaultSpan;
              if (isFormattedError(e)) {
                return errorToDiagnosticWithChain(e, span);
              }
@@ -532,21 +532,21 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
   private getDeclarationFromNode(sourceFile: ts.SourceFile, node: ts.Node): Declaration|undefined {
     if (node.kind == ts.SyntaxKind.ClassDeclaration && node.decorators &&
         (node as ts.ClassDeclaration).name) {
-      for (const decorator of node.decorators) {
+      for (let decorator of node.decorators) {
         if (decorator.expression && decorator.expression.kind == ts.SyntaxKind.CallExpression) {
-          const classDeclaration = node as ts.ClassDeclaration;
+          let classDeclaration = node as ts.ClassDeclaration;
           if (classDeclaration.name) {
-            const call = decorator.expression as ts.CallExpression;
-            const target = call.expression;
-            const type = this.checker.getTypeAtLocation(target);
+            let call = decorator.expression as ts.CallExpression;
+            let target = call.expression;
+            let type = this.checker.getTypeAtLocation(target);
             if (type) {
-              const staticSymbol =
+              let staticSymbol =
                   this.reflector.getStaticSymbol(sourceFile.fileName, classDeclaration.name.text);
               try {
                 if (this.resolver.isDirective(staticSymbol as any)) {
-                  const {metadata} =
+                  let {metadata} =
                       this.resolver.getNonNormalizedDirectiveMetadata(staticSymbol as any) !;
-                  const declarationSpan = spanOf(target);
+                  let declarationSpan = spanOf(target);
                   return {
                     type: staticSymbol,
                     declarationSpan,
@@ -557,7 +557,7 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
               } catch (e) {
                 if (e.message) {
                   this.collectError(e, sourceFile.fileName);
-                  const declarationSpan = spanOf(target);
+                  let declarationSpan = spanOf(target);
                   return {
                     type: staticSymbol,
                     declarationSpan,
@@ -596,9 +596,9 @@ export class TypeScriptServiceHost implements LanguageServiceHost {
 function findTsConfig(fileName: string): string|undefined {
   let dir = path.dirname(fileName);
   while (fs.existsSync(dir)) {
-    const candidate = path.join(dir, 'tsconfig.json');
+    let candidate = path.join(dir, 'tsconfig.json');
     if (fs.existsSync(candidate)) return candidate;
-    const parentDir = path.dirname(dir);
+    let parentDir = path.dirname(dir);
     if (parentDir === dir) break;
     dir = parentDir;
   }
@@ -615,15 +615,15 @@ function shrink(span: Span, offset?: number) {
 
 function spanAt(sourceFile: ts.SourceFile, line: number, column: number): Span|undefined {
   if (line != null && column != null) {
-    const position = ts.getPositionOfLineAndCharacter(sourceFile, line, column);
-    const findChild = function findChild(node: ts.Node): ts.Node | undefined {
+    let position = ts.getPositionOfLineAndCharacter(sourceFile, line, column);
+    let findChild = function findChild(node: ts.Node): ts.Node | undefined {
       if (node.kind > ts.SyntaxKind.LastToken && node.pos <= position && node.end > position) {
-        const betterNode = ts.forEachChild(node, findChild);
+        let betterNode = ts.forEachChild(node, findChild);
         return betterNode || node;
       }
     };
 
-    const node = ts.forEachChild(sourceFile, findChild);
+    let node = ts.forEachChild(sourceFile, findChild);
     if (node) {
       return {start: node.getStart(), end: node.getEnd()};
     }
@@ -635,7 +635,7 @@ function chainedMessage(chain: DiagnosticMessageChain, indent = ''): string {
 }
 
 class DiagnosticMessageChainImpl implements DiagnosticMessageChain {
-  constructor(public message: string, public next?: DiagnosticMessageChain) {}
+  letructor(public message: string, public next?: DiagnosticMessageChain) {}
   toString(): string { return chainedMessage(this); }
 }
 

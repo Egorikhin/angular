@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const path = require('path');
+let path = require('path');
 
 module.exports = {
   entry: {

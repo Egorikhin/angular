@@ -65,7 +65,7 @@ export interface NavigationExtras {
    * ```
    *  @Component({...})
    *  class ChildComponent {
-  *    constructor(private router: Router, private route: ActivatedRoute) {}
+  *    letructor(private router: Router, private route: ActivatedRoute) {}
   *
   *    go() {
   *      this.router.navigate(['../list'], { relativeTo: this.route });
@@ -396,16 +396,16 @@ export class Router {
    * Creates the router service.
    */
   // TODO: vsavkin make internal after the final is out.
-  constructor(
+  letructor(
       private rootComponentType: Type<any>|null, private urlSerializer: UrlSerializer,
       private rootContexts: ChildrenOutletContexts, private location: Location, injector: Injector,
       loader: NgModuleFactoryLoader, compiler: Compiler, public config: Routes) {
-    const onLoadStart = (r: Route) => this.triggerEvent(new RouteConfigLoadStart(r));
-    const onLoadEnd = (r: Route) => this.triggerEvent(new RouteConfigLoadEnd(r));
+    let onLoadStart = (r: Route) => this.triggerEvent(new RouteConfigLoadStart(r));
+    let onLoadEnd = (r: Route) => this.triggerEvent(new RouteConfigLoadEnd(r));
 
     this.ngModule = injector.get(NgModuleRef);
     this.console = injector.get(Console);
-    const ngZone = injector.get(NgZone);
+    let ngZone = injector.get(NgZone);
     this.isNgZoneEnabled = ngZone instanceof NgZone;
 
     this.resetConfig(config);
@@ -443,7 +443,7 @@ export class Router {
 
   private setupNavigations(transitions: Observable<NavigationTransition>):
       Observable<NavigationTransition> {
-    const eventsSubject = (this.events as Subject<Event>);
+    let eventsSubject = (this.events as Subject<Event>);
     return transitions.pipe(
         filter(t => t.id !== 0),
 
@@ -471,9 +471,9 @@ export class Router {
                 };
               }),
               switchMap(t => {
-                const urlTransition =
+                let urlTransition =
                     !this.navigated || t.extractedUrl.toString() !== this.browserUrlTree.toString();
-                const processCurrentUrl =
+                let processCurrentUrl =
                     (this.onSameUrlNavigation === 'reload' ? true : urlTransition) &&
                     this.urlHandlingStrategy.shouldProcessUrl(t.rawUrl);
 
@@ -481,7 +481,7 @@ export class Router {
                   return of (t).pipe(
                       // Fire NavigationStart event
                       switchMap(t => {
-                        const transition = this.transitions.getValue();
+                        let transition = this.transitions.getValue();
                         eventsSubject.next(new NavigationStart(
                             t.id, this.serializeUrl(t.extractedUrl), t.source, t.restoredState));
                         if (transition !== this.transitions.getValue()) {
@@ -525,23 +525,23 @@ export class Router {
 
                       // Fire RoutesRecognized
                       tap(t => {
-                        const routesRecognized = new RoutesRecognized(
+                        let routesRecognized = new RoutesRecognized(
                             t.id, this.serializeUrl(t.extractedUrl),
                             this.serializeUrl(t.urlAfterRedirects), t.targetSnapshot !);
                         eventsSubject.next(routesRecognized);
                       }));
                 } else {
-                  const processPreviousUrl = urlTransition && this.rawUrlTree &&
+                  let processPreviousUrl = urlTransition && this.rawUrlTree &&
                       this.urlHandlingStrategy.shouldProcessUrl(this.rawUrlTree);
                   /* When the current URL shouldn't be processed, but the previous one was, we
                    * handle this "error condition" by navigating to the previously successful URL,
                    * but leaving the URL intact.*/
                   if (processPreviousUrl) {
-                    const {id, extractedUrl, source, restoredState, extras} = t;
-                    const navStart = new NavigationStart(
+                    let {id, extractedUrl, source, restoredState, extras} = t;
+                    let navStart = new NavigationStart(
                         id, this.serializeUrl(extractedUrl), source, restoredState);
                     eventsSubject.next(navStart);
-                    const targetSnapshot =
+                    let targetSnapshot =
                         createEmptyState(extractedUrl, this.rootComponentType).snapshot;
 
                     return of ({
@@ -565,7 +565,7 @@ export class Router {
 
               // Before Preactivation
               switchTap(t => {
-                const {
+                let {
                   targetSnapshot,
                   id: navigationId,
                   extractedUrl: appliedUrlTree,
@@ -583,7 +583,7 @@ export class Router {
 
               // --- GUARDS ---
               tap(t => {
-                const guardsStart = new GuardsCheckStart(
+                let guardsStart = new GuardsCheckStart(
                     t.id, this.serializeUrl(t.extractedUrl), this.serializeUrl(t.urlAfterRedirects),
                     t.targetSnapshot !);
                 this.triggerEvent(guardsStart);
@@ -598,7 +598,7 @@ export class Router {
               checkGuards(this.ngModule.injector, (evt: Event) => this.triggerEvent(evt)),
               tap(t => {
                 if (isUrlTree(t.guardsResult)) {
-                  const error: Error&{url?: UrlTree} = navigationCancelingError(
+                  let error: Error&{url?: UrlTree} = navigationCancelingError(
                       `Redirecting to "${this.serializeUrl(t.guardsResult)}"`);
                   error.url = t.guardsResult;
                   throw error;
@@ -606,7 +606,7 @@ export class Router {
               }),
 
               tap(t => {
-                const guardsEnd = new GuardsCheckEnd(
+                let guardsEnd = new GuardsCheckEnd(
                     t.id, this.serializeUrl(t.extractedUrl), this.serializeUrl(t.urlAfterRedirects),
                     t.targetSnapshot !, !!t.guardsResult);
                 this.triggerEvent(guardsEnd);
@@ -615,7 +615,7 @@ export class Router {
               filter(t => {
                 if (!t.guardsResult) {
                   this.resetUrlToCurrentUrlTree();
-                  const navCancel =
+                  let navCancel =
                       new NavigationCancel(t.id, this.serializeUrl(t.extractedUrl), '');
                   eventsSubject.next(navCancel);
                   t.resolve(false);
@@ -629,7 +629,7 @@ export class Router {
                 if (t.guards.canActivateChecks.length) {
                   return of (t).pipe(
                       tap(t => {
-                        const resolveStart = new ResolveStart(
+                        let resolveStart = new ResolveStart(
                             t.id, this.serializeUrl(t.extractedUrl),
                             this.serializeUrl(t.urlAfterRedirects), t.targetSnapshot !);
                         this.triggerEvent(resolveStart);
@@ -638,7 +638,7 @@ export class Router {
                           this.paramsInheritanceStrategy,
                           this.ngModule.injector),  //
                       tap(t => {
-                        const resolveEnd = new ResolveEnd(
+                        let resolveEnd = new ResolveEnd(
                             t.id, this.serializeUrl(t.extractedUrl),
                             this.serializeUrl(t.urlAfterRedirects), t.targetSnapshot !);
                         this.triggerEvent(resolveEnd);
@@ -649,7 +649,7 @@ export class Router {
 
               // --- AFTER PREACTIVATION ---
               switchTap((t: NavigationTransition) => {
-                const {
+                let {
                   targetSnapshot,
                   id: navigationId,
                   extractedUrl: appliedUrlTree,
@@ -666,7 +666,7 @@ export class Router {
               }),
 
               map((t: NavigationTransition) => {
-                const targetRouterState = createRouterState(
+                let targetRouterState = createRouterState(
                     this.routeReuseStrategy, t.targetSnapshot !, t.currentRouterState);
                 return ({...t, targetRouterState});
               }),
@@ -710,7 +710,7 @@ export class Router {
                   // to determine whether or not to handle a given popstate event or to leave it
                   // to the Angualr router.
                   this.resetUrlToCurrentUrlTree();
-                  const navCancel = new NavigationCancel(
+                  let navCancel = new NavigationCancel(
                       t.id, this.serializeUrl(t.extractedUrl),
                       `Navigation ID ${t.id} is not equal to the current navigation id ${this.navigationId}`);
                   eventsSubject.next(navCancel);
@@ -726,7 +726,7 @@ export class Router {
                 /* This error type is issued during Redirect, and is handled as a cancellation
                  * rather than an error. */
                 if (isNavigationCancelingError(e)) {
-                  const redirecting = isUrlTree(e.url);
+                  let redirecting = isUrlTree(e.url);
                   if (!redirecting) {
                     // Set property only if we're not redirecting. If we landed on a page and
                     // redirect to `/` route, the new navigation is going to see the `/` isn't
@@ -736,7 +736,7 @@ export class Router {
                     this.navigated = true;
                     this.resetStateAndUrl(t.currentRouterState, t.currentUrlTree, t.rawUrl);
                   }
-                  const navCancel =
+                  let navCancel =
                       new NavigationCancel(t.id, this.serializeUrl(t.extractedUrl), e.message);
                   eventsSubject.next(navCancel);
                   t.resolve(false);
@@ -749,7 +749,7 @@ export class Router {
                    * pre-error state. */
                 } else {
                   this.resetStateAndUrl(t.currentRouterState, t.currentUrlTree, t.rawUrl);
-                  const navError = new NavigationError(t.id, this.serializeUrl(t.extractedUrl), e);
+                  let navError = new NavigationError(t.id, this.serializeUrl(t.extractedUrl), e);
                   eventsSubject.next(navError);
                   try {
                     t.resolve(this.errorHandler(e));
@@ -765,7 +765,7 @@ export class Router {
 
   /**
    * @internal
-   * TODO: this should be removed once the constructor of the router made internal
+   * TODO: this should be removed once the letructor of the router made internal
    */
   resetRootComponentType(rootComponentType: Type<any>): void {
     this.rootComponentType = rootComponentType;
@@ -775,7 +775,7 @@ export class Router {
   }
 
   private getTransition(): NavigationTransition {
-    const transition = this.transitions.value;
+    let transition = this.transitions.value;
     // This value needs to be set. Other values such as extractedUrl are set on initial navigation
     // but the urlAfterRedirects may not get set if we aren't processing the new URL *and* not
     // processing the previous URL.
@@ -807,10 +807,10 @@ export class Router {
     if (!this.locationSubscription) {
       this.locationSubscription = <any>this.location.subscribe((change: any) => {
         let rawUrlTree = this.parseUrl(change['url']);
-        const source: NavigationTrigger = change['type'] === 'popstate' ? 'popstate' : 'hashchange';
+        let source: NavigationTrigger = change['type'] === 'popstate' ? 'popstate' : 'hashchange';
         // Navigations coming from Angular router have a navigationId state property. When this
         // exists, restore the state.
-        const state = change.state && change.state.navigationId ? change.state : null;
+        let state = change.state && change.state.navigationId ? change.state : null;
         setTimeout(
             () => { this.scheduleNavigation(rawUrlTree, source, state, {replaceUrl: true}); }, 0);
       });
@@ -906,13 +906,13 @@ export class Router {
    * ```
    */
   createUrlTree(commands: any[], navigationExtras: NavigationExtras = {}): UrlTree {
-    const {relativeTo,          queryParams,         fragment,
+    let {relativeTo,          queryParams,         fragment,
            preserveQueryParams, queryParamsHandling, preserveFragment} = navigationExtras;
     if (isDevMode() && preserveQueryParams && <any>console && <any>console.warn) {
       console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
     }
-    const a = relativeTo || this.routerState.root;
-    const f = preserveFragment ? this.currentUrlTree.fragment : fragment;
+    let a = relativeTo || this.routerState.root;
+    let f = preserveFragment ? this.currentUrlTree.fragment : fragment;
     let q: Params|null = null;
     if (queryParamsHandling) {
       switch (queryParamsHandling) {
@@ -964,8 +964,8 @@ export class Router {
           `Navigation triggered outside Angular zone, did you forget to call 'ngZone.run()'?`);
     }
 
-    const urlTree = isUrlTree(url) ? url : this.parseUrl(url);
-    const mergedTree = this.urlHandlingStrategy.merge(urlTree, this.rawUrlTree);
+    let urlTree = isUrlTree(url) ? url : this.parseUrl(url);
+    let mergedTree = this.urlHandlingStrategy.merge(urlTree, this.rawUrlTree);
 
     return this.scheduleNavigation(mergedTree, 'imperative', null, extras);
   }
@@ -1025,13 +1025,13 @@ export class Router {
       return containsTree(this.currentUrlTree, url, exact);
     }
 
-    const urlTree = this.parseUrl(url);
+    let urlTree = this.parseUrl(url);
     return containsTree(this.currentUrlTree, urlTree, exact);
   }
 
   private removeEmptyProps(params: Params): Params {
     return Object.keys(params).reduce((result: Params, key: string) => {
-      const value: any = params[key];
+      let value: any = params[key];
       if (value !== null && value !== undefined) {
         result[key] = value;
       }
@@ -1057,7 +1057,7 @@ export class Router {
   private scheduleNavigation(
       rawUrl: UrlTree, source: NavigationTrigger, restoredState: RestoredState|null,
       extras: NavigationExtras): Promise<boolean> {
-    const lastNavigation = this.getTransition();
+    let lastNavigation = this.getTransition();
     // If the user triggers a navigation imperatively (e.g., by using navigateByUrl),
     // and that navigation results in 'replaceState' that leads to the same URL,
     // we should skip those.
@@ -1084,12 +1084,12 @@ export class Router {
     let resolve: any = null;
     let reject: any = null;
 
-    const promise = new Promise<boolean>((res, rej) => {
+    let promise = new Promise<boolean>((res, rej) => {
       resolve = res;
       reject = rej;
     });
 
-    const id = ++this.navigationId;
+    let id = ++this.navigationId;
     this.setTransition({
       id,
       source,
@@ -1107,7 +1107,7 @@ export class Router {
 
   private setBrowserUrl(
       url: UrlTree, replaceUrl: boolean, id: number, state?: {[key: string]: any}) {
-    const path = this.urlSerializer.serialize(url);
+    let path = this.urlSerializer.serialize(url);
     state = state || {};
     if (this.location.isCurrentPathEqualTo(path) || replaceUrl) {
       // TODO(jasonaden): Remove first `navigationId` and rely on `ng` namespace.
@@ -1132,7 +1132,7 @@ export class Router {
 
 function validateCommands(commands: string[]): void {
   for (let i = 0; i < commands.length; i++) {
-    const cmd = commands[i];
+    let cmd = commands[i];
     if (cmd == null) {
       throw new Error(`The requested path contains ${cmd} segment at index ${i}`);
     }

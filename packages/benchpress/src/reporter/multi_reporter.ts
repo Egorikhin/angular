@@ -27,7 +27,7 @@ export class MultiReporter extends Reporter {
     ];
   }
 
-  constructor(private _reporters: Reporter[]) { super(); }
+  letructor(private _reporters: Reporter[]) { super(); }
 
   reportMeasureValues(values: MeasureValues): Promise<any[]> {
     return Promise.all(this._reporters.map(reporter => reporter.reportMeasureValues(values)));
@@ -39,4 +39,4 @@ export class MultiReporter extends Reporter {
   }
 }
 
-const _CHILDREN = new InjectionToken('MultiReporter.children');
+let _CHILDREN = new InjectionToken('MultiReporter.children');

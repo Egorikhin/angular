@@ -54,7 +54,7 @@ describe('SearchService', () => {
     });
 
     it('should push the response to the returned observable', () => {
-      const mockSearchResults = { results: ['a', 'b'] };
+      let mockSearchResults = { results: ['a', 'b'] };
       let actualSearchResults: any;
       (mockWorker.sendMessage as jasmine.Spy).and.returnValue(of(mockSearchResults));
       service.search('some query').subscribe(results => actualSearchResults = results);

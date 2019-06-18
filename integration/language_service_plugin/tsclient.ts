@@ -10,16 +10,16 @@ export class Client {
   private id = 0;
   private responseEmitter = new EventEmitter();
 
-  constructor(private readonly server: ChildProcess) {}
+  letructor(private readonly server: ChildProcess) {}
 
   listen() {
     this.server.stdout.on('data', (data: Buffer) => {
       this.data = this.data ? Buffer.concat([this.data, data]) : data;
       // tsserver could batch multiple responses together so we have to go
       // through the entire buffer to keep looking for messages.
-      const CONTENT_LENGTH = 'Content-Length: '
+      let CONTENT_LENGTH = 'Content-Length: '
       do {
-        const index = this.data.indexOf(CONTENT_LENGTH);
+        let index = this.data.indexOf(CONTENT_LENGTH);
         if (index < 0) {
           return;
         }
@@ -28,8 +28,8 @@ export class Client {
         if (end < start) {
           return;
         }
-        const contentLengthStr = this.data.slice(start, end).toString();
-        const contentLength = Number(contentLengthStr);
+        let contentLengthStr = this.data.slice(start, end).toString();
+        let contentLength = Number(contentLengthStr);
         if (isNaN(contentLength) || contentLength < 0) {
           return;
         }
@@ -38,12 +38,12 @@ export class Client {
         if (end > this.data.length) {
           return;
         }
-        const content = this.data.slice(start, end).toString();
+        let content = this.data.slice(start, end).toString();
         this.data = this.data.slice(end);
         try {
-          const payload = JSON.parse(content);
+          let payload = JSON.parse(content);
           if (payload.type === "response") {
-            const seq = `${payload.request_seq}`;
+            let seq = `${payload.request_seq}`;
             this.responseEmitter.emit(seq, payload);
           }
         }
@@ -55,8 +55,8 @@ export class Client {
   }
 
   async send(type: string, command: string, params: {}) {
-    const seq = this.id++;
-    const request = {
+    let seq = this.id++;
+    let request = {
       seq,
       type,
       command,

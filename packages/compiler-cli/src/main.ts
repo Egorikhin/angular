@@ -31,7 +31,7 @@ export function main(
     return reportErrorsAndExit(configErrors, /*options*/ undefined, consoleError);
   }
   if (watch) {
-    const result = watchMode(project, options, consoleError);
+    let result = watchMode(project, options, consoleError);
     return reportErrorsAndExit(result.firstCompileResult, options, consoleError);
   }
 
@@ -40,7 +40,7 @@ export function main(
     oldProgram = programReuse.program;
   }
 
-  const {diagnostics: compileDiags, program} = performCompilation({
+  let {diagnostics: compileDiags, program} = performCompilation({
     rootNames,
     options,
     emitFlags,
@@ -60,14 +60,14 @@ export function mainDiagnosticsForTest(
   if (configErrors.length) {
     return configErrors;
   }
-  const {diagnostics: compileDiags} = performCompilation(
+  let {diagnostics: compileDiags} = performCompilation(
       {rootNames, options, emitFlags, emitCallback: createEmitCallback(options)});
   return compileDiags;
 }
 
 function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback|undefined {
-  const transformDecorators = !options.enableIvy && options.annotationsAs !== 'decorators';
-  const transformTypesToClosure = options.annotateForClosureCompiler;
+  let transformDecorators = !options.enableIvy && options.annotationsAs !== 'decorators';
+  let transformTypesToClosure = options.annotateForClosureCompiler;
   if (!transformDecorators && !transformTypesToClosure) {
     return undefined;
   }
@@ -77,7 +77,7 @@ function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback|un
     // as TypeScript elided the import.
     options.emitDecoratorMetadata = true;
   }
-  const tsickleHost: Pick<
+  let tsickleHost: Pick<
       tsickle.TsickleHost, 'shouldSkipTsickleProcessing'|'pathToModuleName'|
       'shouldIgnoreWarningsForPath'|'fileNameToModuleId'|'googmodule'|'untyped'|
       'convertIndexImportShorthand'|'transformDecorators'|'transformTypesToClosure'> = {
@@ -127,18 +127,18 @@ function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback|un
 export interface NgcParsedConfiguration extends ParsedConfiguration { watch?: boolean; }
 
 export function readNgcCommandLineAndConfiguration(args: string[]): NgcParsedConfiguration {
-  const options: api.CompilerOptions = {};
-  const parsedArgs = require('minimist')(args);
+  let options: api.CompilerOptions = {};
+  let parsedArgs = require('minimist')(args);
   if (parsedArgs.i18nFile) options.i18nInFile = parsedArgs.i18nFile;
   if (parsedArgs.i18nFormat) options.i18nInFormat = parsedArgs.i18nFormat;
   if (parsedArgs.locale) options.i18nInLocale = parsedArgs.locale;
-  const mt = parsedArgs.missingTranslation;
+  let mt = parsedArgs.missingTranslation;
   if (mt === 'error' || mt === 'warning' || mt === 'ignore') {
     options.i18nInMissingTranslations = mt;
   }
-  const config = readCommandLineAndConfiguration(
+  let config = readCommandLineAndConfiguration(
       args, options, ['i18nFile', 'i18nFormat', 'locale', 'missingTranslation', 'watch']);
-  const watch = parsedArgs.w || parsedArgs.watch;
+  let watch = parsedArgs.w || parsedArgs.watch;
   return {...config, watch};
 }
 
@@ -146,10 +146,10 @@ export function readCommandLineAndConfiguration(
     args: string[], existingOptions: api.CompilerOptions = {},
     ngCmdLineOptions: string[] = []): ParsedConfiguration {
   let cmdConfig = ts.parseCommandLine(args);
-  const project = cmdConfig.options.project || '.';
-  const cmdErrors = cmdConfig.errors.filter(e => {
+  let project = cmdConfig.options.project || '.';
+  let cmdErrors = cmdConfig.errors.filter(e => {
     if (typeof e.messageText === 'string') {
-      const msg = e.messageText;
+      let msg = e.messageText;
       return !ngCmdLineOptions.some(o => msg.indexOf(o) >= 0);
     }
     return true;
@@ -163,9 +163,9 @@ export function readCommandLineAndConfiguration(
       emitFlags: api.EmitFlags.Default
     };
   }
-  const allDiagnostics: Diagnostics = [];
-  const config = readConfiguration(project, cmdConfig.options);
-  const options = {...config.options, ...existingOptions};
+  let allDiagnostics: Diagnostics = [];
+  let config = readConfiguration(project, cmdConfig.options);
+  let options = {...config.options, ...existingOptions};
   if (options.locale) {
     options.i18nInLocale = options.locale;
   }
@@ -178,7 +178,7 @@ export function readCommandLineAndConfiguration(
 }
 
 function getFormatDiagnosticsHost(options?: api.CompilerOptions): ts.FormatDiagnosticsHost {
-  const basePath = options ? options.basePath : undefined;
+  let basePath = options ? options.basePath : undefined;
   return {
     getCurrentDirectory: () => basePath || ts.sys.getCurrentDirectory(),
     // We need to normalize the path separators here because by default, TypeScript
@@ -200,12 +200,12 @@ function getFormatDiagnosticsHost(options?: api.CompilerOptions): ts.FormatDiagn
 function reportErrorsAndExit(
     allDiagnostics: Diagnostics, options?: api.CompilerOptions,
     consoleError: (s: string) => void = console.error): number {
-  const errorsAndWarnings = filterErrorsAndWarnings(allDiagnostics);
+  let errorsAndWarnings = filterErrorsAndWarnings(allDiagnostics);
   if (errorsAndWarnings.length) {
-    const formatHost = getFormatDiagnosticsHost(options);
+    let formatHost = getFormatDiagnosticsHost(options);
     if (options && options.enableIvy === true) {
-      const ngDiagnostics = errorsAndWarnings.filter(api.isNgDiagnostic);
-      const tsDiagnostics = errorsAndWarnings.filter(api.isTsDiagnostic);
+      let ngDiagnostics = errorsAndWarnings.filter(api.isNgDiagnostic);
+      let tsDiagnostics = errorsAndWarnings.filter(api.isTsDiagnostic);
       consoleError(replaceTsWithNgInErrors(
           ts.formatDiagnosticsWithColorAndContext(tsDiagnostics, formatHost)));
       consoleError(formatDiagnostics(ngDiagnostics, formatHost));
@@ -225,6 +225,6 @@ export function watchMode(
 
 // CLI entry point
 if (require.main === module) {
-  const args = process.argv.slice(2);
+  let args = process.argv.slice(2);
   process.exitCode = main(args);
 }

@@ -54,8 +54,8 @@ describe('completions', () => {
     ngHost = new TypeScriptServiceHost(host, service);
     expect(ngHost.getAnalyzedModules().ngModules).toEqual([]);
     // Now add a script, this would change the program
-    const fileName = '/app/main.ts';
-    const content = (host as MockTypescriptHost).getFileContent(fileName) !;
+    let fileName = '/app/main.ts';
+    let content = (host as MockTypescriptHost).getFileContent(fileName) !;
     (host as MockTypescriptHost).addScript(fileName, content);
     // If the caches are not cleared, we would get back an empty array.
     // But if the caches are cleared then the analyzed modules will be non-empty.

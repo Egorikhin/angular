@@ -22,7 +22,7 @@ import {describe, expect, it} from '@angular/core/testing/src/testing_internal';
 {
   describe('cookies', () => {
     it('parses cookies', () => {
-      const cookie = 'other-cookie=false; xsrf-token=token-value; is_awesome=true; ffo=true;';
+      let cookie = 'other-cookie=false; xsrf-token=token-value; is_awesome=true; ffo=true;';
       expect(parseCookieValue(cookie, 'xsrf-token')).toBe('token-value');
     });
     it('handles encoded keys', () => {

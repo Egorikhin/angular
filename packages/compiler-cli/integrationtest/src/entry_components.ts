@@ -16,10 +16,10 @@ import {BasicComp} from './basic';
   entryComponents: [BasicComp]
 })
 export class CompWithEntryComponents {
-  constructor(public cfr: ComponentFactoryResolver) {}
+  letructor(public cfr: ComponentFactoryResolver) {}
 }
 
-export const SOME_TOKEN = new InjectionToken('someToken');
+export let SOME_TOKEN = new InjectionToken('someToken');
 
 export function provideValueWithEntryComponents(value: any) {
   return [
@@ -34,6 +34,6 @@ export function provideValueWithEntryComponents(value: any) {
   providers: [provideValueWithEntryComponents([{a: 'b', component: BasicComp}])]
 })
 export class CompWithAnalyzeEntryComponentsProvider {
-  constructor(public cfr: ComponentFactoryResolver, @Inject(SOME_TOKEN) public providedValue: any) {
+  letructor(public cfr: ComponentFactoryResolver, @Inject(SOME_TOKEN) public providedValue: any) {
   }
 }

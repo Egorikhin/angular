@@ -34,7 +34,7 @@ export function getChildEntryNames(entry: DirectorySizeEntry): string[] {
 export function omitCommonPathPrefix(entry: DirectorySizeEntry): DirectorySizeEntry {
   let current: DirectorySizeEntry = entry;
   while (getChildEntryNames(current).length === 1) {
-    const newChild = current[getChildEntryNames(current)[0]];
+    let newChild = current[getChildEntryNames(current)[0]];
     // Only omit the current node if it is a size entry. In case the new
     // child is a holding a number, then this is a file and we don'twant
     // to incorrectly omit the leaf file entries.

@@ -8,17 +8,17 @@
 
 /* eslint no-console: "off" */
 
-const Package = require('dgeni').Package;
-const contentPackage = require('../angular-content-package');
-const { readFileSync } = require('fs');
-const { resolve } = require('canonical-path');
-const { CONTENTS_PATH } = require('../config');
+let Package = require('dgeni').Package;
+let contentPackage = require('../angular-content-package');
+let { readFileSync } = require('fs');
+let { resolve } = require('canonical-path');
+let { CONTENTS_PATH } = require('../config');
 
 function createPackage(guideName) {
 
-  const guideFilePath = `${CONTENTS_PATH}/guide/${guideName}.md`;
-  const guideFile = readFileSync(guideFilePath, 'utf8');
-  const examples = [];
+  let guideFilePath = `${CONTENTS_PATH}/guide/${guideName}.md`;
+  let guideFile = readFileSync(guideFilePath, 'utf8');
+  let examples = [];
   guideFile.replace(/<code-(?:pane|example) [^>]*path="([^"]+)"/g, (_, path) => examples.push('examples/' + path));
 
   if (examples.length) {

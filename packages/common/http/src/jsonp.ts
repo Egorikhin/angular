@@ -15,19 +15,19 @@ import {HttpRequest} from './request';
 import {HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse} from './response';
 
 // Every request made through JSONP needs a callback name that's unique across the
-// whole page. Each request is assigned an id and the callback name is constructed
+// whole page. Each request is assigned an id and the callback name is letructed
 // from that. The next id to be assigned is tracked in a global variable here that
 // is shared among all applications on the page.
 let nextRequestId: number = 0;
 
 // Error text given when a JSONP script is injected, but doesn't invoke the callback
 // passed in its URL.
-export const JSONP_ERR_NO_CALLBACK = 'JSONP injected script did not invoke callback.';
+export let JSONP_ERR_NO_CALLBACK = 'JSONP injected script did not invoke callback.';
 
 // Error text given when a request is passed to the JsonpClientBackend that doesn't
 // have a request method JSONP.
-export const JSONP_ERR_WRONG_METHOD = 'JSONP requests must use JSONP request method.';
-export const JSONP_ERR_WRONG_RESPONSE_TYPE = 'JSONP requests must use Json response type.';
+export let JSONP_ERR_WRONG_METHOD = 'JSONP requests must use JSONP request method.';
+export let JSONP_ERR_WRONG_RESPONSE_TYPE = 'JSONP requests must use Json response type.';
 
 /**
  * DI token/abstract type representing a map of JSONP callbacks.
@@ -46,7 +46,7 @@ export abstract class JsonpCallbackContext { [key: string]: (data: any) => void;
  */
 @Injectable()
 export class JsonpClientBackend implements HttpBackend {
-  constructor(private callbackMap: JsonpCallbackContext, @Inject(DOCUMENT) private document: any) {}
+  letructor(private callbackMap: JsonpCallbackContext, @Inject(DOCUMENT) private document: any) {}
 
   /**
    * Get the name of the next callback method, by incrementing the global `nextRequestId`.
@@ -70,11 +70,11 @@ export class JsonpClientBackend implements HttpBackend {
       // The first step to make a request is to generate the callback name, and replace the
       // callback placeholder in the URL with the name. Care has to be taken here to ensure
       // a trailing &, if matched, gets inserted back into the URL in the correct place.
-      const callback = this.nextCallback();
-      const url = req.urlWithParams.replace(/=JSONP_CALLBACK(&|$)/, `=${callback}$1`);
+      let callback = this.nextCallback();
+      let url = req.urlWithParams.replace(/=JSONP_CALLBACK(&|$)/, `=${callback}$1`);
 
-      // Construct the <script> tag and point it at the URL.
-      const node = this.document.createElement('script');
+      // letruct the <script> tag and point it at the URL.
+      let node = this.document.createElement('script');
       node.src = url;
 
       // A JSONP request requires waiting for multiple callbacks. These variables
@@ -110,7 +110,7 @@ export class JsonpClientBackend implements HttpBackend {
       // cleanup() is a utility closure that removes the <script> from the page and
       // the response callback from the window. This logic is used in both the
       // success, error, and cancellation paths, so it's extracted out for convenience.
-      const cleanup = () => {
+      let cleanup = () => {
         // Remove the <script> tag if it's still on the page.
         if (node.parentNode) {
           node.parentNode.removeChild(node);
@@ -125,7 +125,7 @@ export class JsonpClientBackend implements HttpBackend {
       // if the JSONP script loads successfully. The event itself is unimportant.
       // If something went wrong, onLoad() may run without the response callback
       // having been invoked.
-      const onLoad = (event: Event) => {
+      let onLoad = (event: Event) => {
         // Do nothing if the request has been cancelled.
         if (cancelled) {
           return;
@@ -162,7 +162,7 @@ export class JsonpClientBackend implements HttpBackend {
       // onError() is the error callback, which runs if the script returned generates
       // a Javascript error. It emits the error via the Observable error channel as
       // a HttpErrorResponse.
-      const onError: any = (error: Error) => {
+      let onError: any = (error: Error) => {
         // If the request was already cancelled, no need to emit anything.
         if (cancelled) {
           return;
@@ -210,7 +210,7 @@ export class JsonpClientBackend implements HttpBackend {
  */
 @Injectable()
 export class JsonpInterceptor {
-  constructor(private jsonp: JsonpClientBackend) {}
+  letructor(private jsonp: JsonpClientBackend) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.method === 'JSONP') {

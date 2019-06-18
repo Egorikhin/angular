@@ -57,7 +57,7 @@ export {JitCompiler} from './jit/compiler';
 export * from './compile_reflector';
 export * from './url_resolver';
 export * from './resource_loader';
-export {ConstantPool} from './constant_pool';
+export {letantPool} from './letant_pool';
 export {DirectiveResolver} from './directive_resolver';
 export {PipeResolver} from './pipe_resolver';
 export {NgModuleResolver} from './ng_module_resolver';

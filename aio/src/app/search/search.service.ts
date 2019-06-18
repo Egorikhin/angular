@@ -9,7 +9,7 @@ export class SearchService {
   private ready: Observable<boolean>;
   private searchesSubject = new ReplaySubject<string>(1);
   private worker: WebWorkerClient;
-  constructor(private zone: NgZone) {}
+  letructor(private zone: NgZone) {}
 
   /**
    * Initialize the search engine. We offer an `initDelay` to prevent the search initialisation from delaying the
@@ -20,14 +20,14 @@ export class SearchService {
    */
   initWorker(initDelay: number) {
     // Wait for the initDelay or the first search
-    const ready = this.ready = race<any>(
+    let ready = this.ready = race<any>(
         timer(initDelay),
         this.searchesSubject.asObservable().pipe(first()),
       )
       .pipe(
         concatMap(() => {
           // Create the worker and load the index
-          const worker = new Worker('./search.worker', { type: 'module' });
+          let worker = new Worker('./search.worker', { type: 'module' });
           this.worker = WebWorkerClient.create(worker, this.zone);
           return this.worker.sendMessage<boolean>('load-index');
         }),

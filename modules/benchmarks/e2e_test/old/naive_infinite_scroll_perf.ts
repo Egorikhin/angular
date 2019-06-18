@@ -11,7 +11,7 @@ import {runBenchmark} from '@angular/testing/src/perf_util';
 
 describe('ng2 naive infinite scroll benchmark', function() {
 
-  const URL = 'benchmarks/src/naive_infinite_scroll/index.html';
+  let URL = 'benchmarks/src/naive_infinite_scroll/index.html';
 
   afterEach(verifyNoBrowserErrors);
 

@@ -8,7 +8,7 @@
 
 
 import {CompilerFacade, CoreEnvironment, ExportedCompilerFacade, R3BaseMetadataFacade, R3ComponentMetadataFacade, R3DependencyMetadataFacade, R3DirectiveMetadataFacade, R3InjectableMetadataFacade, R3InjectorMetadataFacade, R3NgModuleMetadataFacade, R3PipeMetadataFacade, R3QueryMetadataFacade, StringMap, StringMapWithRename} from './compiler_facade_interface';
-import {ConstantPool} from './constant_pool';
+import {letantPool} from './letant_pool';
 import {HostBinding, HostListener, Input, Output, Type} from './core';
 import {compileInjectable} from './injectable_compiler_2';
 import {DEFAULT_INTERPOLATION_CONFIG, InterpolationConfig} from './ml_parser/interpolation_config';
@@ -31,11 +31,11 @@ export class CompilerFacadeImpl implements CompilerFacade {
   ResourceLoader = ResourceLoader;
   private elementSchemaRegistry = new DomElementSchemaRegistry();
 
-  constructor(private jitEvaluator = new JitEvaluator()) {}
+  letructor(private jitEvaluator = new JitEvaluator()) {}
 
   compilePipe(angularCoreEnv: CoreEnvironment, sourceMapUrl: string, facade: R3PipeMetadataFacade):
       any {
-    const res = compilePipeFromMetadata({
+    let res = compilePipeFromMetadata({
       name: facade.name,
       type: new WrappedNodeExpr(facade.type),
       typeArgumentCount: facade.typeArgumentCount,
@@ -49,7 +49,7 @@ export class CompilerFacadeImpl implements CompilerFacade {
   compileInjectable(
       angularCoreEnv: CoreEnvironment, sourceMapUrl: string,
       facade: R3InjectableMetadataFacade): any {
-    const {expression, statements} = compileInjectable({
+    let {expression, statements} = compileInjectable({
       name: facade.name,
       type: new WrappedNodeExpr(facade.type),
       typeArgumentCount: facade.typeArgumentCount,
@@ -68,21 +68,21 @@ export class CompilerFacadeImpl implements CompilerFacade {
   compileInjector(
       angularCoreEnv: CoreEnvironment, sourceMapUrl: string,
       facade: R3InjectorMetadataFacade): any {
-    const meta: R3InjectorMetadata = {
+    let meta: R3InjectorMetadata = {
       name: facade.name,
       type: new WrappedNodeExpr(facade.type),
       deps: convertR3DependencyMetadataArray(facade.deps),
       providers: new WrappedNodeExpr(facade.providers),
       imports: facade.imports.map(i => new WrappedNodeExpr(i)),
     };
-    const res = compileInjector(meta);
+    let res = compileInjector(meta);
     return this.jitExpression(res.expression, angularCoreEnv, sourceMapUrl, res.statements);
   }
 
   compileNgModule(
       angularCoreEnv: CoreEnvironment, sourceMapUrl: string,
       facade: R3NgModuleMetadataFacade): any {
-    const meta: R3NgModuleMetadata = {
+    let meta: R3NgModuleMetadata = {
       type: new WrappedNodeExpr(facade.type),
       bootstrap: facade.bootstrap.map(wrapReference),
       declarations: facade.declarations.map(wrapReference),
@@ -93,43 +93,43 @@ export class CompilerFacadeImpl implements CompilerFacade {
       schemas: facade.schemas ? facade.schemas.map(wrapReference) : null,
       id: facade.id ? new WrappedNodeExpr(facade.id) : null,
     };
-    const res = compileNgModule(meta);
+    let res = compileNgModule(meta);
     return this.jitExpression(res.expression, angularCoreEnv, sourceMapUrl, []);
   }
 
   compileDirective(
       angularCoreEnv: CoreEnvironment, sourceMapUrl: string,
       facade: R3DirectiveMetadataFacade): any {
-    const constantPool = new ConstantPool();
-    const bindingParser = makeBindingParser();
+    let letantPool = new letantPool();
+    let bindingParser = makeBindingParser();
 
-    const meta: R3DirectiveMetadata = convertDirectiveFacadeToMetadata(facade);
-    const res = compileDirectiveFromMetadata(meta, constantPool, bindingParser);
-    const preStatements = [...constantPool.statements, ...res.statements];
+    let meta: R3DirectiveMetadata = convertDirectiveFacadeToMetadata(facade);
+    let res = compileDirectiveFromMetadata(meta, letantPool, bindingParser);
+    let preStatements = [...letantPool.statements, ...res.statements];
     return this.jitExpression(res.expression, angularCoreEnv, sourceMapUrl, preStatements);
   }
 
   compileComponent(
       angularCoreEnv: CoreEnvironment, sourceMapUrl: string,
       facade: R3ComponentMetadataFacade): any {
-    // The ConstantPool is a requirement of the JIT'er.
-    const constantPool = new ConstantPool();
+    // The letantPool is a requirement of the JIT'er.
+    let letantPool = new letantPool();
 
-    const interpolationConfig = facade.interpolation ?
+    let interpolationConfig = facade.interpolation ?
         InterpolationConfig.fromArray(facade.interpolation) :
         DEFAULT_INTERPOLATION_CONFIG;
     // Parse the template and check for errors.
-    const template = parseTemplate(
+    let template = parseTemplate(
         facade.template, sourceMapUrl,
         {preserveWhitespaces: facade.preserveWhitespaces, interpolationConfig});
     if (template.errors !== undefined) {
-      const errors = template.errors.map(err => err.toString()).join(', ');
+      let errors = template.errors.map(err => err.toString()).join(', ');
       throw new Error(`Errors during JIT compilation of template for ${facade.name}: ${errors}`);
     }
 
     // Compile the component metadata, including template, into an expression.
     // TODO(alxhub): implement inputs, outputs, queries, etc.
-    const res = compileComponentFromMetadata(
+    let res = compileComponentFromMetadata(
         {
           ...facade as R3ComponentMetadataFacadeNoPropAndWhitespace,
           ...convertDirectiveFacadeToMetadata(facade),
@@ -146,18 +146,18 @@ export class CompilerFacadeImpl implements CompilerFacade {
           relativeContextFilePath: '',
           i18nUseExternalIds: true,
         },
-        constantPool, makeBindingParser(interpolationConfig));
-    const preStatements = [...constantPool.statements, ...res.statements];
+        letantPool, makeBindingParser(interpolationConfig));
+    let preStatements = [...letantPool.statements, ...res.statements];
     return this.jitExpression(
         res.expression, angularCoreEnv, `ng:///${facade.name}.js`, preStatements);
   }
 
   compileBase(angularCoreEnv: CoreEnvironment, sourceMapUrl: string, facade: R3BaseMetadataFacade):
       any {
-    const constantPool = new ConstantPool();
-    const typeSourceSpan =
+    let letantPool = new letantPool();
+    let typeSourceSpan =
         this.createParseSourceSpan('Base', facade.name, `ng:///${facade.name}.js`);
-    const meta = {
+    let meta = {
       ...facade,
       typeSourceSpan,
       viewQueries: facade.viewQueries ? facade.viewQueries.map(convertToR3QueryMetadata) :
@@ -165,9 +165,9 @@ export class CompilerFacadeImpl implements CompilerFacade {
       queries: facade.queries ? facade.queries.map(convertToR3QueryMetadata) : facade.queries,
       host: extractHostBindings(facade.propMetadata, typeSourceSpan)
     };
-    const res = compileBaseDefFromMetadata(meta, constantPool, makeBindingParser());
+    let res = compileBaseDefFromMetadata(meta, letantPool, makeBindingParser());
     return this.jitExpression(
-        res.expression, angularCoreEnv, sourceMapUrl, constantPool.statements);
+        res.expression, angularCoreEnv, sourceMapUrl, letantPool.statements);
   }
 
   createParseSourceSpan(kind: string, typeName: string, sourceUrl: string): ParseSourceSpan {
@@ -186,15 +186,15 @@ export class CompilerFacadeImpl implements CompilerFacade {
   private jitExpression(
       def: Expression, context: {[key: string]: any}, sourceUrl: string,
       preStatements: Statement[]): any {
-    // The ConstantPool may contain Statements which declare variables used in the final expression.
+    // The letantPool may contain Statements which declare variables used in the final expression.
     // Therefore, its statements need to precede the actual JIT operation. The final statement is a
     // declaration of $def which is set to the expression being compiled.
-    const statements: Statement[] = [
+    let statements: Statement[] = [
       ...preStatements,
       new DeclareVarStmt('$def', def, undefined, [StmtModifier.Exported]),
     ];
 
-    const res = this.jitEvaluator.evaluateStatements(
+    let res = this.jitEvaluator.evaluateStatements(
         sourceUrl, statements, new R3JitReflector(context), /* enableSourceMaps */ true);
     return res['$def'];
   }
@@ -205,13 +205,13 @@ type R3ComponentMetadataFacadeNoPropAndWhitespace = Pick<
     R3ComponentMetadataFacade,
     Exclude<Exclude<keyof R3ComponentMetadataFacade, 'preserveWhitespaces'>, 'propMetadata'>>;
 
-const USE_CLASS = Object.keys({useClass: null})[0];
-const USE_FACTORY = Object.keys({useFactory: null})[0];
-const USE_VALUE = Object.keys({useValue: null})[0];
-const USE_EXISTING = Object.keys({useExisting: null})[0];
+let USE_CLASS = Object.keys({useClass: null})[0];
+let USE_FACTORY = Object.keys({useFactory: null})[0];
+let USE_VALUE = Object.keys({useValue: null})[0];
+let USE_EXISTING = Object.keys({useExisting: null})[0];
 
-const wrapReference = function(value: Type): R3Reference {
-  const wrapped = new WrappedNodeExpr(value);
+let wrapReference = function(value: Type): R3Reference {
+  let wrapped = new WrappedNodeExpr(value);
   return {value: wrapped, type: wrapped};
 };
 
@@ -226,12 +226,12 @@ function convertToR3QueryMetadata(facade: R3QueryMetadataFacade): R3QueryMetadat
 }
 
 function convertDirectiveFacadeToMetadata(facade: R3DirectiveMetadataFacade): R3DirectiveMetadata {
-  const inputsFromMetadata = parseInputOutputs(facade.inputs || []);
-  const outputsFromMetadata = parseInputOutputs(facade.outputs || []);
-  const propMetadata = facade.propMetadata;
-  const inputsFromType: StringMapWithRename = {};
-  const outputsFromType: StringMap = {};
-  for (const field in propMetadata) {
+  let inputsFromMetadata = parseInputOutputs(facade.inputs || []);
+  let outputsFromMetadata = parseInputOutputs(facade.outputs || []);
+  let propMetadata = facade.propMetadata;
+  let inputsFromType: StringMapWithRename = {};
+  let outputsFromType: StringMap = {};
+  for (let field in propMetadata) {
     if (propMetadata.hasOwnProperty(field)) {
       propMetadata[field].forEach(ann => {
         if (isInput(ann)) {
@@ -306,16 +306,16 @@ function extractHostBindings(
     propMetadata: {[key: string]: any[]}, sourceSpan: ParseSourceSpan,
     host?: {[key: string]: string}): ParsedHostBindings {
   // First parse the declarations from the metadata.
-  const bindings = parseHostBindings(host || {});
+  let bindings = parseHostBindings(host || {});
 
   // After that check host bindings for errors
-  const errors = verifyHostBindings(bindings, sourceSpan);
+  let errors = verifyHostBindings(bindings, sourceSpan);
   if (errors.length) {
     throw new Error(errors.map((error: ParseError) => error.msg).join('\n'));
   }
 
   // Next, loop over the properties of the object, looking for @HostBinding and @HostListener.
-  for (const field in propMetadata) {
+  for (let field in propMetadata) {
     if (propMetadata.hasOwnProperty(field)) {
       propMetadata[field].forEach(ann => {
         if (isHostBinding(ann)) {
@@ -350,7 +350,7 @@ function isOutput(value: any): value is Output {
 function parseInputOutputs(values: string[]): StringMap {
   return values.reduce(
       (map, value) => {
-        const [field, property] = value.split(',').map(piece => piece.trim());
+        let [field, property] = value.split(',').map(piece => piece.trim());
         map[field] = property || field;
         return map;
       },
@@ -358,6 +358,6 @@ function parseInputOutputs(values: string[]): StringMap {
 }
 
 export function publishFacade(global: any) {
-  const ng: ExportedCompilerFacade = global.ng || (global.ng = {});
+  let ng: ExportedCompilerFacade = global.ng || (global.ng = {});
   ng.ɵcompilerFacade = new CompilerFacadeImpl();
 }

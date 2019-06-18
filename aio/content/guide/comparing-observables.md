@@ -60,7 +60,7 @@ promise.then((value) => {
 * Observable subscriptions are cancellable. Unsubscribing removes the listener from receiving further values, and notifies the subscriber function to cancel work.
 
 <code-example hideCopy>
-const sub = obs.subscribe(...);
+let sub = obs.subscribe(...);
 sub.unsubscribe();
 </code-example>
 

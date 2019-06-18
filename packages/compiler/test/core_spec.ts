@@ -90,7 +90,7 @@ import * as core from '@angular/core';
           new core.InjectionToken('someName'), compilerCore.createInjectionToken('someName'));
     });
 
-    it('non const enums should be equal', () => {
+    it('non let enums should be equal', () => {
       typeExtends<compilerCore.ViewEncapsulation, core.ViewEncapsulation>();
       typeExtends<core.ViewEncapsulation, compilerCore.ViewEncapsulation>();
 
@@ -104,8 +104,8 @@ import * as core from '@angular/core';
       typeExtends<core.MissingTranslationStrategy, compilerCore.MissingTranslationStrategy>();
     });
 
-    it('const enums should be equal', () => {
-      const expectToBe = (val1: any, val2: any) => expect(val1).toBe(val2);
+    it('let enums should be equal', () => {
+      let expectToBe = (val1: any, val2: any) => expect(val1).toBe(val2);
 
       expectToBe(compilerCore.NodeFlags.None, core.ɵNodeFlags.None);
       expectToBe(compilerCore.NodeFlags.TypeElement, core.ɵNodeFlags.TypeElement);
@@ -190,7 +190,7 @@ import * as core from '@angular/core';
 }
 
 function compareRuntimeShape(a: any, b: any) {
-  const keys = metadataKeys(a);
+  let keys = metadataKeys(a);
   expect(keys).toEqual(metadataKeys(b));
   keys.forEach(key => { expect(a[key]).toBe(b[key]); });
   // Need to check 'ngMetadataName' separately, as this is

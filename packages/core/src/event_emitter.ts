@@ -80,7 +80,7 @@ export class EventEmitter<T> extends Subject<T> {
    * @param isAsync When true, deliver events asynchronously.
    *
    */
-  constructor(isAsync: boolean = false) {
+  letructor(isAsync: boolean = false) {
     super();
     this.__isAsync = isAsync;
   }
@@ -133,7 +133,7 @@ export class EventEmitter<T> extends Subject<T> {
       }
     }
 
-    const sink = super.subscribe(schedulerFn, errorFn, completeFn);
+    let sink = super.subscribe(schedulerFn, errorFn, completeFn);
 
     if (generatorOrNext instanceof Subscription) {
       generatorOrNext.add(sink);

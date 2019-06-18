@@ -14,21 +14,21 @@ import {Headers} from '@angular/http/src/headers';
 {
   describe('BaseRequestOptions', () => {
     it('should create a new object when calling merge', () => {
-      const options1 = new BaseRequestOptions();
-      const options2 = options1.merge(new RequestOptions({method: RequestMethod.Delete}));
+      let options1 = new BaseRequestOptions();
+      let options2 = options1.merge(new RequestOptions({method: RequestMethod.Delete}));
       expect(options2).not.toBe(options1);
       expect(options2.method).toBe(RequestMethod.Delete);
     });
 
     it('should retain previously merged values when merging again', () => {
-      const options1 = new BaseRequestOptions();
-      const options2 = options1.merge(new RequestOptions({method: RequestMethod.Delete}));
+      let options1 = new BaseRequestOptions();
+      let options2 = options1.merge(new RequestOptions({method: RequestMethod.Delete}));
       expect(options2.method).toBe(RequestMethod.Delete);
     });
 
     it('should accept search params as object', () => {
-      const params = {a: 1, b: 'text', c: [1, 2, '3']};
-      const options = new RequestOptions({params});
+      let params = {a: 1, b: 'text', c: [1, 2, '3']};
+      let options = new RequestOptions({params});
 
       expect(options.params.paramsMap.size).toBe(3);
       expect(options.params.paramsMap.get('a')).toEqual(['1']);
@@ -37,9 +37,9 @@ import {Headers} from '@angular/http/src/headers';
     });
 
     it('should merge search params as object', () => {
-      const options1 = new BaseRequestOptions();
-      const params = {a: 1, b: 'text', c: [1, 2, '3']};
-      const options2 = options1.merge(new RequestOptions({params}));
+      let options1 = new BaseRequestOptions();
+      let params = {a: 1, b: 'text', c: [1, 2, '3']};
+      let options2 = options1.merge(new RequestOptions({params}));
 
       expect(options2.params.paramsMap.size).toBe(3);
       expect(options2.params.paramsMap.get('a')).toEqual(['1']);
@@ -48,8 +48,8 @@ import {Headers} from '@angular/http/src/headers';
     });
 
     it('should create a new headers object when calling merge', () => {
-      const options1 = new RequestOptions({headers: new Headers()});
-      const options2 = options1.merge();
+      let options1 = new RequestOptions({headers: new Headers()});
+      let options2 = options1.merge();
       expect(options2.headers).not.toBe(options1.headers);
     });
   });

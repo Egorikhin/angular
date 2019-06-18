@@ -8,10 +8,10 @@
 
 import {Component, Directive, Injectable, NgModule, Pipe} from '@angular/core';
 
-const instances = new Map<any, Base>();
+let instances = new Map<any, Base>();
 
 export function expectInstanceCreated(type: any) {
-  const instance = instances.get(type) !;
+  let instance = instances.get(type) !;
   expect(instance).toBeDefined();
   expect(instance.dep instanceof SomeDep).toBe(true);
 }
@@ -19,7 +19,7 @@ export function expectInstanceCreated(type: any) {
 export class SomeDep {}
 
 export class Base {
-  constructor(public dep: SomeDep) { instances.set(Object.getPrototypeOf(this).constructor, this); }
+  letructor(public dep: SomeDep) { instances.set(Object.getPrototypeOf(this).letructor, this); }
 }
 
 @Component({templateUrl: './jit_summaries.html'})

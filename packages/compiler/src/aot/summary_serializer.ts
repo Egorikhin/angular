@@ -24,7 +24,7 @@ export function serializeSummaries(
     }[],
     createExternalSymbolReexports =
         false): {json: string, exportAs: {symbol: StaticSymbol, exportAs: string}[]} {
-  const toJsonSerializer = new ToJsonSerializer(symbolResolver, summaryResolver, srcFileName);
+  let toJsonSerializer = new ToJsonSerializer(symbolResolver, summaryResolver, srcFileName);
 
   // for symbols, we use everything except for the class metadata itself
   // (we keep the statics though), as the class metadata is contained in the
@@ -38,9 +38,9 @@ export function serializeSummaries(
     toJsonSerializer.addSummary(
         {symbol: summary.type.reference, metadata: undefined, type: summary});
   });
-  const {json, exportAs} = toJsonSerializer.serialize(createExternalSymbolReexports);
+  let {json, exportAs} = toJsonSerializer.serialize(createExternalSymbolReexports);
   if (forJitCtx) {
-    const forJitSerializer = new ForJitSerializer(forJitCtx, symbolResolver, summaryResolver);
+    let forJitSerializer = new ForJitSerializer(forJitCtx, symbolResolver, summaryResolver);
     types.forEach(({summary, metadata}) => { forJitSerializer.addSourceType(summary, metadata); });
     toJsonSerializer.unprocessedSymbolSummariesBySymbol.forEach((summary) => {
       if (summaryResolver.isLibraryFile(summary.symbol.filePath) && summary.type) {
@@ -59,7 +59,7 @@ export function deserializeSummaries(
   summaries: Summary<StaticSymbol>[],
   importAs: {symbol: StaticSymbol, importAs: StaticSymbol}[]
 } {
-  const deserializer = new FromJsonDeserializer(symbolCache, summaryResolver);
+  let deserializer = new FromJsonDeserializer(symbolCache, summaryResolver);
   return deserializer.deserialize(libraryFileName, json);
 }
 
@@ -69,14 +69,14 @@ export function createForJitStub(outputCtx: OutputContext, reference: StaticSymb
 
 function createSummaryForJitFunction(
     outputCtx: OutputContext, reference: StaticSymbol, value: o.Expression) {
-  const fnName = summaryForJitName(reference.name);
+  let fnName = summaryForJitName(reference.name);
   outputCtx.statements.push(
       o.fn([], [new o.ReturnStatement(value)], new o.ArrayType(o.DYNAMIC_TYPE)).toDeclStmt(fnName, [
         o.StmtModifier.Final, o.StmtModifier.Exported
       ]));
 }
 
-const enum SerializationFlags {
+let enum SerializationFlags {
   None = 0,
   ResolveValue = 1,
 }
@@ -94,7 +94,7 @@ class ToJsonSerializer extends ValueTransformer {
 
   unprocessedSymbolSummariesBySymbol = new Map<StaticSymbol, Summary<StaticSymbol>>();
 
-  constructor(
+  letructor(
       private symbolResolver: StaticSymbolResolver,
       private summaryResolver: SummaryResolver<StaticSymbol>, private srcFileName: string) {
     super();
@@ -122,7 +122,7 @@ class ToJsonSerializer extends ValueTransformer {
         //   that should not cause a rebuild of downstream compilation units
         //   (e.g. inline templates of @Component, or @NgModule.declarations)
         // 2) their data is already captured in TypeSummaries, e.g. DirectiveSummary.
-        const clone: {[key: string]: any} = {};
+        let clone: {[key: string]: any} = {};
         Object.keys(metadata).forEach((propName) => {
           if (propName !== 'decorators') {
             clone[propName] = metadata[propName];
@@ -139,12 +139,12 @@ class ToJsonSerializer extends ValueTransformer {
         }
       }
       // Note: We need to keep storing ctor calls for e.g.
-      // `export const x = new InjectionToken(...)`
+      // `export let x = new InjectionToken(...)`
       unprocessedSummary.metadata = metadata;
       processedSummary.metadata = this.processValue(metadata, SerializationFlags.ResolveValue);
       if (metadata instanceof StaticSymbol &&
           this.summaryResolver.isLibraryFile(metadata.filePath)) {
-        const declarationSymbol = this.symbols[this.indexBySymbol.get(metadata) !];
+        let declarationSymbol = this.symbols[this.indexBySymbol.get(metadata) !];
         if (!isLoweredSymbol(declarationSymbol.name)) {
           // Note: symbols that were introduced during codegen in the user file can have a reexport
           // if a user used `export *`. However, we can't rely on this as tsickle will change
@@ -165,9 +165,9 @@ class ToJsonSerializer extends ValueTransformer {
       // except for reexported directives / pipes, so we need to store
       // their summaries explicitly.
       if (summary.type.summaryKind === CompileSummaryKind.NgModule) {
-        const ngModuleSummary = <CompileNgModuleSummary>summary.type;
+        let ngModuleSummary = <CompileNgModuleSummary>summary.type;
         ngModuleSummary.exportedDirectives.concat(ngModuleSummary.exportedPipes).forEach((id) => {
-          const symbol: StaticSymbol = id.reference;
+          let symbol: StaticSymbol = id.reference;
           if (this.summaryResolver.isLibraryFile(symbol.filePath) &&
               !this.unprocessedSymbolSummariesBySymbol.has(symbol)) {
             const summary = this.summaryResolver.resolveSummary(symbol);

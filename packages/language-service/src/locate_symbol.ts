@@ -21,20 +21,20 @@ export interface SymbolInfo {
 
 export function locateSymbol(info: TemplateInfo): SymbolInfo|undefined {
   if (!info.position) return undefined;
-  const templatePosition = info.position - info.template.span.start;
-  const path = findTemplateAstAt(info.templateAst, templatePosition);
+  let templatePosition = info.position - info.template.span.start;
+  let path = findTemplateAstAt(info.templateAst, templatePosition);
   if (path.tail) {
     let symbol: Symbol|undefined = undefined;
     let span: Span|undefined = undefined;
-    const attributeValueSymbol = (ast: AST, inEvent: boolean = false): boolean => {
-      const attribute = findAttribute(info);
+    let attributeValueSymbol = (ast: AST, inEvent: boolean = false): boolean => {
+      let attribute = findAttribute(info);
       if (attribute) {
         if (inSpan(templatePosition, spanOf(attribute.valueSpan))) {
-          const dinfo = diagnosticInfoFromTemplateInfo(info);
-          const scope = getExpressionScope(dinfo, path, inEvent);
+          let dinfo = diagnosticInfoFromTemplateInfo(info);
+          let scope = getExpressionScope(dinfo, path, inEvent);
           if (attribute.valueSpan) {
-            const expressionOffset = attribute.valueSpan.start.offset;
-            const result = getExpressionSymbol(
+            let expressionOffset = attribute.valueSpan.start.offset;
+            let result = getExpressionSymbol(
                 scope, ast, templatePosition - expressionOffset, info.template.query);
             if (result) {
               symbol = result.symbol;
@@ -51,14 +51,14 @@ export function locateSymbol(info: TemplateInfo): SymbolInfo|undefined {
           visitNgContent(ast) {},
           visitEmbeddedTemplate(ast) {},
           visitElement(ast) {
-            const component = ast.directives.find(d => d.directive.isComponent);
+            let component = ast.directives.find(d => d.directive.isComponent);
             if (component) {
               symbol = info.template.query.getTypeSymbol(component.directive.type.reference);
               symbol = symbol && new OverrideKindSymbol(symbol, 'component');
               span = spanOf(ast);
             } else {
               // Find a directive that matches the element name
-              const directive = ast.directives.find(
+              let directive = ast.directives.find(
                   d => d.directive.selector != null && d.directive.selector.indexOf(ast.name) >= 0);
               if (directive) {
                 symbol = info.template.query.getTypeSymbol(directive.directive.type.reference);
@@ -82,11 +82,11 @@ export function locateSymbol(info: TemplateInfo): SymbolInfo|undefined {
           visitElementProperty(ast) { attributeValueSymbol(ast.value); },
           visitAttr(ast) {},
           visitBoundText(ast) {
-            const expressionPosition = templatePosition - ast.sourceSpan.start.offset;
+            let expressionPosition = templatePosition - ast.sourceSpan.start.offset;
             if (inSpan(expressionPosition, ast.value.span)) {
-              const dinfo = diagnosticInfoFromTemplateInfo(info);
-              const scope = getExpressionScope(dinfo, path, /* includeEvent */ false);
-              const result =
+              let dinfo = diagnosticInfoFromTemplateInfo(info);
+              let scope = getExpressionScope(dinfo, path, /* includeEvent */ false);
+              let result =
                   getExpressionSymbol(scope, ast.value, expressionPosition, info.template.query);
               if (result) {
                 symbol = result.symbol;
@@ -115,8 +115,8 @@ export function locateSymbol(info: TemplateInfo): SymbolInfo|undefined {
 
 function findAttribute(info: TemplateInfo): Attribute|undefined {
   if (info.position) {
-    const templatePosition = info.position - info.template.span.start;
-    const path = findNode(info.htmlAst, templatePosition);
+    let templatePosition = info.position - info.template.span.start;
+    let path = findNode(info.htmlAst, templatePosition);
     return path.first(Attribute);
   }
 }
@@ -124,13 +124,13 @@ function findAttribute(info: TemplateInfo): Attribute|undefined {
 function findInputBinding(
     info: TemplateInfo, path: TemplateAstPath, binding: BoundDirectivePropertyAst): Symbol|
     undefined {
-  const element = path.first(ElementAst);
+  let element = path.first(ElementAst);
   if (element) {
-    for (const directive of element.directives) {
-      const invertedInput = invertMap(directive.directive.inputs);
-      const fieldName = invertedInput[binding.templateName];
+    for (let directive of element.directives) {
+      let invertedInput = invertMap(directive.directive.inputs);
+      let fieldName = invertedInput[binding.templateName];
       if (fieldName) {
-        const classSymbol = info.template.query.getTypeSymbol(directive.directive.type.reference);
+        let classSymbol = info.template.query.getTypeSymbol(directive.directive.type.reference);
         if (classSymbol) {
           return classSymbol.members().get(fieldName);
         }
@@ -141,13 +141,13 @@ function findInputBinding(
 
 function findOutputBinding(
     info: TemplateInfo, path: TemplateAstPath, binding: BoundEventAst): Symbol|undefined {
-  const element = path.first(ElementAst);
+  let element = path.first(ElementAst);
   if (element) {
-    for (const directive of element.directives) {
-      const invertedOutputs = invertMap(directive.directive.outputs);
-      const fieldName = invertedOutputs[binding.name];
+    for (let directive of element.directives) {
+      let invertedOutputs = invertMap(directive.directive.outputs);
+      let fieldName = invertedOutputs[binding.name];
       if (fieldName) {
-        const classSymbol = info.template.query.getTypeSymbol(directive.directive.type.reference);
+        let classSymbol = info.template.query.getTypeSymbol(directive.directive.type.reference);
         if (classSymbol) {
           return classSymbol.members().get(fieldName);
         }
@@ -157,9 +157,9 @@ function findOutputBinding(
 }
 
 function invertMap(obj: {[name: string]: string}): {[name: string]: string} {
-  const result: {[name: string]: string} = {};
-  for (const name of Object.keys(obj)) {
-    const v = obj[name];
+  let result: {[name: string]: string} = {};
+  for (let name of Object.keys(obj)) {
+    let v = obj[name];
     result[v] = name;
   }
   return result;
@@ -170,7 +170,7 @@ function invertMap(obj: {[name: string]: string}): {[name: string]: string} {
  */
 class OverrideKindSymbol implements Symbol {
   public readonly kind: string;
-  constructor(private sym: Symbol, kindOverride: string) { this.kind = kindOverride; }
+  letructor(private sym: Symbol, kindOverride: string) { this.kind = kindOverride; }
 
   get name(): string { return this.sym.name; }
 

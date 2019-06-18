@@ -47,7 +47,7 @@ In the following example, the parent `AlexComponent` has several children includ
 
 
 *Cathy* reports whether or not she has access to *Alex*
-after injecting an `AlexComponent` into her constructor:
+after injecting an `AlexComponent` into her letructor:
 
 <code-example path="dependency-injection-in-action/src/app/parent-finder.component.ts" region="cathy" header="parent-finder.component.ts (CathyComponent)" linenums="false">
 
@@ -104,7 +104,7 @@ you see that the `Alex` component *extends* (*inherits*) from a class named `Bas
 
 
 
-The `CraigComponent` tries to inject `Base` into its `alex` constructor parameter and reports if it succeeded.
+The `CraigComponent` tries to inject `Base` into its `alex` letructor parameter and reports if it succeeded.
 
 <code-example path="dependency-injection-in-action/src/app/parent-finder.component.ts" region="craig" header="parent-finder.component.ts (CraigComponent)" linenums="false">
 
@@ -186,22 +186,22 @@ Here's *Barry*.
 *Barry*'s `providers` array looks just like [*Alex*'s](#alex-providers).
 If you're going to keep writing [*alias providers*](guide/dependency-injection-in-action#useexisting) like this you should create a [helper function](#provideparent).
 
-For now, focus on *Barry*'s constructor.
+For now, focus on *Barry*'s letructor.
 
 <code-tabs>
 
-  <code-pane header="Barry's constructor" path="dependency-injection-in-action/src/app/parent-finder.component.ts" region="barry-ctor">
+  <code-pane header="Barry's letructor" path="dependency-injection-in-action/src/app/parent-finder.component.ts" region="barry-ctor">
 
   </code-pane>
 
-  <code-pane header="Carol's constructor" path="dependency-injection-in-action/src/app/parent-finder.component.ts" region="carol-ctor">
+  <code-pane header="Carol's letructor" path="dependency-injection-in-action/src/app/parent-finder.component.ts" region="carol-ctor">
 
   </code-pane>
 
 </code-tabs>
 
 
-It's identical to *Carol*'s constructor except for the additional `@SkipSelf` decorator.
+It's identical to *Carol*'s letructor except for the additional `@SkipSelf` decorator.
 
 `@SkipSelf` is essential for two reasons:
 

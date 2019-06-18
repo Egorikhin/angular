@@ -8,10 +8,10 @@
 
 'use strict';
 
-const glob = require('glob');
+let glob = require('glob');
 require('zone.js/dist/zone-node.js');
-const JasmineRunner = require('jasmine');
-const path = require('path');
+let JasmineRunner = require('jasmine');
+let path = require('path');
 require('source-map-support').install();
 require('zone.js/dist/long-stack-trace-zone.js');
 require('zone.js/dist/task-tracking.js');
@@ -20,12 +20,12 @@ require('zone.js/dist/sync-test.js');
 require('zone.js/dist/async-test.js');
 require('zone.js/dist/fake-async-test.js');
 require('reflect-metadata/Reflect');
-const {generateSeed} = require('../../../tools/jasmine-seed-generator');
+let {generateSeed} = require('../../../tools/jasmine-seed-generator');
 
 // Let TypeScript know this is a module
 export {};
 
-const jrunner = new JasmineRunner({projectBaseDir: path.resolve(__dirname, '../../')});
+let jrunner = new JasmineRunner({projectBaseDir: path.resolve(__dirname, '../../')});
 (global as any)['jasmine'] = jrunner.jasmine;
 require('zone.js/dist/jasmine-patch.js');
 
@@ -46,10 +46,10 @@ jrunner.configureDefaultReporter({showColors: process.argv.indexOf('--no-color')
 jrunner.onComplete((passed: boolean) => process.exit(passed ? 0 : 1));
 
 // Support passing multiple globs
-const distAll = process.cwd() + '/dist/all';
-const globsIndex = process.argv.indexOf('--');
-const globs = (globsIndex === -1) ? [process.argv[2]] : process.argv.slice(globsIndex + 1);
-const specFiles =
+let distAll = process.cwd() + '/dist/all';
+let globsIndex = process.argv.indexOf('--');
+let globs = (globsIndex === -1) ? [process.argv[2]] : process.argv.slice(globsIndex + 1);
+let specFiles =
     globs
         .map(globstr => glob.sync(globstr, {
           cwd: distAll,
@@ -86,8 +86,8 @@ const specFiles =
         .reduce((allPaths, paths) => allPaths.concat(paths), []);
 
 // Load helpers and spec files
-const distAllRequire = (relativePath: string) => {
-  const mod = require(path.join(distAll, relativePath));
+let distAllRequire = (relativePath: string) => {
+  let mod = require(path.join(distAll, relativePath));
   if (mod.main) {
     mod.main();
   }

@@ -18,7 +18,7 @@ export {VERSION} from './version';
  * @publicApi
  * @deprecated platform-webworker is deprecated in Angular and will be removed in version 10
  */
-export const platformWorkerAppDynamic =
+export let platformWorkerAppDynamic =
     createPlatformFactory(platformCoreDynamic, 'workerAppDynamic', [
       {
         provide: COMPILER_OPTIONS,

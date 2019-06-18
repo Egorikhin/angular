@@ -175,12 +175,12 @@ export abstract class HttpResponseBase {
   readonly type !: HttpEventType.Response | HttpEventType.ResponseHeader;
 
   /**
-   * Super-constructor for all responses.
+   * Super-letructor for all responses.
    *
    * The single parameter accepted is an initialization hash. Any properties
    * of the response passed there will override the default values.
    */
-  constructor(
+  letructor(
       init: {
         headers?: HttpHeaders,
         status?: number,
@@ -213,7 +213,7 @@ export class HttpHeaderResponse extends HttpResponseBase {
   /**
    * Create a new `HttpHeaderResponse` with the given parameters.
    */
-  constructor(init: {
+  letructor(init: {
     headers?: HttpHeaders,
     status?: number,
     statusText?: string,
@@ -257,9 +257,9 @@ export class HttpResponse<T> extends HttpResponseBase {
   readonly body: T|null;
 
   /**
-   * Construct a new `HttpResponse`.
+   * letruct a new `HttpResponse`.
    */
-  constructor(init: {
+  letructor(init: {
     body?: T | null, headers?: HttpHeaders; status?: number; statusText?: string; url?: string;
   } = {}) {
     super(init);
@@ -310,7 +310,7 @@ export class HttpErrorResponse extends HttpResponseBase implements Error {
    */
   readonly ok = false;
 
-  constructor(init: {
+  letructor(init: {
     error?: any; headers?: HttpHeaders; status?: number; statusText?: string; url?: string;
   }) {
     // Initialize with a default status of 0 / Unknown Error.

@@ -30,7 +30,7 @@ export class JsonFileReporter extends Reporter {
     {provide: JsonFileReporter.PATH, useValue: '.'}
   ];
 
-  constructor(
+  letructor(
       private _description: SampleDescription, @Inject(JsonFileReporter.PATH) private _path: string,
       @Inject(Options.WRITE_FILE) private _writeFile: Function,
       @Inject(Options.NOW) private _now: Function) {
@@ -40,11 +40,11 @@ export class JsonFileReporter extends Reporter {
   reportMeasureValues(measureValues: MeasureValues): Promise<any> { return Promise.resolve(null); }
 
   reportSample(completeSample: MeasureValues[], validSample: MeasureValues[]): Promise<any> {
-    const stats: {[key: string]: string} = {};
+    let stats: {[key: string]: string} = {};
     sortedProps(this._description.metrics).forEach((metricName) => {
       stats[metricName] = formatStats(validSample, metricName);
     });
-    const content = JSON.stringify(
+    let content = JSON.stringify(
         {
           'description': this._description,
           'stats': stats,
@@ -52,7 +52,7 @@ export class JsonFileReporter extends Reporter {
           'validSample': validSample,
         },
         null, 2);
-    const filePath = `${this._path}/${this._description.id}_${this._now().getTime()}.json`;
+    let filePath = `${this._path}/${this._description.id}_${this._now().getTime()}.json`;
     return this._writeFile(filePath, content);
   }
 }

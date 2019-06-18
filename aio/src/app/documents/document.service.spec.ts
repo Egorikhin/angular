@@ -11,7 +11,7 @@ import { DocumentService, DocumentContents,
          FETCHING_ERROR_ID, FILE_NOT_FOUND_ID } from './document.service';
 
 
-const CONTENT_URL_PREFIX = 'generated/docs/';
+let CONTENT_URL_PREFIX = 'generated/docs/';
 
 describe('DocumentService', () => {
 
@@ -29,7 +29,7 @@ describe('DocumentService', () => {
   }
 
   function getServices(initialUrl: string = '') {
-    const injector = createInjector(initialUrl);
+    let injector = createInjector(initialUrl);
     httpMock = injector.get(HttpTestingController) as HttpTestingController;
     return {
       locationService: injector.get(LocationService) as MockLocationService,
@@ -43,7 +43,7 @@ describe('DocumentService', () => {
   describe('currentDocument', () => {
 
     it('should fetch a document for the initial location', () => {
-      const { docService } = getServices('initial/doc');
+      let { docService } = getServices('initial/doc');
       docService.currentDocument.subscribe();
 
       httpMock.expectOne(CONTENT_URL_PREFIX + 'initial/doc.json');
@@ -51,9 +51,9 @@ describe('DocumentService', () => {
 
     it('should emit a document each time the location changes', () => {
       let latestDocument: DocumentContents|undefined;
-      const doc0 = { contents: 'doc 0', id: 'initial/doc' };
-      const doc1 = { contents: 'doc 1', id: 'new/doc' };
-      const { docService, locationService } = getServices('initial/doc');
+      let doc0 = { contents: 'doc 0', id: 'initial/doc' };
+      let doc1 = { contents: 'doc 1', id: 'new/doc' };
+      let { docService, locationService } = getServices('initial/doc');
 
       docService.currentDocument.subscribe(doc => latestDocument = doc);
       expect(latestDocument).toBeUndefined();
@@ -68,8 +68,8 @@ describe('DocumentService', () => {
 
     it('should emit the not-found document if the document is not found on the server', () => {
       let currentDocument: DocumentContents|undefined;
-      const notFoundDoc = { id: FILE_NOT_FOUND_ID, contents: '<h1>Page Not Found</h1>' };
-      const { docService, logger } = getServices('missing/doc');
+      let notFoundDoc = { id: FILE_NOT_FOUND_ID, contents: '<h1>Page Not Found</h1>' };
+      let { docService, logger } = getServices('missing/doc');
       docService.currentDocument.subscribe(doc => currentDocument = doc);
 
       // Initial request return 404.
@@ -88,9 +88,9 @@ describe('DocumentService', () => {
 
     it('should emit a hard-coded not-found document if the not-found document is not found on the server', () => {
       let currentDocument: DocumentContents|undefined;
-      const hardCodedNotFoundDoc = { contents: 'Document not found', id: FILE_NOT_FOUND_ID };
-      const nextDoc = { contents: 'Next Doc', id: 'new/doc' };
-      const { docService, locationService } = getServices(FILE_NOT_FOUND_ID);
+      let hardCodedNotFoundDoc = { contents: 'Document not found', id: FILE_NOT_FOUND_ID };
+      let nextDoc = { contents: 'Next Doc', id: 'new/doc' };
+      let { docService, locationService } = getServices(FILE_NOT_FOUND_ID);
 
       docService.currentDocument.subscribe(doc => currentDocument = doc);
 
@@ -105,9 +105,9 @@ describe('DocumentService', () => {
 
     it('should use a hard-coded error doc if the request fails (but not cache it)', () => {
       let latestDocument!: DocumentContents;
-      const doc1 = { contents: 'doc 1' } as DocumentContents;
-      const doc2 = { contents: 'doc 2' } as DocumentContents;
-      const { docService, locationService, logger } = getServices('initial/doc');
+      let doc1 = { contents: 'doc 1' } as DocumentContents;
+      let doc2 = { contents: 'doc 2' } as DocumentContents;
+      let { docService, locationService, logger } = getServices('initial/doc');
 
       docService.currentDocument.subscribe(doc => latestDocument = doc);
 
@@ -131,8 +131,8 @@ describe('DocumentService', () => {
 
     it('should not crash the app if the response is invalid JSON', () => {
       let latestDocument!: DocumentContents;
-      const doc1 = { contents: 'doc 1' } as DocumentContents;
-      const { docService, locationService } = getServices('initial/doc');
+      let doc1 = { contents: 'doc 1' } as DocumentContents;
+      let { docService, locationService } = getServices('initial/doc');
 
       docService.currentDocument.subscribe(doc => latestDocument = doc);
 
@@ -148,9 +148,9 @@ describe('DocumentService', () => {
       let latestDocument!: DocumentContents;
       let subscription: Subscription;
 
-      const doc0 = { contents: 'doc 0' } as DocumentContents;
-      const doc1 = { contents: 'doc 1' } as DocumentContents;
-      const { docService, locationService } = getServices('url/0');
+      let doc0 = { contents: 'doc 0' } as DocumentContents;
+      let doc1 = { contents: 'doc 1' } as DocumentContents;
+      let { docService, locationService } = getServices('url/0');
 
       subscription = docService.currentDocument.subscribe(doc => latestDocument = doc);
       httpMock.expectOne({}).flush(doc0);
@@ -181,14 +181,14 @@ describe('DocumentService', () => {
 
   describe('computeMap', () => {
     it('should map the "empty" location to the correct document request', () => {
-      const { docService } = getServices();
+      let { docService } = getServices();
       docService.currentDocument.subscribe();
 
       httpMock.expectOne(CONTENT_URL_PREFIX + 'index.json');
     });
 
     it('should map the "folder" locations to the correct document request', () => {
-      const { docService } = getServices('guide');
+      let { docService } = getServices('guide');
       docService.currentDocument.subscribe();
 
       httpMock.expectOne(CONTENT_URL_PREFIX + 'guide.json');

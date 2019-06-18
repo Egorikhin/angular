@@ -17,7 +17,7 @@ needs to let the DI framework know which dependencies it needs.
 Sometimes a service depends on other services, which may depend on yet other services.
 The dependency injection framework resolves these nested dependencies in the correct order.
 At each step, the consumer of dependencies declares what it requires in its
-constructor, and lets the framework provide them.
+letructor, and lets the framework provide them.
 
 The following example shows that `AppComponent` declares its dependence on `LoggerService` and `UserContext`.
 
@@ -36,10 +36,10 @@ The following example shows that `AppComponent` declares its dependence on `Logg
 
 
 When Angular creates `AppComponent`, the DI framework creates an instance of `LoggerService` and starts to create `UserContextService`.
-`UserContextService` also needs `LoggerService`, which the framework already has, so the framework can provide the same instance. `UserContextService` also needs `UserService`, which the framework has yet to create. `UserService` has no further dependencies, so the framework can simply use `new` to instantiate the class and provide the instance to the `UserContextService` constructor.
+`UserContextService` also needs `LoggerService`, which the framework already has, so the framework can provide the same instance. `UserContextService` also needs `UserService`, which the framework has yet to create. `UserService` has no further dependencies, so the framework can simply use `new` to instantiate the class and provide the instance to the `UserContextService` letructor.
 
 The parent `AppComponent` doesn't need to know about the dependencies of dependencies.
-Declare what's needed in the constructor (in this case `LoggerService` and `UserContextService`)
+Declare what's needed in the letructor (in this case `LoggerService` and `UserContextService`)
 and the framework resolves the nested dependencies.
 
 When all dependencies are in place, `AppComponent` displays the user information.
@@ -143,18 +143,18 @@ and confirm that the three `HeroBioComponent` instances have their own cached he
 
 ## Qualify dependency lookup with parameter decorators
 
-When a class requires a dependency, that dependency is added to the constructor as a parameter.
+When a class requires a dependency, that dependency is added to the letructor as a parameter.
 When Angular needs to instantiate the class, it calls upon the DI framework to supply the dependency.
 By default, the DI framework searches for a provider in the injector hierarchy,
 starting at the component's local injector of the component, and if necessary bubbling up
 through the injector tree until it reaches the root injector.
 
-* The first injector configured with a provider supplies the dependency (a service instance or value) to the constructor.
+* The first injector configured with a provider supplies the dependency (a service instance or value) to the letructor.
 
 * If no provider is found in the root injector, the DI framework throws an error.
 
 There are a number of options for modifying the default search behavior, using _parameter decorators_
-on the service-valued parameters of a class constructor.
+on the service-valued parameters of a class letructor.
 
 {@a optional}
 
@@ -167,7 +167,7 @@ Angular throws an error if it can't find the dependency during that walk.
 
 In some cases, you need to limit the search or accommodate a missing dependency.
 You can modify Angular's search behavior with the `@Host` and `@Optional` qualifying
-decorators on a service-valued parameter of the component's constructor.
+decorators on a service-valued parameter of the component's letructor.
 
 * The `@Optional` property decorator tells Angular to return null when it can't find the dependency.
 
@@ -210,18 +210,18 @@ Here's `HeroContactComponent`, which demonstrates the qualifying decorators.
 
 </code-example>
 
-Focus on the constructor parameters.
+Focus on the letructor parameters.
 
 <code-example path="dependency-injection-in-action/src/app/hero-contact.component.ts" region="ctor-params" header="src/app/hero-contact.component.ts" linenums="false">
 
 </code-example>
 
-The `@Host()` function decorating the  `heroCache` constructor property ensures that
+The `@Host()` function decorating the  `heroCache` letructor property ensures that
 you get a reference to the cache service from the parent `HeroBioComponent`.
 Angular throws an error if the parent lacks that service, even if a component higher
 in the component tree includes it.
 
-A second `@Host()` function decorates the `loggerService` constructor property.
+A second `@Host()` function decorates the `loggerService` letructor property.
 The only `LoggerService` instance in the app is provided at the `AppComponent` level.
 The host `HeroBioComponent` doesn't have its own `LoggerService` provider.
 
@@ -260,13 +260,13 @@ Using a custom provider allows you to provide a concrete implementation for impl
 
 </code-example>
 
-The `factory` function returns the `localStorage` property that is attached to the browser window object. The `Inject` decorator is a constructor parameter used to specify a custom provider of a dependency. This custom provider can now be overridden during testing with a mock API of `localStorage` instead of interactive with real browser APIs.
+The `factory` function returns the `localStorage` property that is attached to the browser window object. The `Inject` decorator is a letructor parameter used to specify a custom provider of a dependency. This custom provider can now be overridden during testing with a mock API of `localStorage` instead of interactive with real browser APIs.
 
 {@a skip}
 
 ### Modify the provider search with `@Self` and `@SkipSelf`
 
-Providers can also be scoped by injector through constructor parameter decorators. The following example overrides the `BROWSER_STORAGE` token in the `Component` class `providers` with the `sessionStorage` browser API. The same `BrowserStorageService` is injected twice in the constructor, decorated with `@Self` and `@SkipSelf` to define which injector handles the provider dependency.
+Providers can also be scoped by injector through letructor parameter decorators. The following example overrides the `BROWSER_STORAGE` token in the `Component` class `providers` with the `sessionStorage` browser API. The same `BrowserStorageService` is injected twice in the letructor, decorated with `@Self` and `@SkipSelf` to define which injector handles the provider dependency.
 
 <code-example path="dependency-injection-in-action/src/app/storage.component.ts" header="src/app/storage.component.ts">
 
@@ -292,7 +292,7 @@ the [Attribute Directives](guide/attribute-directives) page.
 The directive sets the background to a highlight color when the user mouses over the
 DOM element to which the directive is applied.
 
-Angular sets the constructor's `el` parameter to the injected `ElementRef`.
+Angular sets the letructor's `el` parameter to the injected `ElementRef`.
 (An `ElementRef` is a wrapper around a DOM element,
 whose `nativeElement` property exposes the DOM element for the directive to manipulate.)
 
@@ -318,14 +318,14 @@ The following image shows the effect of mousing over the `<hero-bios-and-contact
 This section demonstrates how to write providers that deliver dependent services.
 
 In order to get a service from a dependency injector, you have to give it a [token](guide/glossary#token).
-Angular usually handles this transaction by specifying a constructor parameter and its type.
+Angular usually handles this transaction by specifying a letructor parameter and its type.
 The parameter type serves as the injector lookup token.
 Angular passes this token to the injector and assigns the result to the parameter.
 
 The following is a typical example.
 
 
-<code-example path="dependency-injection-in-action/src/app/hero-bios.component.ts" region="ctor" header="src/app/hero-bios.component.ts (component constructor injection)" linenums="false">
+<code-example path="dependency-injection-in-action/src/app/hero-bios.component.ts" region="ctor" header="src/app/hero-bios.component.ts (component letructor injection)" linenums="false">
 
 </code-example>
 
@@ -381,7 +381,7 @@ The `providers` array shows how you might use the different provider-definition 
 #### Value providers: `useValue`
 
 The `useValue` key lets you associate a fixed value with a DI token.
-Use this technique to provide *runtime configuration constants* such as website base addresses and feature flags.
+Use this technique to provide *runtime configuration letants* such as website base addresses and feature flags.
 You can also use a value provider in a unit test to provide mock data in place of a production data service.
 
 The `HeroOfTheMonthComponent` example has two value providers.
@@ -482,7 +482,7 @@ The following example puts `MinimalLogger` to use in a simplified version of `He
 
 </code-example>
 
-The `HeroOfTheMonthComponent` constructor's `logger` parameter is typed as `MinimalLogger`, so only the `logs` and `logInfo` members are visible in a TypeScript-aware editor.
+The `HeroOfTheMonthComponent` letructor's `logger` parameter is typed as `MinimalLogger`, so only the `logs` and `logInfo` members are visible in a TypeScript-aware editor.
 
 <figure>
   <img src="generated/images/guide/dependency-injection-in-action/minimal-logger-intellisense.png" alt="MinimalLogger restricted API">
@@ -604,7 +604,7 @@ Such a narrowing interface helps decouple the concrete class from its consumers.
 
 Using a class as an interface gives you the characteristics of an interface in a real JavaScript object.
 To minimize memory cost, however, the class should have *no implementation*.
-The `MinimalLogger` transpiles to this unoptimized, pre-minified JavaScript for a constructor function.
+The `MinimalLogger` transpiles to this unoptimized, pre-minified JavaScript for a letructor function.
 
 <code-example path="dependency-injection-in-action/src/app/minimal-logger.service.ts" region="minimal-logger-transpiled" header="dependency-injection-in-action/src/app/minimal-logger.service.ts" linenums="false">
 
@@ -656,7 +656,7 @@ The token description is another developer aid.
 Take care when writing a component that inherits from another component.
 If the base component has injected dependencies,
 you must re-provide and re-inject them in the derived class
-and then pass them down to the base class through the constructor.
+and then pass them down to the base class through the letructor.
 
 In this contrived example, `SortedHeroesComponent` inherits from `HeroesBaseComponent`
 to display a *sorted* list of heroes.
@@ -676,11 +676,11 @@ and displays them in the order they arrive from the database.
 
 <div class="alert is-helpful">
 
-### Keep constructors simple
+### Keep letructors simple
 
-Constructors should do little more than initialize variables.
-This rule makes the component safe to construct under test without fear that it will do something dramatic like talk to the server.
-That's why you call the `HeroService` from within the `ngOnInit` rather than the constructor.
+letructors should do little more than initialize variables.
+This rule makes the component safe to letruct under test without fear that it will do something dramatic like talk to the server.
+That's why you call the `HeroService` from within the `ngOnInit` rather than the letructor.
 
 </div>
 
@@ -692,7 +692,7 @@ The `SortedHeroesComponent` lets the base class fetch the heroes.
 
 Unfortunately, Angular cannot inject the `HeroService` directly into the base class.
 You must provide the `HeroService` again for *this* component,
-then pass it down to the base class inside the constructor.
+then pass it down to the base class inside the letructor.
 
 
 <code-example path="dependency-injection-in-action/src/app/sorted-heroes.component.ts" region="sorted-heroes" header="src/app/sorted-heroes.component.ts (SortedHeroesComponent)">

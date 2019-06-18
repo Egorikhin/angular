@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
 
 import {wrapInArray} from './funcs';
 
-export const SOME_INJECTON_TOKEN = new InjectionToken('injectionToken');
+export let SOME_INJECTON_TOKEN = new InjectionToken('injectionToken');
 
 @Component({
   selector: 'comp-providers',
@@ -25,7 +25,7 @@ export const SOME_INJECTON_TOKEN = new InjectionToken('injectionToken');
   ]
 })
 export class CompWithProviders {
-  constructor(@Inject('strToken') public ctxProp: string) {}
+  letructor(@Inject('strToken') public ctxProp: string) {}
 }
 
 @Component({

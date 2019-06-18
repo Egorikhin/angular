@@ -21,7 +21,7 @@ describe('bootstrap', () => {
 
   @Component({selector: 'test-app', template: 'root <router-outlet></router-outlet>'})
   class RootCmp {
-    constructor() { log.push('RootCmp'); }
+    letructor() { log.push('RootCmp'); }
   }
 
   @Component({selector: 'test-app2', template: 'root <router-outlet></router-outlet>'})
@@ -31,7 +31,7 @@ describe('bootstrap', () => {
   class TestResolver implements Resolve<any> {
     resolve() {
       let resolve: any = null;
-      const res = new Promise(r => resolve = r);
+      let res = new Promise(r => resolve = r);
       setTimeout(() => resolve('test-data'), 0);
       return res;
     }
@@ -40,8 +40,8 @@ describe('bootstrap', () => {
   beforeEach(inject([DOCUMENT], (doc: any) => {
     destroyPlatform();
 
-    const el1 = getDOM().createElement('test-app', doc);
-    const el2 = getDOM().createElement('test-app2', doc);
+    let el1 = getDOM().createElement('test-app', doc);
+    let el2 = getDOM().createElement('test-app2', doc);
     getDOM().appendChild(doc.body, el1);
     getDOM().appendChild(doc.body, el2);
 
@@ -50,7 +50,7 @@ describe('bootstrap', () => {
   }));
 
   afterEach(inject([DOCUMENT], (doc: any) => {
-    const oldRoots = getDOM().querySelectorAll(doc, 'test-app,test-app2');
+    let oldRoots = getDOM().querySelectorAll(doc, 'test-app,test-app2');
     for (let i = 0; i < oldRoots.length; i++) {
       getDOM().remove(oldRoots[i]);
     }
@@ -73,15 +73,15 @@ describe('bootstrap', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     class TestModule {
-      constructor(router: Router) {
+      letructor(router: Router) {
         log.push('TestModule');
-        router.events.subscribe(e => log.push(e.constructor.name));
+        router.events.subscribe(e => log.push(e.letructor.name));
       }
     }
 
     platformBrowserDynamic([]).bootstrapModule(TestModule).then(res => {
-      const router = res.injector.get(Router);
-      const data = router.routerState.snapshot.root.firstChild !.data;
+      let router = res.injector.get(Router);
+      let data = router.routerState.snapshot.root.firstChild !.data;
       expect(data['test']).toEqual('test-data');
       expect(log).toEqual([
         'TestModule', 'NavigationStart', 'RoutesRecognized', 'GuardsCheckStart',
@@ -111,14 +111,14 @@ describe('bootstrap', () => {
          schemas: [CUSTOM_ELEMENTS_SCHEMA]
        })
        class TestModule {
-         constructor(router: Router) {
+         letructor(router: Router) {
            log.push('TestModule');
-           router.events.subscribe(e => log.push(e.constructor.name));
+           router.events.subscribe(e => log.push(e.letructor.name));
          }
        }
 
        platformBrowserDynamic([]).bootstrapModule(TestModule).then(res => {
-         const router = res.injector.get(Router);
+         let router = res.injector.get(Router);
          expect(router.routerState.snapshot.root.firstChild).toBeNull();
          // ResolveEnd has not been emitted yet because bootstrap returned too early
          expect(log).toEqual([
@@ -151,14 +151,14 @@ describe('bootstrap', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     class TestModule {
-      constructor(router: Router) {
+      letructor(router: Router) {
         log.push('TestModule');
-        router.events.subscribe(e => log.push(e.constructor.name));
+        router.events.subscribe(e => log.push(e.letructor.name));
       }
     }
 
     platformBrowserDynamic([]).bootstrapModule(TestModule).then(res => {
-      const router = res.injector.get(Router);
+      let router = res.injector.get(Router);
       expect(log).toEqual(['TestModule', 'RootCmp']);
       done();
     });
@@ -182,14 +182,14 @@ describe('bootstrap', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     class TestModule {
-      constructor(router: Router) {
+      letructor(router: Router) {
         log.push('TestModule');
-        router.events.subscribe(e => log.push(e.constructor.name));
+        router.events.subscribe(e => log.push(e.letructor.name));
       }
     }
 
     platformBrowserDynamic([]).bootstrapModule(TestModule).then(res => {
-      const router = res.injector.get(Router);
+      let router = res.injector.get(Router);
       expect(log).toEqual(['TestModule', 'RootCmp']);
       done();
     });
@@ -209,10 +209,10 @@ describe('bootstrap', () => {
        }
 
        platformBrowserDynamic([]).bootstrapModule(TestModule).then(res => {
-         const router = res.injector.get(Router);
+         let router = res.injector.get(Router);
          spyOn(router as any, 'resetRootComponentType').and.callThrough();
 
-         const appRef: ApplicationRef = res.injector.get(ApplicationRef);
+         let appRef: ApplicationRef = res.injector.get(ApplicationRef);
          appRef.bootstrap(SecondRootCmp);
 
          expect((router as any).resetRootComponentType).not.toHaveBeenCalled();
@@ -235,10 +235,10 @@ describe('bootstrap', () => {
        }
 
        platformBrowserDynamic([]).bootstrapModule(TestModule).then(res => {
-         const router = res.injector.get(Router);
+         let router = res.injector.get(Router);
          spyOn(router as any, 'resetRootComponentType').and.callThrough();
 
-         const appRef: ApplicationRef = res.injector.get(ApplicationRef);
+         let appRef: ApplicationRef = res.injector.get(ApplicationRef);
          appRef.components[0].onDestroy(() => {
            appRef.bootstrap(SecondRootCmp);
            expect((router as any).resetRootComponentType).toHaveBeenCalled();
@@ -291,9 +291,9 @@ describe('bootstrap', () => {
     class TestModule {
     }
 
-    const res = await platformBrowserDynamic([]).bootstrapModule(TestModule);
-    const router = res.injector.get(Router);
-    const location: Location = res.injector.get(Location);
+    let res = await platformBrowserDynamic([]).bootstrapModule(TestModule);
+    let router = res.injector.get(Router);
+    let location: Location = res.injector.get(Location);
 
     await router.navigateByUrl('/aa');
     window.scrollTo(0, 5000);

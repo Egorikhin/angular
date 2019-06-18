@@ -11,7 +11,7 @@
 // use SystemJS (e.g. for lazy loading, web workers) and therefore we want to avoid
 // repeating the basic configuration by providing this as a general SystemJS config.
 
-const angularPackages = [
+let angularPackages = [
   'common',
   'animations',
   'platform-browser/animations',
@@ -28,8 +28,8 @@ const angularPackages = [
   'upgrade/static',
 ];
 
-const packagesConfig = {};
-const mapConfig = {
+let packagesConfig = {};
+let mapConfig = {
   'tslib': 'npm/node_modules/tslib/tslib.js',
   'rxjs': 'npm/node_modules/rxjs/bundles/rxjs.umd.js',
   'rxjs/operators': 'angular/modules/playground/systemjs-rxjs-operators.js',

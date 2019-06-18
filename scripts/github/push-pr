@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const shell = require('shelljs');
+let shell = require('shelljs');
 shell.config.fatal = true;
-const util = require('./utils/git_util');
+let util = require('./utils/git_util');
 
 if (require.main === module) {
   main(process.argv.splice(2)).then(
@@ -31,8 +31,8 @@ async function main(args) {
   });
 
   if (!prNumber) {
-    const branch = util.getCurrentBranch();
-    const maybePr = branch.split('/')[1];
+    let branch = util.getCurrentBranch();
+    let maybePr = branch.split('/')[1];
     if (maybePr > 0) {
       shell.echo(`PR number not specified. Defaulting to #${maybePr}.`);
       prNumber = maybePr;
@@ -50,8 +50,8 @@ async function main(args) {
     return 1;
   }
 
-  const prInfo = await util.githubPrInfo(prNumber);
-  const prPushCmd = `git push${flags} ${prInfo.repository.gitUrl} HEAD:${prInfo.branch}`;
+  let prInfo = await util.githubPrInfo(prNumber);
+  let prPushCmd = `git push${flags} ${prInfo.repository.gitUrl} HEAD:${prInfo.branch}`;
   shell.echo(`>>> ${prPushCmd}`);
   shell.exec(prPushCmd);
 

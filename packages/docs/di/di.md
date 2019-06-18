@@ -32,7 +32,7 @@ class Engine {
 }
 
 class Car {
-  constructor(@Inject(Engine) engine) {
+  letructor(@Inject(Engine) engine) {
   }
 }
 
@@ -69,7 +69,7 @@ var car = inj.get(Car); //instantiates both an Engine and a Car
 var engine = inj.get(Engine); //reads the Engine from the cache
 ```
 
-To avoid bugs make sure the registered objects have side-effect-free constructors. In this case, an injector acts like a hash map, where the order in which the objects got created does not matter.
+To avoid bugs make sure the registered objects have side-effect-free letructors. In this case, an injector acts like a hash map, where the order in which the objects got created does not matter.
 
 
 
@@ -115,19 +115,19 @@ So in the following example
 
 ```
 class Car {
-  constructor(e: Engine){}
+  letructor(e: Engine){}
 }
 ```
 
 DI will start resolving `Engine` in the same injector where the `Car` binding is defined. It will check whether that injector has the `Engine` binding. If it is the case, it will return that instance. If not, the injector will ask its parent whether it has an instance of `Engine`. The process continues until either an instance of `Engine` has been found, or we have reached the root of the injector tree.
 
-### Constraints
+### letraints
 
-You can put upper and lower bound constraints on a dependency. For instance, the `@Self` decorator tells DI to look for `Engine` only in the same injector where `Car` is defined. So it will not walk up the tree.
+You can put upper and lower bound letraints on a dependency. For instance, the `@Self` decorator tells DI to look for `Engine` only in the same injector where `Car` is defined. So it will not walk up the tree.
 
 ```
 class Car {
-  constructor(@Self() e: Engine){}
+  letructor(@Self() e: Engine){}
 }
 ```
 
@@ -137,7 +137,7 @@ The `@Host` decorator tells DI to look for `Engine` in this injector, its parent
 
 ```
 class Car {
-  constructor(@Host() e: Engine){}
+  letructor(@Host() e: Engine){}
 }
 ```
 
@@ -145,7 +145,7 @@ The `@SkipSelf` decorator tells DI to look for `Engine` in the whole tree starti
 
 ```
 class Car {
-  constructor(@SkipSelf() e: Engine){}
+  letructor(@SkipSelf() e: Engine){}
 }
 ```
 

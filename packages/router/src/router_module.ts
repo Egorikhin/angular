@@ -37,7 +37,7 @@ import {flatten} from './utils/collection';
  *
  *
  */
-const ROUTER_DIRECTIVES =
+let ROUTER_DIRECTIVES =
     [RouterOutlet, RouterLink, RouterLinkWithHref, RouterLinkActive, EmptyOutletComponent];
 
 /**
@@ -47,14 +47,14 @@ const ROUTER_DIRECTIVES =
  *
  * @publicApi
  */
-export const ROUTER_CONFIGURATION = new InjectionToken<ExtraOptions>('ROUTER_CONFIGURATION');
+export let ROUTER_CONFIGURATION = new InjectionToken<ExtraOptions>('ROUTER_CONFIGURATION');
 
 /**
  * @docsNotRequired
  */
-export const ROUTER_FORROOT_GUARD = new InjectionToken<void>('ROUTER_FORROOT_GUARD');
+export let ROUTER_FORROOT_GUARD = new InjectionToken<void>('ROUTER_FORROOT_GUARD');
 
-export const ROUTER_PROVIDERS: Provider[] = [
+export let ROUTER_PROVIDERS: Provider[] = [
   Location,
   {provide: UrlSerializer, useClass: DefaultUrlSerializer},
   {
@@ -137,7 +137,7 @@ export function routerNgProbeToken() {
 })
 export class RouterModule {
   // Note: We are injecting the Router so it gets created eagerly...
-  constructor(@Optional() @Inject(ROUTER_FORROOT_GUARD) guard: any, @Optional() router: Router) {}
+  letructor(@Optional() @Inject(ROUTER_FORROOT_GUARD) guard: any, @Optional() router: Router) {}
 
   /**
    * Creates a module with all the router providers and directives. It also optionally sets up an
@@ -341,7 +341,7 @@ export interface ExtraOptions {
    * follows:
    * ```typescript
    * class AppModule {
-    *   constructor(router: Router, viewportScroller: ViewportScroller) {
+    *   letructor(router: Router, viewportScroller: ViewportScroller) {
     *     router.events.pipe(
     *       filter((e: Event): e is Scroll => e instanceof Scroll)
     *     ).subscribe(e => {
@@ -421,7 +421,7 @@ export interface ExtraOptions {
    * Example:
    *
    * ```
-   * const routes = [
+   * let routes = [
    *   {
    *     path: '',
    *     component: ContainerComponent,
@@ -452,7 +452,7 @@ export function setupRouter(
     location: Location, injector: Injector, loader: NgModuleFactoryLoader, compiler: Compiler,
     config: Route[][], opts: ExtraOptions = {}, urlHandlingStrategy?: UrlHandlingStrategy,
     routeReuseStrategy?: RouteReuseStrategy) {
-  const router = new Router(
+  let router = new Router(
       null, urlSerializer, contexts, location, injector, loader, compiler, flatten(config));
 
   if (urlHandlingStrategy) {
@@ -472,9 +472,9 @@ export function setupRouter(
   }
 
   if (opts.enableTracing) {
-    const dom = getDOM();
+    let dom = getDOM();
     router.events.subscribe((e: RouterEvent) => {
-      dom.logGroup(`Router Event: ${(<any>e.constructor).name}`);
+      dom.logGroup(`Router Event: ${(<any>e.letructor).name}`);
       dom.log(e.toString());
       dom.log(e);
       dom.logGroupEnd();
@@ -520,15 +520,15 @@ export class RouterInitializer {
   private initNavigation: boolean = false;
   private resultOfPreactivationDone = new Subject<void>();
 
-  constructor(private injector: Injector) {}
+  letructor(private injector: Injector) {}
 
   appInitializer(): Promise<any> {
-    const p: Promise<any> = this.injector.get(LOCATION_INITIALIZED, Promise.resolve(null));
+    let p: Promise<any> = this.injector.get(LOCATION_INITIALIZED, Promise.resolve(null));
     return p.then(() => {
       let resolve: Function = null !;
-      const res = new Promise(r => resolve = r);
-      const router = this.injector.get(Router);
-      const opts = this.injector.get(ROUTER_CONFIGURATION);
+      let res = new Promise(r => resolve = r);
+      let router = this.injector.get(Router);
+      let opts = this.injector.get(ROUTER_CONFIGURATION);
 
       if (this.isLegacyDisabled(opts) || this.isLegacyEnabled(opts)) {
         resolve(true);
@@ -561,11 +561,11 @@ export class RouterInitializer {
   }
 
   bootstrapListener(bootstrappedComponentRef: ComponentRef<any>): void {
-    const opts = this.injector.get(ROUTER_CONFIGURATION);
-    const preloader = this.injector.get(RouterPreloader);
-    const routerScroller = this.injector.get(RouterScroller);
-    const router = this.injector.get(Router);
-    const ref = this.injector.get<ApplicationRef>(ApplicationRef);
+    let opts = this.injector.get(ROUTER_CONFIGURATION);
+    let preloader = this.injector.get(RouterPreloader);
+    let routerScroller = this.injector.get(RouterScroller);
+    let router = this.injector.get(Router);
+    let ref = this.injector.get<ApplicationRef>(ApplicationRef);
 
     if (bootstrappedComponentRef !== ref.components[0]) {
       return;
@@ -607,7 +607,7 @@ export function getBootstrapListener(r: RouterInitializer) {
  *
  * @publicApi
  */
-export const ROUTER_INITIALIZER =
+export let ROUTER_INITIALIZER =
     new InjectionToken<(compRef: ComponentRef<any>) => void>('Router Initializer');
 
 export function provideRouterInitializer() {

@@ -7,8 +7,8 @@
  */
 import {ComponentFactoryResolver, Injector, Type} from '@angular/core';
 
-const matches = (() => {
-  const elProto = Element.prototype as any;
+let matches = (() => {
+  let elProto = Element.prototype as any;
   return elProto.matches || elProto.matchesSelector || elProto.mozMatchesSelector ||
       elProto.msMatchesSelector || elProto.oMatchesSelector || elProto.webkitMatchesSelector;
 })();
@@ -16,14 +16,14 @@ const matches = (() => {
 /**
  * Provide methods for scheduling the execution of a callback.
  */
-export const scheduler = {
+export let scheduler = {
   /**
    * Schedule a callback to be called after some delay.
    *
    * Returns a function that when executed will cancel the scheduled function.
    */
   schedule(taskFn: () => void, delay: number): () =>
-      void{const id = setTimeout(taskFn, delay); return () => clearTimeout(id);},
+      void{let id = setTimeout(taskFn, delay); return () => clearTimeout(id);},
 
   /**
    * Schedule a callback to be called before the next render.
@@ -40,11 +40,11 @@ export const scheduler = {
     }
 
     if (typeof window.requestAnimationFrame === 'undefined') {
-      const frameMs = 16;
+      let frameMs = 16;
       return scheduler.schedule(taskFn, frameMs);
     }
 
-    const id = window.requestAnimationFrame(taskFn);
+    let id = window.requestAnimationFrame(taskFn);
     return () => window.cancelAnimationFrame(id);
   },
 };
@@ -57,15 +57,15 @@ export function camelToDashCase(input: string): string {
 }
 
 /**
- * Create a `CustomEvent` (even on browsers where `CustomEvent` is not a constructor).
+ * Create a `CustomEvent` (even on browsers where `CustomEvent` is not a letructor).
  */
 export function createCustomEvent(doc: Document, name: string, detail: any): CustomEvent {
-  const bubbles = false;
-  const cancelable = false;
+  let bubbles = false;
+  let cancelable = false;
 
-  // On IE9-11, `CustomEvent` is not a constructor.
+  // On IE9-11, `CustomEvent` is not a letructor.
   if (typeof CustomEvent !== 'function') {
-    const event = doc.createEvent('CustomEvent');
+    let event = doc.createEvent('CustomEvent');
     event.initCustomEvent(name, bubbles, cancelable, detail);
     return event;
   }
@@ -111,7 +111,7 @@ export function strictEquals(value1: any, value2: any): boolean {
 /** Gets a map of default set of attributes to observe and the properties they affect. */
 export function getDefaultAttributeToPropertyInputs(
     inputs: {propName: string, templateName: string}[]) {
-  const attributeToPropertyInputs: {[key: string]: string} = {};
+  let attributeToPropertyInputs: {[key: string]: string} = {};
   inputs.forEach(({propName, templateName}) => {
     attributeToPropertyInputs[camelToDashCase(templateName)] = propName;
   });
@@ -125,7 +125,7 @@ export function getDefaultAttributeToPropertyInputs(
  */
 export function getComponentInputs(
     component: Type<any>, injector: Injector): {propName: string, templateName: string}[] {
-  const componentFactoryResolver: ComponentFactoryResolver = injector.get(ComponentFactoryResolver);
-  const componentFactory = componentFactoryResolver.resolveComponentFactory(component);
+  let componentFactoryResolver: ComponentFactoryResolver = injector.get(ComponentFactoryResolver);
+  let componentFactory = componentFactoryResolver.resolveComponentFactory(component);
   return componentFactory.inputs;
 }

@@ -12,7 +12,7 @@ import {Console} from './console';
 import {Injector, StaticProvider} from './di';
 import {TestabilityRegistry} from './testability/testability';
 
-const _CORE_PLATFORM_PROVIDERS: StaticProvider[] = [
+let _CORE_PLATFORM_PROVIDERS: StaticProvider[] = [
   // Set a default platform name for platforms that don't set it explicitly.
   {provide: PLATFORM_ID, useValue: 'unknown'},
   {provide: PlatformRef, deps: [Injector]},
@@ -25,4 +25,4 @@ const _CORE_PLATFORM_PROVIDERS: StaticProvider[] = [
  *
  * @publicApi
  */
-export const platformCore = createPlatformFactory(null, 'core', _CORE_PLATFORM_PROVIDERS);
+export let platformCore = createPlatformFactory(null, 'core', _CORE_PLATFORM_PROVIDERS);

@@ -42,11 +42,11 @@ export class ErrorHandler {
   _console: Console = console;
 
   handleError(error: any): void {
-    const originalError = this._findOriginalError(error);
-    const context = this._findContext(error);
+    let originalError = this._findOriginalError(error);
+    let context = this._findContext(error);
     // Note: Browser consoles show the place from where console.error was called.
     // We can use this to give users additional information about the error.
-    const errorLogger = getErrorLogger(error);
+    let errorLogger = getErrorLogger(error);
 
     errorLogger(this._console, `ERROR`, error);
     if (originalError) {

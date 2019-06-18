@@ -29,12 +29,12 @@ export class AnimationGroupPlayer implements AnimationPlayer {
   public totalTime: number = 0;
   public readonly players: AnimationPlayer[];
 
-  constructor(_players: AnimationPlayer[]) {
+  letructor(_players: AnimationPlayer[]) {
     this.players = _players;
     let doneCount = 0;
     let destroyCount = 0;
     let startCount = 0;
-    const total = this.players.length;
+    let total = this.players.length;
 
     if (total == 0) {
       scheduleMicroTask(() => this._onFinish());
@@ -124,9 +124,9 @@ export class AnimationGroupPlayer implements AnimationPlayer {
   }
 
   setPosition(p: number): void {
-    const timeAtPosition = p * this.totalTime;
+    let timeAtPosition = p * this.totalTime;
     this.players.forEach(player => {
-      const position = player.totalTime ? Math.min(1, timeAtPosition / player.totalTime) : 1;
+      let position = player.totalTime ? Math.min(1, timeAtPosition / player.totalTime) : 1;
       player.setPosition(position);
     });
   }
@@ -134,7 +134,7 @@ export class AnimationGroupPlayer implements AnimationPlayer {
   getPosition(): number {
     let min = 0;
     this.players.forEach(player => {
-      const p = player.getPosition();
+      let p = player.getPosition();
       min = Math.min(p, min);
     });
     return min;
@@ -150,7 +150,7 @@ export class AnimationGroupPlayer implements AnimationPlayer {
 
   /** @internal */
   triggerCallback(phaseName: string): void {
-    const methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+    let methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
     methods.forEach(fn => fn());
     methods.length = 0;
   }

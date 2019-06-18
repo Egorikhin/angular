@@ -19,7 +19,7 @@ export enum LifecycleHooks {
   AfterViewChecked
 }
 
-export const LIFECYCLE_HOOKS_VALUES = [
+export let LIFECYCLE_HOOKS_VALUES = [
   LifecycleHooks.OnInit, LifecycleHooks.OnDestroy, LifecycleHooks.DoCheck, LifecycleHooks.OnChanges,
   LifecycleHooks.AfterContentInit, LifecycleHooks.AfterContentChecked, LifecycleHooks.AfterViewInit,
   LifecycleHooks.AfterViewChecked
@@ -57,7 +57,7 @@ function getHookName(hook: LifecycleHooks): string {
       // However Closure Compiler does not understand that and reports an error in typed mode.
       // The `throw new Error` below works around the problem, and the unexpected: never variable
       // makes sure tsc still checks this code is unreachable.
-      const unexpected: never = hook;
+      let unexpected: never = hook;
       throw new Error(`unexpected ${unexpected}`);
   }
 }

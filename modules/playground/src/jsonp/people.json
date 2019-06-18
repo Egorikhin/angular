@@ -1,2 +1,2 @@
-// This can only be requested once due to constant method name :(
+// This can only be requested once due to letant method name :(
 __ng_jsonp__.__req0.finished([{"name":"caitp"}])

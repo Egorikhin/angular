@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export const SWITCH_IVY_ENABLED__POST_R3__ = true;
-const SWITCH_IVY_ENABLED__PRE_R3__ = false;
-export const ivyEnabled = SWITCH_IVY_ENABLED__PRE_R3__;
+export let SWITCH_IVY_ENABLED__POST_R3__ = true;
+let SWITCH_IVY_ENABLED__PRE_R3__ = false;
+export let ivyEnabled = SWITCH_IVY_ENABLED__PRE_R3__;

@@ -137,7 +137,7 @@ They can be object literals, as shown in the following example.
 
 **TypeScript interfaces are not valid tokens**
 
-The `HERO_DI_CONFIG` constant conforms to the `AppConfig` interface.
+The `HERO_DI_CONFIG` letant conforms to the `AppConfig` interface.
 Unfortunately, you cannot use a TypeScript interface as a token.
 In TypeScript, an interface is a design-time artifact, and doesn't have a runtime representation (token) that the DI framework can use.
 
@@ -174,7 +174,7 @@ Register the dependency provider using the `InjectionToken` object:
 <code-example path="dependency-injection/src/app/providers.component.ts" region="providers-9"  linenums="false">
 </code-example>
 
-Now you can inject the configuration object into any constructor that needs it, with
+Now you can inject the configuration object into any letructor that needs it, with
 the help of an `@Inject()` parameter decorator.
 
 <code-example path="dependency-injection/src/app/app.component.2.ts" region="ctor" header="src/app/app.component.ts" linenums="false">
@@ -213,7 +213,7 @@ Let's say you don't want to inject `UserService` directly into `HeroService`, be
 `HeroService` won't have direct access to the user information to decide
 who is authorized and who isn't.
 
-To resolve this, we give the `HeroService` constructor a boolean flag to control display of secret heroes.
+To resolve this, we give the `HeroService` letructor a boolean flag to control display of secret heroes.
 
 <code-example path="dependency-injection/src/app/heroes/hero.service.ts" region="internals" header="src/app/heroes/hero.service.ts (excerpt)" linenums="false">
 </code-example>
@@ -258,7 +258,7 @@ The following shows the new and the old implementations side-by-side.
 
 ## Predefined tokens and multiple providers
 
-Angular provides a number of built-in injection-token constants that you can use to customize the behavior of
+Angular provides a number of built-in injection-token letants that you can use to customize the behavior of
 various systems.
 
 For example, you can use the following built-in tokens as hooks into the framework’s bootstrapping and initialization process.
@@ -276,7 +276,7 @@ to register multiple handlers for the provide event.
 For example, when bootstrapping an application, you can register many initializers using the same token.
 
 ```
-export const APP_TOKENS = [
+export let APP_TOKENS = [
  { provide: PLATFORM_INITIALIZER, useFactory: platformInitialized, multi: true    },
  { provide: APP_INITIALIZER, useFactory: delayBootstrapping, multi: true },
  { provide: APP_BOOTSTRAP_LISTENER, useFactory: appBootstrapped, multi: true },
@@ -295,7 +295,7 @@ the [ROUTES](api/router/ROUTES) token combines all the different provided sets o
 
 <div class="alert is-helpful>
 
-Search for [Constants in API documentation](api?type=const) to find more built-in tokens.
+Search for [letants in API documentation](api?type=let) to find more built-in tokens.
 
 </div>
 
@@ -332,7 +332,7 @@ as in the following example.
 
 When `ngc` runs, it compiles `AppModule` into a module factory, which contains definitions for all the providers declared in all the modules it includes. At runtime, this factory becomes an injector that instantiates these services.
 
-Tree-shaking doesn't work here because Angular can't decide to exclude one chunk of code (the provider definition for the service within the module factory) based on whether another chunk of code (the service class) is used. To make services tree-shakable, the information about how to construct an instance of the service (the provider definition) needs to be a part of the service class itself.
+Tree-shaking doesn't work here because Angular can't decide to exclude one chunk of code (the provider definition for the service within the module factory) based on whether another chunk of code (the service class) is used. To make services tree-shakable, the information about how to letruct an instance of the service (the provider definition) needs to be a part of the service class itself.
 
 ### Creating tree-shakable providers
 

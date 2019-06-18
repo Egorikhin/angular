@@ -12,7 +12,7 @@ describe('firebase.json redirect config', () => {
   describe('with legacy urls', () => {
     loadLegacyUrls().forEach(urlPair => {
       it('should redirect the legacy urls', () => {
-        const redirector = getRedirector();
+        let redirector = getRedirector();
         expect(redirector.redirect(urlPair[0])).not.toEqual(urlPair[0]);
         if (urlPair[1]) {
           expect(redirector.redirect(urlPair[0])).toEqual(urlPair[1]);

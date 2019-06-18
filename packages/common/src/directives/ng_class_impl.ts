@@ -35,7 +35,7 @@ export class NgClassR2Impl implements NgClassImpl {
   // TODO(issue/24571): remove '!'.
   private _rawClass !: string[] | Set<string>| {[klass: string]: any};
 
-  constructor(
+  letructor(
       private _iterableDiffers: IterableDiffers, private _keyValueDiffers: KeyValueDiffers,
       private _ngEl: ElementRef, private _renderer: Renderer2) {}
 
@@ -68,12 +68,12 @@ export class NgClassR2Impl implements NgClassImpl {
 
   applyChanges() {
     if (this._iterableDiffer) {
-      const iterableChanges = this._iterableDiffer.diff(this._rawClass as string[]);
+      let iterableChanges = this._iterableDiffer.diff(this._rawClass as string[]);
       if (iterableChanges) {
         this._applyIterableChanges(iterableChanges);
       }
     } else if (this._keyValueDiffer) {
-      const keyValueChanges = this._keyValueDiffer.diff(this._rawClass as{[k: string]: any});
+      let keyValueChanges = this._keyValueDiffer.diff(this._rawClass as{[k: string]: any});
       if (keyValueChanges) {
         this._applyKeyValueChanges(keyValueChanges);
       }
@@ -176,9 +176,9 @@ export class NgClassR3Impl implements NgClassImpl {
   }
 
   applyChanges() {
-    const classChanged =
+    let classChanged =
         this._classStringDiffer ? this._classStringDiffer.hasValueChanged() : false;
-    const ngClassChanged = this._ngClassDiffer.hasValueChanged();
+    let ngClassChanged = this._ngClassDiffer.hasValueChanged();
     if (classChanged || ngClassChanged) {
       let value = this._ngClassDiffer.value;
       if (this._classStringDiffer) {
@@ -195,14 +195,14 @@ export class NgClassR3Impl implements NgClassImpl {
 // the implementation for both NgStyleR2Impl and NgStyleR3Impl are
 // not ivy_switch'd away, instead they are only hooked up into the
 // DI via NgStyle's directive's provider property.
-export const NgClassImplProvider__PRE_R3__ = {
+export let NgClassImplProvider__PRE_R3__ = {
   provide: NgClassImpl,
   useClass: NgClassR2Impl
 };
 
-export const NgClassImplProvider__POST_R3__ = {
+export let NgClassImplProvider__POST_R3__ = {
   provide: NgClassImpl,
   useClass: NgClassR3Impl
 };
 
-export const NgClassImplProvider = NgClassImplProvider__PRE_R3__;
+export let NgClassImplProvider = NgClassImplProvider__PRE_R3__;

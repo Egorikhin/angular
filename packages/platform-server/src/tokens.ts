@@ -23,7 +23,7 @@ export interface PlatformConfig {
  *
  * @publicApi
  */
-export const INITIAL_CONFIG = new InjectionToken<PlatformConfig>('Server.INITIAL_CONFIG');
+export let INITIAL_CONFIG = new InjectionToken<PlatformConfig>('Server.INITIAL_CONFIG');
 
 /**
  * A function that will be executed when calling `renderModuleFactory` or `renderModule` just
@@ -31,5 +31,5 @@ export const INITIAL_CONFIG = new InjectionToken<PlatformConfig>('Server.INITIAL
  *
  * @publicApi
  */
-export const BEFORE_APP_SERIALIZED =
+export let BEFORE_APP_SERIALIZED =
     new InjectionToken<Array<() => void>>('Server.RENDER_MODULE_HOOK');

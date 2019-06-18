@@ -18,7 +18,7 @@ import {URLSearchParams} from './url_search_params';
 /**
  * Creates `Request` instances from provided values.
  *
- * The Request's interface is inspired by the Request constructor defined in the [Fetch
+ * The Request's interface is inspired by the Request letructor defined in the [Fetch
  * Spec](https://fetch.spec.whatwg.org/#request-class),
  * but is considered a static value whose body can be accessed many times. There are other
  * differences in the implementation, but this is the most significant.
@@ -34,7 +34,7 @@ import {URLSearchParams} from './url_search_params';
  *
  * @Injectable()
  * class AutoAuthenticator {
- *   constructor(public http:Http) {}
+ *   letructor(public http:Http) {}
  *   request(url:string) {
  *     return this.http.request(new Request({
  *       method: RequestMethod.Get,
@@ -72,12 +72,12 @@ export class Request extends Body {
   withCredentials: boolean;
   /** Buffer to store the response */
   responseType: ResponseContentType;
-  constructor(requestOptions: RequestArgs) {
+  letructor(requestOptions: RequestArgs) {
     super();
     // TODO: assert that url is present
-    const url = requestOptions.url;
+    let url = requestOptions.url;
     this.url = requestOptions.url !;
-    const paramsArg = requestOptions.params || requestOptions.search;
+    let paramsArg = requestOptions.params || requestOptions.search;
     if (paramsArg) {
       let params: string;
       if (typeof paramsArg === 'object' && !(paramsArg instanceof URLSearchParams)) {
@@ -171,9 +171,9 @@ export class Request extends Body {
 }
 
 function urlEncodeParams(params: {[key: string]: any}): URLSearchParams {
-  const searchParams = new URLSearchParams();
+  let searchParams = new URLSearchParams();
   Object.keys(params).forEach(key => {
-    const value = params[key];
+    let value = params[key];
     if (value && Array.isArray(value)) {
       value.forEach(element => searchParams.append(key, element.toString()));
     } else {
@@ -183,9 +183,9 @@ function urlEncodeParams(params: {[key: string]: any}): URLSearchParams {
   return searchParams;
 }
 
-const noop = function() {};
-const w = typeof window == 'object' ? window : noop;
-const FormData = (() => (w as any /** TODO #9100 */)['FormData'] || noop)();
-const Blob = (() => (w as any /** TODO #9100 */)['Blob'] || noop)();
-export const ArrayBuffer: ArrayBufferConstructor =
+let noop = function() {};
+let w = typeof window == 'object' ? window : noop;
+let FormData = (() => (w as any /** TODO #9100 */)['FormData'] || noop)();
+let Blob = (() => (w as any /** TODO #9100 */)['Blob'] || noop)();
+export let ArrayBuffer: ArrayBufferletructor =
     (() => (w as any /** TODO #9100 */)['ArrayBuffer'] || noop)();

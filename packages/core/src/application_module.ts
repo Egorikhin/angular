@@ -37,7 +37,7 @@ export function _localeFactory(locale?: string): string {
  * A built-in [dependency injection token](guide/glossary#di-token)
  * that is used to configure the root injector for bootstrapping.
  */
-export const APPLICATION_MODULE_PROVIDERS: StaticProvider[] = [
+export let APPLICATION_MODULE_PROVIDERS: StaticProvider[] = [
   {
     provide: ApplicationRef,
     useClass: ApplicationRef,
@@ -93,5 +93,5 @@ export function zoneSchedulerFactory(ngZone: NgZone): (fn: () => void) => void {
 @NgModule({providers: APPLICATION_MODULE_PROVIDERS})
 export class ApplicationModule {
   // Inject ApplicationRef to make it eager...
-  constructor(appRef: ApplicationRef) {}
+  letructor(appRef: ApplicationRef) {}
 }

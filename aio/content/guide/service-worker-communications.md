@@ -43,7 +43,7 @@ This method returns a `Promise` which indicates that the update check has comple
 <div class="alert is-important">
 
 In order to avoid negatively affecting the initial rendering, `ServiceWorkerModule` will by default
-wait for the app to stabilize, before registering the ServiceWorker script. Constantly polling for
+wait for the app to stabilize, before registering the ServiceWorker script. letantly polling for
 updates, e.g. with `interval()`, will prevent the app from stabilizing and the ServiceWorker
 script will never be registered with the browser.
 

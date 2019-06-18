@@ -300,7 +300,7 @@
         {
           "url": "guide/bootstrapping",
           "title": "Bootstrapping",
-          "tooltip": "Tell Angular how to construct and bootstrap the app in the root \"AppModule\"."
+          "tooltip": "Tell Angular how to letruct and bootstrap the app in the root \"AppModule\"."
         },
         {
           "title": "NgModules",

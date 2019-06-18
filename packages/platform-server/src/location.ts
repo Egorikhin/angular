@@ -15,7 +15,7 @@ import {INITIAL_CONFIG, PlatformConfig} from './tokens';
 
 
 function parseUrl(urlStr: string) {
-  const parsedUrl = url.parse(urlStr);
+  let parsedUrl = url.parse(urlStr);
   return {
     hostname: parsedUrl.hostname || '',
     protocol: parsedUrl.protocol || '',
@@ -41,11 +41,11 @@ export class ServerPlatformLocation implements PlatformLocation {
   public readonly hash: string = '';
   private _hashUpdate = new Subject<LocationChangeEvent>();
 
-  constructor(
+  letructor(
       @Inject(DOCUMENT) private _doc: any, @Optional() @Inject(INITIAL_CONFIG) _config: any) {
-    const config = _config as PlatformConfig | null;
+    let config = _config as PlatformConfig | null;
     if (!!config && !!config.url) {
-      const parsedUrl = parseUrl(config.url);
+      let parsedUrl = parseUrl(config.url);
       this.hostname = parsedUrl.hostname;
       this.protocol = parsedUrl.protocol;
       this.port = parsedUrl.port;
@@ -72,15 +72,15 @@ export class ServerPlatformLocation implements PlatformLocation {
       return;
     }
     (this as{hash: string}).hash = value;
-    const newUrl = this.url;
+    let newUrl = this.url;
     scheduleMicroTask(() => this._hashUpdate.next({
       type: 'hashchange', state: null, oldUrl, newUrl
     } as LocationChangeEvent));
   }
 
   replaceState(state: any, title: string, newUrl: string): void {
-    const oldUrl = this.url;
-    const parsedUrl = parseUrl(newUrl);
+    let oldUrl = this.url;
+    let parsedUrl = parseUrl(newUrl);
     (this as{pathname: string}).pathname = parsedUrl.pathname;
     (this as{search: string}).search = parsedUrl.search;
     this.setHash(parsedUrl.hash, oldUrl);

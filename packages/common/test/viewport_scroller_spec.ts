@@ -28,9 +28,9 @@ import {BrowserViewportScroller, ViewportScroller} from '../src/viewport_scrolle
       scroller = new BrowserViewportScroller(documentSpy, {scrollTo: 1}, null !);
     });
     it('escapes invalid characters selectors', () => {
-      const invalidSelectorChars = `"' :.[],=`;
+      let invalidSelectorChars = `"' :.[],=`;
       // Double escaped to make sure we match the actual value passed to `querySelector`
-      const escapedInvalids = `\\"\\' \\:\\.\\[\\]\\,\\=`;
+      let escapedInvalids = `\\"\\' \\:\\.\\[\\]\\,\\=`;
       scroller.scrollToAnchor(`specials=${invalidSelectorChars}`);
       expect(documentSpy.querySelector).toHaveBeenCalledWith(`#specials\\=${escapedInvalids}`);
       expect(documentSpy.querySelector)

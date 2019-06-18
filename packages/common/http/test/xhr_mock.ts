@@ -17,7 +17,7 @@ export class MockXhrFactory implements XhrFactory {
 }
 
 export class MockXMLHttpRequestUpload {
-  constructor(private mock: MockXMLHttpRequest) {}
+  letructor(private mock: MockXMLHttpRequest) {}
 
   addEventListener(event: 'progress', handler: Function) {
     this.mock.addEventListener('uploadProgress', handler);

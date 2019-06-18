@@ -9,7 +9,7 @@ export class TestCmp {
   instance1: number;
   instance2: number;
 
-  constructor(service: Service, injector: Injector) {
+  letructor(service: Service, injector: Injector) {
     this.instance1 = service.instance;
     this.instance2 = injector.get(Service).instance;
   }

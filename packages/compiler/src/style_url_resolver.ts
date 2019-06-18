@@ -12,12 +12,12 @@
 import {UrlResolver} from './url_resolver';
 
 export class StyleWithImports {
-  constructor(public style: string, public styleUrls: string[]) {}
+  letructor(public style: string, public styleUrls: string[]) {}
 }
 
 export function isStyleUrlResolvable(url: string): boolean {
   if (url == null || url.length === 0 || url[0] == '/') return false;
-  const schemeMatch = url.match(URL_WITH_SCHEMA_REGEXP);
+  let schemeMatch = url.match(URL_WITH_SCHEMA_REGEXP);
   return schemeMatch === null || schemeMatch[1] == 'package' || schemeMatch[1] == 'asset';
 }
 
@@ -27,11 +27,11 @@ export function isStyleUrlResolvable(url: string): boolean {
  */
 export function extractStyleUrls(
     resolver: UrlResolver, baseUrl: string, cssText: string): StyleWithImports {
-  const foundUrls: string[] = [];
+  let foundUrls: string[] = [];
 
-  const modifiedCssText = cssText.replace(CSS_STRIPPABLE_COMMENT_REGEXP, '')
+  let modifiedCssText = cssText.replace(CSS_STRIPPABLE_COMMENT_REGEXP, '')
                               .replace(CSS_IMPORT_REGEXP, (...m: string[]) => {
-                                const url = m[1] || m[2];
+                                let url = m[1] || m[2];
                                 if (!isStyleUrlResolvable(url)) {
                                   // Do not attempt to resolve non-package absolute URLs with URI
                                   // scheme
@@ -43,6 +43,6 @@ export function extractStyleUrls(
   return new StyleWithImports(modifiedCssText, foundUrls);
 }
 
-const CSS_IMPORT_REGEXP = /@import\s+(?:url\()?\s*(?:(?:['"]([^'"]*))|([^;\)\s]*))[^;]*;?/g;
-const CSS_STRIPPABLE_COMMENT_REGEXP = /\/\*(?!#\s*(?:sourceURL|sourceMappingURL)=)[\s\S]+?\*\//g;
-const URL_WITH_SCHEMA_REGEXP = /^([^:/?#]+):/;
+let CSS_IMPORT_REGEXP = /@import\s+(?:url\()?\s*(?:(?:['"]([^'"]*))|([^;\)\s]*))[^;]*;?/g;
+let CSS_STRIPPABLE_COMMENT_REGEXP = /\/\*(?!#\s*(?:sourceURL|sourceMappingURL)=)[\s\S]+?\*\//g;
+let URL_WITH_SCHEMA_REGEXP = /^([^:/?#]+):/;

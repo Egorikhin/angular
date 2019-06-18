@@ -57,12 +57,12 @@ together with its dependencies, to a custom element. The function collects the c
 observable properties, along with the Angular functionality the browser needs to
 create and destroy instances, and to detect and respond to changes.
 
-The conversion process implements the `NgElementConstructor` interface, and creates a
-constructor class that is configured to produce a self-bootstrapping instance of your component.
+The conversion process implements the `NgElementletructor` interface, and creates a
+letructor class that is configured to produce a self-bootstrapping instance of your component.
 
-Use a JavaScript function, `customElements.define()`,  to register the configured constructor
+Use a JavaScript function, `customElements.define()`,  to register the configured letructor
 and its associated custom-element tag with the browser's `CustomElementRegistry`.
-When the browser encounters the tag for the registered element, it uses the constructor to create a custom-element instance.
+When the browser encounters the tag for the registered element, it uses the letructor to create a custom-element instance.
 
 <figure>
 
@@ -136,7 +136,7 @@ The Popup Service example app (shown below) defines a component that you can eit
 - `popup.component.ts` defines a simple pop-up element that displays an input message, with some animation and styling.
 - `popup.service.ts` creates an injectable service that provides two different ways to invoke the PopupComponent; as a dynamic component, or as a custom element. Notice how much more setup is required for the dynamic-loading method.
 - `app.module.ts` adds the PopupComponent in the module's `entryComponents` list, to exclude it from compilation and avoid startup warnings or errors.
-- `app.component.ts` defines the app's root component, which uses the PopupService to add the pop-up to the DOM at run time. When the app runs, the root component's constructor converts PopupComponent to a custom element.
+- `app.component.ts` defines the app's root component, which uses the PopupService to add the pop-up to the DOM at run time. When the app runs, the root component's letructor converts PopupComponent to a custom element.
 
 For comparison, the demo shows both methods. One button adds the popup using the dynamic-loading method, and the other uses the custom element. You can see that the result is the same; only the preparation is different.
 
@@ -186,7 +186,7 @@ class MyDialog {
 The most straight forward way to get accurate typings is to cast the return value of the relevant DOM methods to the correct type. For that, you can use the `NgElement` and `WithProperties` types (both exported from `@angular/elements`):
 
 ```ts
-const aDialog = document.createElement('my-dialog') as NgElement & WithProperties<{content: string}>;
+let aDialog = document.createElement('my-dialog') as NgElement & WithProperties<{content: string}>;
 aDialog.content = 'Hello, world!';
 aDialog.content = 123;  // <-- ERROR: TypeScript knows this should be a string.
 aDialog.body = 'News';  // <-- ERROR: TypeScript knows there is no `body` property on `aDialog`.

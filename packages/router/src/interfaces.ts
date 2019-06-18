@@ -32,7 +32,7 @@ import {UrlSegment, UrlTree} from './url_tree';
  *
  * @Injectable()
  * class CanActivateTeam implements CanActivate {
- *   constructor(private permissions: Permissions, private currentUser: UserToken) {}
+ *   letructor(private permissions: Permissions, private currentUser: UserToken) {}
  *
  *   canActivate(
  *     route: ActivatedRouteSnapshot,
@@ -109,7 +109,7 @@ export type CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSn
  *
  * @Injectable()
  * class CanActivateTeam implements CanActivateChild {
- *   constructor(private permissions: Permissions, private currentUser: UserToken) {}
+ *   letructor(private permissions: Permissions, private currentUser: UserToken) {}
  *
  *   canActivateChild(
  *     route: ActivatedRouteSnapshot,
@@ -196,7 +196,7 @@ export type CanActivateChildFn = (childRoute: ActivatedRouteSnapshot, state: Rou
  *
  * @Injectable()
  * class CanDeactivateTeam implements CanDeactivate<TeamComponent> {
- *   constructor(private permissions: Permissions, private currentUser: UserToken) {}
+ *   letructor(private permissions: Permissions, private currentUser: UserToken) {}
  *
  *   canDeactivate(
  *     component: TeamComponent,
@@ -275,7 +275,7 @@ export type CanDeactivateFn<T> =
  *
  * @Injectable()
  * class TeamResolver implements Resolve<Team> {
- *   constructor(private backend: Backend) {}
+ *   letructor(private backend: Backend) {}
  *
  *   resolve(
  *     route: ActivatedRouteSnapshot,
@@ -349,7 +349,7 @@ export interface Resolve<T> {
  *
  * @Injectable()
  * class CanLoadTeamSection implements CanLoad {
- *   constructor(private permissions: Permissions, private currentUser: UserToken) {}
+ *   letructor(private permissions: Permissions, private currentUser: UserToken) {}
  *
  *   canLoad(route: Route, segments: UrlSegment[]): Observable<boolean>|Promise<boolean>|boolean {
  *     return this.permissions.canLoadChildren(this.currentUser, route, segments);

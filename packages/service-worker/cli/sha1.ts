@@ -18,25 +18,25 @@
  */
 
 export function sha1(str: string): string {
-  const utf8 = str;
-  const words32 = stringToWords32(utf8, Endian.Big);
+  let utf8 = str;
+  let words32 = stringToWords32(utf8, Endian.Big);
   return _sha1(words32, utf8.length * 8);
 }
 
 export function sha1Binary(buffer: ArrayBuffer): string {
-  const words32 = arrayBufferToWords32(buffer, Endian.Big);
+  let words32 = arrayBufferToWords32(buffer, Endian.Big);
   return _sha1(words32, buffer.byteLength * 8);
 }
 
 function _sha1(words32: number[], len: number): string {
-  const w = new Array(80);
+  let w = new Array(80);
   let [a, b, c, d, e]: number[] = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
 
   words32[len >> 5] |= 0x80 << (24 - len % 32);
   words32[((len + 64 >> 9) << 4) + 15] = len;
 
   for (let i = 0; i < words32.length; i += 16) {
-    const [h0, h1, h2, h3, h4]: number[] = [a, b, c, d, e];
+    let [h0, h1, h2, h3, h4]: number[] = [a, b, c, d, e];
 
     for (let j = 0; j < 80; j++) {
       if (j < 16) {
@@ -45,8 +45,8 @@ function _sha1(words32: number[], len: number): string {
         w[j] = rol32(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
       }
 
-      const [f, k] = fk(j, b, c, d);
-      const temp = [rol32(a, 5), f, e, k, w[j]].reduce(add32);
+      let [f, k] = fk(j, b, c, d);
+      let temp = [rol32(a, 5), f, e, k, w[j]].reduce(add32);
       [e, d, c, b, a] = [d, c, rol32(b, 30), a, temp];
     }
 
@@ -61,20 +61,20 @@ function add32(a: number, b: number): number {
 }
 
 function add32to64(a: number, b: number): [number, number] {
-  const low = (a & 0xffff) + (b & 0xffff);
-  const high = (a >>> 16) + (b >>> 16) + (low >>> 16);
+  let low = (a & 0xffff) + (b & 0xffff);
+  let high = (a >>> 16) + (b >>> 16) + (low >>> 16);
   return [high >>> 16, (high << 16) | (low & 0xffff)];
 }
 
 function add64([ah, al]: [number, number], [bh, bl]: [number, number]): [number, number] {
-  const [carry, l] = add32to64(al, bl);
-  const h = add32(add32(ah, bh), carry);
+  let [carry, l] = add32to64(al, bl);
+  let h = add32(add32(ah, bh), carry);
   return [h, l];
 }
 
 function sub32(a: number, b: number): number {
-  const low = (a & 0xffff) - (b & 0xffff);
-  const high = (a >> 16) - (b >> 16) + (low >> 16);
+  let low = (a & 0xffff) - (b & 0xffff);
+  let high = (a >> 16) - (b >> 16) + (low >> 16);
   return (high << 16) | (low & 0xffff);
 }
 
@@ -85,8 +85,8 @@ function rol32(a: number, count: number): number {
 
 // Rotate a 64b number left `count` position
 function rol64([hi, lo]: [number, number], count: number): [number, number] {
-  const h = (hi << count) | (lo >>> (32 - count));
-  const l = (lo << count) | (hi >>> (32 - count));
+  let h = (hi << count) | (lo >>> (32 - count));
+  let l = (lo << count) | (hi >>> (32 - count));
   return [h, l];
 }
 
@@ -113,7 +113,7 @@ function fk(index: number, b: number, c: number, d: number): [number, number] {
 
 
 function stringToWords32(str: string, endian: Endian): number[] {
-  const words32 = Array((str.length + 3) >>> 2);
+  let words32 = Array((str.length + 3) >>> 2);
 
   for (let i = 0; i < words32.length; i++) {
     words32[i] = wordAt(str, i * 4, endian);
@@ -123,8 +123,8 @@ function stringToWords32(str: string, endian: Endian): number[] {
 }
 
 function arrayBufferToWords32(buffer: ArrayBuffer, endian: Endian): number[] {
-  const words32 = Array((buffer.byteLength + 3) >>> 2);
-  const view = new Uint8Array(buffer);
+  let words32 = Array((buffer.byteLength + 3) >>> 2);
+  let view = new Uint8Array(buffer);
   for (let i = 0; i < words32.length; i++) {
     words32[i] = wordAt(view, i * 4, endian);
   }
@@ -168,7 +168,7 @@ function word32ToByteString(word: number): string {
 function byteStringToHexString(str: string): string {
   let hex: string = '';
   for (let i = 0; i < str.length; i++) {
-    const b = byteAt(str, i);
+    let b = byteAt(str, i);
     hex += (b >>> 4).toString(16) + (b & 0x0f).toString(16);
   }
   return hex.toLowerCase();
@@ -190,9 +190,9 @@ function byteStringToDecString(str: string): string {
 // x and y decimal, lowest significant digit first
 function addBigInt(x: string, y: string): string {
   let sum = '';
-  const len = Math.max(x.length, y.length);
+  let len = Math.max(x.length, y.length);
   for (let i = 0, carry = 0; i < len || carry; i++) {
-    const tmpSum = carry + +(x[i] || 0) + +(y[i] || 0);
+    let tmpSum = carry + +(x[i] || 0) + +(y[i] || 0);
     if (tmpSum >= 10) {
       carry = 1;
       sum += tmpSum - 10;

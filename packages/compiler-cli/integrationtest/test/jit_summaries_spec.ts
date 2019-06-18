@@ -51,7 +51,7 @@ describe('Jit Summaries', () => {
   it('should use NgModule metadata from summaries', () => {
     @Component({template: '<div someDir>{{1 | somePipe}}</div>'})
     class TestComp {
-      constructor(service: SomeService) {}
+      letructor(service: SomeService) {}
     }
 
     TestBed

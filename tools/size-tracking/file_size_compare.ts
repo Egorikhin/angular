@@ -58,9 +58,9 @@ function compareSizeEntry(
 function compareActualSizeToExpected(
     actualSize: number, expectedSize: number, filePath: string,
     threshold: Threshold): SizeDifference[] {
-  const diffPercentage = getDifferencePercentage(actualSize, expectedSize);
-  const byteDiff = Math.abs(expectedSize - actualSize);
-  const diffs: SizeDifference[] = [];
+  let diffPercentage = getDifferencePercentage(actualSize, expectedSize);
+  let byteDiff = Math.abs(expectedSize - actualSize);
+  let diffs: SizeDifference[] = [];
   if (diffPercentage > threshold.maxPercentageDiff) {
     diffs.push({
       filePath: filePath,
@@ -85,7 +85,7 @@ function compareActualSizeToExpected(
 function compareDirectorySizeEntry(
     actual: DirectorySizeEntry, expected: DirectorySizeEntry, filePath: string,
     threshold: Threshold): SizeDifference[] {
-  const diffs: SizeDifference[] =
+  let diffs: SizeDifference[] =
       [...compareActualSizeToExpected(actual.size, expected.size, filePath, threshold)];
 
   getChildEntryNames(expected).forEach(childName => {

@@ -8,20 +8,20 @@ import { processNavigationUrls } from '../../../../packages/service-worker/confi
 import { FirebaseRedirector, FirebaseRedirectConfig } from '../../../tools/firebase-test-utils/FirebaseRedirector';
 
 
-const AIO_DIR = resolvePath(__dirname, '../../..');
+let AIO_DIR = resolvePath(__dirname, '../../..');
 
 export function getRedirector() {
   return new FirebaseRedirector(loadRedirects());
 }
 
 export function getSwNavigationUrlChecker() {
-  const config = loadJson(`${AIO_DIR}/ngsw-config.json`);
-  const navigationUrlSpecs = processNavigationUrls('', config.navigationUrls);
+  let config = loadJson(`${AIO_DIR}/ngsw-config.json`);
+  let navigationUrlSpecs = processNavigationUrls('', config.navigationUrls);
 
-  const includePatterns = navigationUrlSpecs
+  let includePatterns = navigationUrlSpecs
       .filter(spec => spec.positive)
       .map(spec => new RegExp(spec.regex));
-  const excludePatterns = navigationUrlSpecs
+  let excludePatterns = navigationUrlSpecs
       .filter(spec => !spec.positive)
       .map(spec => new RegExp(spec.regex));
 
@@ -31,29 +31,29 @@ export function getSwNavigationUrlChecker() {
 }
 
 export function loadRedirects(): FirebaseRedirectConfig[] {
-  const pathToFirebaseJSON = `${AIO_DIR}/firebase.json`;
-  const contents = loadJson(pathToFirebaseJSON);
+  let pathToFirebaseJSON = `${AIO_DIR}/firebase.json`;
+  let contents = loadJson(pathToFirebaseJSON);
   return contents.hosting.redirects;
 }
 
 export function loadLegacyUrls() {
-  const pathToLegacyUrls = `${__dirname}/URLS_TO_REDIRECT.txt`;
-  const urls = readFileSync(pathToLegacyUrls, 'utf8').split('\n').map(line => line.split('\t'));
+  let pathToLegacyUrls = `${__dirname}/URLS_TO_REDIRECT.txt`;
+  let urls = readFileSync(pathToLegacyUrls, 'utf8').split('\n').map(line => line.split('\t'));
   return urls;
 }
 
 export function loadLocalSitemapUrls() {
-  const pathToSiteMap = `${AIO_DIR}/src/generated/sitemap.xml`;
-  const xml = readFileSync(pathToSiteMap, 'utf8');
+  let pathToSiteMap = `${AIO_DIR}/src/generated/sitemap.xml`;
+  let xml = readFileSync(pathToSiteMap, 'utf8');
   return extractSitemapUrls(xml);
 }
 
 export async function loadRemoteSitemapUrls(host: string) {
   host = host.replace(/\/$/, '');
-  const urlToSiteMap = `${host}/generated/sitemap.xml`;
-  const get = /^https:/.test(host) ? httpsGet : httpGet;
+  let urlToSiteMap = `${host}/generated/sitemap.xml`;
+  let get = /^https:/.test(host) ? httpsGet : httpGet;
 
-  const xml = await new Promise<string>((resolve, reject) => {
+  let xml = await new Promise<string>((resolve, reject) => {
     let responseText = '';
     get(urlToSiteMap, res => res
         .on('data', chunk => responseText += chunk)
@@ -68,8 +68,8 @@ export async function loadRemoteSitemapUrls(host: string) {
 function extractSitemapUrls(xml: string) {
   // Currently, all sitemaps use `angular.io` as host in URLs (which is fine since we only use the
   // sitemap in `angular.io`). See also `aio/src/extra-files/*/robots.txt`.
-  const host = 'https://angular.io';
-  const urls: string[] = [];
+  let host = 'https://angular.io';
+  let urls: string[] = [];
 
   xml.replace(/<loc>([^<]+)<\/loc>/g, (_, loc) => urls.push(loc.replace(host, '')) as any);
 

@@ -31,7 +31,7 @@ export class NgStyleR2Impl implements NgStyleImpl {
   // TODO(issue/24571): remove '!'.
   private _differ !: KeyValueDiffer<string, string|number>;
 
-  constructor(
+  letructor(
       private _ngEl: ElementRef, private _differs: KeyValueDiffers, private _renderer: Renderer2) {}
 
   getValue() { return null; }
@@ -55,7 +55,7 @@ export class NgStyleR2Impl implements NgStyleImpl {
    */
   applyChanges() {
     if (this._differ) {
-      const changes = this._differ.diff(this._ngStyle);
+      let changes = this._differ.diff(this._ngStyle);
       if (changes) {
         this._applyChanges(changes);
       }
@@ -69,7 +69,7 @@ export class NgStyleR2Impl implements NgStyleImpl {
   }
 
   private _setStyle(nameAndUnit: string, value: string|number|null|undefined): void {
-    const [name, unit] = nameAndUnit.split('.');
+    let [name, unit] = nameAndUnit.split('.');
     value = value != null && unit ? `${value}${unit}` : value;
 
     if (value != null) {
@@ -101,14 +101,14 @@ export class NgStyleR3Impl implements NgStyleImpl {
 // the implementation for both NgClassR2Impl and NgClassR3Impl are
 // not ivy_switch'd away, instead they are only hooked up into the
 // DI via NgStyle's directive's provider property.
-export const NgStyleImplProvider__PRE_R3__ = {
+export let NgStyleImplProvider__PRE_R3__ = {
   provide: NgStyleImpl,
   useClass: NgStyleR2Impl
 };
 
-export const NgStyleImplProvider__POST_R3__ = {
+export let NgStyleImplProvider__POST_R3__ = {
   provide: NgStyleImpl,
   useClass: NgStyleR3Impl
 };
 
-export const NgStyleImplProvider = NgStyleImplProvider__PRE_R3__;
+export let NgStyleImplProvider = NgStyleImplProvider__PRE_R3__;

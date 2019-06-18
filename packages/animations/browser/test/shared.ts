@@ -15,12 +15,12 @@ import {MockAnimationDriver} from '../testing/src/mock_animation_driver';
 
 export function makeTrigger(
     name: string, steps: any, skipErrors: boolean = false): AnimationTrigger {
-  const driver = new MockAnimationDriver();
-  const errors: any[] = [];
-  const triggerData = trigger(name, steps);
-  const triggerAst = buildAnimationAst(driver, triggerData, errors) as TriggerAst;
+  let driver = new MockAnimationDriver();
+  let errors: any[] = [];
+  let triggerData = trigger(name, steps);
+  let triggerAst = buildAnimationAst(driver, triggerData, errors) as TriggerAst;
   if (!skipErrors && errors.length) {
-    const LINE_START = '\n - ';
+    let LINE_START = '\n - ';
     throw new Error(
         `Animation parsing for the ${name} trigger have failed:${LINE_START}${errors.join(LINE_START)}`);
   }

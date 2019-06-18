@@ -44,7 +44,7 @@ function isEmptyInputValue(value: any): boolean {
  *
  * @publicApi
  */
-export const NG_VALIDATORS = new InjectionToken<Array<Validator|Function>>('NgValidators');
+export let NG_VALIDATORS = new InjectionToken<Array<Validator|Function>>('NgValidators');
 
 /**
  * @description
@@ -54,10 +54,10 @@ export const NG_VALIDATORS = new InjectionToken<Array<Validator|Function>>('NgVa
  *
  * @publicApi
  */
-export const NG_ASYNC_VALIDATORS =
+export let NG_ASYNC_VALIDATORS =
     new InjectionToken<Array<Validator|Function>>('NgAsyncValidators');
 
-const EMAIL_REGEXP =
+let EMAIL_REGEXP =
     /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$/;
 
 /**
@@ -82,7 +82,7 @@ export class Validators {
    * ### Validate against a minimum of 3
    *
    * ```typescript
-   * const control = new FormControl(2, Validators.min(3));
+   * let control = new FormControl(2, Validators.min(3));
    *
    * console.log(control.errors); // {min: {min: 3, actual: 2}}
    * ```
@@ -96,7 +96,7 @@ export class Validators {
       if (isEmptyInputValue(control.value) || isEmptyInputValue(min)) {
         return null;  // don't validate empty values to allow optional controls
       }
-      const value = parseFloat(control.value);
+      let value = parseFloat(control.value);
       // Controls with NaN values after parsing should be treated as not having a
       // minimum, per the HTML forms spec: https://www.w3.org/TR/html5/forms.html#attr-input-min
       return !isNaN(value) && value < min ? {'min': {'min': min, 'actual': control.value}} : null;
@@ -113,7 +113,7 @@ export class Validators {
    * ### Validate against a maximum of 15
    *
    * ```typescript
-   * const control = new FormControl(16, Validators.max(15));
+   * let control = new FormControl(16, Validators.max(15));
    *
    * console.log(control.errors); // {max: {max: 15, actual: 16}}
    * ```
@@ -127,7 +127,7 @@ export class Validators {
       if (isEmptyInputValue(control.value) || isEmptyInputValue(max)) {
         return null;  // don't validate empty values to allow optional controls
       }
-      const value = parseFloat(control.value);
+      let value = parseFloat(control.value);
       // Controls with NaN values after parsing should be treated as not having a
       // maximum, per the HTML forms spec: https://www.w3.org/TR/html5/forms.html#attr-input-max
       return !isNaN(value) && value > max ? {'max': {'max': max, 'actual': control.value}} : null;
@@ -143,7 +143,7 @@ export class Validators {
    * ### Validate that the field is non-empty
    *
    * ```typescript
-   * const control = new FormControl('', Validators.required);
+   * let control = new FormControl('', Validators.required);
    *
    * console.log(control.errors); // {required: true}
    * ```
@@ -166,7 +166,7 @@ export class Validators {
    * ### Validate that the field value is true
    *
    * ```typescript
-   * const control = new FormControl('', Validators.requiredTrue);
+   * let control = new FormControl('', Validators.requiredTrue);
    *
    * console.log(control.errors); // {required: true}
    * ```
@@ -187,7 +187,7 @@ export class Validators {
    * ### Validate that the field matches a valid email pattern
    *
    * ```typescript
-   * const control = new FormControl('bad@', Validators.email);
+   * let control = new FormControl('bad@', Validators.email);
    *
    * console.log(control.errors); // {email: true}
    * ```
@@ -214,7 +214,7 @@ export class Validators {
    * ### Validate that the field has a minimum of 3 characters
    *
    * ```typescript
-   * const control = new FormControl('ng', Validators.minLength(3));
+   * let control = new FormControl('ng', Validators.minLength(3));
    *
    * console.log(control.errors); // {minlength: {requiredLength: 3, actualLength: 2}}
    * ```
@@ -231,7 +231,7 @@ export class Validators {
       if (isEmptyInputValue(control.value)) {
         return null;  // don't validate empty values to allow optional controls
       }
-      const length: number = control.value ? control.value.length : 0;
+      let length: number = control.value ? control.value.length : 0;
       return length < minLength ?
           {'minlength': {'requiredLength': minLength, 'actualLength': length}} :
           null;
@@ -249,7 +249,7 @@ export class Validators {
    * ### Validate that the field has maximum of 5 characters
    *
    * ```typescript
-   * const control = new FormControl('Angular', Validators.maxLength(5));
+   * let control = new FormControl('Angular', Validators.maxLength(5));
    *
    * console.log(control.errors); // {maxlength: {requiredLength: 5, actualLength: 7}}
    * ```
@@ -263,7 +263,7 @@ export class Validators {
    */
   static maxLength(maxLength: number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const length: number = control.value ? control.value.length : 0;
+      let length: number = control.value ? control.value.length : 0;
       return length > maxLength ?
           {'maxlength': {'requiredLength': maxLength, 'actualLength': length}} :
           null;
@@ -285,7 +285,7 @@ export class Validators {
    * ### Validate that the field only contains letters or spaces
    *
    * ```typescript
-   * const control = new FormControl('1', Validators.pattern('[a-zA-Z ]*'));
+   * let control = new FormControl('1', Validators.pattern('[a-zA-Z ]*'));
    *
    * console.log(control.errors); // {pattern: {requiredPattern: '^[a-zA-Z ]*$', actualValue: '1'}}
    * ```
@@ -319,7 +319,7 @@ export class Validators {
       if (isEmptyInputValue(control.value)) {
         return null;  // don't validate empty values to allow optional controls
       }
-      const value: string = control.value;
+      let value: string = control.value;
       return regex.test(value) ? null :
                                  {'pattern': {'requiredPattern': regexStr, 'actualValue': value}};
     };
@@ -343,7 +343,7 @@ export class Validators {
   static compose(validators: (ValidatorFn|null|undefined)[]): ValidatorFn|null;
   static compose(validators: (ValidatorFn|null|undefined)[]|null): ValidatorFn|null {
     if (!validators) return null;
-    const presentValidators: ValidatorFn[] = validators.filter(isPresent) as any;
+    let presentValidators: ValidatorFn[] = validators.filter(isPresent) as any;
     if (presentValidators.length == 0) return null;
 
     return function(control: AbstractControl) {
@@ -361,11 +361,11 @@ export class Validators {
   */
   static composeAsync(validators: (AsyncValidatorFn|null)[]): AsyncValidatorFn|null {
     if (!validators) return null;
-    const presentValidators: AsyncValidatorFn[] = validators.filter(isPresent) as any;
+    let presentValidators: AsyncValidatorFn[] = validators.filter(isPresent) as any;
     if (presentValidators.length == 0) return null;
 
     return function(control: AbstractControl) {
-      const observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
+      let observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
       return forkJoin(observables).pipe(map(_mergeErrors));
     };
   }
@@ -376,7 +376,7 @@ function isPresent(o: any): boolean {
 }
 
 export function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? from(r) : r;
+  let obs = isPromise(r) ? from(r) : r;
   if (!(isObservable(obs))) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
@@ -392,7 +392,7 @@ function _executeAsyncValidators(control: AbstractControl, validators: AsyncVali
 }
 
 function _mergeErrors(arrayOfErrors: ValidationErrors[]): ValidationErrors|null {
-  const res: {[key: string]: any} =
+  let res: {[key: string]: any} =
       arrayOfErrors.reduce((res: ValidationErrors | null, errors: ValidationErrors | null) => {
         return errors != null ? {...res !, ...errors} : res !;
       }, {});

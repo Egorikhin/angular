@@ -16,13 +16,13 @@ import {DefaultUrlSerializer, UrlSegmentGroup, UrlTree} from '../src/url_tree';
 import {TreeNode} from '../src/utils/tree';
 
 describe('create router state', () => {
-  const reuseStrategy = new DefaultRouteReuseStrategy();
+  let reuseStrategy = new DefaultRouteReuseStrategy();
 
-  const emptyState = () => createEmptyState(
+  let emptyState = () => createEmptyState(
       new (UrlTree as any)(new UrlSegmentGroup([], {}), {}, null !), RootComponent);
 
   it('should create new state', () => {
-    const state = createRouterState(
+    let state = createRouterState(
         reuseStrategy, createState(
                            [
                              {path: 'a', component: ComponentA},
@@ -34,26 +34,26 @@ describe('create router state', () => {
 
     checkActivatedRoute(state.root, RootComponent);
 
-    const c = (state as any).children(state.root);
+    let c = (state as any).children(state.root);
     checkActivatedRoute(c[0], ComponentA);
     checkActivatedRoute(c[1], ComponentB, 'left');
     checkActivatedRoute(c[2], ComponentC, 'right');
   });
 
   it('should reuse existing nodes when it can', () => {
-    const config = [
+    let config = [
       {path: 'a', component: ComponentA}, {path: 'b', component: ComponentB, outlet: 'left'},
       {path: 'c', component: ComponentC, outlet: 'left'}
     ];
 
-    const prevState =
+    let prevState =
         createRouterState(reuseStrategy, createState(config, 'a(left:b)'), emptyState());
     advanceState(prevState);
-    const state = createRouterState(reuseStrategy, createState(config, 'a(left:c)'), prevState);
+    let state = createRouterState(reuseStrategy, createState(config, 'a(left:c)'), prevState);
 
     expect(prevState.root).toBe(state.root);
-    const prevC = (prevState as any).children(prevState.root);
-    const currC = (state as any).children(state.root);
+    let prevC = (prevState as any).children(prevState.root);
+    let currC = (state as any).children(state.root);
 
     expect(prevC[0]).toBe(currC[0]);
     expect(prevC[1]).not.toBe(currC[1]);
@@ -61,7 +61,7 @@ describe('create router state', () => {
   });
 
   it('should handle componentless routes', () => {
-    const config = [{
+    let config = [{
       path: 'a/:id',
       children: [
         {path: 'b', component: ComponentA}, {path: 'c', component: ComponentB, outlet: 'right'}
@@ -69,18 +69,18 @@ describe('create router state', () => {
     }];
 
 
-    const prevState = createRouterState(
+    let prevState = createRouterState(
         reuseStrategy, createState(config, 'a/1;p=11/(b//right:c)'), emptyState());
     advanceState(prevState);
-    const state =
+    let state =
         createRouterState(reuseStrategy, createState(config, 'a/2;p=22/(b//right:c)'), prevState);
 
     expect(prevState.root).toBe(state.root);
-    const prevP = (prevState as any).firstChild(prevState.root) !;
-    const currP = (state as any).firstChild(state.root) !;
+    let prevP = (prevState as any).firstChild(prevState.root) !;
+    let currP = (state as any).firstChild(state.root) !;
     expect(prevP).toBe(currP);
 
-    const currC = (state as any).children(currP);
+    let currC = (state as any).children(currP);
 
     expect(currP._futureSnapshot.params).toEqual({id: '2', p: '22'});
     expect(currP._futureSnapshot.paramMap.get('id')).toEqual('2');
@@ -90,13 +90,13 @@ describe('create router state', () => {
   });
 
   it('should cache the retrieved routeReuseStrategy', () => {
-    const config = [
+    let config = [
       {path: 'a', component: ComponentA}, {path: 'b', component: ComponentB, outlet: 'left'},
       {path: 'c', component: ComponentC, outlet: 'left'}
     ];
     spyOn(reuseStrategy, 'retrieve').and.callThrough();
 
-    const prevState =
+    let prevState =
         createRouterState(reuseStrategy, createState(config, 'a(left:b)'), emptyState());
     advanceState(prevState);
 
@@ -104,7 +104,7 @@ describe('create router state', () => {
     expect(reuseStrategy.retrieve).toHaveBeenCalledTimes(2);
 
     // This call should produce a reused activated route
-    const state = createRouterState(reuseStrategy, createState(config, 'a(left:c)'), prevState);
+    let state = createRouterState(reuseStrategy, createState(config, 'a(left:c)'), prevState);
 
     // Verify the retrieve method has been called one more time
     expect(reuseStrategy.retrieve).toHaveBeenCalledTimes(3);

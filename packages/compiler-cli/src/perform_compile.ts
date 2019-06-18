@@ -15,7 +15,7 @@ import * as api from './transformers/api';
 import * as ng from './transformers/entry_points';
 import {createMessageDiagnostic} from './transformers/util';
 
-const TS_EXT = /\.ts$/;
+let TS_EXT = /\.ts$/;
 
 export type Diagnostics = ReadonlyArray<ts.Diagnostic|api.Diagnostic>;
 
@@ -23,7 +23,7 @@ export function filterErrorsAndWarnings(diagnostics: Diagnostics): Diagnostics {
   return diagnostics.filter(d => d.category !== ts.DiagnosticCategory.Message);
 }
 
-const defaultFormatHost: ts.FormatDiagnosticsHost = {
+let defaultFormatHost: ts.FormatDiagnosticsHost = {
   getCurrentDirectory: () => ts.sys.getCurrentDirectory(),
   getCanonicalFileName: fileName => fileName,
   getNewLine: () => ts.sys.newLine
@@ -43,14 +43,14 @@ export function flattenDiagnosticMessageChain(
   let result = chain.messageText;
   let indent = 1;
   let current = chain.next;
-  const newLine = host.getNewLine();
+  let newLine = host.getNewLine();
   while (current) {
     result += newLine;
     for (let i = 0; i < indent; i++) {
       result += '  ';
     }
     result += current.messageText;
-    const position = current.position;
+    let position = current.position;
     if (position) {
       result += ` at ${formatDiagnosticPosition(position, host)}`;
     }
@@ -63,8 +63,8 @@ export function flattenDiagnosticMessageChain(
 export function formatDiagnostic(
     diagnostic: api.Diagnostic, host: ts.FormatDiagnosticsHost = defaultFormatHost) {
   let result = '';
-  const newLine = host.getNewLine();
-  const span = diagnostic.span;
+  let newLine = host.getNewLine();
+  let span = diagnostic.span;
   if (span) {
     result += `${formatDiagnosticPosition({
       fileName: span.start.file.url,
@@ -111,10 +111,10 @@ export interface ParsedConfiguration {
 
 export function calcProjectFileAndBasePath(project: string):
     {projectFile: string, basePath: string} {
-  const projectIsDir = fs.lstatSync(project).isDirectory();
-  const projectFile = projectIsDir ? path.join(project, 'tsconfig.json') : project;
-  const projectDir = projectIsDir ? project : path.dirname(project);
-  const basePath = path.resolve(process.cwd(), projectDir);
+  let projectIsDir = fs.lstatSync(project).isDirectory();
+  let projectFile = projectIsDir ? path.join(project, 'tsconfig.json') : project;
+  let projectDir = projectIsDir ? project : path.dirname(project);
+  let basePath = path.resolve(process.cwd(), projectDir);
   return {projectFile, basePath};
 }
 
@@ -130,11 +130,11 @@ export function createNgCompilerOptions(
 export function readConfiguration(
     project: string, existingOptions?: ts.CompilerOptions): ParsedConfiguration {
   try {
-    const {projectFile, basePath} = calcProjectFileAndBasePath(project);
+    let {projectFile, basePath} = calcProjectFileAndBasePath(project);
 
-    const readExtendedConfigFile =
+    let readExtendedConfigFile =
         (configFile: string, existingConfig?: any): {config?: any, error?: ts.Diagnostic} => {
-          const {config, error} = ts.readConfigFile(configFile, ts.sys.readFile);
+          let {config, error} = ts.readConfigFile(configFile, ts.sys.readFile);
 
           if (error) {
             return {error};
@@ -142,7 +142,7 @@ export function readConfiguration(
 
           // we are only interested into merging 'angularCompilerOptions' as
           // other options like 'compilerOptions' are merged by TS
-          const baseConfig = existingConfig || config;
+          let baseConfig = existingConfig || config;
           if (existingConfig) {
             baseConfig.angularCompilerOptions = {...config.angularCompilerOptions,
                                                  ...baseConfig.angularCompilerOptions};
@@ -162,7 +162,7 @@ export function readConfiguration(
           return {config: baseConfig};
         };
 
-    const {config, error} = readExtendedConfigFile(projectFile);
+    let {config, error} = readExtendedConfigFile(projectFile);
 
     if (error) {
       return {
@@ -173,18 +173,18 @@ export function readConfiguration(
         emitFlags: api.EmitFlags.Default
       };
     }
-    const parseConfigHost = {
+    let parseConfigHost = {
       useCaseSensitiveFileNames: true,
       fileExists: fs.existsSync,
       readDirectory: ts.sys.readDirectory,
       readFile: ts.sys.readFile
     };
-    const configFileName = path.resolve(process.cwd(), projectFile);
-    const parsed = ts.parseJsonConfigFileContent(
+    let configFileName = path.resolve(process.cwd(), projectFile);
+    let parsed = ts.parseJsonConfigFileContent(
         config, parseConfigHost, basePath, existingOptions, configFileName);
-    const rootNames = parsed.fileNames.map(f => path.normalize(f));
+    let rootNames = parsed.fileNames.map(f => path.normalize(f));
 
-    const options = createNgCompilerOptions(basePath, config, parsed.options);
+    let options = createNgCompilerOptions(basePath, config, parsed.options);
     let emitFlags = api.EmitFlags.Default;
     if (!(options.skipMetadataEmit || options.flatModuleOutFile)) {
       emitFlags |= api.EmitFlags.Metadata;
@@ -194,7 +194,7 @@ export function readConfiguration(
     }
     return {project: projectFile, rootNames, options, errors: parsed.errors, emitFlags};
   } catch (e) {
-    const errors: Diagnostics = [{
+    let errors: Diagnostics = [{
       category: ts.DiagnosticCategory.Error,
       messageText: e.stack,
       source: api.SOURCE,
@@ -244,10 +244,10 @@ export function performCompilation({rootNames, options, host, oldProgram, emitCa
 
     program = ng.createProgram({rootNames, host, options, oldProgram});
 
-    const beforeDiags = Date.now();
+    let beforeDiags = Date.now();
     allDiagnostics.push(...gatherDiagnostics(program !));
     if (options.diagnostics) {
-      const afterDiags = Date.now();
+      let afterDiags = Date.now();
       allDiagnostics.push(
           createMessageDiagnostic(`Time for diagnostics: ${afterDiags - beforeDiags}ms.`));
     }
@@ -278,7 +278,7 @@ export function performCompilation({rootNames, options, host, oldProgram, emitCa
   }
 }
 function defaultGatherDiagnostics(program: api.Program): Diagnostics {
-  const allDiagnostics: Array<ts.Diagnostic|api.Diagnostic> = [];
+  let allDiagnostics: Array<ts.Diagnostic|api.Diagnostic> = [];
 
   function checkDiagnostics(diags: Diagnostics | undefined) {
     if (diags) {

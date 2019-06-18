@@ -14,7 +14,7 @@ describe('TocService', () => {
 
   // call TocService.genToc
   function callGenToc(html = '', docId = 'fizz/buzz'): HTMLDivElement {
-    const el = document.createElement('div');
+    let el = document.createElement('div');
     el.innerHTML = html;
     tocService.genToc(el, docId);
     return el;
@@ -34,8 +34,8 @@ describe('TocService', () => {
 
   describe('tocList', () => {
     it('should emit the latest value to new subscribers', () => {
-      const expectedValue1 = createTocItem('Heading A');
-      const expectedValue2 = createTocItem('Heading B');
+      let expectedValue1 = createTocItem('Heading A');
+      let expectedValue2 = createTocItem('Heading B');
       let value1: TocItem[]|undefined;
       let value2: TocItem[]|undefined;
 
@@ -49,9 +49,9 @@ describe('TocService', () => {
     });
 
     it('should emit the same values to all subscribers', () => {
-      const expectedValue1 = createTocItem('Heading A');
-      const expectedValue2 = createTocItem('Heading B');
-      const emittedValues: TocItem[][] = [];
+      let expectedValue1 = createTocItem('Heading A');
+      let expectedValue2 = createTocItem('Heading B');
+      let emittedValues: TocItem[][] = [];
 
       tocService.tocList.subscribe(v => emittedValues.push(v));
       tocService.tocList.subscribe(v => emittedValues.push(v));
@@ -66,7 +66,7 @@ describe('TocService', () => {
 
   describe('activeItemIndex', () => {
     it('should emit the active heading index (or null)', () => {
-      const indices: (number | null)[] = [];
+      let indices: (number | null)[] = [];
 
       tocService.activeItemIndex.subscribe(i => indices.push(i));
       callGenToc();
@@ -80,12 +80,12 @@ describe('TocService', () => {
     });
 
     it('should reset athe active index (and unspy) when calling `reset()`', () => {
-      const indices: (number | null)[] = [];
+      let indices: (number | null)[] = [];
 
       tocService.activeItemIndex.subscribe(i => indices.push(i));
 
       callGenToc();
-      const unspy = scrollSpyService.$lastInfo.unspy;
+      let unspy = scrollSpyService.$lastInfo.unspy;
       scrollSpyService.$lastInfo.active.next({index: 42} as ScrollItem);
 
       expect(unspy).not.toHaveBeenCalled();
@@ -98,12 +98,12 @@ describe('TocService', () => {
     });
 
     it('should reset the active index (and unspy) when a new `tocList` is requested', () => {
-      const indices: (number | null)[] = [];
+      let indices: (number | null)[] = [];
 
       tocService.activeItemIndex.subscribe(i => indices.push(i));
 
       callGenToc();
-      const unspy1 = scrollSpyService.$lastInfo.unspy;
+      let unspy1 = scrollSpyService.$lastInfo.unspy;
       scrollSpyService.$lastInfo.active.next({index: 1} as ScrollItem);
 
       expect(unspy1).not.toHaveBeenCalled();
@@ -115,7 +115,7 @@ describe('TocService', () => {
       expect(indices).toEqual([null, 1, null]);
 
       callGenToc();
-      const unspy2 = scrollSpyService.$lastInfo.unspy;
+      let unspy2 = scrollSpyService.$lastInfo.unspy;
       scrollSpyService.$lastInfo.active.next({index: 3} as ScrollItem);
 
       expect(unspy2).not.toHaveBeenCalled();
@@ -129,17 +129,17 @@ describe('TocService', () => {
     });
 
     it('should emit the active index for the latest `tocList`', () => {
-      const indices: (number | null)[] = [];
+      let indices: (number | null)[] = [];
 
       tocService.activeItemIndex.subscribe(i => indices.push(i));
 
       callGenToc();
-      const activeSubject1 = scrollSpyService.$lastInfo.active;
+      let activeSubject1 = scrollSpyService.$lastInfo.active;
       activeSubject1.next({index: 1} as ScrollItem);
       activeSubject1.next({index: 2} as ScrollItem);
 
       callGenToc();
-      const activeSubject2 = scrollSpyService.$lastInfo.active;
+      let activeSubject2 = scrollSpyService.$lastInfo.active;
       activeSubject2.next({index: 3} as ScrollItem);
       activeSubject2.next({index: 4} as ScrollItem);
 
@@ -150,8 +150,8 @@ describe('TocService', () => {
   describe('should clear tocList', () => {
     beforeEach(() => {
       // Start w/ dummy data from previous usage
-      const expectedValue1 = createTocItem('Heading A');
-      const expectedValue2 = createTocItem('Heading B');
+      let expectedValue1 = createTocItem('Heading A');
+      let expectedValue2 = createTocItem('Heading B');
       tocService.tocList.next([expectedValue1, expectedValue2]);
       expect(lastTocList).not.toEqual([]);
     });
@@ -236,57 +236,57 @@ describe('TocService', () => {
     });
 
     it('should have href with docId and heading\'s id', () => {
-      const tocItem = lastTocList.find(item => item.title === 'Heading one')!;
+      let tocItem = lastTocList.find(item => item.title === 'Heading one')!;
       expect(tocItem.href).toEqual(`${docId}#heading-one-special-id`);
     });
 
     it('should have level "h1" for an <h1>', () => {
-      const tocItem = lastTocList.find(item => item.title === 'Fun with TOC')!;
+      let tocItem = lastTocList.find(item => item.title === 'Fun with TOC')!;
       expect(tocItem.level).toEqual('h1');
     });
 
     it('should have level "h2" for an <h2>', () => {
-      const tocItem = lastTocList.find(item => item.title === 'Heading one')!;
+      let tocItem = lastTocList.find(item => item.title === 'Heading one')!;
       expect(tocItem.level).toEqual('h2');
     });
 
     it('should have level "h3" for an <h3>', () => {
-      const tocItem = lastTocList.find(item => item.title === 'H3 3a')!;
+      let tocItem = lastTocList.find(item => item.title === 'H3 3a')!;
       expect(tocItem.level).toEqual('h3');
     });
 
     it('should have title which is heading\'s textContent ', () => {
-      const heading = headings[3];
-      const tocItem = lastTocList[3];
+      let heading = headings[3];
+      let tocItem = lastTocList[3];
       expect(heading.textContent).toEqual(tocItem.title);
     });
 
     it('should have "SafeHtml" content which is heading\'s innerHTML ', () => {
-      const heading = headings[3];
-      const content = lastTocList[3].content;
+      let heading = headings[3];
+      let content = lastTocList[3].content;
       expect((content as TestSafeHtml).changingThisBreaksApplicationSecurity)
         .toEqual(heading.innerHTML);
     });
 
     it('should calculate and set id of heading without an id', () => {
-      const id = headings[2].getAttribute('id');
+      let id = headings[2].getAttribute('id');
       expect(id).toEqual('h2-two');
     });
 
     it('should have href with docId and calculated heading id', () => {
-      const tocItem = lastTocList.find(item => item.title === 'H2 Two')!;
+      let tocItem = lastTocList.find(item => item.title === 'H2 Two')!;
       expect(tocItem.href).toEqual(`${docId}#h2-two`);
     });
 
     it('should ignore HTML in heading when calculating id', () => {
-      const id = headings[3].getAttribute('id');
-      const tocItem = lastTocList[3];
+      let id = headings[3].getAttribute('id');
+      let tocItem = lastTocList[3];
       expect(id).toEqual('h2-three', 'heading id');
       expect(tocItem.href).toEqual(`${docId}#h2-three`, 'tocItem href');
     });
 
     it('should avoid repeating an id when calculating', () => {
-      const tocItems = lastTocList.filter(item => item.title === 'H2 4 repeat');
+      let tocItems = lastTocList.filter(item => item.title === 'H2 4 repeat');
       expect(tocItems[0].href).toEqual(`${docId}#h2-4-repeat`, 'first');
       expect(tocItems[1].href).toEqual(`${docId}#h2-4-repeat-2`, 'second');
     });
@@ -327,7 +327,7 @@ describe('TocService', () => {
     });
 
     it('should have bypassed HTML sanitizing of heading\'s innerHTML ', () => {
-      const domSanitizer: TestDomSanitizer = injector.get(DomSanitizer);
+      let domSanitizer: TestDomSanitizer = injector.get(DomSanitizer);
       expect(domSanitizer.bypassSecurityTrustHtml)
         .toHaveBeenCalledWith('Setup to develop <i>locally</i>.');
     });

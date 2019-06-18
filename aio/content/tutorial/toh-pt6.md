@@ -104,7 +104,7 @@ Import some HTTP symbols that you'll need:
   header="src/app/hero.service.ts (import HTTP symbols)">
 </code-example>
 
-Inject `HttpClient` into the constructor in a private property called `http`.
+Inject `HttpClient` into the letructor in a private property called `http`.
 
 <code-example 
   path="toh-pt6/src/app/hero.service.ts" 
@@ -224,7 +224,7 @@ has configured with both the name of the operation that failed and a safe return
   region="handleError">
 </code-example>
 
-After reporting the error to console, the handler constructs
+After reporting the error to console, the handler letructs
 a user friendly message and returns a safe value to the app so it can keep working.
 
 Because each service method returns a different kind of `Observable` result,
@@ -260,7 +260,7 @@ Add a `HeroService.getHero()` method to make that request:
 
 There are three significant differences from  `getHeroes()`.
 
-* it constructs a request URL with the desired hero's id.
+* it letructs a request URL with the desired hero's id.
 * the server should respond with a single hero rather than an array of heroes.
 * therefore, `getHero` returns an `Observable<Hero>` ("_an observable of Hero objects_")
  rather than an observable of hero _arrays_ .
@@ -304,7 +304,7 @@ The `HttpClient.put()` method takes three parameters
 The URL is unchanged. The heroes web API knows which hero to update by looking at the hero's `id`.
 
 The heroes web API expects a special header in HTTP save requests.
-That header is in the `httpOptions` constant defined in the `HeroService`.
+That header is in the `httpOptions` letant defined in the `HeroService`.
 
 <code-example 
   path="toh-pt6/src/app/hero.service.ts" 

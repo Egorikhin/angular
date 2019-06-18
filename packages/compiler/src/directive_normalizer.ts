@@ -36,7 +36,7 @@ export interface PrenormalizedTemplateMetadata {
 export class DirectiveNormalizer {
   private _resourceLoaderCache = new Map<string, SyncAsync<string>>();
 
-  constructor(
+  letructor(
       private _resourceLoader: ResourceLoader, private _urlResolver: UrlResolver,
       private _htmlParser: HtmlParser, private _config: CompilerConfig) {}
 
@@ -46,7 +46,7 @@ export class DirectiveNormalizer {
     if (!normalizedDirective.isComponent) {
       return;
     }
-    const template = normalizedDirective.template !;
+    let template = normalizedDirective.template !;
     this._resourceLoaderCache.delete(template.templateUrl !);
     template.externalStylesheets.forEach(
         (stylesheet) => { this._resourceLoaderCache.delete(stylesheet.moduleUrl !); });
@@ -111,30 +111,30 @@ export class DirectiveNormalizer {
   private _preparseLoadedTemplate(
       prenormData: PrenormalizedTemplateMetadata, template: string,
       templateAbsUrl: string): PreparsedTemplate {
-    const isInline = !!prenormData.template;
-    const interpolationConfig = InterpolationConfig.fromArray(prenormData.interpolation !);
-    const templateUrl = templateSourceUrl(
+    let isInline = !!prenormData.template;
+    let interpolationConfig = InterpolationConfig.fromArray(prenormData.interpolation !);
+    let templateUrl = templateSourceUrl(
         {reference: prenormData.ngModuleType}, {type: {reference: prenormData.componentType}},
         {isInline, templateUrl: templateAbsUrl});
-    const rootNodesAndErrors = this._htmlParser.parse(
+    let rootNodesAndErrors = this._htmlParser.parse(
         template, templateUrl, {tokenizeExpansionForms: true, interpolationConfig});
     if (rootNodesAndErrors.errors.length > 0) {
-      const errorString = rootNodesAndErrors.errors.join('\n');
+      let errorString = rootNodesAndErrors.errors.join('\n');
       throw syntaxError(`Template parse errors:\n${errorString}`);
     }
 
-    const templateMetadataStyles = this._normalizeStylesheet(new CompileStylesheetMetadata(
+    let templateMetadataStyles = this._normalizeStylesheet(new CompileStylesheetMetadata(
         {styles: prenormData.styles, moduleUrl: prenormData.moduleUrl}));
 
-    const visitor = new TemplatePreparseVisitor();
+    let visitor = new TemplatePreparseVisitor();
     html.visitAll(visitor, rootNodesAndErrors.rootNodes);
-    const templateStyles = this._normalizeStylesheet(new CompileStylesheetMetadata(
+    let templateStyles = this._normalizeStylesheet(new CompileStylesheetMetadata(
         {styles: visitor.styles, styleUrls: visitor.styleUrls, moduleUrl: templateAbsUrl}));
 
-    const styles = templateMetadataStyles.styles.concat(templateStyles.styles);
+    let styles = templateMetadataStyles.styles.concat(templateStyles.styles);
 
-    const inlineStyleUrls = templateMetadataStyles.styleUrls.concat(templateStyles.styleUrls);
-    const styleUrls = this
+    let inlineStyleUrls = templateMetadataStyles.styleUrls.concat(templateStyles.styleUrls);
+    let styleUrls = this
                           ._normalizeStylesheet(new CompileStylesheetMetadata(
                               {styleUrls: prenormData.styleUrls, moduleUrl: prenormData.moduleUrl}))
                           .styleUrls;
@@ -167,13 +167,13 @@ export class DirectiveNormalizer {
     // the template nor the stylesheets, so we can create a stub for TypeScript always synchronously
     // (as resource loading may be async)
 
-    const styles = [...preparsedTemplate.styles];
+    let styles = [...preparsedTemplate.styles];
     this._inlineStyles(preparsedTemplate.inlineStyleUrls, stylesheets, styles);
-    const styleUrls = preparsedTemplate.styleUrls;
+    let styleUrls = preparsedTemplate.styleUrls;
 
-    const externalStylesheets = styleUrls.map(styleUrl => {
-      const stylesheet = stylesheets.get(styleUrl) !;
-      const styles = [...stylesheet.styles];
+    let externalStylesheets = styleUrls.map(styleUrl => {
+      let stylesheet = stylesheets.get(styleUrl) !;
+      let styles = [...stylesheet.styles];
       this._inlineStyles(stylesheet.styleUrls, stylesheets, styles);
       return new CompileStylesheetMetadata({moduleUrl: styleUrl, styles: styles});
     });
@@ -204,7 +204,7 @@ export class DirectiveNormalizer {
       styleUrls: string[], stylesheets: Map<string, CompileStylesheetMetadata>,
       targetStyles: string[]) {
     styleUrls.forEach(styleUrl => {
-      const stylesheet = stylesheets.get(styleUrl) !;
+      let stylesheet = stylesheets.get(styleUrl) !;
       stylesheet.styles.forEach(style => targetStyles.push(style));
       this._inlineStyles(stylesheet.styleUrls, stylesheets, targetStyles);
     });
@@ -221,7 +221,7 @@ export class DirectiveNormalizer {
                               styleUrl => SyncAsync.then(
                                   this._fetch(styleUrl),
                                   (loadedStyle) => {
-                                    const stylesheet =
+                                    let stylesheet =
                                         this._normalizeStylesheet(new CompileStylesheetMetadata(
                                             {styles: [loadedStyle], moduleUrl: styleUrl}));
                                     loadedStylesheets.set(styleUrl, stylesheet);
@@ -232,12 +232,12 @@ export class DirectiveNormalizer {
   }
 
   private _normalizeStylesheet(stylesheet: CompileStylesheetMetadata): CompileStylesheetMetadata {
-    const moduleUrl = stylesheet.moduleUrl !;
-    const allStyleUrls = stylesheet.styleUrls.filter(isStyleUrlResolvable)
+    let moduleUrl = stylesheet.moduleUrl !;
+    let allStyleUrls = stylesheet.styleUrls.filter(isStyleUrlResolvable)
                              .map(url => this._urlResolver.resolve(moduleUrl, url));
 
-    const allStyles = stylesheet.styles.map(style => {
-      const styleWithImports = extractStyleUrls(this._urlResolver, moduleUrl, style);
+    let allStyles = stylesheet.styles.map(style => {
+      let styleWithImports = extractStyleUrls(this._urlResolver, moduleUrl, style);
       allStyleUrls.push(...styleWithImports.styleUrls);
       return styleWithImports.style;
     });
@@ -265,7 +265,7 @@ class TemplatePreparseVisitor implements html.Visitor {
   ngNonBindableStackCount: number = 0;
 
   visitElement(ast: html.Element, context: any): any {
-    const preparsedElement = preparseElement(ast);
+    let preparsedElement = preparseElement(ast);
     switch (preparsedElement.type) {
       case PreparsedElementType.NG_CONTENT:
         if (this.ngNonBindableStackCount === 0) {

@@ -19,18 +19,18 @@ import {main, readCommandLineAndConfiguration} from './main';
 
 export function mainXi18n(
     args: string[], consoleError: (msg: string) => void = console.error): number {
-  const config = readXi18nCommandLineAndConfiguration(args);
+  let config = readXi18nCommandLineAndConfiguration(args);
   return main(args, consoleError, config);
 }
 
 function readXi18nCommandLineAndConfiguration(args: string[]): ParsedConfiguration {
-  const options: api.CompilerOptions = {};
-  const parsedArgs = require('minimist')(args);
+  let options: api.CompilerOptions = {};
+  let parsedArgs = require('minimist')(args);
   if (parsedArgs.outFile) options.i18nOutFile = parsedArgs.outFile;
   if (parsedArgs.i18nFormat) options.i18nOutFormat = parsedArgs.i18nFormat;
   if (parsedArgs.locale) options.i18nOutLocale = parsedArgs.locale;
 
-  const config = readCommandLineAndConfiguration(args, options, [
+  let config = readCommandLineAndConfiguration(args, options, [
     'outFile',
     'i18nFormat',
     'locale',
@@ -41,6 +41,6 @@ function readXi18nCommandLineAndConfiguration(args: string[]): ParsedConfigurati
 
 // Entry point
 if (require.main === module) {
-  const args = process.argv.slice(2);
+  let args = process.argv.slice(2);
   process.exitCode = mainXi18n(args);
 }

@@ -8,17 +8,17 @@ describe('Deployment service', () => {
   describe('mode', () => {
     it('should get the mode from the environment', () => {
       environment.mode = 'foo';
-      const deployment = getInjector().get(Deployment);
+      let deployment = getInjector().get(Deployment);
       expect(deployment.mode).toEqual('foo');
     });
 
     it('should get the mode from the `mode` query parameter if available', () => {
-      const injector = getInjector();
+      let injector = getInjector();
 
-      const locationService: MockLocationService = injector.get(LocationService);
+      let locationService: MockLocationService = injector.get(LocationService);
       locationService.search.and.returnValue({ mode: 'bar' });
 
-      const deployment = injector.get(Deployment);
+      let deployment = injector.get(Deployment);
       expect(deployment.mode).toEqual('bar');
     });
   });

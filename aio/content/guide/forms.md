@@ -115,10 +115,10 @@ With this content:
 
 It's an anemic model with few requirements and no behavior. Perfect for the demo.
 
-The TypeScript compiler generates a public field for each `public` constructor parameter and
+The TypeScript compiler generates a public field for each `public` letructor parameter and
 automatically assigns the parameter’s value to that field when you create heroes.
 
-The `alterEgo` is optional, so the constructor lets you omit it; note the question mark (?) in `alterEgo?`.
+The `alterEgo` is optional, so the letructor lets you omit it; note the question mark (?) in `alterEgo?`.
 
 You can create a new hero like this:
 
@@ -603,7 +603,7 @@ The hero *Alter Ego* is optional so you can leave that be.
 
 Hero *Power* selection is required.
 You can add the same kind of error handling to the `<select>` if you want,
-but it's not imperative because the selection box already constrains the
+but it's not imperative because the selection box already letrains the
 power to valid values.
 
 Now you'll add a new hero in this form.

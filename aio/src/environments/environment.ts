@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 
-export const environment = {
+export let environment = {
   gaId: 'UA-8594346-26', // Development id
   production: false,
   mode: 'stable'

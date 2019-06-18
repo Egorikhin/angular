@@ -15,12 +15,12 @@ describe('Zippy Component', function() {
   afterEach(verifyNoBrowserErrors);
 
   describe('zippy', function() {
-    const URL = '/';
+    let URL = '/';
 
     beforeEach(function() { browser.get(URL); });
 
     it('should change the zippy title depending on it\'s state', function() {
-      const zippyTitle = element(by.css('.zippy__title'));
+      let zippyTitle = element(by.css('.zippy__title'));
 
       expect(zippyTitle.getText()).toEqual('▾ Details');
       zippyTitle.click();

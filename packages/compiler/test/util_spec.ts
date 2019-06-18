@@ -39,7 +39,7 @@ import {SyncAsync, escapeRegExp, splitAtColon, utf8Encode} from '../src/util';
     describe('utf8encode', () => {
       // tests from https://github.com/mathiasbynens/wtf-8
       it('should encode to utf8', () => {
-        const tests = [
+        let tests = [
           ['abc', 'abc'],
           // // 1-byte
           ['\0', '\0'],

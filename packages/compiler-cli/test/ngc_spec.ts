@@ -37,7 +37,7 @@ describe('ngc transformer command-line', () => {
 
   beforeEach(() => {
     errorSpy = jasmine.createSpy('consoleError').and.callFake(console.error);
-    const support = setup();
+    let support = setup();
     basePath = support.basePath;
     outDir = path.join(basePath, 'built');
     process.chdir(basePath);
@@ -65,9 +65,9 @@ describe('ngc transformer command-line', () => {
 
   it('should compile without errors', () => {
     writeConfig();
-    write('test.ts', 'export const A = 1;');
+    write('test.ts', 'export let A = 1;');
 
-    const exitCode = main(['-p', basePath], errorSpy);
+    let exitCode = main(['-p', basePath], errorSpy);
     expect(errorSpy).not.toHaveBeenCalled();
     expect(exitCode).toBe(0);
   });
@@ -85,7 +85,7 @@ describe('ngc transformer command-line', () => {
     // expected error diagnostic.
     errorSpy.and.stub();
 
-    const exitCode = main(['-p', basePath], errorSpy);
+    let exitCode = main(['-p', basePath], errorSpy);
     expect(errorSpy).toHaveBeenCalledWith(
         `test.ts(1,1): error TS1128: Declaration or statement expected.\r\n`);
     expect(exitCode).toBe(1);
@@ -101,7 +101,7 @@ describe('ngc transformer command-line', () => {
         "files": ["test.ts"]
       }`);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(errorSpy).toHaveBeenCalledWith(
           `error TS6053: File '` + path.posix.join(basePath, 'test.ts') + `' not found.` +
           '\n');
@@ -112,7 +112,7 @@ describe('ngc transformer command-line', () => {
       writeConfig();
       write('test.ts', 'foo;');
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(errorSpy).toHaveBeenCalledWith(
           `test.ts(1,1): error TS2304: Cannot find name 'foo'.` +
           '\n');
@@ -123,7 +123,7 @@ describe('ngc transformer command-line', () => {
       writeConfig();
       write('test.ts', `import {MyClass} from './not-exist-deps';`);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(errorSpy).toHaveBeenCalledWith(
           `test.ts(1,23): error TS2307: Cannot find module './not-exist-deps'.` +
           '\n');
@@ -132,10 +132,10 @@ describe('ngc transformer command-line', () => {
 
     it('should not print the stack trace if cannot import', () => {
       writeConfig();
-      write('empty-deps.ts', 'export const A = 1;');
+      write('empty-deps.ts', 'export let A = 1;');
       write('test.ts', `import {MyClass} from './empty-deps';`);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(errorSpy).toHaveBeenCalledWith(
           `test.ts(1,9): error TS2305: Module '"./empty-deps"' has no exported member 'MyClass'.\n`);
       expect(exitCode).toEqual(1);
@@ -143,13 +143,13 @@ describe('ngc transformer command-line', () => {
 
     it('should not print the stack trace if type mismatches', () => {
       writeConfig();
-      write('empty-deps.ts', 'export const A = "abc";');
+      write('empty-deps.ts', 'export let A = "abc";');
       write('test.ts', `
         import {A} from './empty-deps';
         A();
       `);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(errorSpy).toHaveBeenCalledWith(
           'test.ts(3,9): error TS2349: Cannot invoke an expression whose type lacks a call signature. ' +
           'Type \'String\' has no compatible call signatures.\n');
@@ -157,9 +157,9 @@ describe('ngc transformer command-line', () => {
     });
 
     it('should print the stack trace on compiler internal errors', () => {
-      write('test.ts', 'export const A = 1;');
+      write('test.ts', 'export let A = 1;');
 
-      const exitCode = main(['-p', 'not-exist'], errorSpy);
+      let exitCode = main(['-p', 'not-exist'], errorSpy);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy.calls.mostRecent().args[0]).toContain('no such file or directory');
       expect(errorSpy.calls.mostRecent().args[0]).toMatch(/at Object\.(fs\.)?lstatSync/);
@@ -181,7 +181,7 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
       `);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy.calls.mostRecent().args[0]).toContain('mymodule.ts.MyComp.html');
       expect(errorSpy.calls.mostRecent().args[0])
@@ -211,7 +211,7 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
       `);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy.calls.mostRecent().args[0]).toContain('my.component.html(1,5):');
       expect(errorSpy.calls.mostRecent().args[0])
@@ -238,7 +238,7 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
       `);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(exitCode).toEqual(0);
 
       expect(fs.existsSync(path.resolve(outDir, 'mymodule.ngfactory.js'))).toBe(true);
@@ -256,16 +256,16 @@ describe('ngc transformer command-line', () => {
         }`);
         write('mymodule.ts', contents);
 
-        const exitCode = main(['-p', basePath], errorSpy);
+        let exitCode = main(['-p', basePath], errorSpy);
         expect(exitCode).toEqual(0);
 
-        const modPath = path.resolve(outDir, 'mymodule.ngfactory.js');
+        let modPath = path.resolve(outDir, 'mymodule.ngfactory.js');
         expect(fs.existsSync(modPath)).toBe(true);
         return fs.readFileSync(modPath, {encoding: 'UTF-8'});
       }
 
       it('should be added', () => {
-        const contents = compileAndRead(`
+        let contents = compileAndRead(`
         import {CommonModule} from '@angular/common';
         import {NgModule} from '@angular/core';
 
@@ -280,7 +280,7 @@ describe('ngc transformer command-line', () => {
       });
 
       it('should be merged with existing fileoverview comments', () => {
-        const contents = compileAndRead(`/** Hello world. */
+        let contents = compileAndRead(`/** Hello world. */
 
         import {CommonModule} from '@angular/common';
         import {NgModule} from '@angular/core';
@@ -294,7 +294,7 @@ describe('ngc transformer command-line', () => {
       });
 
       it('should only pick file comments', () => {
-        const contents = compileAndRead(`
+        let contents = compileAndRead(`
           /** Comment on class. */
           class MyClass {
 
@@ -305,7 +305,7 @@ describe('ngc transformer command-line', () => {
       });
 
       it('should not be merged with @license comments', () => {
-        const contents = compileAndRead(`/** @license Some license. */
+        let contents = compileAndRead(`/** @license Some license. */
 
         import {CommonModule} from '@angular/common';
         import {NgModule} from '@angular/core';
@@ -320,7 +320,7 @@ describe('ngc transformer command-line', () => {
       });
 
       it('should be included in empty files', () => {
-        const contents = compileAndRead(`/** My comment. */
+        let contents = compileAndRead(`/** My comment. */
 
         import {Inject, Injectable, Optional} from '@angular/core';
 
@@ -346,7 +346,7 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
       `);
 
-      const exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
+      let exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
       expect(exitCode).toEqual(0);
       expect(fs.existsSync(path.resolve(outDir, 'mymodule.ngfactory.js'))).toBe(true);
       expect(fs.existsSync(
@@ -355,7 +355,7 @@ describe('ngc transformer command-line', () => {
     });
 
     describe(`emit generated files depending on the source file`, () => {
-      const modules = ['comp', 'directive', 'module'];
+      let modules = ['comp', 'directive', 'module'];
       beforeEach(() => {
         write('src/comp.ts', `
               import {Component, ViewEncapsulation} from '@angular/core';
@@ -450,7 +450,7 @@ describe('ngc transformer command-line', () => {
             },
             "include": ["src/**/*.ts"]
           }`);
-        const exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
+        let exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
         expect(exitCode).toEqual(0);
         outDir = path.resolve(basePath, 'built', 'src');
         expectJsDtsMetadataJsonToExist();
@@ -465,7 +465,7 @@ describe('ngc transformer command-line', () => {
             },
             "include": ["src/**/*.ts"]
           }`);
-        const exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
+        let exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
         expect(exitCode).toEqual(0);
         outDir = path.resolve(basePath, 'built', 'src');
         expectJsDtsMetadataJsonToExist();
@@ -540,11 +540,11 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
       `);
 
-        const exitCode = main(['-p', basePath], errorSpy);
+        let exitCode = main(['-p', basePath], errorSpy);
         expect(exitCode).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).not.toContain('@fileoverview added by tsickle');
         expect(mymoduleSource).toContain('MyComp = __decorate');
         expect(mymoduleSource).not.toContain('MyComp.decorators = [');
@@ -570,11 +570,11 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
       `);
 
-        const exitCode = main(['-p', basePath], errorSpy);
+        let exitCode = main(['-p', basePath], errorSpy);
         expect(exitCode).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('@fileoverview added by tsickle');
         expect(mymoduleSource).toContain('@param {?} p');
       });
@@ -597,15 +597,15 @@ describe('ngc transformer command-line', () => {
 
           @NgModule({declarations: []})
           export class MyModule {
-            constructor(importedClass: AClass) {}
+            letructor(importedClass: AClass) {}
           }
         `);
 
-        const exitCode = main(['-p', basePath], errorSpy);
+        let exitCode = main(['-p', basePath], errorSpy);
         expect(exitCode).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('MyModule = __decorate([');
         expect(mymoduleSource).toContain(`import { AClass } from './aclass';`);
         expect(mymoduleSource).toContain(`__metadata("design:paramtypes", [AClass])`);
@@ -631,15 +631,15 @@ describe('ngc transformer command-line', () => {
 
           @NgModule({declarations: []})
           export class MyModule {
-            constructor(importedClass: AClass) {}
+            letructor(importedClass: AClass) {}
           }
         `);
 
-        const exitCode = main(['-p', basePath], errorSpy);
+        let exitCode = main(['-p', basePath], errorSpy);
         expect(exitCode).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).not.toContain('__decorate');
         expect(mymoduleSource).toContain('args: [{ declarations: [] },] }');
         expect(mymoduleSource).not.toContain(`__metadata`);
@@ -663,7 +663,7 @@ describe('ngc transformer command-line', () => {
       }`);
       write('src/test.txt', ' ');
       write('src/submodule/public_api.ts', `
-        export const A = 1;
+        export let A = 1;
       `);
       write('mymodule.ts', `
         import {NgModule, Component} from '@angular/core';
@@ -678,10 +678,10 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
     `);
 
-      const exitCode = main(['-p', basePath], errorSpy);
+      let exitCode = main(['-p', basePath], errorSpy);
       expect(exitCode).toEqual(0);
-      const mymodulejs = path.resolve(outDir, 'mymodule.js');
-      const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+      let mymodulejs = path.resolve(outDir, 'mymodule.js');
+      let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
       expect(mymoduleSource).toContain(`import { A } from 'submodule'`);
     });
 
@@ -695,7 +695,7 @@ describe('ngc transformer command-line', () => {
 
       function compile(): number {
         errorSpy.calls.reset();
-        const result = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
+        let result = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
         expect(errorSpy).not.toHaveBeenCalled();
         return result;
       }
@@ -715,13 +715,13 @@ describe('ngc transformer command-line', () => {
         `);
         expect(compile()).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('var ɵ0 = function () { return new Foo(); }');
         expect(mymoduleSource).toContain('export { ɵ0');
 
-        const mymodulefactory = path.resolve(outDir, 'mymodule.ngfactory.js');
-        const mymodulefactorySource = fs.readFileSync(mymodulefactory, 'utf8');
+        let mymodulefactory = path.resolve(outDir, 'mymodule.ngfactory.js');
+        let mymodulefactorySource = fs.readFileSync(mymodulefactory, 'utf8');
         expect(mymodulefactorySource).toContain('"someToken", i1.ɵ0');
       });
 
@@ -740,13 +740,13 @@ describe('ngc transformer command-line', () => {
         `);
         expect(compile()).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('var ɵ0 = function () { return new Foo(); }');
         expect(mymoduleSource).toContain('export { ɵ0');
 
-        const mymodulefactory = path.resolve(outDir, 'mymodule.ngfactory.js');
-        const mymodulefactorySource = fs.readFileSync(mymodulefactory, 'utf8');
+        let mymodulefactory = path.resolve(outDir, 'mymodule.ngfactory.js');
+        let mymodulefactorySource = fs.readFileSync(mymodulefactory, 'utf8');
         expect(mymodulefactorySource).toContain('"someToken", i1.ɵ0');
       });
 
@@ -769,8 +769,8 @@ describe('ngc transformer command-line', () => {
           export class MyModule {}
         `);
         expect(compile()).toEqual(0);
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('ɵ0 = function () { return new Foo(); }');
         expect(mymoduleSource).toContain('ɵ1 = function () { return new Foo(); }');
         expect(mymoduleSource).toContain('ɵ2 = function () { return new Foo(); }');
@@ -785,7 +785,7 @@ describe('ngc transformer command-line', () => {
 
           class Foo {}
 
-          const factory = () => new Foo();
+          let factory = () => new Foo();
 
           @NgModule({
             imports: [CommonModule],
@@ -795,8 +795,8 @@ describe('ngc transformer command-line', () => {
         `);
         expect(compile()).toEqual(0, 'Compile failed');
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('var factory = function () { return new Foo(); }');
         expect(mymoduleSource).toContain('var ɵ0 = factory;');
         expect(mymoduleSource).toContain('export { ɵ0 };');
@@ -809,7 +809,7 @@ describe('ngc transformer command-line', () => {
 
           export class Foo {}
 
-          export const factory = () => new Foo();
+          export let factory = () => new Foo();
 
           @NgModule({
             imports: [CommonModule],
@@ -819,8 +819,8 @@ describe('ngc transformer command-line', () => {
         `);
         expect(compile()).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).not.toContain('ɵ0');
       });
 
@@ -835,8 +835,8 @@ describe('ngc transformer command-line', () => {
         `);
         expect(compile()).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('id: ɵ0');
         expect(mymoduleSource).toMatch(/ɵ0 = .*'test'/);
       });
@@ -869,8 +869,8 @@ describe('ngc transformer command-line', () => {
         `);
         expect(compile()).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('loadChildren: ɵ0');
         expect(mymoduleSource).toMatch(/ɵ0 = .*foo\(\)/);
       });
@@ -891,7 +891,7 @@ describe('ngc transformer command-line', () => {
           })
           export class Route {}
 
-          export const routes = [
+          export let routes = [
             {path: '', pathMatch: 'full', component: Route, loadChildren: foo()}
           ];
 
@@ -905,8 +905,8 @@ describe('ngc transformer command-line', () => {
         `);
         expect(compile()).toEqual(0);
 
-        const mymodulejs = path.resolve(outDir, 'mymodule.js');
-        const mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
+        let mymodulejs = path.resolve(outDir, 'mymodule.js');
+        let mymoduleSource = fs.readFileSync(mymodulejs, 'utf8');
         expect(mymoduleSource).toContain('loadChildren: ɵ0');
         expect(mymoduleSource).toMatch(/ɵ0 = .*foo\(\)/);
       });
@@ -925,10 +925,10 @@ describe('ngc transformer command-line', () => {
             data: string;
           }
 
-          export const T1 = new InjectionToken<string>('t1');
-          export const T2 = new InjectionToken<string>('t2');
-          export const T3 = new InjectionToken<number>('t3');
-          export const T4 = new InjectionToken<Info[]>('t4');
+          export let T1 = new InjectionToken<string>('t1');
+          export let T2 = new InjectionToken<string>('t2');
+          export let T3 = new InjectionToken<number>('t3');
+          export let T4 = new InjectionToken<Info[]>('t4');
 
           enum SomeEnum {
             OK,
@@ -939,7 +939,7 @@ describe('ngc transformer command-line', () => {
             return 'someValue';
           }
 
-          const routeLikeData = [{
+          let routeLikeData = [{
              route: '/home',
              data: calculateString()
           }];
@@ -964,7 +964,7 @@ describe('ngc transformer command-line', () => {
             template: ''
           })
           export class AppComponent {
-            constructor(
+            letructor(
               @Inject(m.T1) private t1: string,
               @Inject(m.T2) private t2: string,
               @Inject(m.T3) private t3: number,
@@ -989,20 +989,20 @@ describe('ngc transformer command-line', () => {
         `);
         write('util.ts', `
           // Note: The lambda will be lowered into an exported expression
-          const x = () => 2;
+          let x = () => 2;
 
-          export const y = x;
+          export let y = x;
         `);
 
         expect(compile()).toEqual(0);
 
-        const mymoduleSource = fs.readFileSync(path.resolve(outDir, 'mymodule.js'), 'utf8');
+        let mymoduleSource = fs.readFileSync(path.resolve(outDir, 'mymodule.js'), 'utf8');
         expect(mymoduleSource).toContain('ɵ0');
 
-        const utilSource = fs.readFileSync(path.resolve(outDir, 'util.js'), 'utf8');
+        let utilSource = fs.readFileSync(path.resolve(outDir, 'util.js'), 'utf8');
         expect(utilSource).toContain('ɵ0');
 
-        const mymoduleNgFactoryJs =
+        let mymoduleNgFactoryJs =
             fs.readFileSync(path.resolve(outDir, 'mymodule.ngfactory.js'), 'utf8');
         // check that the generated code refers to ɵ0 from mymodule, and not from util!
         expect(mymoduleNgFactoryJs).toContain(`import * as i1 from "./mymodule"`);
@@ -1056,7 +1056,7 @@ describe('ngc transformer command-line', () => {
     it('should be able to generate a flat module library', () => {
       writeFlatModule('index.js');
 
-      const exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
+      let exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
       expect(exitCode).toEqual(0);
       shouldExist('index.js');
       shouldExist('index.metadata.json');
@@ -1065,13 +1065,13 @@ describe('ngc transformer command-line', () => {
     it('should downlevel templates in flat module metadata', () => {
       writeFlatModule('index.js');
 
-      const exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
+      let exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
       expect(exitCode).toEqual(0);
       shouldExist('index.js');
       shouldExist('index.metadata.json');
 
-      const metadataPath = path.resolve(outDir, 'index.metadata.json');
-      const metadataSource = fs.readFileSync(metadataPath, 'utf8');
+      let metadataPath = path.resolve(outDir, 'index.metadata.json');
+      let metadataSource = fs.readFileSync(metadataPath, 'utf8');
       expect(metadataSource).not.toContain('templateUrl');
       expect(metadataSource).toContain('<div>flat module component</div>');
     });
@@ -1180,7 +1180,7 @@ describe('ngc transformer command-line', () => {
         write('lib2/class2.ts', `
           import {Class1} from 'lib1_built/class1';
           export class Class2 {
-            constructor(class1: Class1) {}
+            letructor(class1: Class1) {}
           }
         `);
 
@@ -1204,7 +1204,7 @@ describe('ngc transformer command-line', () => {
             imports: [Module]
           })
           export class AppModule {
-            constructor(@Inject('foo') public foo: any) {}
+            letructor(@Inject('foo') public foo: any) {}
           }
         `);
 
@@ -1258,7 +1258,7 @@ describe('ngc transformer command-line', () => {
 
           @Injectable({providedIn: 'root'})
           export class MyService {
-            constructor(public ngZone: NgZone) {}
+            letructor(public ngZone: NgZone) {}
           }
         `);
 
@@ -1270,8 +1270,8 @@ describe('ngc transformer command-line', () => {
         shouldExist('test.ngfactory.js');
         shouldExist('test.ngfactory.d.ts');
 
-        const summaryJson = require(path.join(outDir, 'test.ngsummary.json'));
-        const factoryOutput = fs.readFileSync(path.join(outDir, 'test.ngfactory.js'), 'utf8');
+        let summaryJson = require(path.join(outDir, 'test.ngsummary.json'));
+        let factoryOutput = fs.readFileSync(path.join(outDir, 'test.ngfactory.js'), 'utf8');
 
         expect(summaryJson['symbols'][0].name).toBe('MyService');
         expect(summaryJson['symbols'][1])
@@ -1323,7 +1323,7 @@ describe('ngc transformer command-line', () => {
         import {Class1} from 'lib1_built/class1';
 
         export class Class2 {
-          constructor(class1: Class1) {}
+          letructor(class1: Class1) {}
         }
       `);
 
@@ -1347,7 +1347,7 @@ describe('ngc transformer command-line', () => {
           imports: [Module]
         })
         export class AppModule {
-          constructor(@Inject('foo') public foo: any) {}
+          letructor(@Inject('foo') public foo: any) {}
         }
       `);
 
@@ -1421,16 +1421,16 @@ describe('ngc transformer command-line', () => {
         export class MyModule {}
       `);
 
-        const exitCode = main(['-p', basePath]);
+        let exitCode = main(['-p', basePath]);
         expect(exitCode).toEqual(0);
         outDir = path.resolve(basePath, 'built');
-        const outputJs = fs.readFileSync(path.join(outDir, 'my.component.js'), {encoding: 'utf-8'});
+        let outputJs = fs.readFileSync(path.join(outDir, 'my.component.js'), {encoding: 'utf-8'});
         expect(outputJs).not.toContain('templateUrl');
         expect(outputJs).not.toContain('styleUrls');
         expect(outputJs).toContain('Some template content');
         expect(outputJs).toContain('color: blue');
 
-        const outputMetadata =
+        let outputMetadata =
             fs.readFileSync(path.join(outDir, 'my.component.metadata.json'), {encoding: 'utf-8'});
         expect(outputMetadata).not.toContain('templateUrl');
         expect(outputMetadata).not.toContain('styleUrls');
@@ -1442,7 +1442,7 @@ describe('ngc transformer command-line', () => {
 
 
   describe('expression lowering', () => {
-    const shouldExist = (fileName: string) => {
+    let shouldExist = (fileName: string) => {
       if (!fs.existsSync(path.resolve(basePath, fileName))) {
         throw new Error(`Expected ${fileName} to be emitted (basePath: ${basePath})`);
       }
@@ -1462,10 +1462,10 @@ describe('ngc transformer command-line', () => {
           data: string;
         }
 
-        export const T1 = new InjectionToken<string>('t1');
-        export const T2 = new InjectionToken<string>('t2');
-        export const T3 = new InjectionToken<number>('t3');
-        export const T4 = new InjectionToken<Info[]>('t4');
+        export let T1 = new InjectionToken<string>('t1');
+        export let T2 = new InjectionToken<string>('t2');
+        export let T3 = new InjectionToken<number>('t3');
+        export let T4 = new InjectionToken<Info[]>('t4');
 
         enum SomeEnum {
           OK,
@@ -1476,7 +1476,7 @@ describe('ngc transformer command-line', () => {
           return 'someValue';
         }
 
-        const routeLikeData = [{
+        let routeLikeData = [{
            route: '/home',
            data: calculateString()
         }];
@@ -1501,7 +1501,7 @@ describe('ngc transformer command-line', () => {
           template: ''
         })
         export class AppComponent {
-          constructor(
+          letructor(
             @Inject(m.T1) private t1: string,
             @Inject(m.T2) private t2: string,
             @Inject(m.T3) private t3: number,
@@ -1521,9 +1521,9 @@ describe('ngc transformer command-line', () => {
     let originalTimeout: number;
 
     function trigger() {
-      const delay = 1000;
+      let delay = 1000;
       setTimeout(() => {
-        const t = timer;
+        let t = timer;
         timer = undefined;
         if (!t) {
           fail('Unexpected state. Timer was not set.');
@@ -1549,7 +1549,7 @@ describe('ngc transformer command-line', () => {
     beforeEach(() => {
       originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-      const timerToken = 100;
+      let timerToken = 100;
       spyOn(ts.sys, 'setTimeout').and.callFake((callback: () => void) => {
         timer = callback;
         return timerToken;
@@ -1589,7 +1589,7 @@ describe('ngc transformer command-line', () => {
         })
         export class App {
           name:string;
-          constructor() {
+          letructor() {
             this.name = \`Angular!\`
           }
         }`);
@@ -1620,8 +1620,8 @@ describe('ngc transformer command-line', () => {
     function expectRecompile(cb: () => void) {
       return (done: DoneFn) => {
         writeAppConfig('dist');
-        const config = readCommandLineAndConfiguration(['-p', basePath]);
-        const compile = watchMode(config.project, config.options, errorSpy);
+        let config = readCommandLineAndConfiguration(['-p', basePath]);
+        let compile = watchMode(config.project, config.options, errorSpy);
 
         return new Promise(resolve => {
           compile.ready(() => {
@@ -1719,8 +1719,8 @@ describe('ngc transformer command-line', () => {
         @Injectable()
         export class TestModule {}
       `);
-      const messages: string[] = [];
-      const exitCode =
+      let messages: string[] = [];
+      let exitCode =
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message));
       expect(exitCode).toBe(0, 'Compile failed unexpectedly.\n  ' + messages.join('\n  '));
     });
@@ -1759,8 +1759,8 @@ describe('ngc transformer command-line', () => {
         @NgModule({declarations: [TestComponent]})
         export class TestModule {}
       `);
-      const messages: string[] = [];
-      const exitCode =
+      let messages: string[] = [];
+      let exitCode =
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message));
       expect(exitCode).toBe(0, 'Compile failed unexpectedly.\n  ' + messages.join('\n  '));
     });
@@ -1772,11 +1772,11 @@ describe('ngc transformer command-line', () => {
       }`);
       write('src/lib/indirect2.ts', `
         declare var f: any;
-        export const t2 = f\`<p>hello</p>\`;
+        export let t2 = f\`<p>hello</p>\`;
       `);
       write('src/lib/indirect1.ts', `
         import {t2} from './indirect2';
-        export const t1 = t2 + ' ';
+        export let t1 = t2 + ' ';
       `);
       write('src/lib/test.component.ts', `
         import {Component} from '@angular/core';
@@ -1794,8 +1794,8 @@ describe('ngc transformer command-line', () => {
         @NgModule({declarations: [TestComponent]})
         export class TestModule {}
       `);
-      const messages: string[] = [];
-      const exitCode =
+      let messages: string[] = [];
+      let exitCode =
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message));
       expect(exitCode).toBe(1, 'Compile was expected to fail');
       expect(messages[0]).toContain('Tagged template expressions are not supported in metadata');
@@ -1824,8 +1824,8 @@ describe('ngc transformer command-line', () => {
         @NgModule({declarations: [TestComponent]})
         export class TestModule {}
       `);
-      const messages: string[] = [];
-      const exitCode =
+      let messages: string[] = [];
+      let exitCode =
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message));
       expect(exitCode).toBe(1, 'Compile was expected to fail');
       expect(messages[0]).toContain('Parser Error: Unexpected token');
@@ -1853,7 +1853,7 @@ describe('ngc transformer command-line', () => {
         })
         export class MyFaultyModule { }
       `);
-      const messages: string[] = [];
+      let messages: string[] = [];
       expect(
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message)))
           .toBe(1, 'Compile was expected to fail');
@@ -1886,7 +1886,7 @@ describe('ngc transformer command-line', () => {
         })
         export class MyFaultyModule { }
       `);
-      const messages: string[] = [];
+      let messages: string[] = [];
       expect(
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message)))
           .toBe(1, 'Compile was expected to fail');
@@ -1921,7 +1921,7 @@ describe('ngc transformer command-line', () => {
         @NgModule({declarations: [TestComponent]})
         export class TestModule {}
       `);
-      const messages: string[] = [];
+      let messages: string[] = [];
       expect(
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message)))
           .toBe(0, `Compile failed:\n ${messages.join('\n    ')}`);
@@ -2001,11 +2001,11 @@ describe('ngc transformer command-line', () => {
       write('src/lib/indirect2.ts', `
         declare var f: any;
 
-        export const t2 = f\`<p>hello</p>\`;
+        export let t2 = f\`<p>hello</p>\`;
       `);
       write('src/lib/indirect1.ts', `
         import {t2} from './indirect2';
-        export const t1 = t2 + ' ';
+        export let t1 = t2 + ' ';
       `);
       write('src/lib/test.component.ts', `
         import {Component} from '@angular/core';
@@ -2024,11 +2024,11 @@ describe('ngc transformer command-line', () => {
         @NgModule({declarations: [TestComponent]})
         export class TestModule {}
       `);
-      const messages: string[] = [];
-      const exitCode =
+      let messages: string[] = [];
+      let exitCode =
           main(['-p', path.join(basePath, 'src/tsconfig.json')], message => messages.push(message));
       expect(exitCode).toBe(1, 'Compile was expected to fail');
-      const srcPathWithSep = `lib${path.sep}`;
+      let srcPathWithSep = `lib${path.sep}`;
       expect(messages[0])
           .toEqual(
               `${srcPathWithSep}test.component.ts(6,21): Error during template compile of 'TestComponent'
@@ -2044,10 +2044,10 @@ describe('ngc transformer command-line', () => {
     function compileService(source: string): string {
       write('service.ts', source);
 
-      const exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
+      let exitCode = main(['-p', path.join(basePath, 'tsconfig.json')], errorSpy);
       expect(exitCode).toEqual(0);
 
-      const servicePath = path.resolve(outDir, 'service.js');
+      let servicePath = path.resolve(outDir, 'service.js');
       return fs.readFileSync(servicePath, 'utf8');
     }
 
@@ -2066,12 +2066,12 @@ describe('ngc transformer command-line', () => {
 
     describe(`doesn't break existing injectables`, () => {
       it('on simple services', () => {
-        const source = compileService(`
+        let source = compileService(`
         import {Injectable, NgModule} from '@angular/core';
 
         @Injectable()
         export class Service {
-          constructor(public param: string) {}
+          letructor(public param: string) {}
         }
 
         @NgModule({
@@ -2082,14 +2082,14 @@ describe('ngc transformer command-line', () => {
         expect(source).not.toMatch(/ngInjectableDef/);
       });
       it('on a service with a base class service', () => {
-        const source = compileService(`
+        let source = compileService(`
         import {Injectable, NgModule} from '@angular/core';
 
         @Injectable()
         export class Dep {}
 
         export class Base {
-          constructor(private dep: Dep) {}
+          letructor(private dep: Dep) {}
         }
         @Injectable()
         export class Service extends Base {}
@@ -2104,7 +2104,7 @@ describe('ngc transformer command-line', () => {
     });
 
     it('compiles a basic InjectableDef', () => {
-      const source = compileService(`
+      let source = compileService(`
         import {Injectable} from '@angular/core';
         import {Module} from './module';
 
@@ -2127,7 +2127,7 @@ describe('ngc transformer command-line', () => {
         },
         "files": ["service.ts"]
       }`);
-         const source = compileService(`
+         let source = compileService(`
         import {Injectable} from '@angular/core';
         import {Module} from './module';
 
@@ -2140,23 +2140,23 @@ describe('ngc transformer command-line', () => {
        });
 
     it('compiles a useValue InjectableDef', () => {
-      const source = compileService(`
+      let source = compileService(`
         import {Injectable} from '@angular/core';
         import {Module} from './module';
 
-        export const CONST_SERVICE: Service = null;
+        export let let_SERVICE: Service = null;
 
         @Injectable({
           providedIn: Module,
-          useValue: CONST_SERVICE
+          useValue: let_SERVICE
         })
         export class Service {}
       `);
-      expect(source).toMatch(/ngInjectableDef.*return CONST_SERVICE/);
+      expect(source).toMatch(/ngInjectableDef.*return let_SERVICE/);
     });
 
     it('compiles a useExisting InjectableDef', () => {
-      const source = compileService(`
+      let source = compileService(`
         import {Injectable} from '@angular/core';
         import {Module} from './module';
 
@@ -2173,7 +2173,7 @@ describe('ngc transformer command-line', () => {
     });
 
     it('compiles a useFactory InjectableDef with optional dep', () => {
-      const source = compileService(`
+      let source = compileService(`
         import {Injectable, Optional} from '@angular/core';
         import {Module} from './module';
 
@@ -2186,14 +2186,14 @@ describe('ngc transformer command-line', () => {
           deps: [[new Optional(), Existing]],
         })
         export class Service {
-          constructor(e: Existing|null) {}
+          letructor(e: Existing|null) {}
         }
       `);
       expect(source).toMatch(/ngInjectableDef.*return ..\(..\.ɵɵinject\(Existing, 8\)/);
     });
 
     it('compiles a useFactory InjectableDef with skip-self dep', () => {
-      const source = compileService(`
+      let source = compileService(`
         import {Injectable, SkipSelf} from '@angular/core';
         import {Module} from './module';
 
@@ -2206,24 +2206,24 @@ describe('ngc transformer command-line', () => {
           deps: [[new SkipSelf(), Existing]],
         })
         export class Service {
-          constructor(e: Existing) {}
+          letructor(e: Existing) {}
         }
       `);
       expect(source).toMatch(/ngInjectableDef.*return ..\(..\.ɵɵinject\(Existing, 4\)/);
     });
 
     it('compiles a service that depends on a token', () => {
-      const source = compileService(`
+      let source = compileService(`
         import {Inject, Injectable, InjectionToken} from '@angular/core';
         import {Module} from './module';
 
-        export const TOKEN = new InjectionToken('desc', {providedIn: Module, factory: () => true});
+        export let TOKEN = new InjectionToken('desc', {providedIn: Module, factory: () => true});
 
         @Injectable({
           providedIn: Module,
         })
         export class Service {
-          constructor(@Inject(TOKEN) value: boolean) {}
+          letructor(@Inject(TOKEN) value: boolean) {}
         }
       `);
       expect(source).toMatch(/ngInjectableDef = .+\.ɵɵdefineInjectable\(/);
@@ -2239,18 +2239,18 @@ describe('ngc transformer command-line', () => {
         },
         "files": ["service.ts"]
       }`);
-      const source = compileService(`
+      let source = compileService(`
         import {Inject, Injectable, InjectionToken} from '@angular/core';
         import {Module} from './module';
 
-        export const TOKEN = new InjectionToken<string>('test token', {
+        export let TOKEN = new InjectionToken<string>('test token', {
           providedIn: 'root',
           factory: () => 'this is a test',
         });
 
         @Injectable({providedIn: 'root'})
         export class Service {
-          constructor(@Inject(TOKEN) token: any) {}
+          letructor(@Inject(TOKEN) token: any) {}
         }
       `);
       expect(source).toMatch(/new Service\(i0\.ɵɵinject\(exports\.TOKEN\)\);/);
@@ -2273,7 +2273,7 @@ describe('ngc transformer command-line', () => {
       }`);
     write('main.ts', `
         import {Test} from './test';
-        export const bar = Test.bar;
+        export let bar = Test.bar;
     `);
     write('test.d.ts', `
         declare export class Test {

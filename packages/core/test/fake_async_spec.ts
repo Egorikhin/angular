@@ -11,8 +11,8 @@ import {Log, beforeEach, describe, inject, it} from '@angular/core/testing/src/t
 import {EventManager} from '@angular/platform-browser';
 import {expect} from '@angular/platform-browser/testing/src/matchers';
 
-const resolvedPromise = Promise.resolve(null);
-const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'];
+let resolvedPromise = Promise.resolve(null);
+let ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'];
 
 {
   describe('fake async', () => {
@@ -65,7 +65,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
          }));
 
       it('should run chained thens', fakeAsync(() => {
-           const log = new Log();
+           let log = new Log();
 
            resolvedPromise.then((_) => log.add(1)).then((_) => log.add(2));
 
@@ -76,7 +76,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
          }));
 
       it('should run Promise created in Promise', fakeAsync(() => {
-           const log = new Log();
+           let log = new Log();
 
            resolvedPromise.then((_) => {
              log.add(1);
@@ -143,7 +143,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
 
       it('should not run cancelled timer', fakeAsync(() => {
            let ran = false;
-           const id = setTimeout(() => { ran = true; }, 10);
+           let id = setTimeout(() => { ran = true; }, 10);
            clearTimeout(id);
 
            tick(10);
@@ -164,7 +164,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
 
       it('should run periodic timers', fakeAsync(() => {
            let cycles = 0;
-           const id = setInterval(() => { cycles++; }, 10);
+           let id = setInterval(() => { cycles++; }, 10);
 
            tick(10);
            expect(cycles).toEqual(1);
@@ -179,7 +179,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
 
       it('should not run cancelled periodic timer', fakeAsync(() => {
            let ran = false;
-           const id = setInterval(() => { ran = true; }, 10);
+           let id = setInterval(() => { ran = true; }, 10);
            clearInterval(id);
 
            tick(10);
@@ -204,7 +204,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
 
       it('should clear periodic timers', fakeAsync(() => {
            let cycles = 0;
-           const id = setInterval(() => { cycles++; }, 10);
+           let id = setInterval(() => { cycles++; }, 10);
 
            tick(10);
            expect(cycles).toEqual(1);
@@ -221,13 +221,13 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
          }));
 
       it('should process microtasks before timers', fakeAsync(() => {
-           const log = new Log();
+           let log = new Log();
 
            resolvedPromise.then((_) => log.add('microtask'));
 
            setTimeout(() => log.add('timer'), 9);
 
-           const id = setInterval(() => log.add('periodic timer'), 10);
+           let id = setInterval(() => log.add('periodic timer'), 10);
 
            expect(log.result()).toEqual('');
 
@@ -237,7 +237,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
          }));
 
       it('should process micro-tasks created in timers before next timers', fakeAsync(() => {
-           const log = new Log();
+           let log = new Log();
 
            resolvedPromise.then((_) => log.add('microtask'));
 
@@ -246,7 +246,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
              resolvedPromise.then((_) => log.add('t microtask'));
            }, 9);
 
-           const id = setInterval(() => {
+           let id = setInterval(() => {
              log.add('periodic timer');
              resolvedPromise.then((_) => log.add('pt microtask'));
            }, 10);
@@ -345,7 +345,7 @@ const ProxyZoneSpec: {assertPresent: () => void} = (Zone as any)['ProxyZoneSpec'
     it('should allow fakeAsync zone to retroactively set a zoneSpec outside of fakeAsync', () => {
       ProxyZoneSpec.assertPresent();
       let state: string = 'not run';
-      const testZone = Zone.current.fork({name: 'test-zone'});
+      let testZone = Zone.current.fork({name: 'test-zone'});
       (fakeAsync(() => {
         testZone.run(() => {
           Promise.resolve('works').then((v) => state = v);

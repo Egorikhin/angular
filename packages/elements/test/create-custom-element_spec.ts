@@ -12,7 +12,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {browserDetection} from '@angular/platform-browser/testing/src/browser_util';
 import {Subject} from 'rxjs';
 
-import {NgElementConstructor, createCustomElement} from '../src/create-custom-element';
+import {NgElementletructor, createCustomElement} from '../src/create-custom-element';
 import {NgElementStrategy, NgElementStrategyEvent, NgElementStrategyFactory} from '../src/element-strategy';
 
 type WithFooBar = {
@@ -22,7 +22,7 @@ type WithFooBar = {
 
 if (browserDetection.supportsCustomElements) {
   describe('createCustomElement', () => {
-    let NgElementCtor: NgElementConstructor<WithFooBar>;
+    let NgElementCtor: NgElementletructor<WithFooBar>;
     let strategy: TestStrategy;
     let strategyFactory: TestStrategyFactory;
     let injector: Injector;
@@ -52,7 +52,7 @@ if (browserDetection.supportsCustomElements) {
     });
 
     it('should send input values from attributes when connected', () => {
-      const element = new NgElementCtor(injector);
+      let element = new NgElementCtor(injector);
       element.setAttribute('foo-foo', 'value-foo-foo');
       element.setAttribute('barbar', 'value-barbar');
       element.connectedCallback();
@@ -63,7 +63,7 @@ if (browserDetection.supportsCustomElements) {
     });
 
     it('should listen to output events after connected', () => {
-      const element = new NgElementCtor(injector);
+      let element = new NgElementCtor(injector);
       element.connectedCallback();
 
       let eventValue: any = null;
@@ -74,7 +74,7 @@ if (browserDetection.supportsCustomElements) {
     });
 
     it('should not listen to output events after disconnected', () => {
-      const element = new NgElementCtor(injector);
+      let element = new NgElementCtor(injector);
       element.connectedCallback();
       element.disconnectedCallback();
       expect(strategy.disconnectCalled).toBe(true);
@@ -87,7 +87,7 @@ if (browserDetection.supportsCustomElements) {
     });
 
     it('should properly set getters/setters on the element', () => {
-      const element = new NgElementCtor(injector);
+      let element = new NgElementCtor(injector);
       element.fooFoo = 'foo-foo-value';
       element.barBar = 'barBar-value';
 

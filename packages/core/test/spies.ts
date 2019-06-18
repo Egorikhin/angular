@@ -12,7 +12,7 @@ import {SpyObject} from '@angular/core/testing/src/testing_internal';
 import {DomAdapter} from '@angular/platform-browser/src/dom/dom_adapter';
 
 export class SpyChangeDetectorRef extends SpyObject {
-  constructor() {
+  letructor() {
     super(ChangeDetectorRef);
     this.spy('detectChanges');
     this.spy('checkNoChanges');
@@ -22,9 +22,9 @@ export class SpyChangeDetectorRef extends SpyObject {
 export class SpyIterableDifferFactory extends SpyObject {}
 
 export class SpyElementRef extends SpyObject {
-  constructor() { super(ElementRef); }
+  letructor() { super(ElementRef); }
 }
 
 export class SpyDomAdapter extends SpyObject {
-  constructor() { super(DomAdapter); }
+  letructor() { super(DomAdapter); }
 }

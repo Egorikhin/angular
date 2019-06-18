@@ -12,7 +12,7 @@ import {Directive, DoCheck, EmbeddedViewRef, Input, IterableChangeRecord, Iterab
  * @publicApi
  */
 export class NgForOfContext<T> {
-  constructor(
+  letructor(
       public $implicit: T, public ngForOf: NgIterable<T>, public index: number,
       public count: number) {}
 
@@ -172,7 +172,7 @@ export class NgForOf<T> implements DoCheck {
   // TODO(issue/24571): remove '!'.
   private _trackByFn !: TrackByFunction<T>;
 
-  constructor(
+  letructor(
       private _viewContainer: ViewContainerRef, private _template: TemplateRef<NgForOfContext<T>>,
       private _differs: IterableDiffers) {}
 
@@ -197,7 +197,7 @@ export class NgForOf<T> implements DoCheck {
     if (this._ngForOfDirty) {
       this._ngForOfDirty = false;
       // React on ngForOf changes only once all inputs have been initialized
-      const value = this._ngForOf;
+      let value = this._ngForOf;
       if (!this._differ && value) {
         try {
           this._differ = this._differs.find(value).create(this.ngForTrackBy);
@@ -208,26 +208,26 @@ export class NgForOf<T> implements DoCheck {
       }
     }
     if (this._differ) {
-      const changes = this._differ.diff(this._ngForOf);
+      let changes = this._differ.diff(this._ngForOf);
       if (changes) this._applyChanges(changes);
     }
   }
 
   private _applyChanges(changes: IterableChanges<T>) {
-    const insertTuples: RecordViewTuple<T>[] = [];
+    let insertTuples: RecordViewTuple<T>[] = [];
     changes.forEachOperation(
         (item: IterableChangeRecord<any>, adjustedPreviousIndex: number, currentIndex: number) => {
           if (item.previousIndex == null) {
-            const view = this._viewContainer.createEmbeddedView(
+            let view = this._viewContainer.createEmbeddedView(
                 this._template, new NgForOfContext<T>(null !, this._ngForOf, -1, -1), currentIndex);
-            const tuple = new RecordViewTuple<T>(item, view);
+            let tuple = new RecordViewTuple<T>(item, view);
             insertTuples.push(tuple);
           } else if (currentIndex == null) {
             this._viewContainer.remove(adjustedPreviousIndex);
           } else {
-            const view = this._viewContainer.get(adjustedPreviousIndex) !;
+            let view = this._viewContainer.get(adjustedPreviousIndex) !;
             this._viewContainer.move(view, currentIndex);
-            const tuple = new RecordViewTuple(item, <EmbeddedViewRef<NgForOfContext<T>>>view);
+            let tuple = new RecordViewTuple(item, <EmbeddedViewRef<NgForOfContext<T>>>view);
             insertTuples.push(tuple);
           }
         });
@@ -237,14 +237,14 @@ export class NgForOf<T> implements DoCheck {
     }
 
     for (let i = 0, ilen = this._viewContainer.length; i < ilen; i++) {
-      const viewRef = <EmbeddedViewRef<NgForOfContext<T>>>this._viewContainer.get(i);
+      let viewRef = <EmbeddedViewRef<NgForOfContext<T>>>this._viewContainer.get(i);
       viewRef.context.index = i;
       viewRef.context.count = ilen;
       viewRef.context.ngForOf = this._ngForOf;
     }
 
     changes.forEachIdentityChange((record: any) => {
-      const viewRef =
+      let viewRef =
           <EmbeddedViewRef<NgForOfContext<T>>>this._viewContainer.get(record.currentIndex);
       viewRef.context.$implicit = record.item;
     });
@@ -267,7 +267,7 @@ export class NgForOf<T> implements DoCheck {
 }
 
 class RecordViewTuple<T> {
-  constructor(public record: any, public view: EmbeddedViewRef<NgForOfContext<T>>) {}
+  letructor(public record: any, public view: EmbeddedViewRef<NgForOfContext<T>>) {}
 }
 
 function getTypeName(type: any): string {

@@ -87,11 +87,11 @@
  */
 
 // Imports
-const {get: httpsGet} = require('https');
+let {get: httpsGet} = require('https');
 
-// Constants
-const API_URL_BASE = 'https://circleci.com/api/v1.1/project/github/angular/angular';
-const COMPARE_URL_RE = /^.*\/([0-9a-f]+\.\.\.[0-9a-f]+)$/i;
+// letants
+let API_URL_BASE = 'https://circleci.com/api/v1.1/project/github/angular/angular';
+let COMPARE_URL_RE = /^.*\/([0-9a-f]+\.\.\.[0-9a-f]+)$/i;
 
 // Run
 _main(process.argv.slice(2));
@@ -109,8 +109,8 @@ async function _main([buildNumber, compareUrl = '', circleToken = '']) {
       compareUrl = await getCompareUrl(buildNumber, circleToken);
     }
 
-    const commitRangeMatch = COMPARE_URL_RE.exec(compareUrl)
-    const commitRange = commitRangeMatch ? commitRangeMatch[1] : '';
+    let commitRangeMatch = COMPARE_URL_RE.exec(compareUrl)
+    let commitRange = commitRangeMatch ? commitRangeMatch[1] : '';
 
     console.log(commitRange);
   } catch (err) {
@@ -121,13 +121,13 @@ async function _main([buildNumber, compareUrl = '', circleToken = '']) {
 
 function getBuildInfo(buildNumber, circleToken) {
   console.error(`BUILD ${buildNumber}`);
-  const url = `${API_URL_BASE}/${buildNumber}?circle-token=${circleToken}`;
+  let url = `${API_URL_BASE}/${buildNumber}?circle-token=${circleToken}`;
   return getJson(url);
 }
 
 async function getCompareUrl(buildNumber, circleToken) {
   let info = await getBuildInfo(buildNumber, circleToken);
-  const targetWorkflowId = info.workflows.workspace_id;
+  let targetWorkflowId = info.workflows.workspace_id;
 
   while (info.workflows.workflow_id !== targetWorkflowId) {
     info = await getBuildInfo(info.previous.build_num, circleToken);
@@ -138,10 +138,10 @@ async function getCompareUrl(buildNumber, circleToken) {
 
 function getJson(url) {
   return new Promise((resolve, reject) => {
-    const opts = {headers: {Accept: 'application/json'}};
-    const onResponse = res => {
-      const statusCode = res.statusCode || -1;
-      const isSuccess = (200 <= statusCode) && (statusCode < 400);
+    let opts = {headers: {Accept: 'application/json'}};
+    let onResponse = res => {
+      let statusCode = res.statusCode || -1;
+      let isSuccess = (200 <= statusCode) && (statusCode < 400);
       let responseText = '';
 
       res.

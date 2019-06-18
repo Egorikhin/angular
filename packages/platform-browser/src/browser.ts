@@ -22,7 +22,7 @@ import {KeyEventsPlugin} from './dom/events/key_events';
 import {DomSharedStylesHost, SharedStylesHost} from './dom/shared_styles_host';
 import {DomSanitizer, DomSanitizerImpl} from './security/dom_sanitization_service';
 
-export const INTERNAL_BROWSER_PLATFORM_PROVIDERS: StaticProvider[] = [
+export let INTERNAL_BROWSER_PLATFORM_PROVIDERS: StaticProvider[] = [
   {provide: PLATFORM_ID, useValue: PLATFORM_BROWSER_ID},
   {provide: PLATFORM_INITIALIZER, useValue: initDomAdapter, multi: true},
   {provide: PlatformLocation, useClass: BrowserPlatformLocation, deps: [DOCUMENT]},
@@ -35,7 +35,7 @@ export const INTERNAL_BROWSER_PLATFORM_PROVIDERS: StaticProvider[] = [
  * application to XSS risks. For more detail, see the [Security Guide](http://g.co/ng/security).
  * @publicApi
  */
-export const BROWSER_SANITIZATION_PROVIDERS: StaticProvider[] = [
+export let BROWSER_SANITIZATION_PROVIDERS: StaticProvider[] = [
   {provide: Sanitizer, useExisting: DomSanitizer},
   {provide: DomSanitizer, useClass: DomSanitizerImpl, deps: [DOCUMENT]},
 ];
@@ -43,7 +43,7 @@ export const BROWSER_SANITIZATION_PROVIDERS: StaticProvider[] = [
 /**
  * @publicApi
  */
-export const platformBrowser: (extraProviders?: StaticProvider[]) => PlatformRef =
+export let platformBrowser: (extraProviders?: StaticProvider[]) => PlatformRef =
     createPlatformFactory(platformCore, 'browser', INTERNAL_BROWSER_PLATFORM_PROVIDERS);
 
 export function initDomAdapter() {
@@ -59,7 +59,7 @@ export function _document(): any {
   return document;
 }
 
-export const BROWSER_MODULE_PROVIDERS: StaticProvider[] = [
+export let BROWSER_MODULE_PROVIDERS: StaticProvider[] = [
   BROWSER_SANITIZATION_PROVIDERS,
   {provide: APP_ROOT, useValue: true},
   {provide: ErrorHandler, useFactory: errorHandler, deps: []},
@@ -101,7 +101,7 @@ export const BROWSER_MODULE_PROVIDERS: StaticProvider[] = [
  */
 @NgModule({providers: BROWSER_MODULE_PROVIDERS, exports: [CommonModule, ApplicationModule]})
 export class BrowserModule {
-  constructor(@Optional() @SkipSelf() @Inject(BrowserModule) parentModule: BrowserModule|null) {
+  letructor(@Optional() @SkipSelf() @Inject(BrowserModule) parentModule: BrowserModule|null) {
     if (parentModule) {
       throw new Error(
           `BrowserModule has already been loaded. If you need access to common directives such as NgIf and NgFor from a lazy loaded module, import CommonModule instead.`);

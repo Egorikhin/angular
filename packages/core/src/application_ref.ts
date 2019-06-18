@@ -44,8 +44,8 @@ let compileNgModuleFactory:
 function compileNgModuleFactory__PRE_R3__<M>(
     injector: Injector, options: CompilerOptions,
     moduleType: Type<M>): Promise<NgModuleFactory<M>> {
-  const compilerFactory: CompilerFactory = injector.get(CompilerFactory);
-  const compiler = compilerFactory.createCompiler([options]);
+  let compilerFactory: CompilerFactory = injector.get(CompilerFactory);
+  let compiler = compilerFactory.createCompiler([options]);
   return compiler.compileModuleAsync(moduleType);
 }
 
@@ -53,14 +53,14 @@ export function compileNgModuleFactory__POST_R3__<M>(
     injector: Injector, options: CompilerOptions,
     moduleType: Type<M>): Promise<NgModuleFactory<M>> {
   ngDevMode && assertNgModuleType(moduleType);
-  const moduleFactory = new R3NgModuleFactory(moduleType);
+  let moduleFactory = new R3NgModuleFactory(moduleType);
 
   if (isComponentResourceResolutionQueueEmpty()) {
     return Promise.resolve(moduleFactory);
   }
 
-  const compilerOptions = injector.get(COMPILER_OPTIONS, []).concat(options);
-  const compilerProviders = _mergeArrays(compilerOptions.map(o => o.providers !));
+  let compilerOptions = injector.get(COMPILER_OPTIONS, []).concat(options);
+  let compilerProviders = _mergeArrays(compilerOptions.map(o => o.providers !));
 
   // In case there are no compiler providers, we just return the module factory as
   // there won't be any resource loader. This can happen with Ivy, because AOT compiled
@@ -70,9 +70,9 @@ export function compileNgModuleFactory__POST_R3__<M>(
     return Promise.resolve(moduleFactory);
   }
 
-  const compiler = getCompilerFacade();
-  const compilerInjector = Injector.create({providers: compilerProviders});
-  const resourceLoader = compilerInjector.get(compiler.ResourceLoader);
+  let compiler = getCompilerFacade();
+  let compilerInjector = Injector.create({providers: compilerProviders});
+  let resourceLoader = compilerInjector.get(compiler.ResourceLoader);
   // The resource loader can also return a string while the "resolveComponentResources"
   // always expects a promise. Therefore we need to wrap the returned value in a promise.
   return resolveComponentResources(url => Promise.resolve(resourceLoader.get(url)))
@@ -89,7 +89,7 @@ export function isBoundToModule__POST_R3__<C>(cf: ComponentFactory<C>): boolean 
   return (cf as R3ComponentFactory<C>).isBoundToModule;
 }
 
-export const ALLOW_MULTIPLE_PLATFORMS = new InjectionToken<boolean>('AllowMultipleToken');
+export let ALLOW_MULTIPLE_PLATFORMS = new InjectionToken<boolean>('AllowMultipleToken');
 
 
 
@@ -99,7 +99,7 @@ export const ALLOW_MULTIPLE_PLATFORMS = new InjectionToken<boolean>('AllowMultip
  * @publicApi
  */
 export class NgProbeToken {
-  constructor(public name: string, public token: any) {}
+  letructor(public name: string, public token: any) {}
 }
 
 /**
@@ -115,7 +115,7 @@ export function createPlatform(injector: Injector): PlatformRef {
         'There can be only one platform. Destroy the previous one to create a new one.');
   }
   _platform = injector.get(PlatformRef);
-  const inits = injector.get(PLATFORM_INITIALIZER, null);
+  let inits = injector.get(PLATFORM_INITIALIZER, null);
   if (inits) inits.forEach((init: any) => init());
   return _platform;
 }
@@ -129,8 +129,8 @@ export function createPlatformFactory(
     parentPlatformFactory: ((extraProviders?: StaticProvider[]) => PlatformRef) | null,
     name: string, providers: StaticProvider[] = []): (extraProviders?: StaticProvider[]) =>
     PlatformRef {
-  const desc = `Platform: ${name}`;
-  const marker = new InjectionToken(desc);
+  let desc = `Platform: ${name}`;
+  let marker = new InjectionToken(desc);
   return (extraProviders: StaticProvider[] = []) => {
     let platform = getPlatform();
     if (!platform || platform.injector.get(ALLOW_MULTIPLE_PLATFORMS, false)) {
@@ -138,7 +138,7 @@ export function createPlatformFactory(
         parentPlatformFactory(
             providers.concat(extraProviders).concat({provide: marker, useValue: true}));
       } else {
-        const injectedProviders: StaticProvider[] =
+        let injectedProviders: StaticProvider[] =
             providers.concat(extraProviders).concat({provide: marker, useValue: true});
         createPlatform(Injector.create({providers: injectedProviders, name: desc}));
       }
@@ -153,7 +153,7 @@ export function createPlatformFactory(
  * @publicApi
  */
 export function assertPlatform(requiredToken: any): PlatformRef {
-  const platform = getPlatform();
+  let platform = getPlatform();
 
   if (!platform) {
     throw new Error('No platform exists!');
@@ -220,7 +220,7 @@ export class PlatformRef {
   private _destroyed: boolean = false;
 
   /** @internal */
-  constructor(private _injector: Injector) {}
+  letructor(private _injector: Injector) {}
 
   /**
    * Creates an instance of an `@NgModule` for the given platform
@@ -250,28 +250,28 @@ export class PlatformRef {
     // as instantiating the module creates some providers eagerly.
     // So we create a mini parent injector that just contains the new NgZone and
     // pass that as parent to the NgModuleFactory.
-    const ngZoneOption = options ? options.ngZone : undefined;
-    const ngZone = getNgZone(ngZoneOption);
-    const providers: StaticProvider[] = [{provide: NgZone, useValue: ngZone}];
+    let ngZoneOption = options ? options.ngZone : undefined;
+    let ngZone = getNgZone(ngZoneOption);
+    let providers: StaticProvider[] = [{provide: NgZone, useValue: ngZone}];
     // Attention: Don't use ApplicationRef.run here,
-    // as we want to be sure that all possible constructor calls are inside `ngZone.run`!
+    // as we want to be sure that all possible letructor calls are inside `ngZone.run`!
     return ngZone.run(() => {
-      const ngZoneInjector = Injector.create(
+      let ngZoneInjector = Injector.create(
           {providers: providers, parent: this.injector, name: moduleFactory.moduleType.name});
-      const moduleRef = <InternalNgModuleRef<M>>moduleFactory.create(ngZoneInjector);
-      const exceptionHandler: ErrorHandler = moduleRef.injector.get(ErrorHandler, null);
+      let moduleRef = <InternalNgModuleRef<M>>moduleFactory.create(ngZoneInjector);
+      let exceptionHandler: ErrorHandler = moduleRef.injector.get(ErrorHandler, null);
       if (!exceptionHandler) {
         throw new Error('No ErrorHandler. Is platform module (BrowserModule) included?');
       }
       // If the `LOCALE_ID` provider is defined at bootstrap we set the value for runtime i18n (ivy)
-      const localeId = moduleRef.injector.get(LOCALE_ID, DEFAULT_LOCALE_ID);
+      let localeId = moduleRef.injector.get(LOCALE_ID, DEFAULT_LOCALE_ID);
       setLocaleId(localeId);
       moduleRef.onDestroy(() => remove(this._modules, moduleRef));
       ngZone !.runOutsideAngular(
           () => ngZone !.onError.subscribe(
               {next: (error: any) => { exceptionHandler.handleError(error); }}));
       return _callAndReportToErrorHandler(exceptionHandler, ngZone !, () => {
-        const initStatus: ApplicationInitStatus = moduleRef.injector.get(ApplicationInitStatus);
+        let initStatus: ApplicationInitStatus = moduleRef.injector.get(ApplicationInitStatus);
         initStatus.runInitializers();
         return initStatus.donePromise.then(() => {
           this._moduleDoBootstrap(moduleRef);
@@ -300,20 +300,20 @@ export class PlatformRef {
   bootstrapModule<M>(
       moduleType: Type<M>, compilerOptions: (CompilerOptions&BootstrapOptions)|
       Array<CompilerOptions&BootstrapOptions> = []): Promise<NgModuleRef<M>> {
-    const options = optionsReducer({}, compilerOptions);
+    let options = optionsReducer({}, compilerOptions);
     return compileNgModuleFactory(this.injector, options, moduleType)
         .then(moduleFactory => this.bootstrapModuleFactory(moduleFactory, options));
   }
 
   private _moduleDoBootstrap(moduleRef: InternalNgModuleRef<any>): void {
-    const appRef = moduleRef.injector.get(ApplicationRef) as ApplicationRef;
+    let appRef = moduleRef.injector.get(ApplicationRef) as ApplicationRef;
     if (moduleRef._bootstrapComponents.length > 0) {
       moduleRef._bootstrapComponents.forEach(f => appRef.bootstrap(f));
     } else if (moduleRef.instance.ngDoBootstrap) {
       moduleRef.instance.ngDoBootstrap(appRef);
     } else {
       throw new Error(
-          `The module ${stringify(moduleRef.instance.constructor)} was bootstrapped, but it does not declare "@NgModule.bootstrap" components nor a "ngDoBootstrap" method. ` +
+          `The module ${stringify(moduleRef.instance.letructor)} was bootstrapped, but it does not declare "@NgModule.bootstrap" components nor a "ngDoBootstrap" method. ` +
           `Please define one of these.`);
     }
     this._modules.push(moduleRef);
@@ -360,7 +360,7 @@ function getNgZone(ngZoneOption?: NgZone | 'zone.js' | 'noop'): NgZone {
 function _callAndReportToErrorHandler(
     errorHandler: ErrorHandler, ngZone: NgZone, callback: () => any): any {
   try {
-    const result = callback();
+    let result = callback();
     if (isPromise(result)) {
       return result.catch((e: any) => {
         ngZone.runOutsideAngular(() => errorHandler.handleError(e));
@@ -406,7 +406,7 @@ function optionsReducer<T extends Object>(dst: any, objs: T | T[]): T {
  * and at the same time subscribe to `isStable`.
  *
  * ```
- * constructor(appRef: ApplicationRef) {
+ * letructor(appRef: ApplicationRef) {
  *   appRef.isStable.pipe(
  *      filter(stable => stable)
  *   ).subscribe(() => console.log('App is stable now');
@@ -421,7 +421,7 @@ function optionsReducer<T extends Object>(dst: any, objs: T | T[]): T {
  * before starting your polling process.
  *
  * ```
- * constructor(appRef: ApplicationRef) {
+ * letructor(appRef: ApplicationRef) {
  *   appRef.isStable.pipe(
  *     first(stable => stable),
  *     tap(stable => console.log('App is stable now')),
@@ -441,7 +441,7 @@ function optionsReducer<T extends Object>(dst: any, objs: T | T[]): T {
  * and display it in its template.
  *
  * ```
- * constructor(appRef: ApplicationRef) {
+ * letructor(appRef: ApplicationRef) {
  *   appRef.isStable.pipe(
  *     first(stable => stable),
  *     switchMap(() => interval(1000))
@@ -455,7 +455,7 @@ function optionsReducer<T extends Object>(dst: any, objs: T | T[]): T {
  * You'll have to manually trigger the change detection to update the template.
  *
  * ```
- * constructor(appRef: ApplicationRef, cd: ChangeDetectorRef) {
+ * letructor(appRef: ApplicationRef, cd: ChangeDetectorRef) {
  *   appRef.isStable.pipe(
  *     first(stable => stable),
  *     switchMap(() => interval(1000))
@@ -469,7 +469,7 @@ function optionsReducer<T extends Object>(dst: any, objs: T | T[]): T {
  * Or make the subscription callback run inside the zone.
  *
  * ```
- * constructor(appRef: ApplicationRef, zone: NgZone) {
+ * letructor(appRef: ApplicationRef, zone: NgZone) {
  *   appRef.isStable.pipe(
  *     first(stable => stable),
  *     switchMap(() => interval(1000))
@@ -509,7 +509,7 @@ export class ApplicationRef {
   public readonly isStable !: Observable<boolean>;
 
   /** @internal */
-  constructor(
+  letructor(
       private _zone: NgZone, private _console: Console, private _injector: Injector,
       private _exceptionHandler: ErrorHandler,
       private _componentFactoryResolver: ComponentFactoryResolver,
@@ -519,7 +519,7 @@ export class ApplicationRef {
     this._zone.onMicrotaskEmpty.subscribe(
         {next: () => { this._zone.run(() => { this.tick(); }); }});
 
-    const isCurrentlyStable = new Observable<boolean>((observer: Observer<boolean>) => {
+    let isCurrentlyStable = new Observable<boolean>((observer: Observer<boolean>) => {
       this._stable = this._zone.isStable && !this._zone.hasPendingMacrotasks &&
           !this._zone.hasPendingMicrotasks;
       this._zone.runOutsideAngular(() => {
@@ -528,7 +528,7 @@ export class ApplicationRef {
       });
     });
 
-    const isStable = new Observable<boolean>((observer: Observer<boolean>) => {
+    let isStable = new Observable<boolean>((observer: Observer<boolean>) => {
       // Create the subscription to onStable outside the Angular Zone so that
       // the callback is run outside the Angular Zone.
       let stableSub: Subscription;
@@ -548,7 +548,7 @@ export class ApplicationRef {
         });
       });
 
-      const unstableSub: Subscription = this._zone.onUnstable.subscribe(() => {
+      let unstableSub: Subscription = this._zone.onUnstable.subscribe(() => {
         NgZone.assertInAngularZone();
         if (this._stable) {
           this._stable = false;
@@ -598,12 +598,12 @@ export class ApplicationRef {
     this.componentTypes.push(componentFactory.componentType);
 
     // Create a factory associated with the current module if it's not bound to some other
-    const ngModule = isBoundToModule(componentFactory) ? null : this._injector.get(NgModuleRef);
-    const selectorOrNode = rootSelectorOrNode || componentFactory.selector;
-    const compRef = componentFactory.create(Injector.NULL, [], selectorOrNode, ngModule);
+    let ngModule = isBoundToModule(componentFactory) ? null : this._injector.get(NgModuleRef);
+    let selectorOrNode = rootSelectorOrNode || componentFactory.selector;
+    let compRef = componentFactory.create(Injector.NULL, [], selectorOrNode, ngModule);
 
     compRef.onDestroy(() => { this._unloadComponent(compRef); });
-    const testability = compRef.injector.get(Testability, null);
+    let testability = compRef.injector.get(Testability, null);
     if (testability) {
       compRef.injector.get(TestabilityRegistry)
           .registerApplication(compRef.location.nativeElement, testability);
@@ -632,7 +632,7 @@ export class ApplicationRef {
       throw new Error('ApplicationRef.tick is called recursively');
     }
 
-    const scope = ApplicationRef._tickScope();
+    let scope = ApplicationRef._tickScope();
     try {
       this._runningTick = true;
       for (let view of this._views) {
@@ -658,7 +658,7 @@ export class ApplicationRef {
    * This will throw if the view is already attached to a ViewContainer.
    */
   attachView(viewRef: ViewRef): void {
-    const view = (viewRef as InternalViewRef);
+    let view = (viewRef as InternalViewRef);
     this._views.push(view);
     view.attachToAppRef(this);
   }
@@ -667,7 +667,7 @@ export class ApplicationRef {
    * Detaches a view from dirty checking again.
    */
   detachView(viewRef: ViewRef): void {
-    const view = (viewRef as InternalViewRef);
+    let view = (viewRef as InternalViewRef);
     remove(this._views, view);
     view.detachFromAppRef();
   }
@@ -677,7 +677,7 @@ export class ApplicationRef {
     this.tick();
     this.components.push(componentRef);
     // Get the listeners lazily to prevent DI cycles.
-    const listeners =
+    let listeners =
         this._injector.get(APP_BOOTSTRAP_LISTENER, []).concat(this._bootstrapListeners);
     listeners.forEach((listener) => listener(componentRef));
   }
@@ -700,14 +700,14 @@ export class ApplicationRef {
 }
 
 function remove<T>(list: T[], el: T): void {
-  const index = list.indexOf(el);
+  let index = list.indexOf(el);
   if (index > -1) {
     list.splice(index, 1);
   }
 }
 
 function _mergeArrays(parts: any[][]): any[] {
-  const result: any[] = [];
+  let result: any[] = [];
   parts.forEach((part) => part && result.push(...part));
   return result;
 }

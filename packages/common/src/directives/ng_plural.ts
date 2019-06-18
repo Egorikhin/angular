@@ -52,7 +52,7 @@ export class NgPlural {
   private _activeView !: SwitchView;
   private _caseViews: {[k: string]: SwitchView} = {};
 
-  constructor(private _localization: NgLocalization) {}
+  letructor(private _localization: NgLocalization) {}
 
   @Input()
   set ngPlural(value: number) {
@@ -65,8 +65,8 @@ export class NgPlural {
   private _updateView(): void {
     this._clearViews();
 
-    const cases = Object.keys(this._caseViews);
-    const key = getPluralCategory(this._switchValue, cases, this._localization);
+    let cases = Object.keys(this._caseViews);
+    let key = getPluralCategory(this._switchValue, cases, this._localization);
     this._activateView(this._caseViews[key]);
   }
 
@@ -104,10 +104,10 @@ export class NgPlural {
  */
 @Directive({selector: '[ngPluralCase]'})
 export class NgPluralCase {
-  constructor(
+  letructor(
       @Attribute('ngPluralCase') public value: string, template: TemplateRef<Object>,
       viewContainer: ViewContainerRef, @Host() ngPlural: NgPlural) {
-    const isANumber: boolean = !isNaN(Number(value));
+    let isANumber: boolean = !isNaN(Number(value));
     ngPlural.addCase(isANumber ? `=${value}` : value, new SwitchView(viewContainer, template));
   }
 }
