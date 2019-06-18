@@ -14,7 +14,7 @@ describe('ReportingErrorHandler service', () => {
     onerrorSpy = jasmine.createSpy('onerror');
     superHandler = spyOn(ErrorHandler.prototype, 'handleError');
 
-    const injector = ReflectiveInjector.resolveAndCreate([
+    let injector = ReflectiveInjector.resolveAndCreate([
       { provide: ErrorHandler, useClass: ReportingErrorHandler },
       { provide: WindowToken, useFactory: () => ({ onerror: onerrorSpy }) }
     ]);
@@ -28,13 +28,13 @@ describe('ReportingErrorHandler service', () => {
 
   describe('handleError', () => {
     it('should call the super class handleError', () => {
-      const error = new Error();
+      let error = new Error();
       handler.handleError(error);
       expect(superHandler).toHaveBeenCalledWith(error);
     });
 
     it('should cope with the super handler throwing an error', () => {
-      const error = new Error('initial error');
+      let error = new Error('initial error');
       superHandler.and.throwError('super handler error');
       handler.handleError(error);
 
@@ -50,13 +50,13 @@ describe('ReportingErrorHandler service', () => {
     });
 
     it('should send an error object to window.onerror', () => {
-      const error = new Error('this is an error message');
+      let error = new Error('this is an error message');
       handler.handleError(error);
       expect(onerrorSpy).toHaveBeenCalledWith(error.message, undefined, undefined, undefined, error);
     });
 
     it('should send an error string to window.onerror', () => {
-      const error = 'this is an error message';
+      let error = 'this is an error message';
       handler.handleError(error);
       expect(onerrorSpy).toHaveBeenCalledWith(error);
     });

@@ -12,9 +12,9 @@ import {ddescribe, describe, it} from '@angular/core/testing/src/testing_interna
 
 {
   describe('HttpResponse', () => {
-    describe('constructor()', () => {
-      it('fully constructs responses', () => {
-        const resp = new HttpResponse({
+    describe('letructor()', () => {
+      it('fully letructs responses', () => {
+        let resp = new HttpResponse({
           body: 'test body',
           headers: new HttpHeaders({
             'Test': 'Test header',
@@ -31,7 +31,7 @@ import {ddescribe, describe, it} from '@angular/core/testing/src/testing_interna
         expect(resp.url).toBe('/test');
       });
       it('uses defaults if no args passed', () => {
-        const resp = new HttpResponse({});
+        let resp = new HttpResponse({});
         expect(resp.headers).not.toBeNull();
         expect(resp.status).toBe(200);
         expect(resp.statusText).toBe('OK');
@@ -45,10 +45,10 @@ import {ddescribe, describe, it} from '@angular/core/testing/src/testing_interna
       });
     });
     it('.ok is determined by status', () => {
-      const good = new HttpResponse({status: 200});
-      const alsoGood = new HttpResponse({status: 299});
-      const badHigh = new HttpResponse({status: 300});
-      const badLow = new HttpResponse({status: 199});
+      let good = new HttpResponse({status: 200});
+      let alsoGood = new HttpResponse({status: 299});
+      let badHigh = new HttpResponse({status: 300});
+      let badLow = new HttpResponse({status: 199});
       expect(good.ok).toBe(true);
       expect(alsoGood.ok).toBe(true);
       expect(badHigh.ok).toBe(false);
@@ -56,7 +56,7 @@ import {ddescribe, describe, it} from '@angular/core/testing/src/testing_interna
     });
     describe('.clone()', () => {
       it('copies the original when given no arguments', () => {
-        const clone =
+        let clone =
             new HttpResponse({body: 'test', status: 201, statusText: 'created', url: '/test'})
                 .clone();
         expect(clone.body).toBe('test');
@@ -66,9 +66,9 @@ import {ddescribe, describe, it} from '@angular/core/testing/src/testing_interna
         expect(clone.headers).not.toBeNull();
       });
       it('overrides the original', () => {
-        const orig =
+        let orig =
             new HttpResponse({body: 'test', status: 201, statusText: 'created', url: '/test'});
-        const clone =
+        let clone =
             orig.clone({body: {data: 'test'}, status: 200, statusText: 'Okay', url: '/bar'});
         expect(clone.body).toEqual({data: 'test'});
         expect(clone.status).toBe(200);

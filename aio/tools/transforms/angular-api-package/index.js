@@ -5,11 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const Package = require('dgeni').Package;
+let Package = require('dgeni').Package;
 
-const basePackage = require('../angular-base-package');
-const typeScriptPackage = require('dgeni-packages/typescript');
-const {API_SOURCE_PATH, API_TEMPLATES_PATH, requireFolder} = require('../config');
+let basePackage = require('../angular-base-package');
+let typeScriptPackage = require('dgeni-packages/typescript');
+let {API_SOURCE_PATH, API_TEMPLATES_PATH, requireFolder} = require('../config');
 
 module.exports =
     new Package('angular-api', [basePackage, typeScriptPackage])
@@ -32,7 +32,7 @@ module.exports =
         .processor(require('./processors/computeSearchTitle'))
         .processor(require('./processors/simplifyMemberAnchors'))
         .processor(require('./processors/computeStability'))
-        .processor(require('./processors/removeInjectableConstructors'))
+        .processor(require('./processors/removeInjectableletructors'))
         .processor(require('./processors/collectPackageContentDocs'))
         .processor(require('./processors/processPackages'))
         .processor(require('./processors/processNgModuleDocs'))
@@ -178,7 +178,7 @@ module.exports =
 
         .config(function(computePathsProcessor, EXPORT_DOC_TYPES, generateApiListDoc) {
 
-          const API_SEGMENT = 'api';
+          let API_SEGMENT = 'api';
 
           generateApiListDoc.outputFolder = API_SEGMENT;
 
@@ -216,21 +216,21 @@ module.exports =
 
 
 function addMinLengthRules(checkContentRules) {
-  const createMinLengthRule = require('./content-rules/minLength');
-  const paramRuleSet = checkContentRules.docTypeRules['parameter'] =
+  let createMinLengthRule = require('./content-rules/minLength');
+  let paramRuleSet = checkContentRules.docTypeRules['parameter'] =
       checkContentRules.docTypeRules['parameter'] || {};
-  const paramRules = paramRuleSet['name'] = paramRuleSet['name'] || [];
+  let paramRules = paramRuleSet['name'] = paramRuleSet['name'] || [];
   paramRules.push(createMinLengthRule());
 }
 
 function addHeadingRules(checkContentRules, API_DOC_TYPES) {
-  const createNoMarkdownHeadingsRule = require('./content-rules/noMarkdownHeadings');
-  const noMarkdownHeadings = createNoMarkdownHeadingsRule();
-  const allowOnlyLevel3Headings = createNoMarkdownHeadingsRule(1, 2, '4,');
+  let createNoMarkdownHeadingsRule = require('./content-rules/noMarkdownHeadings');
+  let noMarkdownHeadings = createNoMarkdownHeadingsRule();
+  let allowOnlyLevel3Headings = createNoMarkdownHeadingsRule(1, 2, '4,');
 
   API_DOC_TYPES.forEach(docType => {
     let rules;
-    const ruleSet = checkContentRules.docTypeRules[docType] =
+    let ruleSet = checkContentRules.docTypeRules[docType] =
         checkContentRules.docTypeRules[docType] || {};
 
     rules = ruleSet['description'] = ruleSet['description'] || [];
@@ -246,10 +246,10 @@ function addHeadingRules(checkContentRules, API_DOC_TYPES) {
 
 function addAllowedPropertiesRules(checkContentRules, API_CONTAINED_DOC_TYPES) {
   API_CONTAINED_DOC_TYPES.forEach(docType => {
-    const ruleSet = checkContentRules.docTypeRules[docType] =
+    let ruleSet = checkContentRules.docTypeRules[docType] =
         checkContentRules.docTypeRules[docType] || {};
 
-    const rules = ruleSet['usageNotes'] = ruleSet['usageNotes'] || [];
+    let rules = ruleSet['usageNotes'] = ruleSet['usageNotes'] || [];
     rules.push(
         (doc, prop, value) => value &&
             // methods are allowed to have usage notes

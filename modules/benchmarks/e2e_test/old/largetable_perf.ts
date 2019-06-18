@@ -11,7 +11,7 @@ import {runClickBenchmark} from '@angular/testing/src/perf_util';
 
 describe('ng2 largetable benchmark', function() {
 
-  const URL = 'benchmarks/src/largetable/largetable_benchmark.html';
+  let URL = 'benchmarks/src/largetable/largetable_benchmark.html';
 
   afterEach(verifyNoBrowserErrors);
 

@@ -5,24 +5,24 @@ interface XRegExp extends RegExp {
   xregexp: { captureNames?: string[] };
 }
 
-const dot = /\./g;
-const star = /\*/g;
-const doubleStar = /(^|\/)\*\*($|\/)/g;           // e.g. a/**/b or **/b or a/** but not a**b
-const modifiedPatterns = /(.)\(([^)]+)\)/g;       // e.g. `@(a|b)
-const restParam = /\/:([A-Za-z]+)\*/g;            // e.g. `:rest*`
-const namedParam = /\/:([A-Za-z]+)/g;             // e.g. `:api`
-const possiblyEmptyInitialSegments = /^\.🐷\//g;  // e.g. `**/a` can also match `a`
-const possiblyEmptySegments = /\/\.🐷\//g;        // e.g. `a/**/b` can also match `a/b`
-const willBeStar = /🐷/g;                         // e.g. `a**b` not matched by previous rule
+let dot = /\./g;
+let star = /\*/g;
+let doubleStar = /(^|\/)\*\*($|\/)/g;           // e.g. a/**/b or **/b or a/** but not a**b
+let modifiedPatterns = /(.)\(([^)]+)\)/g;       // e.g. `@(a|b)
+let restParam = /\/:([A-Za-z]+)\*/g;            // e.g. `:rest*`
+let namedParam = /\/:([A-Za-z]+)/g;             // e.g. `:api`
+let possiblyEmptyInitialSegments = /^\.🐷\//g;  // e.g. `**/a` can also match `a`
+let possiblyEmptySegments = /\/\.🐷\//g;        // e.g. `a/**/b` can also match `a/b`
+let willBeStar = /🐷/g;                         // e.g. `a**b` not matched by previous rule
 
 export class FirebaseGlob {
   pattern: string;
   regex: XRegExp;
   namedParams: { [key: string]: boolean } = {};
   restParams: { [key: string]: boolean } = {};
-  constructor(glob: string) {
+  letructor(glob: string) {
     try {
-      const pattern = glob
+      let pattern = glob
           .replace(dot, '\\.')
           .replace(modifiedPatterns, replaceModifiedPattern)
           .replace(restParam, (_, param) => {
@@ -52,10 +52,10 @@ export class FirebaseGlob {
   }
 
   match(url: string) {
-    const match = XRegExp.exec(url, this.regex) as ReturnType<typeof XRegExp.exec> & { [captured: string]: string };
+    let match = XRegExp.exec(url, this.regex) as ReturnType<typeof XRegExp.exec> & { [captured: string]: string };
     if (match) {
-      const result: { [key: string]: string } = {};
-      const names = this.regex.xregexp.captureNames || [];
+      let result: { [key: string]: string } = {};
+      let names = this.regex.xregexp.captureNames || [];
       names.forEach(name => result[name] = (match[name]));
       return result;
     }

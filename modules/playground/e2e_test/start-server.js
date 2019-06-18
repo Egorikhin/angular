@@ -6,12 +6,12 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const protractorUtils = require('@angular/bazel/protractor-utils');
-const protractor = require('protractor');
+let protractorUtils = require('@angular/bazel/protractor-utils');
+let protractor = require('protractor');
 
 module.exports = async function(config) {
-  const {port} = await protractorUtils.runServer(config.workspace, config.server, '-port', []);
-  const serverUrl = `http://localhost:${port}`;
+  let {port} = await protractorUtils.runServer(config.workspace, config.server, '-port', []);
+  let serverUrl = `http://localhost:${port}`;
 
   protractor.browser.baseUrl = serverUrl;
 };

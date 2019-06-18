@@ -10,19 +10,19 @@
 
 // THIS CHECK SHOULD BE THE FIRST THING IN THIS FILE
 // This is to ensure that we catch env issues before we error while requiring other dependencies.
-const engines = require('./package.json').engines;
+let engines = require('./package.json').engines;
 require('./tools/check-environment')({
   requiredNodeVersion: engines.node,
   requiredNpmVersion: engines.npm,
   requiredYarnVersion: engines.yarn
 });
 
-const gulp = require('gulp');
+let gulp = require('gulp');
 
 // See `tools/gulp-tasks/README.md` for information about task loading.
 function loadTask(fileName, taskName) {
-  const taskModule = require('./tools/gulp-tasks/' + fileName);
-  const task = taskName ? taskModule[taskName] : taskModule;
+  let taskModule = require('./tools/gulp-tasks/' + fileName);
+  let task = taskName ? taskModule[taskName] : taskModule;
   return task(gulp);
 }
 

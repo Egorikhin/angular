@@ -34,7 +34,7 @@ export type PerfLogEvent = {
  */
 export abstract class WebDriverExtension {
   static provideFirstSupported(childTokens: any[]): any[] {
-    const res = [
+    let res = [
       {
         provide: _CHILDREN,
         useFactory: (injector: Injector) => childTokens.map(token => injector.get(token)),
@@ -91,7 +91,7 @@ export class PerfLogFeatures {
   frameCapture: boolean;
   userTiming: boolean;
 
-  constructor(
+  letructor(
       {render = false, gc = false, frameCapture = false, userTiming = false}:
           {render?: boolean, gc?: boolean, frameCapture?: boolean, userTiming?: boolean} = {}) {
     this.render = render;
@@ -101,4 +101,4 @@ export class PerfLogFeatures {
   }
 }
 
-const _CHILDREN = new InjectionToken('WebDriverExtension.children');
+let _CHILDREN = new InjectionToken('WebDriverExtension.children');

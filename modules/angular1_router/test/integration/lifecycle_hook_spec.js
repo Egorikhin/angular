@@ -139,7 +139,7 @@ describe('Navigation lifecycle', function () {
     });
   });
 
-  it('should inject $scope into the controller constructor', function () {
+  it('should inject $scope into the controller letructor', function () {
     var injectedScope;
     registerComponent('userCmp', {
       template: '',

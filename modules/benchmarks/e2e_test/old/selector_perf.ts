@@ -11,7 +11,7 @@ import {runClickBenchmark} from '@angular/testing/src/perf_util';
 
 describe('ng2 selector benchmark', function() {
 
-  const URL = 'benchmarks/src/compiler/selector_benchmark.html';
+  let URL = 'benchmarks/src/compiler/selector_benchmark.html';
 
   afterEach(verifyNoBrowserErrors);
 

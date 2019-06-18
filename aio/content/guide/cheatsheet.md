@@ -185,7 +185,7 @@ is available to <code>declarations</code> of this module.</p>
 </td>
 </tr><tr>
 <td><code><b>@Injectable()</b><br>class MyService() {}</code></td>
-<td><p>Declares that a class has dependencies that should be injected into the constructor when the dependency injector is creating an instance of this class.
+<td><p>Declares that a class has dependencies that should be injected into the letructor when the dependency injector is creating an instance of this class.
 </p>
 </td>
 </tr>
@@ -289,7 +289,7 @@ so the <code>@Directive</code> configuration applies to components as well</p>
 </th>
 </tr>
 <tr>
-<td><code><b>constructor(myService: MyService, ...)</b> { ... }</code></td>
+<td><code><b>letructor(myService: MyService, ...)</b> { ... }</code></td>
 <td><p>Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.</p>
 </td>
 </tr><tr>
@@ -298,7 +298,7 @@ so the <code>@Directive</code> configuration applies to components as well</p>
 </td>
 </tr><tr>
 <td><code><b>ngOnInit()</b> { ... }</code></td>
-<td><p>Called after the constructor, initializing input properties, and the first call to <code>ngOnChanges</code>.</p>
+<td><p>Called after the letructor, initializing input properties, and the first call to <code>ngOnChanges</code>.</p>
 </td>
 </tr><tr>
 <td><code><b>ngDoCheck()</b> { ... }</code></td>
@@ -355,7 +355,7 @@ so the <code>@Directive</code> configuration applies to components as well</p>
 </th>
 </tr>
 <tr>
-<td><code>const routes: <b>Routes</b> = [<br>  { path: '', component: HomeComponent },<br>  { path: 'path/:routeParam', component: MyComponent },<br>  { path: 'staticPath', component: ... },<br>  { path: '**', component: ... },<br>  { path: 'oldPath', redirectTo: '/staticPath' },<br>  { path: ..., component: ..., data: { message: 'Custom' } }<br>]);<br><br>const routing = RouterModule.forRoot(routes);</code></td>
+<td><code>let routes: <b>Routes</b> = [<br>  { path: '', component: HomeComponent },<br>  { path: 'path/:routeParam', component: MyComponent },<br>  { path: 'staticPath', component: ... },<br>  { path: '**', component: ... },<br>  { path: 'oldPath', redirectTo: '/staticPath' },<br>  { path: ..., component: ..., data: { message: 'Custom' } }<br>]);<br><br>let routing = RouterModule.forRoot(routes);</code></td>
 <td><p>Configures routes for the application. Supports static, parameterized, redirect, and wildcard routes. Also supports custom route data and resolve.</p>
 </td>
 </tr><tr>

@@ -17,7 +17,7 @@ import {ExpandingRowToggleEvent} from './expanding_row_toggle_event';
  * Injection token to break cylic dependency between ExpandingRow and
  * ExpandingRowHost
  */
-export const EXPANDING_ROW_HOST_INJECTION_TOKEN =
+export let EXPANDING_ROW_HOST_INJECTION_TOKEN =
     new InjectionToken<ExpandingRowHostBase>('ExpandingRowHost');
 
 /** The base class for ExpandingRowHost component to break cylic dependency. */
@@ -135,7 +135,7 @@ export class ExpandingRow {
    * there is an expanded row, there shouldn't be any focused rows.
    */
   set isExpanded(value: boolean) {
-    const changed: boolean = this.isExpandedInternal !== value;
+    let changed: boolean = this.isExpandedInternal !== value;
     this.isExpandedInternal = value;
 
     if (changed) {
@@ -168,7 +168,7 @@ export class ExpandingRow {
 
   /** The index of the row in the context of the entire collection. */
   set index(value: number) {
-    const changed: boolean = this.indexInternal !== value;
+    let changed: boolean = this.indexInternal !== value;
     this.indexInternal = value;
 
     if (changed) {
@@ -212,7 +212,7 @@ export class ExpandingRow {
    * this reference to notify the host when this row expands/collapses or is
    * focused.
    */
-  constructor(
+  letructor(
       public elementRef: ElementRef,
       @Inject(EXPANDING_ROW_HOST_INJECTION_TOKEN) public expandingRowHost: ExpandingRowHostBase,
       private readonly changeDetectorRef: ChangeDetectorRef) {}
@@ -316,7 +316,7 @@ export class ExpandingRow {
    */
   @HostListener('keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    const charCode = event.which || event.keyCode;
+    let charCode = event.which || event.keyCode;
 
     switch (charCode) {
       case 9:
@@ -336,8 +336,8 @@ export class ExpandingRow {
    * elements contained in this row.
    */
   private trapFocus(event: KeyboardEvent): void {
-    const rowElement: HTMLElement = this.expandingRowMainElement.nativeElement;
-    const focusableEls: HTMLElement[] = [];
+    let rowElement: HTMLElement = this.expandingRowMainElement.nativeElement;
+    let focusableEls: HTMLElement[] = [];
     let lastFocusableEl: HTMLElement = rowElement;
 
     if (focusableEls.length) {

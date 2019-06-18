@@ -112,7 +112,7 @@ Additional steps like the following can give us much more bang for the buck:
   to pin down their types and get benefits like build-time error checking,
   great autocompletion support and inline documentation.
 
-* JavaScript features new to ES2015, like arrow functions, `let`s and `const`s,
+* JavaScript features new to ES2015, like arrow functions, `let`s and `let`s,
   default function parameters, and destructuring assignments can also be gradually
   added to make the code more expressive.
 
@@ -440,7 +440,7 @@ This bare minimum `NgModule` imports `BrowserModule`, the module every Angular b
 It also imports `UpgradeModule` from `@angular/upgrade/static`, which exports providers that will be used
 for upgrading and downgrading services and components.
 
-In the constructor of the `AppModule`, use dependency injection to get a hold of the `UpgradeModule` instance,
+In the letructor of the `AppModule`, use dependency injection to get a hold of the `UpgradeModule` instance,
 and use it to bootstrap the AngularJS app in the `AppModule.ngDoBootstrap` method.
 The `upgrade.bootstrap` method takes the exact same arguments as [angular.bootstrap](https://docs.angularjs.org/api/ng/function/angular.bootstrap):
 
@@ -588,7 +588,7 @@ and a controller:
 
 You can *upgrade* this component to Angular using the `UpgradeComponent` class.
 By creating a new Angular **directive** that extends `UpgradeComponent` and doing a `super` call
-inside its constructor, you have a fully upgraded AngularJS component to be used inside Angular.
+inside its letructor, you have a fully upgraded AngularJS component to be used inside Angular.
 All that is left is to add it to `AppModule`'s `declarations` array.
 
 <code-example path="upgrade-module/src/app/upgrade-static/hero-detail.component.ts" region="hero-detail-upgrade" header="hero-detail.component.ts">
@@ -794,7 +794,7 @@ You can then provide the service to Angular by adding it to the `@NgModule`:
 <code-example path="upgrade-module/src/app/ajs-to-a-providers/app.module.ts" region="register" header="app.module.ts">
 </code-example>
 
-Then use the service inside your component by injecting it in the component constructor using its class as a type annotation:
+Then use the service inside your component by injecting it in the component letructor using its class as a type annotation:
 
 <code-example path="upgrade-module/src/app/ajs-to-a-providers/hero-detail.component.ts" header="hero-detail.component.ts">
 </code-example>
@@ -1206,7 +1206,7 @@ features. There's a lot of value the language can provide to AngularJS applicati
 For one thing, TypeScript is a superset of ES2015. Any app that has previously
 been written in ES5 - like the PhoneCat example has - can with TypeScript
 start incorporating all of the JavaScript features that are new to ES2015.
-These include things like `let`s and `const`s, arrow functions, default function
+These include things like `let`s and `let`s, arrow functions, default function
 parameters, and destructuring assignments.
 
 Another thing you can do is start adding *type safety* to your code. This has
@@ -1255,7 +1255,7 @@ can turn component controllers into classes. That way they'll be a step
 closer to becoming Angular component classes, which will make life
 easier once you upgrade.
 
-AngularJS expects controllers to be constructor functions. That's exactly what
+AngularJS expects controllers to be letructor functions. That's exactly what
 ES2015/TypeScript classes are under the hood, so that means you can just plug in a
 class as a component controller and AngularJS will happily use it.
 
@@ -1265,7 +1265,7 @@ Here's what the new class for the phone list component controller looks like:
 </code-example>
 
 What was previously done in the controller function is now done in the class
-constructor function. The dependency injection annotations are attached
+letructor function. The dependency injection annotations are attached
 to the class using a static property `$inject`. At runtime this becomes the
 `PhoneListController.$inject` property.
 
@@ -1287,7 +1287,7 @@ all set to actually introduce Angular into the project.
 
 If you had any AngularJS services in the project, those would also be
 a good candidate for converting to classes, since like controllers,
-they're also constructor functions. But you only have the `Phone` factory
+they're also letructor functions. But you only have the `Phone` factory
 in this project, and that's a bit special since it's an `ngResource`
 factory. So you won't be doing anything to it in the preparation stage.
 You'll instead turn it directly into an Angular service.
@@ -1462,7 +1462,7 @@ by the [Dependency Injection Guide](guide/dependency-injection),
 this is a marker decorator you need to use for classes that have no other
 Angular decorators but still need to have their dependencies injected.
 
-In its constructor the class expects to get the `HttpClient` service. It will
+In its letructor the class expects to get the `HttpClient` service. It will
 be injected to it and it is stored as a private field. The service is then
 used in the two instance methods, one of which loads the list of all phones,
 and the other loads the details of a specified phone:
@@ -1763,7 +1763,7 @@ Angular selectors as well.
 
 You no longer have to hardcode the links to phone details in the phone list.
 You can generate data bindings for each phone's `id` to the `routerLink` directive
-and let that directive construct the appropriate URL to the `PhoneDetailComponent`:
+and let that directive letruct the appropriate URL to the `PhoneDetailComponent`:
 
 <code-example path="upgrade-phonecat-3-final/app/phone-list/phone-list.template.html" region="list" header="app/phone-list/phone-list.template.html (list with links)" linenums="false">
 </code-example>
@@ -1777,7 +1777,7 @@ See the [Routing](guide/router) page for details.
 #### Use route parameters
 
 The Angular router passes route parameters differently.
-Correct the `PhoneDetail` component constructor to expect an injected `ActivatedRoute` object.
+Correct the `PhoneDetail` component letructor to expect an injected `ActivatedRoute` object.
 Extract the `phoneId` from the `ActivatedRoute.snapshot.params` and fetch the phone data as before:
 
 <code-example path="upgrade-phonecat-3-final/app/phone-detail/phone-detail.component.ts" header="app/phone-detail/phone-detail.component.ts">

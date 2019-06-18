@@ -12,7 +12,7 @@ import {Injector, MeasureValues, MultiReporter, Reporter} from '../../index';
 
 (function() {
   function createReporters(ids: any[]) {
-    const r = Injector
+    let r = Injector
                   .create([
                     ids.map(id => ({provide: id, useValue: new MockReporter(id)})),
                     MultiReporter.provideWith(ids)
@@ -25,7 +25,7 @@ import {Injector, MeasureValues, MultiReporter, Reporter} from '../../index';
 
     it('should reportMeasureValues to all',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const mv = new MeasureValues(0, new Date(), {});
+         let mv = new MeasureValues(0, new Date(), {});
          createReporters(['m1', 'm2']).then((r) => r.reportMeasureValues(mv)).then((values) => {
 
            expect(values).toEqual([{'id': 'm1', 'values': mv}, {'id': 'm2', 'values': mv}]);
@@ -34,9 +34,9 @@ import {Injector, MeasureValues, MultiReporter, Reporter} from '../../index';
        }));
 
     it('should reportSample to call', inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const completeSample =
+         let completeSample =
              [new MeasureValues(0, new Date(), {}), new MeasureValues(1, new Date(), {})];
-         const validSample = [completeSample[1]];
+         let validSample = [completeSample[1]];
 
          createReporters(['m1', 'm2'])
              .then((r) => r.reportSample(completeSample, validSample))
@@ -54,7 +54,7 @@ import {Injector, MeasureValues, MultiReporter, Reporter} from '../../index';
 })();
 
 class MockReporter extends Reporter {
-  constructor(private _id: string) { super(); }
+  letructor(private _id: string) { super(); }
 
   reportMeasureValues(values: MeasureValues): Promise<{[key: string]: any}> {
     return Promise.resolve({'id': this._id, 'values': values});

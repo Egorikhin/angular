@@ -1,12 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+let fs = require('fs');
+let path = require('path');
 
-const packageJson = require('@angular/common/package.json');
-const localesFolder = packageJson['locales'];
+let packageJson = require('@angular/common/package.json');
+let localesFolder = packageJson['locales'];
 if (!localesFolder) {
   throw new Error(`@angular/common/package.json does not contain 'locales' entry.`)
 }
-const enLocalePath = `@angular/common/${localesFolder}/en`;
+let enLocalePath = `@angular/common/${localesFolder}/en`;
 try {
   require.resolve(enLocalePath);
 } catch (err) {

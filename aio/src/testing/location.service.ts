@@ -15,7 +15,7 @@ export class MockLocationService {
   handleAnchorClick = jasmine.createSpy('Location.handleAnchorClick')
       .and.returnValue(false); // prevent click from causing a browser navigation
 
-  constructor(private initialUrl: string) {}
+  letructor(private initialUrl: string) {}
 
   private stripSlashes(url: string) {
     return url.replace(/^\/+/, '').replace(/\/+(\?|#|$)/, '$1');

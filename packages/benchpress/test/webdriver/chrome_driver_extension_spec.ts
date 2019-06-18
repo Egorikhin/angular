@@ -13,23 +13,23 @@ import {TraceEventFactory} from '../trace_event_factory';
 
 {
   describe('chrome driver extension', () => {
-    const CHROME45_USER_AGENT =
+    let CHROME45_USER_AGENT =
         '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2499.0 Safari/537.36"';
 
     let log: any[];
     let extension: ChromeDriverExtension;
 
-    const blinkEvents = new TraceEventFactory('blink.console', 'pid0');
-    const v8Events = new TraceEventFactory('v8', 'pid0');
-    const v8EventsOtherProcess = new TraceEventFactory('v8', 'pid1');
-    const chromeTimelineEvents =
+    let blinkEvents = new TraceEventFactory('blink.console', 'pid0');
+    let v8Events = new TraceEventFactory('v8', 'pid0');
+    let v8EventsOtherProcess = new TraceEventFactory('v8', 'pid1');
+    let chromeTimelineEvents =
         new TraceEventFactory('disabled-by-default-devtools.timeline', 'pid0');
-    const chrome45TimelineEvents = new TraceEventFactory('devtools.timeline', 'pid0');
-    const chromeTimelineV8Events = new TraceEventFactory('devtools.timeline,v8', 'pid0');
-    const chromeBlinkTimelineEvents = new TraceEventFactory('blink,devtools.timeline', 'pid0');
-    const chromeBlinkUserTimingEvents = new TraceEventFactory('blink.user_timing', 'pid0');
-    const benchmarkEvents = new TraceEventFactory('benchmark', 'pid0');
-    const normEvents = new TraceEventFactory('timeline', 'pid0');
+    let chrome45TimelineEvents = new TraceEventFactory('devtools.timeline', 'pid0');
+    let chromeTimelineV8Events = new TraceEventFactory('devtools.timeline,v8', 'pid0');
+    let chromeBlinkTimelineEvents = new TraceEventFactory('blink,devtools.timeline', 'pid0');
+    let chromeBlinkUserTimingEvents = new TraceEventFactory('blink.user_timing', 'pid0');
+    let benchmarkEvents = new TraceEventFactory('benchmark', 'pid0');
+    let normEvents = new TraceEventFactory('timeline', 'pid0');
 
     function createExtension(
         perfRecords: any[] | null = null, userAgent: string | null = null,
@@ -74,7 +74,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
     it('should mark the timeline via performance.mark() on the second call',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const ext = createExtension();
+         let ext = createExtension();
          ext.timeBegin('someName')
              .then((_) => {
                log.splice(0, log.length);
@@ -118,7 +118,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 
     it('should normalize "tdur" to "dur"',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const event: any = chromeTimelineV8Events.create('X', 'FunctionCall', 1100, null);
+         let event: any = chromeTimelineV8Events.create('X', 'FunctionCall', 1100, null);
          event['tdur'] = 5500;
          createExtension([event]).readPerfLog().then((events) => {
            expect(events).toEqual([
@@ -401,7 +401,7 @@ import {TraceEventFactory} from '../trace_event_factory';
 }
 
 class MockDriverAdapter extends WebDriverAdapter {
-  constructor(private _log: any[], private _events: any[], private _messageMethod: string) {
+  letructor(private _log: any[], private _events: any[], private _messageMethod: string) {
     super();
   }
 

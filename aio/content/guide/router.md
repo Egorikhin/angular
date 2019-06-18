@@ -749,7 +749,7 @@ Along the way, it highlights design decisions and describes key features of the 
 * The `CanLoad` guard (check before loading feature module assets).
 
 The guide proceeds as a sequence of milestones as if you were building the app step-by-step.
-But, it is not a tutorial and it glosses over details of Angular application construction
+But, it is not a tutorial and it glosses over details of Angular application letruction
 that are more thoroughly covered elsewhere in the documentation.
 
 The full source for the final version of the app can be seen and downloaded from the <live-example></live-example>.
@@ -1783,11 +1783,11 @@ Import the `switchMap` operator because you need it later to process the `Observ
 {@a hero-detail-ctor}
 
 
-As usual, you write a constructor that asks Angular to inject services
+As usual, you write a letructor that asks Angular to inject services
 that the component requires and reference them as private variables.
 
 
-<code-example path="router/src/app/heroes/hero-detail/hero-detail.component.3.ts" linenums="false" header="src/app/heroes/hero-detail/hero-detail.component.ts (constructor)" region="ctor">
+<code-example path="router/src/app/heroes/hero-detail/hero-detail.component.3.ts" linenums="false" header="src/app/heroes/hero-detail/hero-detail.component.ts (letructor)" region="ctor">
 
 </code-example>
 
@@ -2045,7 +2045,7 @@ as a route parameter with an `:id` placeholder token in the route `path`:
 
 
 
-When the user clicks the back button, the `HeroDetailComponent` constructs another _link parameters array_
+When the user clicks the back button, the `HeroDetailComponent` letructs another _link parameters array_
 which it uses to navigate back to the `HeroListComponent`.
 
 
@@ -2141,7 +2141,7 @@ You can change that.
 Previously, when navigating from the `HeroListComponent` to the `HeroDetailComponent`,
 you subscribed to the route parameter map `Observable` and made it available to the `HeroDetailComponent`
 in the `ActivatedRoute` service.
-You injected that service in the constructor of the `HeroDetailComponent`.
+You injected that service in the letructor of the `HeroDetailComponent`.
 
 This time you'll be navigating in the opposite direction, from the `HeroDetailComponent` to the `HeroListComponent`.
 
@@ -2163,10 +2163,10 @@ Import the `switchMap` operator to perform an operation on the `Observable` of r
 
 
 
-Then you inject the `ActivatedRoute` in the `HeroListComponent` constructor.
+Then you inject the `ActivatedRoute` in the `HeroListComponent` letructor.
 
 
-<code-example path="router/src/app/heroes/hero-list/hero-list.component.ts" linenums="false" header="src/app/heroes/hero-list/hero-list.component.ts (constructor and ngOnInit)" region="ctor">
+<code-example path="router/src/app/heroes/hero-list/hero-list.component.ts" linenums="false" header="src/app/heroes/hero-list/hero-list.component.ts (letructor and ngOnInit)" region="ctor">
 
 </code-example>
 
@@ -2237,7 +2237,7 @@ This file does the following:
 
 * Imports the animation symbols that build the animation triggers, control state, and manage transitions between states.
 
-* Exports a constant named `slideInAnimation` set to an animation trigger named *`routeAnimation`*;
+* Exports a letant named `slideInAnimation` set to an animation trigger named *`routeAnimation`*;
 
 * Defines one *transition* when switching back and forth from the `heroes` and `hero` routes to ease the component in from the left of the screen as it enters the application view (`:enter`), the other to animate the component to the right as it leaves the application view (`:leave`).
 
@@ -3422,7 +3422,7 @@ Revise the `AuthGuard` to call it.
 
 
 
-Notice that you *inject* the `AuthService` and the `Router` in the constructor.
+Notice that you *inject* the `AuthService` and the `Router` in the letructor.
 You haven't provided the `AuthService` yet but it's good to know that you can inject helpful services into routing guards.
 
 This guard returns a synchronous boolean result.
@@ -4227,7 +4227,7 @@ elsewhere in the app.
 Now edit the `AdminDashboardComponent` to display the log of preloaded routes.
 
 1. Import the `SelectivePreloadingStrategyService`.
-1. Inject it into the dashboard's constructor.
+1. Inject it into the dashboard's letructor.
 1. Update the template to display the strategy service's `preloadedModules` array.
 
 When you're done it looks like this.

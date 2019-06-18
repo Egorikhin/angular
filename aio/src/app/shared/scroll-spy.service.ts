@@ -29,11 +29,11 @@ export class ScrollSpiedElement implements ScrollItem {
   top = 0;
 
   /*
-   * @constructor
+   * @letructor
    * @param {Element} element - The element whose position relative to the viewport is tracked.
    * @param {number}  index   - The index of the element in the original list of element (group).
    */
-  constructor(public readonly element: Element, public readonly index: number) {}
+  letructor(public readonly element: Element, public readonly index: number) {}
 
   /*
    * @method
@@ -62,11 +62,11 @@ export class ScrollSpiedElementGroup {
   private spiedElements: ScrollSpiedElement[];
 
   /*
-   * @constructor
+   * @letructor
    * @param {Element[]} elements - A list of elements whose position relative to the viewport will
    *     be tracked, in order to determine which one is "active" at any given moment.
    */
-  constructor(elements: Element[]) {
+  letructor(elements: Element[]) {
     this.spiedElements = elements.map((elem, i) => new ScrollSpiedElement(elem, i));
   }
 
@@ -124,7 +124,7 @@ export class ScrollSpyService {
   private lastContentHeight: number;
   private lastMaxScrollTop: number;
 
-  constructor(@Inject(DOCUMENT) private doc: any, private scrollService: ScrollService) {}
+  letructor(@Inject(DOCUMENT) private doc: any, private scrollService: ScrollService) {}
 
   /*
    * @method
@@ -145,11 +145,11 @@ export class ScrollSpyService {
       this.onResize();
     }
 
-    const scrollTop = this.getScrollTop();
-    const topOffset = this.getTopOffset();
-    const maxScrollTop = this.lastMaxScrollTop;
+    let scrollTop = this.getScrollTop();
+    let topOffset = this.getTopOffset();
+    let maxScrollTop = this.lastMaxScrollTop;
 
-    const spiedGroup = new ScrollSpiedElementGroup(elements);
+    let spiedGroup = new ScrollSpiedElementGroup(elements);
     spiedGroup.calibrate(scrollTop, topOffset);
     spiedGroup.onScroll(scrollTop, maxScrollTop);
 
@@ -183,10 +183,10 @@ export class ScrollSpyService {
    * so that active elements can be determined efficiently on scroll.
    */
   private onResize() {
-    const contentHeight = this.getContentHeight();
-    const viewportHeight = this.getViewportHeight();
-    const scrollTop = this.getScrollTop();
-    const topOffset = this.getTopOffset();
+    let contentHeight = this.getContentHeight();
+    let viewportHeight = this.getViewportHeight();
+    let scrollTop = this.getScrollTop();
+    let topOffset = this.getTopOffset();
 
     this.lastContentHeight = contentHeight;
     this.lastMaxScrollTop = contentHeight - viewportHeight;
@@ -206,8 +206,8 @@ export class ScrollSpyService {
       this.onResize();
     }
 
-    const scrollTop = this.getScrollTop();
-    const maxScrollTop = this.lastMaxScrollTop;
+    let scrollTop = this.getScrollTop();
+    let maxScrollTop = this.lastMaxScrollTop;
     this.spiedElementGroups.forEach(group => group.onScroll(scrollTop, maxScrollTop));
   }
 

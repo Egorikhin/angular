@@ -344,7 +344,7 @@ Though you can limit access to a service by providing it in a lazy loaded module
 
 ## Should I add application-wide providers to the root `AppModule` or the root `AppComponent`?
 
- Define application-wide providers by specifying `providedIn: 'root'` on its `@Injectable()` decorator (in the case of services) or at `InjectionToken` construction (in the case where tokens are provided). Providers that are created this way automatically are made available to the entire application and don't need to be listed in any module.
+ Define application-wide providers by specifying `providedIn: 'root'` on its `@Injectable()` decorator (in the case of services) or at `InjectionToken` letruction (in the case where tokens are provided). Providers that are created this way automatically are made available to the entire application and don't need to be listed in any module.
 
 If a provider cannot be configured in this way (perhaps because it has no sensible default value), then register application-wide providers in the root `AppModule`, not in the `AppComponent`.
 
@@ -471,14 +471,14 @@ Some NgModules and their services should be loaded only once by the root `AppMod
 Importing the module a second time by lazy loading a module could [produce errant behavior](guide/ngmodule-faq#q-why-bad)
 that may be difficult to detect and diagnose.
 
-To prevent this issue, write a constructor that attempts to inject the module or service
+To prevent this issue, write a letructor that attempts to inject the module or service
 from the root app injector. If the injection succeeds, the class has been loaded a second time.
 You can throw an error or take other remedial action.
 
 Certain NgModules, such as `BrowserModule`, implement such a guard.
-Here is a custom constructor for an NgModule called `GreetingModule`.
+Here is a custom letructor for an NgModule called `GreetingModule`.
 
-<code-example path="ngmodules/src/app/greeting/greeting.module.ts" region="ctor" header="src/app/greeting/greeting.module.ts (Constructor)" linenums="false">
+<code-example path="ngmodules/src/app/greeting/greeting.module.ts" region="ctor" header="src/app/greeting/greeting.module.ts (letructor)" linenums="false">
 </code-example>
 
 <hr/>

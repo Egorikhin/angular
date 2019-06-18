@@ -22,7 +22,7 @@ export class GreetingService {
 export class RedDec {
   // ElementRef is always injectable and it wraps the element on which the
   // directive was found by the compiler.
-  constructor(el: ElementRef, renderer: Renderer2) {
+  letructor(el: ElementRef, renderer: Renderer2) {
     renderer.setStyle(el.nativeElement, 'color', 'red');
   }
 }
@@ -48,7 +48,7 @@ export class RedDec {
 export class HelloCmp {
   greeting: string;
 
-  constructor(service: GreetingService) { this.greeting = service.greeting; }
+  letructor(service: GreetingService) { this.greeting = service.greeting; }
 
   changeGreeting(): void { this.greeting = 'howdy'; }
 }

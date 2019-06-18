@@ -13,17 +13,17 @@
  */
 
 // Imports
-const chromeLauncher = require('chrome-launcher');
-const lighthouse = require('lighthouse');
-const printer = require('lighthouse/lighthouse-cli/printer');
-const logger = require('lighthouse-logger');
+let chromeLauncher = require('chrome-launcher');
+let lighthouse = require('lighthouse');
+let printer = require('lighthouse/lighthouse-cli/printer');
+let logger = require('lighthouse-logger');
 
-// Constants
-const CHROME_LAUNCH_OPTS = {};
-const LIGHTHOUSE_FLAGS = {logLevel: 'info'};
-const SKIPPED_HTTPS_AUDITS = ['redirects-http'];
-const VIEWER_URL = 'https://googlechrome.github.io/lighthouse/viewer/';
-const WAIT_FOR_SW_DELAY = 5000;
+// letants
+let CHROME_LAUNCH_OPTS = {};
+let LIGHTHOUSE_FLAGS = {logLevel: 'info'};
+let SKIPPED_HTTPS_AUDITS = ['redirects-http'];
+let VIEWER_URL = 'https://googlechrome.github.io/lighthouse/viewer/';
+let WAIT_FOR_SW_DELAY = 5000;
 
 // Be less verbose on CI.
 if (process.env.CI) {
@@ -35,9 +35,9 @@ _main(process.argv.slice(2));
 
 // Functions - Definitions
 async function _main(args) {
-  const {url, minScore, logFile} = parseInput(args);
-  const isOnHttp = /^http:/.test(url);
-  const config = {
+  let {url, minScore, logFile} = parseInput(args);
+  let isOnHttp = /^http:/.test(url);
+  let config = {
     extends: 'lighthouse:default',
     // Since the Angular ServiceWorker waits for the app to stabilize before registering,
     // wait a few seconds after load to allow Lighthouse to reliably detect it.
@@ -53,8 +53,8 @@ async function _main(args) {
   logger.setLevel(LIGHTHOUSE_FLAGS.logLevel);
 
   try {
-    const results = await launchChromeAndRunLighthouse(url, LIGHTHOUSE_FLAGS, config);
-    const score = await processResults(results, logFile);
+    let results = await launchChromeAndRunLighthouse(url, LIGHTHOUSE_FLAGS, config);
+    let score = await processResults(results, logFile);
     evaluateScore(minScore, score);
   } catch (err) {
     onError(err);
@@ -72,7 +72,7 @@ function evaluateScore(expectedScore, actualScore) {
 }
 
 async function launchChromeAndRunLighthouse(url, flags, config) {
-  const chrome = await chromeLauncher.launch(CHROME_LAUNCH_OPTS);
+  let chrome = await chromeLauncher.launch(CHROME_LAUNCH_OPTS);
   flags.port = chrome.port;
 
   try {
@@ -88,9 +88,9 @@ function onError(err) {
 }
 
 function parseInput(args) {
-  const url = args[0];
-  const minScore = Number(args[1]);
-  const logFile = args[2];
+  let url = args[0];
+  let minScore = Number(args[1]);
+  let logFile = args[2];
 
   if (!url) {
     onError('Invalid arguments: <URL> not specified.');
@@ -102,9 +102,9 @@ function parseInput(args) {
 }
 
 async function processResults(results, logFile) {
-  const lhVersion = results.lhr.lighthouseVersion;
-  const categories = results.lhr.categories;
-  const report = results.report;
+  let lhVersion = results.lhr.lighthouseVersion;
+  let categories = results.lhr.categories;
+  let report = results.report;
 
   if (logFile) {
     console.log(`\nSaving results in '${logFile}'...`);
@@ -113,15 +113,15 @@ async function processResults(results, logFile) {
     await printer.write(report, printer.OutputMode.json, logFile);
   }
 
-  const categoryData = Object.keys(categories).map(name => categories[name]);
-  const maxTitleLen = Math.max(...categoryData.map(({title}) => title.length));
+  let categoryData = Object.keys(categories).map(name => categories[name]);
+  let maxTitleLen = Math.max(...categoryData.map(({title}) => title.length));
 
   console.log(`\nLighthouse version: ${lhVersion}`);
 
   console.log('\nAudit scores:');
   categoryData.forEach(({title, score}) => {
-    const paddedTitle = `${title}:`.padEnd(maxTitleLen + 1);
-    const paddedScore = (score * 100).toFixed(0).padStart(3);
+    let paddedTitle = `${title}:`.padEnd(maxTitleLen + 1);
+    let paddedScore = (score * 100).toFixed(0).padStart(3);
     console.log(`  - ${paddedTitle} ${paddedScore} / 100`);
   });
 
@@ -130,6 +130,6 @@ async function processResults(results, logFile) {
 
 function skipHttpsAudits(config) {
   console.info(`Skipping HTTPS-related audits (${SKIPPED_HTTPS_AUDITS.join(', ')})...`);
-  const settings = config.settings || (config.settings = {});
+  let settings = config.settings || (config.settings = {});
   settings.skipAudits = SKIPPED_HTTPS_AUDITS;
 }

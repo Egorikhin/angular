@@ -15,14 +15,14 @@ import {toArray} from 'rxjs/operators';
 import {MockDocument} from './jsonp_mock';
 
 function runOnlyCallback(home: any, data: Object) {
-  const keys = Object.keys(home);
+  let keys = Object.keys(home);
   expect(keys.length).toBe(1);
-  const callback = home[keys[0]];
+  let callback = home[keys[0]];
   delete home[keys[0]];
   callback(data);
 }
 
-const SAMPLE_REQ = new HttpRequest<never>('JSONP', '/test');
+let SAMPLE_REQ = new HttpRequest<never>('JSONP', '/test');
 
 {
   describe('JsonpClientBackend', () => {
@@ -46,7 +46,7 @@ const SAMPLE_REQ = new HttpRequest<never>('JSONP', '/test');
       document.mockLoad();
     });
     it('handles an error response properly', done => {
-      const error = new Error('This is a test error');
+      let error = new Error('This is a test error');
       backend.handle(SAMPLE_REQ).pipe(toArray()).subscribe(undefined, (err: HttpErrorResponse) => {
         expect(err.status).toBe(0);
         expect(err.error).toBe(error);

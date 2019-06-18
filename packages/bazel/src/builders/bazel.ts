@@ -25,7 +25,7 @@ export function runBazel(
   projectDir = normalize(projectDir);
   binary = normalize(binary);
   return new Promise((resolve, reject) => {
-    const buildProcess = spawn(binary, [command, workspaceTarget, ...flags], {
+    let buildProcess = spawn(binary, [command, workspaceTarget, ...flags], {
       cwd: projectDir,
       stdio: 'inherit',
     });
@@ -52,9 +52,9 @@ export function runBazel(
  */
 export function checkInstallation(name: Executable, projectDir: string): string {
   projectDir = normalize(projectDir);
-  const packageName = `@bazel/${name}`;
+  let packageName = `@bazel/${name}`;
   try {
-    const bazelPath = require.resolve(packageName, {
+    let bazelPath = require.resolve(packageName, {
       paths: [projectDir],
     });
     return require(bazelPath).getNativeBinary();
@@ -74,11 +74,11 @@ export function checkInstallation(name: Executable, projectDir: string): string 
  */
 export function getTemplateDir(root: string): string {
   root = normalize(root);
-  const packageJson = require.resolve('@angular/bazel/package.json', {
+  let packageJson = require.resolve('@angular/bazel/package.json', {
     paths: [root],
   });
-  const packageDir = dirname(packageJson);
-  const templateDir = join(packageDir, 'src', 'builders', 'files');
+  let packageDir = dirname(packageJson);
+  let templateDir = join(packageDir, 'src', 'builders', 'files');
   if (!statSync(templateDir).isDirectory()) {
     throw new Error('Could not find Bazel template directory in "@angular/bazel".');
   }
@@ -91,10 +91,10 @@ export function getTemplateDir(root: string): string {
  */
 function listR(dir: string): string[] {
   function list(dir: string, root: string, results: string[]) {
-    const paths = readdirSync(dir);
-    for (const path of paths) {
-      const absPath = join(dir, path);
-      const relPath = join(root, path);
+    let paths = readdirSync(dir);
+    for (let path of paths) {
+      let absPath = join(dir, path);
+      let relPath = join(root, path);
       if (statSync(absPath).isFile()) {
         results.push(relPath);
       } else {
@@ -112,11 +112,11 @@ function listR(dir: string): string[] {
  * directory. If none exists, default to creating an empty yarn.lock file.
  */
 function getOrCreateLockFile(root: string): 'yarn.lock'|'package-lock.json' {
-  const yarnLock = join(root, 'yarn.lock');
+  let yarnLock = join(root, 'yarn.lock');
   if (existsSync(yarnLock)) {
     return 'yarn.lock';
   }
-  const npmLock = join(root, 'package-lock.json');
+  let npmLock = join(root, 'package-lock.json');
   if (existsSync(npmLock)) {
     return 'package-lock.json';
   }
@@ -127,8 +127,8 @@ function getOrCreateLockFile(root: string): 'yarn.lock'|'package-lock.json' {
 
 // Replace yarn_install rule with npm_install and copy from 'source' to 'dest'.
 function replaceYarnWithNpm(source: string, dest: string) {
-  const srcContent = readFileSync(source, 'utf-8');
-  const destContent = srcContent.replace(/yarn_install/g, 'npm_install')
+  let srcContent = readFileSync(source, 'utf-8');
+  let destContent = srcContent.replace(/yarn_install/g, 'npm_install')
                           .replace('yarn_lock', 'package_lock_json')
                           .replace('yarn.lock', 'package-lock.json');
   writeFileSync(dest, destContent);
@@ -142,8 +142,8 @@ function replaceYarnWithNpm(source: string, dest: string) {
  * ng build without sandbox: 13.3 seconds
  */
 function disableSandbox(source: string, dest: string) {
-  const srcContent = readFileSync(source, 'utf-8');
-  const destContent = `${srcContent}
+  let srcContent = readFileSync(source, 'utf-8');
+  let destContent = `${srcContent}
 # Disable sandbox on Mac OS for performance reason.
 build --spawn_strategy=local
 run --spawn_strategy=local
@@ -161,14 +161,14 @@ test --spawn_strategy=local
 export function copyBazelFiles(root: string, templateDir: string) {
   root = normalize(root);
   templateDir = normalize(templateDir);
-  const bazelFiles: string[] = [];
-  const templates = listR(templateDir);
-  const useYarn = getOrCreateLockFile(root) === 'yarn.lock';
+  let bazelFiles: string[] = [];
+  let templates = listR(templateDir);
+  let useYarn = getOrCreateLockFile(root) === 'yarn.lock';
 
-  for (const template of templates) {
-    const name = template.replace('__dot__', '.').replace('.template', '');
-    const source = join(templateDir, template);
-    const dest = join(root, name);
+  for (let template of templates) {
+    let name = template.replace('__dot__', '.').replace('.template', '');
+    let source = join(templateDir, template);
+    let dest = join(root, name);
     try {
       if (!existsSync(dest)) {
         if (!useYarn && name === 'WORKSPACE') {
@@ -191,7 +191,7 @@ export function copyBazelFiles(root: string, templateDir: string) {
  * Delete the specified 'files'. This function never throws.
  */
 export function deleteBazelFiles(files: string[]) {
-  for (const file of files) {
+  for (let file of files) {
     try {
       unlinkSync(file);
     } catch {

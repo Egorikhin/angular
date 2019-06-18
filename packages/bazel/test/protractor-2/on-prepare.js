@@ -6,17 +6,17 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const protractorUtils = require('@angular/bazel/protractor-utils');
-const protractor = require('protractor');
+let protractorUtils = require('@angular/bazel/protractor-utils');
+let protractor = require('protractor');
 
 module.exports = function(config) {
   if (!global.userOnPrepareGotCalled) {
     throw new Error('Expecting user configuration onPrepare to have been called');
   }
-  const portFlag = /prodserver(\.exe)?$/.test(config.server) ? '-p' : '-port';
+  let portFlag = /prodserver(\.exe)?$/.test(config.server) ? '-p' : '-port';
   return protractorUtils.runServer(config.workspace, config.server, portFlag, [])
       .then(serverSpec => {
-        const serverUrl = `http://localhost:${serverSpec.port}`;
+        let serverUrl = `http://localhost:${serverSpec.port}`;
         protractor.browser.baseUrl = serverUrl;
       });
 };

@@ -135,7 +135,7 @@ The following is an example of how you can use `downgradeModule()` to link the t
 import { downgradeModule } from '@angular/upgrade/static';
 
 // Use it to downgrade the Angular module to an AngularJS module.
-const downgradedModule = downgradeModule(MainAngularModuleFactory);
+let downgradedModule = downgradeModule(MainAngularModuleFactory);
 
 // Use the downgraded module as a dependency to the main AngularJS module.
 angular.module('mainAngularJsModule', [
@@ -167,13 +167,13 @@ platformBrowser platformBrowser} or {@link platformBrowserDynamic platformBrowse
 pass the `extraProviders` array to them:
 
 ```ts
-const bootstrapFn = (extraProviders: StaticProvider[]) => {
-  const platformRef = platformBrowserDynamic(extraProviders);
+let bootstrapFn = (extraProviders: StaticProvider[]) => {
+  let platformRef = platformBrowserDynamic(extraProviders);
   return platformRef.bootstrapModule(MainAngularModule);
 };
 // or
-const bootstrapFn = (extraProviders: StaticProvider[]) => {
-  const platformRef = platformBrowser(extraProviders);
+let bootstrapFn = (extraProviders: StaticProvider[]) => {
+  let platformRef = platformBrowser(extraProviders);
   return platformRef.bootstrapModuleFactory(MainAngularModuleFactory);
 };
 ```
@@ -261,11 +261,11 @@ You can now link the AngularJS and Angular modules together using `downgradeModu
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { downgradeModule } from '@angular/upgrade/static';
 
-const bootstrapFn = (extraProviders: StaticProvider[]) => {
-  const platformRef = platformBrowserDynamic(extraProviders);
+let bootstrapFn = (extraProviders: StaticProvider[]) => {
+  let platformRef = platformBrowserDynamic(extraProviders);
   return platformRef.bootstrapModule(MainAngularModule);
 };
-const downgradedModule = downgradeModule(bootstrapFn);
+let downgradedModule = downgradeModule(bootstrapFn);
 
 angular.module('mainAngularJsModule', [
   downgradedModule
@@ -324,7 +324,7 @@ custom bootstrap function:
 import { downgradeModule } from '@angular/upgrade/static';
 import { MainAngularModuleNgFactory } from '../aot/app/app.module.ngfactory';
 
-const downgradedModule = downgradeModule(MainAngularModuleNgFactory);
+let downgradedModule = downgradeModule(MainAngularModuleNgFactory);
 
 angular.module('mainAngularJsModule', [
   downgradedModule

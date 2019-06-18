@@ -13,7 +13,7 @@ export class GaService {
 
   private previousUrl: string;
 
-  constructor(@Inject(WindowToken) private window: Window) {
+  letructor(@Inject(WindowToken) private window: Window) {
     this.ga('create', environment['gaId'] , 'auto');
   }
 
@@ -34,7 +34,7 @@ export class GaService {
   }
 
   ga(...args: any[]) {
-    const gaFn = (this.window as any)['ga'];
+    let gaFn = (this.window as any)['ga'];
     if (gaFn) {
       gaFn(...args);
     }

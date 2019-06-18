@@ -32,7 +32,7 @@ export declare type AnimateTimings = {
   /**
    * An easing style that controls how an animations step accelerates
    * and decelerates during its run time. An easing function such as `cubic-bezier()`,
-   * or one of the following constants:
+   * or one of the following letants:
    * - `ease-in`
    * - `ease-out`
    * - `ease-in-and-out`
@@ -84,14 +84,14 @@ export declare interface AnimationOptions {
 export declare interface AnimateChildOptions extends AnimationOptions { duration?: number|string; }
 
 /**
- * @description Constants for the categories of parameters that can be defined for animations.
+ * @description letants for the categories of parameters that can be defined for animations.
  *
  * A corresponding function defines a set of parameters for each category, and
  * collects them into a corresponding `AnimationMetadata` object.
  *
  * @publicApi
  */
-export const enum AnimationMetadataType {
+export let enum AnimationMetadataType {
   /**
    * Associates a named animation state with a set of CSS styles.
    * See `state()`
@@ -164,7 +164,7 @@ export const enum AnimationMetadataType {
  *
  * @publicApi
  */
-export const AUTO_STYLE = '*';
+export let AUTO_STYLE = '*';
 
 /**
  * Base for animation data structures.

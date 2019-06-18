@@ -16,7 +16,7 @@ describe('TransferState', function() {
     browser.driver.get(browser.baseUrl + 'transferstate');
 
     // Test the contents from the server.
-    const serverDiv = browser.driver.findElement(by.css('div'));
+    let serverDiv = browser.driver.findElement(by.css('div'));
     expect(serverDiv.getText()).toEqual('5');
 
     // Bootstrap the client side app and retest the contents

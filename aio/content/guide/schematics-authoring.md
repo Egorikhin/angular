@@ -2,7 +2,7 @@
 
 You can create your own schematics to operate on Angular projects.
 Library developers typically package schematics with their libraries in order to integrate them with the Angular CLI.
-You can also create stand-alone schematics to manipulate the files and constructs in Angular applications as a way of customizing them for your development environment and making them conform to your standards and constraints.
+You can also create stand-alone schematics to manipulate the files and letructs in Angular applications as a way of customizing them for your development environment and making them conform to your standards and letraints.
 Schematics can be chained, running other schematics to perform complex operations.
 
 Manipulating the code in an application has the potential to be both very powerful and correspondingly dangerous.

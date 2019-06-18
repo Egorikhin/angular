@@ -20,7 +20,7 @@ import {Injector, JsonFileReporter, MeasureValues, Options, SampleDescription} f
       metrics: {[key: string]: string},
       path: string
     }) {
-      const providers = [
+      let providers = [
         JsonFileReporter.PROVIDERS, {
           provide: SampleDescription,
           useValue: new SampleDescription(sampleId, descriptions, metrics)
@@ -48,9 +48,9 @@ import {Injector, JsonFileReporter, MeasureValues, Options, SampleDescription} f
              .reportSample(
                  [mv(0, 0, {'a': 3, 'b': 6})],
                  [mv(0, 0, {'a': 3, 'b': 6}), mv(1, 1, {'a': 5, 'b': 9})]);
-         const regExp = /somePath\/someId_\d+\.json/;
+         let regExp = /somePath\/someId_\d+\.json/;
          expect(loggedFile['filename'].match(regExp) != null).toBe(true);
-         const parsedContent = JSON.parse(loggedFile['content']);
+         let parsedContent = JSON.parse(loggedFile['content']);
          expect(parsedContent).toEqual({
            'description': {
              'id': 'someId',

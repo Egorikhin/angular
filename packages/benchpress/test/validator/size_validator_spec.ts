@@ -35,7 +35,7 @@ import {Injector, MeasureValues, SizeValidator} from '../../index';
 
     it('should return the last sampleSize runs when it has at least the given size', () => {
       createValidator(2);
-      const sample = [mv(0, 0, {'a': 1}), mv(1, 1, {'b': 2}), mv(2, 2, {'c': 3})];
+      let sample = [mv(0, 0, {'a': 1}), mv(1, 1, {'b': 2}), mv(2, 2, {'c': 3})];
       expect(validator.validate(sample.slice(0, 2))).toEqual(sample.slice(0, 2));
       expect(validator.validate(sample)).toEqual(sample.slice(1, 3));
     });

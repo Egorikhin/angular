@@ -5,9 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const Package = require('dgeni').Package;
-const contentPackage = require('../angular-content-package');
-const { CONTENTS_PATH } = require('../config');
+let Package = require('dgeni').Package;
+let contentPackage = require('../angular-content-package');
+let { CONTENTS_PATH } = require('../config');
 
 function createPackage() {
   return new Package('author-marketing', [contentPackage])

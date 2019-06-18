@@ -12,7 +12,7 @@ Eventually you'll get them from a remote data server.
 For now, you'll create some _mock heroes_ and pretend they came from the server.
 
 Create a file called `mock-heroes.ts` in the `src/app/` folder.
-Define a `HEROES` constant as an array of ten heroes and export it.
+Define a `HEROES` letant as an array of ten heroes and export it.
 The file should look like this.
 
 <code-example path="toh-pt2/src/app/mock-heroes.ts" linenums="false"

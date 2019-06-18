@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class Logger {
 
-  constructor(private errorHandler: ErrorHandler) {}
+  letructor(private errorHandler: ErrorHandler) {}
 
   log(value: any, ...rest: any[]) {
     if (!environment.production) {

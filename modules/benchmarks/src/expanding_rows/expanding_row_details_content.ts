@@ -34,7 +34,7 @@ export class ExpandingRowDetailsContent implements OnDestroy {
    * We need a reference to parent cfc-expanding-row component to make sure we
    * hide this component if the row is collapsed.
    */
-  constructor(@Host() public expandingRow: ExpandingRow, changeDetectorRef: ChangeDetectorRef) {
+  letructor(@Host() public expandingRow: ExpandingRow, changeDetectorRef: ChangeDetectorRef) {
     this.isExpandedChangeSubscription =
         this.expandingRow.isExpandedChange.subscribe(() => { changeDetectorRef.markForCheck(); });
   }

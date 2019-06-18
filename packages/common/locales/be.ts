@@ -9,7 +9,7 @@
 // THIS CODE IS GENERATED - DO NOT MODIFY
 // See angular/tools/gulp-tasks/cldr/extract.js
 
-const u = undefined;
+let u = undefined;
 
 function plural(n: number): number {
   if (n % 10 === 1 && !(n % 100 === 11)) return 1;

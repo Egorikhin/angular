@@ -15,7 +15,7 @@ describe('LazyCustomElementComponent', () => {
       'loadCustomElement',
     ]);
 
-    const injector = TestBed.configureTestingModule({
+    let injector = TestBed.configureTestingModule({
       declarations: [ LazyCustomElementComponent ],
       providers: [
         { provide: ElementsLoader, useValue: mockElementsLoader },
@@ -28,7 +28,7 @@ describe('LazyCustomElementComponent', () => {
   });
 
   it('should set the HTML content based on the selector', () => {
-    const elem = fixture.nativeElement;
+    let elem = fixture.nativeElement;
 
     expect(elem.innerHTML).toBe('');
 

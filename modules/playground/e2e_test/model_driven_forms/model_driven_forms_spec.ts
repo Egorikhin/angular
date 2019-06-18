@@ -14,14 +14,14 @@ describe('Model-Driven Forms', function() {
 
   afterEach(verifyNoBrowserErrors);
 
-  const URL = '/';
+  let URL = '/';
 
   it('should display errors', function() {
     browser.get(URL);
 
-    const form = element.all(by.css('form')).first();
-    const input = element.all(by.css('#creditCard')).first();
-    const firstName = element.all(by.css('#firstName')).first();
+    let form = element.all(by.css('form')).first();
+    let input = element.all(by.css('#creditCard')).first();
+    let firstName = element.all(by.css('#firstName')).first();
 
     input.sendKeys('invalid');
     firstName.click();

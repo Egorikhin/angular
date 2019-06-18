@@ -5,7 +5,7 @@
 "Run end-to-end tests with Protractor"
 
 load("@io_bazel_rules_webtesting//web:web.bzl", "web_test_suite")
-load("@io_bazel_rules_webtesting//web/internal:constants.bzl", "DEFAULT_WRAPPED_TEST_TAGS")
+load("@io_bazel_rules_webtesting//web/internal:letants.bzl", "DEFAULT_WRAPPED_TEST_TAGS")
 load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
 load("@build_bazel_rules_nodejs//internal/common:expand_into_runfiles.bzl", "expand_path_into_runfiles")
 load("@build_bazel_rules_nodejs//internal/common:sources_aspect.bzl", "sources_aspect")

@@ -16,7 +16,7 @@ import { TocService } from 'app/shared/toc.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
-const sideNavView = 'SideNav';
+let sideNavView = 'SideNav';
 
 @Component({
   selector: 'aio-shell',
@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
   notification: NotificationComponent;
   notificationAnimating = false;
 
-  constructor(
+  letructor(
     public deployment: Deployment,
     private documentService: DocumentService,
     private hostElement: ElementRef,
@@ -149,7 +149,7 @@ export class AppComponent implements OnInit {
       this.navigationService.navigationViews.pipe(map(views => views['docVersions'])))
       .subscribe(([versionInfo, versions]) => {
         // TODO(pbd): consider whether we can lookup the stable and next versions from the internet
-        const computedVersions: NavigationNode[] = [
+        let computedVersions: NavigationNode[] = [
           { title: 'next', url: 'https://next.angular.io' },
           { title: 'stable', url: 'https://angular.io' },
         ];
@@ -174,7 +174,7 @@ export class AppComponent implements OnInit {
 
     this.navigationService.versionInfo.subscribe(vi => this.versionInfo = vi);
 
-    const hasNonEmptyToc = this.tocService.tocList.pipe(map(tocList => tocList.length > 0));
+    let hasNonEmptyToc = this.tocService.tocList.pipe(map(tocList => tocList.length > 0));
     combineLatest(hasNonEmptyToc, this.showFloatingToc)
         .subscribe(([hasToc, showFloatingToc]) => this.hasFloatingToc = hasToc && showFloatingToc);
 
@@ -229,7 +229,7 @@ export class AppComponent implements OnInit {
   }
 
   onDocVersionChange(versionIndex: number) {
-    const version = this.docVersions[versionIndex];
+    let version = this.docVersions[versionIndex];
     if (version.url) {
       this.locationService.go(version.url);
     }
@@ -295,13 +295,13 @@ export class AppComponent implements OnInit {
   }
 
   updateHostClasses() {
-    const mode = `mode-${this.deployment.mode}`;
-    const sideNavOpen = `sidenav-${this.sidenav.opened ? 'open' : 'closed'}`;
-    const pageClass = `page-${this.pageId}`;
-    const folderClass = `folder-${this.folderId}`;
-    const viewClasses = Object.keys(this.currentNodes).map(view => `view-${view}`).join(' ');
-    const notificationClass = `aio-notification-${this.notification.showNotification}`;
-    const notificationAnimatingClass = this.notificationAnimating ? 'aio-notification-animating' : '';
+    let mode = `mode-${this.deployment.mode}`;
+    let sideNavOpen = `sidenav-${this.sidenav.opened ? 'open' : 'closed'}`;
+    let pageClass = `page-${this.pageId}`;
+    let folderClass = `folder-${this.folderId}`;
+    let viewClasses = Object.keys(this.currentNodes).map(view => `view-${view}`).join(' ');
+    let notificationClass = `aio-notification-${this.notification.showNotification}`;
+    let notificationAnimatingClass = this.notificationAnimating ? 'aio-notification-animating' : '';
 
     this.hostClasses = [
       mode,
@@ -327,7 +327,7 @@ export class AppComponent implements OnInit {
   updateSideNav() {
     // Preserve current sidenav open state by default.
     let openSideNav = this.sidenav.opened;
-    const isSideNavDoc = !!this.currentNodes[sideNavView];
+    let isSideNavDoc = !!this.currentNodes[sideNavView];
 
     if (this.isSideNavDoc !== isSideNavDoc) {
       // View type changed. Is it now a sidenav view (e.g, guide or tutorial)?
@@ -344,9 +344,9 @@ export class AppComponent implements OnInit {
   onScroll() {
     if (!this.tocMaxHeightOffset) {
       // Must wait until `mat-toolbar` is measurable.
-      const el = this.hostElement.nativeElement as Element;
-      const headerEl = el.querySelector('.app-toolbar');
-      const footerEl = el.querySelector('footer');
+      let el = this.hostElement.nativeElement as Element;
+      let headerEl = el.querySelector('.app-toolbar');
+      let footerEl = el.querySelector('footer');
 
       if (headerEl && footerEl) {
         this.tocMaxHeightOffset =
@@ -361,8 +361,8 @@ export class AppComponent implements OnInit {
 
   // Restrain scrolling inside an element, when the cursor is over it
   restrainScrolling(evt: WheelEvent) {
-    const elem = evt.currentTarget as Element;
-    const scrollTop = elem.scrollTop;
+    let elem = evt.currentTarget as Element;
+    let scrollTop = elem.scrollTop;
 
     if (evt.deltaY < 0) {
       // Trying to scroll up: Prevent scrolling if already at the top.
@@ -371,7 +371,7 @@ export class AppComponent implements OnInit {
       }
     } else {
       // Trying to scroll down: Prevent scrolling if already at the bottom.
-      const maxScrollTop = elem.scrollHeight - elem.clientHeight;
+      let maxScrollTop = elem.scrollHeight - elem.clientHeight;
       if (maxScrollTop - scrollTop < 1) {
         evt.preventDefault();
       }
@@ -383,7 +383,7 @@ export class AppComponent implements OnInit {
 
   hideSearchResults() {
     this.showSearchResults = false;
-    const oldSearch = this.locationService.search();
+    let oldSearch = this.locationService.search();
     if (oldSearch.search !== undefined) {
       this.locationService.setSearch('', { ...oldSearch, search: undefined });
     }

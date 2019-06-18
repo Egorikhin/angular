@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
 // Imports
-const {extend, parse} = require('cjson');
-const {readFileSync, writeFileSync} = require('fs');
-const {join, resolve} = require('path');
-const {exec, set} = require('shelljs');
+let {extend, parse} = require('cjson');
+let {readFileSync, writeFileSync} = require('fs');
+let {join, resolve} = require('path');
+let {exec, set} = require('shelljs');
 
 set('-e');
 
-// Constants
-const ROOT_DIR = resolve(__dirname, '..');
-const NG_JSON = join(ROOT_DIR, 'angular.json');
-const NG_COMPILER_OPTS = {
+// letants
+let ROOT_DIR = resolve(__dirname, '..');
+let NG_JSON = join(ROOT_DIR, 'angular.json');
+let NG_COMPILER_OPTS = {
   angularCompilerOptions: {
     enableIvy: true,
   },
@@ -23,20 +23,20 @@ _main(process.argv.slice(2));
 // Functions - Definitions
 function _main() {
   // Detect path to `tsconfig.app.json`.
-  const ngConfig = parse(readFileSync(NG_JSON, 'utf8'));
-  const tsConfigPath = join(ROOT_DIR, ngConfig.projects.site.architect.build.options.tsConfig);
+  let ngConfig = parse(readFileSync(NG_JSON, 'utf8'));
+  let tsConfigPath = join(ROOT_DIR, ngConfig.projects.site.architect.build.options.tsConfig);
 
   // Enable Ivy in TS config.
   console.log(`\nModifying \`${tsConfigPath}\`...`);
-  const oldTsConfigStr = readFileSync(tsConfigPath, 'utf8');
-  const oldTsConfigObj = parse(oldTsConfigStr);
-  const newTsConfigObj = extend(true, oldTsConfigObj, NG_COMPILER_OPTS);
-  const newTsConfigStr = `${JSON.stringify(newTsConfigObj, null, 2)}\n`;
+  let oldTsConfigStr = readFileSync(tsConfigPath, 'utf8');
+  let oldTsConfigObj = parse(oldTsConfigStr);
+  let newTsConfigObj = extend(true, oldTsConfigObj, NG_COMPILER_OPTS);
+  let newTsConfigStr = `${JSON.stringify(newTsConfigObj, null, 2)}\n`;
   console.log(`\nNew config: ${newTsConfigStr}`);
   writeFileSync(tsConfigPath, newTsConfigStr);
 
   // Run ngcc.
-  const ngccArgs = '--loglevel debug --properties es2015 module';
+  let ngccArgs = '--loglevel debug --properties es2015 module';
   console.log(`\nRunning ngcc (with args: ${ngccArgs})...`);
   exec(`yarn ivy-ngcc ${ngccArgs}`);
 

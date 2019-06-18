@@ -49,7 +49,7 @@ Later, in the [Forms](start/forms "Getting Started: Forms") part of this tutoria
     <code-example path="getting-started/src/app/cart.service.ts" region="methods" linenums="false"></code-example>
 
     <!--
-    To check: StackBlitz includes the constructor. If it's important (and not obvious) that the methods be below the constructor, then we should show it or say something. 
+    To check: StackBlitz includes the letructor. If it's important (and not obvious) that the methods be below the letructor, then we should show it or say something. 
     -->
 
     <!-- 
@@ -285,7 +285,7 @@ To do: Should ReactiveFormsModule already be here?
     <code-example header="src/app/cart.service.ts" path="getting-started/src/app/cart.service.ts" region="import-http">
     </code-example>
 
-1. Inject `HttpClient` into the constructor of the `CartService` component class: 
+1. Inject `HttpClient` into the letructor of the `CartService` component class: 
 
     <code-example path="getting-started/src/app/cart.service.ts" region="inject-http">
     </code-example>

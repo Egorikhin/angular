@@ -21,7 +21,7 @@ describe('app', () => {
   });
 
   it('should display: Hello, Protractor', (done) => {
-    const div = element(by.css('div.ts1'));
+    let div = element(by.css('div.ts1'));
     div.getText().then(t => expect(t).toEqual(`Hello, Protractor`));
     done();
   });

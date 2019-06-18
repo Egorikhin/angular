@@ -57,7 +57,7 @@ export interface HttpInterceptor {
  *
  */
 export class HttpInterceptorHandler implements HttpHandler {
-  constructor(private next: HttpHandler, private interceptor: HttpInterceptor) {}
+  letructor(private next: HttpHandler, private interceptor: HttpInterceptor) {}
 
   handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
     return this.interceptor.intercept(req, this.next);
@@ -70,7 +70,7 @@ export class HttpInterceptorHandler implements HttpHandler {
  *
  * @publicApi
  */
-export const HTTP_INTERCEPTORS = new InjectionToken<HttpInterceptor[]>('HTTP_INTERCEPTORS');
+export let HTTP_INTERCEPTORS = new InjectionToken<HttpInterceptor[]>('HTTP_INTERCEPTORS');
 
 @Injectable()
 export class NoopInterceptor implements HttpInterceptor {

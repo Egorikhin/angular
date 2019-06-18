@@ -1,7 +1,7 @@
 import { getSwNavigationUrlChecker, loadLegacyUrls, loadLocalSitemapUrls } from '../shared/helpers';
 
 describe('ServiceWorker navigation URLs', () => {
-  const isNavigationUrl = getSwNavigationUrlChecker();
+  let isNavigationUrl = getSwNavigationUrlChecker();
 
   loadLocalSitemapUrls().forEach(url => {
     it('should treat URLs in the Sitemap as navigation URLs', () => {
@@ -10,7 +10,7 @@ describe('ServiceWorker navigation URLs', () => {
   });
 
   loadLegacyUrls().forEach(urlPair => {
-    const url = urlPair[0];
+    let url = urlPair[0];
     it('should treat legacy URLs that will be redirected as non-navigation URLs', () => {
       expect(isNavigationUrl(url)).toBeFalsy(url);
     });
@@ -29,8 +29,8 @@ describe('ServiceWorker navigation URLs', () => {
   });
 
   it('should treat `/docs*` URLs correctly', () => {
-    const navigationUrls = ['/docs', '/docs/'];
-    const nonNavigationUrls = ['/docs/foo', '/docs/foo/', '/docs/foo/bar'];
+    let navigationUrls = ['/docs', '/docs/'];
+    let nonNavigationUrls = ['/docs/foo', '/docs/foo/', '/docs/foo/bar'];
 
     navigationUrls.forEach(url => expect(isNavigationUrl(url)).toBeTruthy(url));
     nonNavigationUrls.forEach(url => expect(isNavigationUrl(url)).toBeFalsy(url));

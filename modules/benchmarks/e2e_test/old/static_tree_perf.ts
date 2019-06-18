@@ -11,7 +11,7 @@ import {runClickBenchmark} from '@angular/testing/src/perf_util';
 
 describe('ng2 static tree benchmark', function() {
 
-  const URL = 'benchmarks/src/static_tree/tree_benchmark.html';
+  let URL = 'benchmarks/src/static_tree/tree_benchmark.html';
 
   afterEach(verifyNoBrowserErrors);
 

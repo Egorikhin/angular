@@ -1,22 +1,22 @@
-const path = require('canonical-path');
-const fs = require('fs-extra');
-const glob = require('glob');
-const shelljs = require('shelljs');
+let path = require('canonical-path');
+let fs = require('fs-extra');
+let glob = require('glob');
+let shelljs = require('shelljs');
 
-const exampleBoilerPlate = require('./example-boilerplate');
+let exampleBoilerPlate = require('./example-boilerplate');
 
 describe('example-boilerplate tool', () => {
   describe('add', () => {
-    const sharedDir = path.resolve(__dirname, 'shared');
-    const sharedNodeModulesDir = path.resolve(sharedDir, 'node_modules');
-    const BPFiles = {
+    let sharedDir = path.resolve(__dirname, 'shared');
+    let sharedNodeModulesDir = path.resolve(sharedDir, 'node_modules');
+    let BPFiles = {
       cli: 19,
       i18n: 2,
       universal: 2,
       systemjs: 7,
       common: 1
     };
-    const exampleFolders = ['a/b', 'c/d'];
+    let exampleFolders = ['a/b', 'c/d'];
 
     beforeEach(() => {
       spyOn(fs, 'ensureSymlinkSync');
@@ -27,7 +27,7 @@ describe('example-boilerplate tool', () => {
     });
 
     it('should process all the example folders', () => {
-      const examplesDir = path.resolve(__dirname, '../../content/examples');
+      let examplesDir = path.resolve(__dirname, '../../content/examples');
       exampleBoilerPlate.add();
       expect(exampleBoilerPlate.getFoldersContaining)
           .toHaveBeenCalledWith(examplesDir, 'example-config.json', 'node_modules');
@@ -49,7 +49,7 @@ describe('example-boilerplate tool', () => {
     });
 
     it('should copy all the source boilerplate files for systemjs', () => {
-      const boilerplateDir = path.resolve(sharedDir, 'boilerplate');
+      let boilerplateDir = path.resolve(sharedDir, 'boilerplate');
       exampleBoilerPlate.loadJsonFile.and.callFake(filePath => filePath.indexOf('a/b') !== -1 ? { projectType: 'systemjs' } : {})
       exampleBoilerPlate.add();
       expect(exampleBoilerPlate.copyFile).toHaveBeenCalledTimes(
@@ -63,7 +63,7 @@ describe('example-boilerplate tool', () => {
     });
 
     it('should copy all the source boilerplate files for cli', () => {
-      const boilerplateDir = path.resolve(sharedDir, 'boilerplate');
+      let boilerplateDir = path.resolve(sharedDir, 'boilerplate');
       exampleBoilerPlate.add();
       expect(exampleBoilerPlate.copyFile).toHaveBeenCalledTimes(
         (BPFiles.cli * exampleFolders.length) +
@@ -75,7 +75,7 @@ describe('example-boilerplate tool', () => {
     });
 
     it('should copy all the source boilerplate files for i18n', () => {
-      const boilerplateDir = path.resolve(sharedDir, 'boilerplate');
+      let boilerplateDir = path.resolve(sharedDir, 'boilerplate');
       exampleBoilerPlate.loadJsonFile.and.callFake(filePath => filePath.indexOf('a/b') !== -1 ? { projectType: 'i18n' } : {})
       exampleBoilerPlate.add();
       expect(exampleBoilerPlate.copyFile).toHaveBeenCalledTimes(
@@ -90,7 +90,7 @@ describe('example-boilerplate tool', () => {
     });
 
     it('should copy all the source boilerplate files for universal', () => {
-      const boilerplateDir = path.resolve(sharedDir, 'boilerplate');
+      let boilerplateDir = path.resolve(sharedDir, 'boilerplate');
       exampleBoilerPlate.loadJsonFile.and.callFake(filePath => filePath.indexOf('a/b') !== -1 ? { projectType: 'universal' } : {})
       exampleBoilerPlate.add();
       expect(exampleBoilerPlate.copyFile).toHaveBeenCalledTimes(
@@ -123,7 +123,7 @@ describe('example-boilerplate tool', () => {
   describe('getFoldersContaining', () => {
     it('should use glob.sync', () => {
       spyOn(glob, 'sync').and.returnValue(['a/b/config.json', 'c/d/config.json']);
-      const result = exampleBoilerPlate.getFoldersContaining('base/path', 'config.json', 'node_modules');
+      let result = exampleBoilerPlate.getFoldersContaining('base/path', 'config.json', 'node_modules');
       expect(glob.sync).toHaveBeenCalledWith(path.resolve('base/path/**/config.json'), { ignore: [path.resolve('base/path/**/node_modules/**')] });
       expect(result).toEqual(['a/b', 'c/d']);
     });
@@ -145,14 +145,14 @@ describe('example-boilerplate tool', () => {
   describe('loadJsonFile', () => {
     it('should use fs.readJsonSync', () => {
       spyOn(fs, 'readJsonSync').and.returnValue({ some: 'value' });
-      const result = exampleBoilerPlate.loadJsonFile('some/file');
+      let result = exampleBoilerPlate.loadJsonFile('some/file');
       expect(fs.readJsonSync).toHaveBeenCalledWith('some/file', {throws: false});
       expect(result).toEqual({ some: 'value' });
     });
 
     it('should return an empty object if readJsonSync fails', () => {
       spyOn(fs, 'readJsonSync').and.returnValue(null);
-      const result = exampleBoilerPlate.loadJsonFile('some/file');
+      let result = exampleBoilerPlate.loadJsonFile('some/file');
       expect(result).toEqual({});
     });
   });

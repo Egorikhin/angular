@@ -11,7 +11,7 @@ import {browser, by, element} from 'protractor';
 import {verifyNoBrowserErrors} from '../../../e2e_util/e2e_util';
 
 describe('ngUpgrade', function() {
-  const URL = '/';
+  let URL = '/';
 
   beforeEach(function() {
     browser.rootEl = 'body';
@@ -24,11 +24,11 @@ describe('ngUpgrade', function() {
   });
 
   it('should bootstrap AngularJS and Angular apps together', function() {
-    const ng1NameInput = element(by.css('input[ng-model="name"]'));
+    let ng1NameInput = element(by.css('input[ng-model="name"]'));
     expect(ng1NameInput.getAttribute('value')).toEqual('World');
 
-    const projectedGreetingEl = element(by.css('.projected-content .greeting'));
-    const upgradedNg1ComponentEl = element(by.css('ng1-user'));
+    let projectedGreetingEl = element(by.css('.projected-content .greeting'));
+    let upgradedNg1ComponentEl = element(by.css('ng1-user'));
 
     expect(projectedGreetingEl.getText()).toMatch(/World!$/);
     expect(upgradedNg1ComponentEl.getText()).toMatch(/^User: World/);

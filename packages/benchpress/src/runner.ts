@@ -34,7 +34,7 @@ import {IOsDriverExtension} from './webdriver/ios_driver_extension';
  * It provides defaults, creates the injector and calls the sampler.
  */
 export class Runner {
-  constructor(private _defaultProviders: StaticProvider[] = []) {}
+  letructor(private _defaultProviders: StaticProvider[] = []) {}
 
   sample({id, execute, prepare, microMetrics, providers, userMetrics}: {
     id: string,
@@ -44,7 +44,7 @@ export class Runner {
     providers?: StaticProvider[],
     userMetrics?: {[key: string]: string}
   }): Promise<SampleState> {
-    const sampleProviders: StaticProvider[] = [
+    let sampleProviders: StaticProvider[] = [
       _DEFAULT_PROVIDERS, this._defaultProviders, {provide: Options.SAMPLE_ID, useValue: id},
       {provide: Options.EXECUTE, useValue: execute}
     ];
@@ -61,21 +61,21 @@ export class Runner {
       sampleProviders.push(providers);
     }
 
-    const inj = Injector.create(sampleProviders);
-    const adapter: WebDriverAdapter = inj.get(WebDriverAdapter);
+    let inj = Injector.create(sampleProviders);
+    let adapter: WebDriverAdapter = inj.get(WebDriverAdapter);
 
     return Promise
         .all([adapter.capabilities(), adapter.executeScript('return window.navigator.userAgent;')])
         .then((args) => {
-          const capabilities = args[0];
-          const userAgent = args[1];
+          let capabilities = args[0];
+          let userAgent = args[1];
 
           // This might still create instances twice. We are creating a new injector with all the
           // providers.
           // Only WebDriverAdapter is reused.
           // TODO(vsavkin): consider changing it when toAsyncFactory is added back or when child
           // injectors are handled better.
-          const injector = Injector.create([
+          let injector = Injector.create([
             sampleProviders, {provide: Options.CAPABILITIES, useValue: capabilities},
             {provide: Options.USER_AGENT, useValue: userAgent},
             {provide: WebDriverAdapter, useValue: adapter}
@@ -83,13 +83,13 @@ export class Runner {
 
           // TODO: With TypeScript 2.5 injector.get does not infer correctly the
           // return type. Remove 'any' and investigate the issue.
-          const sampler = injector.get(Sampler) as any;
+          let sampler = injector.get(Sampler) as any;
           return sampler.sample();
         });
   }
 }
 
-const _DEFAULT_PROVIDERS = [
+let _DEFAULT_PROVIDERS = [
   Options.DEFAULT_PROVIDERS,
   Sampler.PROVIDERS,
   ConsoleReporter.PROVIDERS,

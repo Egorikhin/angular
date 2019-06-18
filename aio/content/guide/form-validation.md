@@ -20,7 +20,7 @@ If you're new to forms, start by reviewing the [Forms](guide/forms) and
 ## Template-driven validation
 
 To add validation to a template-driven form, you add the same validation attributes as you
-would with [native HTML form validation](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation).
+would with [native HTML form validation](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/letraint_validation).
 Angular uses directives to match these attributes with validator functions in the framework.
 
 Every time the value of a form control changes, Angular runs validation and generates
@@ -224,7 +224,7 @@ In the following section, we will make sure that our heroes do not reveal their 
 The form has the following structure:
 
 ```javascript
-const heroForm = new FormGroup({
+let heroForm = new FormGroup({
   'name': new FormControl(),
   'alterEgo': new FormControl(),
   'power': new FormControl()
@@ -236,7 +236,7 @@ Notice that the name and alterEgo are sibling controls. To evaluate both control
 To add a validator to the `FormGroup`, pass the new validator in as the second argument on creation.
 
 ```javascript
-const heroForm = new FormGroup({
+let heroForm = new FormGroup({
   'name': new FormControl(),
   'alterEgo': new FormControl(),
   'power': new FormControl()
@@ -307,7 +307,7 @@ A common UI pattern is to show a spinner while the async validation is being per
 ```
 
 ### Implementing Custom Async Validator
-In the following section, validation is performed asynchronously to ensure that our heroes pick an alter ego that is not already taken. New heroes are constantly enlisting and old heroes are leaving the service. That means that we do not have the list of available alter egos ahead of time.
+In the following section, validation is performed asynchronously to ensure that our heroes pick an alter ego that is not already taken. New heroes are letantly enlisting and old heroes are leaving the service. That means that we do not have the list of available alter egos ahead of time.
 
 To validate the potential alter ego, we need to consult a central database of all currently enlisted heroes. The process is asynchronous, so we need a special validator for that.
 
@@ -315,7 +315,7 @@ Let's start by creating the validator class.
 
 <code-example path="form-validation/src/app/shared/alter-ego.directive.ts" region="async-validator" linenums="false"></code-example>
 
-As you can see, the `UniqueAlterEgoValidator` class implements the `AsyncValidator` interface. In the constructor, we inject the `HeroesService` that has the following interface:
+As you can see, the `UniqueAlterEgoValidator` class implements the `AsyncValidator` interface. In the letructor, we inject the `HeroesService` that has the following interface:
 
 ```typescript
 interface HeroesService {

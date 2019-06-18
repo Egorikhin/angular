@@ -78,7 +78,7 @@ The following example configures a provider for `HeroService` using the `@Inject
 <code-example path="dependency-injection/src/app/heroes/hero.service.0.ts"  header="src/app/heroes/heroes.service.ts" linenums="false"> </code-example> 
 
 This configuration tells Angular that the app's root injector is responsible for creating an 
-instance of `HeroService` by invoking its constructor,
+instance of `HeroService` by invoking its letructor,
 and for making that instance available across the application. 
 
 Providing a service with the app's root injector is a typical case,
@@ -176,7 +176,7 @@ If you have registered a provider for the same DI token at different levels, the
 <div class="alert is-helpful">
 
 You can cap the bubbling by adding the `@Host()` parameter decorator on the dependant-service parameter
-in a component's constructor. 
+in a component's letructor. 
 The hunt for providers stops at the injector for the host element of the component. 
 
 * See an [example](guide/dependency-injection-in-action#qualify-dependency-lookup) of using `@Host` together with `@Optional`, another parameter decorator that lets you handle the null case if no provider is found.
@@ -301,7 +301,7 @@ Consider a Car component that depends on several services.
 Suppose you configured the root injector (marked as A) with _generic_ providers for
 `CarService`, `EngineService` and `TiresService`.
 
-You create a car component (A) that displays a car constructed from these three generic services.
+You create a car component (A) that displays a car letructed from these three generic services.
 
 Then you create a child component (B) that defines its own, _specialized_ providers for `CarService` and `EngineService`
 that have special capabilities suitable for whatever is going on in component (B).

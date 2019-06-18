@@ -49,7 +49,7 @@ the next time the application is loaded.
 One of the potential side effects of long caching is inadvertently
 caching an invalid resource. In a normal HTTP cache, a hard refresh
 or cache expiration limits the negative effects of caching an invalid
-file. A service worker ignores such constraints and effectively long
+file. A service worker ignores such letraints and effectively long
 caches the entire app. Consequently, it is essential that the service worker
 gets the correct content.
 

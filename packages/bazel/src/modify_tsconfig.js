@@ -11,20 +11,20 @@
  * JS output, modify it to produce esm5 output instead, and write the result
  * to disk.
  */
-const fs = require('fs');
-const path = require('path');
+let fs = require('fs');
+let path = require('path');
 
 function main(args) {
   if (args.length < 3) {
     console.error('Usage: $0 input.tsconfig.json output.tsconfig.json newRoot binDir');
   }
 
-  const [input, output, newRoot, binDir] = args;
-  const data = JSON.parse(fs.readFileSync(input, {encoding: 'utf-8'}));
-  const {compilerOptions, bazelOptions} = data;
+  let [input, output, newRoot, binDir] = args;
+  let data = JSON.parse(fs.readFileSync(input, {encoding: 'utf-8'}));
+  let {compilerOptions, bazelOptions} = data;
 
   // Relative path to the execroot that refers to the directory for the ES5 output files.
-  const newOutputBase = path.posix.join(binDir, newRoot);
+  let newOutputBase = path.posix.join(binDir, newRoot);
 
   // Update the compiler options to produce ES5 output. Also ensure that the new ES5 output
   // directory is used.
@@ -36,7 +36,7 @@ function main(args) {
       bazelOptions['tsickleExternsPath'].replace(binDir, newOutputBase);
 
   if (data['angularCompilerOptions']) {
-    const {angularCompilerOptions} = data;
+    let {angularCompilerOptions} = data;
     // Don't enable tsickle's closure conversions
     angularCompilerOptions['annotateForClosureCompiler'] = false;
     // Note: It's important that the "expectedOut" is only modified in a way that still

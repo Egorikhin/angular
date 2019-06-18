@@ -6,11 +6,11 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const http = require('http');
-const minimist = require('minimist');
+let http = require('http');
+let minimist = require('minimist');
 
-const {port} = minimist(process.argv);
-const server = new http.Server();
+let {port} = minimist(process.argv);
+let server = new http.Server();
 
 // Basic request handler so that it could respond to fake requests.
 server.on('request', (req, res) => {

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export const expanding_row_css = `
+export let expanding_row_css = `
   ::ng-deep [cfcExpandingRowHost] {
     display: block;
     margin-bottom: 2;

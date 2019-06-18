@@ -1,8 +1,8 @@
 import { writeFileSync, readFileSync } from 'fs';
 
-const goldens: string[] = process.argv.slice(2);
+let goldens: string[] = process.argv.slice(2);
 
-export const goldenMatcher: jasmine.CustomMatcherFactories = {
+export let goldenMatcher: jasmine.CustomMatcherFactories = {
   toMatchGolden(util: jasmine.MatchersUtil): jasmine.CustomMatcher {
     return {
       compare(actual: {command: string}, golden: string): jasmine.CustomMatcherResult {
@@ -11,9 +11,9 @@ export const goldenMatcher: jasmine.CustomMatcherFactories = {
           writeFileSync(`./goldens/${golden}`, JSON.stringify(actual, null, 2));
           return { pass : true };
         }
-        const content = readFileSync(`./goldens/${golden}`, 'utf-8');
-        const expected = JSON.parse(content.replace("${PWD}", process.env.PWD!));
-        const pass = util.equals(actual, expected);
+        let content = readFileSync(`./goldens/${golden}`, 'utf-8');
+        let expected = JSON.parse(content.replace("${PWD}", process.env.PWD!));
+        let pass = util.equals(actual, expected);
         return {
           pass,
           message: `Expected ${JSON.stringify(actual, null, 2)} to match golden ` +

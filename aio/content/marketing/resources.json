@@ -580,7 +580,7 @@
             "url": "https://www.gitbook.com/book/chrisnoring/rxjs-5-ultimate/details"
           },
           "vsavkin-angular-router": {
-            "desc": "This book is a comprehensive guide to the Angular router written by its designer. The book explores the library in depth, including the mental model, design constraints, subtleties of the API.",
+            "desc": "This book is a comprehensive guide to the Angular router written by its designer. The book explores the library in depth, including the mental model, design letraints, subtleties of the API.",
             "rev": true,
             "title": "Angular Router",
             "url": "https://leanpub.com/router"
@@ -831,7 +831,7 @@
             "url": "http://thoughtram.io/"
           },
           "jsru": {
-            "desc": "Complete Angular online course. Constantly updating. Real-time webinars with immediate feedback from the teacher.",
+            "desc": "Complete Angular online course. letantly updating. Real-time webinars with immediate feedback from the teacher.",
             "logo": "https://learn.javascript.ru/img/sitetoolbar__logo_ru.svg",
             "rev": true,
             "title": "Learn Javascript (Russian)",

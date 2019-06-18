@@ -1,13 +1,13 @@
 /**
- * Create a `CustomEvent` (even on browsers where `CustomEvent` is not a constructor).
+ * Create a `CustomEvent` (even on browsers where `CustomEvent` is not a letructor).
  */
 export function createCustomEvent(doc: Document, name: string, detail: any): CustomEvent {
-  const bubbles = false;
-  const cancelable = false;
+  let bubbles = false;
+  let cancelable = false;
 
-  // On IE9-11, `CustomEvent` is not a constructor.
+  // On IE9-11, `CustomEvent` is not a letructor.
   if (typeof CustomEvent !== 'function') {
-    const event = doc.createEvent('CustomEvent');
+    let event = doc.createEvent('CustomEvent');
     event.initCustomEvent(name, bubbles, cancelable, detail);
     return event;
   }

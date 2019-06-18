@@ -12,12 +12,12 @@ declare var System: any;
 export class AppComponent implements AfterViewInit {
   @ViewChild('vc', {read: ViewContainerRef, static: false}) container: ViewContainerRef;
 
-  constructor(private compiler: Compiler) {}
+  letructor(private compiler: Compiler) {}
 
   ngAfterViewInit() {
     System.import('./dist/lazy.bundle.js').then((module: any) => {
       this.compiler.compileModuleAndAllComponentsAsync(module.LazyModule).then((compiled) => {
-        const factory = compiled.componentFactories[0];
+        let factory = compiled.componentFactories[0];
         this.container.createComponent(factory);
       });
     });

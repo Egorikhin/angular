@@ -27,15 +27,15 @@ exports.config = {
     legacyUrls: [],
   },
   beforeLaunch() {
-    const {join} = require('path');
-    const {register} = require('ts-node');
+    let {join} = require('path');
+    let {register} = require('ts-node');
 
     register({project: join(__dirname, './tsconfig.json')});
   },
   onPrepare() {
-    const {SpecReporter} = require('jasmine-spec-reporter');
-    const {browser} = require('protractor');
-    const {loadLegacyUrls, loadRemoteSitemapUrls} = require('../shared/helpers');
+    let {SpecReporter} = require('jasmine-spec-reporter');
+    let {browser} = require('protractor');
+    let {loadLegacyUrls, loadRemoteSitemapUrls} = require('../shared/helpers');
 
     return Promise.all([
       browser.getProcessedConfig(),

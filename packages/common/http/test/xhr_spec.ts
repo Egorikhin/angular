@@ -16,16 +16,16 @@ import {toArray} from 'rxjs/operators';
 import {MockXhrFactory} from './xhr_mock';
 
 function trackEvents(obs: Observable<HttpEvent<any>>): HttpEvent<any>[] {
-  const events: HttpEvent<any>[] = [];
+  let events: HttpEvent<any>[] = [];
   obs.subscribe(event => events.push(event), err => events.push(err));
   return events;
 }
 
-const TEST_POST = new HttpRequest('POST', '/test', 'some body', {
+let TEST_POST = new HttpRequest('POST', '/test', 'some body', {
   responseType: 'text',
 });
 
-const XSSI_PREFIX = ')]}\'\n';
+let XSSI_PREFIX = ')]}\'\n';
 
 {
   describe('XhrBackend', () => {
@@ -36,7 +36,7 @@ const XSSI_PREFIX = ')]}\'\n';
       backend = new HttpXhrBackend(factory);
     });
     it('emits status immediately', () => {
-      const events = trackEvents(backend.handle(TEST_POST));
+      let events = trackEvents(backend.handle(TEST_POST));
       expect(events.length).toBe(1);
       expect(events[0].type).toBe(HttpEventType.Sent);
     });
@@ -51,7 +51,7 @@ const XSSI_PREFIX = ')]}\'\n';
       expect(factory.mock.body).toBe('some body');
     });
     it('sets outgoing headers, including default headers', () => {
-      const post = TEST_POST.clone({
+      let post = TEST_POST.clone({
         setHeaders: {
           'Test': 'Test header',
         },
@@ -64,7 +64,7 @@ const XSSI_PREFIX = ')]}\'\n';
       });
     });
     it('sets outgoing headers, including overriding defaults', () => {
-      const setHeaders = {
+      let setHeaders = {
         'Test': 'Test header',
         'Accept': 'text/html',
         'Content-Type': 'text/css',
@@ -77,57 +77,57 @@ const XSSI_PREFIX = ')]}\'\n';
       expect(factory.mock.withCredentials).toBe(true);
     });
     it('handles a text response', () => {
-      const events = trackEvents(backend.handle(TEST_POST));
+      let events = trackEvents(backend.handle(TEST_POST));
       factory.mock.mockFlush(200, 'OK', 'some response');
       expect(events.length).toBe(2);
       expect(events[1].type).toBe(HttpEventType.Response);
       expect(events[1] instanceof HttpResponse).toBeTruthy();
-      const res = events[1] as HttpResponse<string>;
+      let res = events[1] as HttpResponse<string>;
       expect(res.body).toBe('some response');
       expect(res.status).toBe(200);
       expect(res.statusText).toBe('OK');
     });
     it('handles a json response', () => {
-      const events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
+      let events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
       factory.mock.mockFlush(200, 'OK', JSON.stringify({data: 'some data'}));
       expect(events.length).toBe(2);
-      const res = events[1] as HttpResponse<{data: string}>;
+      let res = events[1] as HttpResponse<{data: string}>;
       expect(res.body !.data).toBe('some data');
     });
     it('handles a blank json response', () => {
-      const events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
+      let events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
       factory.mock.mockFlush(200, 'OK', '');
       expect(events.length).toBe(2);
-      const res = events[1] as HttpResponse<{data: string}>;
+      let res = events[1] as HttpResponse<{data: string}>;
       expect(res.body).toBeNull();
     });
     it('handles a json error response', () => {
-      const events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
+      let events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
       factory.mock.mockFlush(500, 'Error', JSON.stringify({data: 'some data'}));
       expect(events.length).toBe(2);
-      const res = events[1] as any as HttpErrorResponse;
+      let res = events[1] as any as HttpErrorResponse;
       expect(res.error !.data).toBe('some data');
     });
     it('handles a json error response with XSSI prefix', () => {
-      const events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
+      let events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
       factory.mock.mockFlush(500, 'Error', XSSI_PREFIX + JSON.stringify({data: 'some data'}));
       expect(events.length).toBe(2);
-      const res = events[1] as any as HttpErrorResponse;
+      let res = events[1] as any as HttpErrorResponse;
       expect(res.error !.data).toBe('some data');
     });
     it('handles a json string response', () => {
-      const events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
+      let events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
       expect(factory.mock.responseType).toEqual('text');
       factory.mock.mockFlush(200, 'OK', JSON.stringify('this is a string'));
       expect(events.length).toBe(2);
-      const res = events[1] as HttpResponse<string>;
+      let res = events[1] as HttpResponse<string>;
       expect(res.body).toEqual('this is a string');
     });
     it('handles a json response with an XSSI prefix', () => {
-      const events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
+      let events = trackEvents(backend.handle(TEST_POST.clone({responseType: 'json'})));
       factory.mock.mockFlush(200, 'OK', XSSI_PREFIX + JSON.stringify({data: 'some data'}));
       expect(events.length).toBe(2);
-      const res = events[1] as HttpResponse<{data: string}>;
+      let res = events[1] as HttpResponse<{data: string}>;
       expect(res.body !.data).toBe('some data');
     });
     it('emits unsuccessful responses via the error path', done => {
@@ -159,7 +159,7 @@ const XSSI_PREFIX = ')]}\'\n';
                 HttpEventType.DownloadProgress,
                 HttpEventType.Response,
               ]);
-              const [progress1, progress2, response] = [
+              let [progress1, progress2, response] = [
                 events[2] as HttpDownloadProgressEvent, events[3] as HttpDownloadProgressEvent,
                 events[4] as HttpResponse<string>
               ];
@@ -188,7 +188,7 @@ const XSSI_PREFIX = ')]}\'\n';
                 HttpEventType.UploadProgress,
                 HttpEventType.Response,
               ]);
-              const [progress1, progress2] = [
+              let [progress1, progress2] = [
                 events[1] as HttpUploadProgressEvent,
                 events[2] as HttpUploadProgressEvent,
               ];
@@ -246,7 +246,7 @@ const XSSI_PREFIX = ')]}\'\n';
                 HttpEventType.DownloadProgress,
                 HttpEventType.Response,
               ]);
-              const partial = events[1] as HttpHeaderResponse;
+              let partial = events[1] as HttpHeaderResponse;
               expect(partial.headers.get('Content-Type')).toEqual('text/plain');
               expect(partial.headers.get('Test')).toEqual('Test header');
               done();
@@ -256,7 +256,7 @@ const XSSI_PREFIX = ')]}\'\n';
         factory.mock.mockFlush(200, 'OK', 'Done');
       });
       it('are unsubscribed along with the main request', () => {
-        const sub = backend.handle(TEST_POST.clone({reportProgress: true})).subscribe();
+        let sub = backend.handle(TEST_POST.clone({reportProgress: true})).subscribe();
         expect(factory.mock.listeners.progress).not.toBeUndefined();
         sub.unsubscribe();
         expect(factory.mock.listeners.progress).toBeUndefined();
@@ -288,7 +288,7 @@ const XSSI_PREFIX = ')]}\'\n';
         backend.handle(TEST_POST).pipe(toArray()).subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
-          const response = events[1] as HttpResponse<string>;
+          let response = events[1] as HttpResponse<string>;
           expect(response.url).toBe('/response/url');
           done();
         });
@@ -299,7 +299,7 @@ const XSSI_PREFIX = ')]}\'\n';
         backend.handle(TEST_POST).pipe(toArray()).subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
-          const response = events[1] as HttpResponse<string>;
+          let response = events[1] as HttpResponse<string>;
           expect(response.url).toBe('/response/url');
           done();
         });
@@ -310,7 +310,7 @@ const XSSI_PREFIX = ')]}\'\n';
         backend.handle(TEST_POST).pipe(toArray()).subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
-          const response = events[1] as HttpResponse<string>;
+          let response = events[1] as HttpResponse<string>;
           expect(response.url).toBe('/test');
           done();
         });
@@ -322,7 +322,7 @@ const XSSI_PREFIX = ')]}\'\n';
         backend.handle(TEST_POST).pipe(toArray()).subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
-          const response = events[1] as HttpResponse<string>;
+          let response = events[1] as HttpResponse<string>;
           expect(response.status).toBe(204);
           done();
         });
@@ -332,7 +332,7 @@ const XSSI_PREFIX = ')]}\'\n';
         backend.handle(TEST_POST).pipe(toArray()).subscribe(events => {
           expect(events.length).toBe(2);
           expect(events[1].type).toBe(HttpEventType.Response);
-          const response = events[1] as HttpResponse<string>;
+          let response = events[1] as HttpResponse<string>;
           expect(response.status).toBe(200);
           done();
         });

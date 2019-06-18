@@ -8,7 +8,7 @@
 
 import * as path from 'path';
 
-const EXT = /(\.ts|\.d\.ts|\.js|\.jsx|\.tsx)$/;
+let EXT = /(\.ts|\.d\.ts|\.js|\.jsx|\.tsx)$/;
 
 export interface TsConfigOptions {
   defaultTsConfig: any;
@@ -28,7 +28,7 @@ export interface TsConfigOptions {
  * @param options
  */
 export function createTsConfig(options: TsConfigOptions) {
-  const result = options.defaultTsConfig;
+  let result = options.defaultTsConfig;
 
   return {
     'compilerOptions': {
@@ -92,7 +92,7 @@ export function createTsConfig(options: TsConfigOptions) {
 }
 
 function srcToExpectedOut(srcFile: string, suffix: string, options: TsConfigOptions): string {
-  const baseName = path.basename(srcFile).replace(EXT, '');
+  let baseName = path.basename(srcFile).replace(EXT, '');
   return path.join(
              path.relative(options.rootDir, options.outDir),
              path.relative(options.rootDir, path.dirname(srcFile)), baseName) +

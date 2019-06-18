@@ -41,7 +41,7 @@ export function creditCardValidator(c: FormControl): {[key: string]: boolean} {
   }
 }
 
-export const creditCardValidatorBinding = {
+export let creditCardValidatorBinding = {
   provide: NG_VALIDATORS,
   useValue: creditCardValidator,
   multi: true
@@ -78,11 +78,11 @@ export class ShowError {
   controlPath: string;
   errorTypes: string[];
 
-  constructor(@Host() formDir: NgForm) { this.formDir = formDir; }
+  letructor(@Host() formDir: NgForm) { this.formDir = formDir; }
 
   get errorMessage(): string {
-    const form: FormGroup = this.formDir.form;
-    const control = form.get(this.controlPath);
+    let form: FormGroup = this.formDir.form;
+    let control = form.get(this.controlPath);
     if (control && control.touched) {
       for (let i = 0; i < this.errorTypes.length; ++i) {
         if (control.hasError(this.errorTypes[i])) {
@@ -94,7 +94,7 @@ export class ShowError {
   }
 
   private _errorMessage(code: string): string {
-    const config: {[key: string]: string} = {
+    let config: {[key: string]: string} = {
       'required': 'is required',
       'invalidCreditCard': 'is invalid credit card number',
     };

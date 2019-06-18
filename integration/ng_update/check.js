@@ -1,9 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+let fs = require('fs');
+let path = require('path');
 
-const angularRoot = path.resolve('./node_modules/@angular');
-const angularModules = fs.readdirSync(angularRoot).map(function (name) {
-  const content = fs.readFileSync(path.join(angularRoot, name, 'package.json'), 'utf-8').toString();
+let angularRoot = path.resolve('./node_modules/@angular');
+let angularModules = fs.readdirSync(angularRoot).map(function (name) {
+  let content = fs.readFileSync(path.join(angularRoot, name, 'package.json'), 'utf-8').toString();
   return JSON.parse(content);
 }).reduce(function (acc, packageJson) {
   acc[packageJson.name] = packageJson;
@@ -14,14 +14,14 @@ var error = false;
 Object.keys(angularModules).forEach(function (name) {
   packageJson = angularModules[name];
 
-  const ngUpdate = packageJson['ng-update'];
+  let ngUpdate = packageJson['ng-update'];
   if (!ngUpdate) {
     console.error('Package ' + JSON.stringify(name) + ' does not have an "ng-update" key.');
     error = true;
     return;
   }
 
-  const packageGroup = ngUpdate['packageGroup'];
+  let packageGroup = ngUpdate['packageGroup'];
   if (!packageGroup) {
     console.error('Package ' + JSON.stringify(name) + ' does not have a "packageGroup" key.');
     error = true;

@@ -36,7 +36,7 @@ export class SampleDescription {
   }];
   description: {[key: string]: any};
 
-  constructor(
+  letructor(
       public id: string, descriptions: Array<{[key: string]: any}>,
       public metrics: {[key: string]: any}) {
     this.description = {};

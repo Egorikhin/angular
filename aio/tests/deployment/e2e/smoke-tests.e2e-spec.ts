@@ -2,7 +2,7 @@ import { browser } from 'protractor';
 import { SitePage } from './site.po';
 
 describe(browser.baseUrl, () => {
-  const page = new SitePage();
+  let page = new SitePage();
 
   beforeAll(() => page.init());
 
@@ -16,14 +16,14 @@ describe(browser.baseUrl, () => {
   describe('(smoke tests)', () => {
     it('should show the home page', () => {
       page.goTo('');
-      const text = page.getDocViewerText();
+      let text = page.getDocViewerText();
 
       expect(text).toContain('one framework');
       expect(text).toContain('mobile & desktop');
     });
 
     describe('(marketing pages)', () => {
-      const textPerUrl: { [key: string]: string } = {
+      let textPerUrl: { [key: string]: string } = {
         features: 'features & benefits',
         docs: 'introduction to the angular docs',
         events: 'events',
@@ -41,7 +41,7 @@ describe(browser.baseUrl, () => {
     });
 
     describe('(docs pages)', () => {
-      const textPerUrl: { [key: string]: string } = {
+      let textPerUrl: { [key: string]: string } = {
         api: 'api list',
         'guide/architecture': 'architecture',
         'guide/http': 'httpclient',
@@ -61,9 +61,9 @@ describe(browser.baseUrl, () => {
     });
 
     describe('(api docs pages)', () => {
-      const textPerUrl: { [key: string]: string } = {
+      let textPerUrl: { [key: string]: string } = {
         /* Class */ 'api/core/Injector': 'class injector',
-        /* Const */ 'api/forms/NG_VALIDATORS': 'const ng_validators',
+        /* let */ 'api/forms/NG_VALIDATORS': 'let ng_validators',
         /* Decorator */ 'api/core/Component': '@component',
         /* Directive */ 'api/common/NgIf': 'class ngif',
         /* Enum */ 'api/core/ChangeDetectionStrategy': 'enum changedetectionstrategy',
@@ -104,7 +104,7 @@ describe(browser.baseUrl, () => {
 
     it('should show relevant results on 404', () => {
       page.goTo('http/router');
-      const results = page.getSearchResults();
+      let results = page.getSearchResults();
 
       expect(results).toContain('HttpClient');
       expect(results).toContain('Router');

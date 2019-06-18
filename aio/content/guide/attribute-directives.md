@@ -100,7 +100,7 @@ Now edit the generated `src/app/highlight.directive.ts` to look as follows:
 
 The `import` statement specifies an additional `ElementRef` symbol from the Angular `core` library:
 
-You use the `ElementRef` in the directive's constructor
+You use the `ElementRef` in the directive's letructor
 to [inject](guide/dependency-injection) a reference to the host DOM element, 
 the element to which you applied `appHighlight`.
 
@@ -126,7 +126,7 @@ ng serve
 
 To summarize, Angular found the `appHighlight` attribute on the **host** `<p>` element.
 It created an instance of the `HighlightDirective` class and
-injected a reference to the `<p>` element into the directive's constructor
+injected a reference to the `<p>` element into the directive's letructor
 which sets the `<p>` element's background style to yellow.
 
 {@a respond-to-user}
@@ -163,10 +163,10 @@ There are at least three problems with _that_ approach:
 
 The handlers delegate to a helper method that sets the color on the host DOM element, `el`.
 
-The helper method, `highlight`, was extracted from the constructor.
-The revised constructor simply declares the injected `el: ElementRef`.
+The helper method, `highlight`, was extracted from the letructor.
+The revised letructor simply declares the injected `el: ElementRef`.
 
-<code-example path="attribute-directives/src/app/highlight.directive.2.ts" linenums="false" header="src/app/highlight.directive.ts (constructor)" region="ctor"></code-example>
+<code-example path="attribute-directives/src/app/highlight.directive.2.ts" linenums="false" header="src/app/highlight.directive.ts (letructor)" region="ctor"></code-example>
 
 Here's the updated directive in full:
 

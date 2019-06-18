@@ -9,11 +9,11 @@
 import {$, browser} from 'protractor';
 import {logging} from 'selenium-webdriver';
 
-const fs = require('fs');
-const sourceMap = require('source-map');
+let fs = require('fs');
+let sourceMap = require('source-map');
 
 describe('sourcemaps', function() {
-  const URL = '/';
+  let URL = '/';
 
   it('should map sources', function() {
     browser.get(URL);
@@ -24,7 +24,7 @@ describe('sourcemaps', function() {
       let errorLine: number = null;
       let errorColumn: number = null;
       logs.forEach(function(log: any) {
-        const match = log.message.match(/\.createError\s+\(.+:(\d+):(\d+)/m);
+        let match = log.message.match(/\.createError\s+\(.+:(\d+):(\d+)/m);
         if (match) {
           errorLine = parseInt(match[1]);
           errorColumn = parseInt(match[2]);
@@ -35,18 +35,18 @@ describe('sourcemaps', function() {
       expect(errorColumn).not.toBeNull();
 
 
-      const content =
+      let content =
           fs.readFileSync(require.resolve('../../src/sourcemap/index.js')).toString('utf8');
-      const marker = '//# sourceMappingURL=data:application/json;base64,';
-      const index = content.indexOf(marker);
-      const sourceMapData =
+      let marker = '//# sourceMappingURL=data:application/json;base64,';
+      let index = content.indexOf(marker);
+      let sourceMapData =
           Buffer.from(content.substring(index + marker.length), 'base64').toString('utf8');
 
-      const decoder = new sourceMap.SourceMapConsumer(JSON.parse(sourceMapData));
+      let decoder = new sourceMap.SourceMapConsumer(JSON.parse(sourceMapData));
 
-      const originalPosition = decoder.originalPositionFor({line: errorLine, column: errorColumn});
+      let originalPosition = decoder.originalPositionFor({line: errorLine, column: errorColumn});
 
-      const sourceCodeLines = fs.readFileSync(require.resolve('../../src/sourcemap/index.ts'), {
+      let sourceCodeLines = fs.readFileSync(require.resolve('../../src/sourcemap/index.ts'), {
                                   encoding: 'UTF-8'
                                 }).split('\n');
       expect(sourceCodeLines[originalPosition.line - 1])

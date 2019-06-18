@@ -13,7 +13,7 @@ They should focus on presenting data and delegate data access to a service.
 In this tutorial, you'll create a `HeroService` that all application classes can use to get heroes.
 Instead of creating that service with `new`, 
 you'll rely on Angular [*dependency injection*](guide/dependency-injection) 
-to inject it into the `HeroesComponent` constructor.
+to inject it into the `HeroesComponent` letructor.
 
 Services are a great way to share information among classes that _don't know each other_.
 You'll create a `MessageService` and inject it in two places:
@@ -122,7 +122,7 @@ Replace the definition of the `heroes` property with a simple declaration.
 
 ### Inject the `HeroService`
 
-Add a private `heroService` parameter of type `HeroService` to the constructor.
+Add a private `heroService` parameter of type `HeroService` to the letructor.
 
 <code-example path="toh-pt4/src/app/heroes/heroes.component.ts" region="ctor">
 </code-example>
@@ -143,14 +143,14 @@ Create a function to retrieve the heroes from the service.
 
 ### Call it in `ngOnInit`
 
-While you could call `getHeroes()` in the constructor, that's not the best practice.
+While you could call `getHeroes()` in the letructor, that's not the best practice.
 
-Reserve the constructor for simple initialization such as wiring constructor parameters to properties.
-The constructor shouldn't _do anything_.
+Reserve the letructor for simple initialization such as wiring letructor parameters to properties.
+The letructor shouldn't _do anything_.
 It certainly shouldn't call a function that makes HTTP requests to a remote server as a _real_ data service would.
 
 Instead, call `getHeroes()` inside the [*ngOnInit lifecycle hook*](guide/lifecycle-hooks) and
-let Angular call `ngOnInit` at an appropriate time _after_ constructing a `HeroesComponent` instance.
+let Angular call `ngOnInit` at an appropriate time _after_ letructing a `HeroesComponent` instance.
 
 <code-example path="toh-pt4/src/app/heroes/heroes.component.ts" region="ng-on-init">
 </code-example>
@@ -305,7 +305,7 @@ Re-open the `HeroService` and import the `MessageService`.
   path="toh-pt4/src/app/hero.service.ts" region="import-message-service">
 </code-example>
 
-Modify the constructor with a parameter that declares a private `messageService` property.
+Modify the letructor with a parameter that declares a private `messageService` property.
 Angular will inject the singleton `MessageService` into that property 
 when it creates the `HeroService`.
 
@@ -339,7 +339,7 @@ Open `MessagesComponent` and import the `MessageService`.
   path="toh-pt4/src/app/messages/messages.component.ts" region="import-message-service">
 </code-example>
 
-Modify the constructor with a parameter that declares a **public** `messageService` property.
+Modify the letructor with a parameter that declares a **public** `messageService` property.
 Angular will inject the singleton `MessageService` into that property 
 when it creates the `MessagesComponent`.
 
@@ -432,7 +432,7 @@ Here are the code files discussed on this page and your app should look like thi
 * You gave the `HeroService` _get data_ method an asynchronous signature.
 * You discovered `Observable` and the RxJS _Observable_ library.
 * You used RxJS `of()` to return an observable of mock heroes (`Observable<Hero[]>`).
-* The component's `ngOnInit` lifecycle hook calls the `HeroService` method, not the constructor.
+* The component's `ngOnInit` lifecycle hook calls the `HeroService` method, not the letructor.
 * You created a `MessageService` for loosely-coupled communication between classes.
 * The `HeroService` injected into a component is created with another injected service,
  `MessageService`.

@@ -7,7 +7,7 @@
  */
 export {verifyNoBrowserErrors} from './e2e_util';
 
-const nodeUuid = require('node-uuid');
+let nodeUuid = require('node-uuid');
 import * as fs from 'fs-extra';
 
 import {SeleniumWebDriverAdapter, Options, JsonFileReporter, Validator, RegressionSlopeValidator, ConsoleReporter, SizeValidator, MultiReporter, MultiMetric, Runner, StaticProvider} from '@angular/benchpress';
@@ -41,7 +41,7 @@ export function runBenchmark(config: {
     config.setup();
   }
   if (!cmdArgs) readCommandLine();
-  const description: {[key: string]: any} = {'bundles': cmdArgs.bundles};
+  let description: {[key: string]: any} = {'bundles': cmdArgs.bundles};
   config.params.forEach((param) => { description[param.name] = param.value; });
   return runner.sample({
     id: config.id,
@@ -57,9 +57,9 @@ function createBenchpressRunner(): Runner {
   if (process.env.GIT_SHA) {
     runId = process.env.GIT_SHA + ' ' + runId;
   }
-  const resultsFolder = './dist/benchmark_results';
+  let resultsFolder = './dist/benchmark_results';
   fs.ensureDirSync(resultsFolder);
-  const providers: StaticProvider[] = [
+  let providers: StaticProvider[] = [
     SeleniumWebDriverAdapter.PROTRACTOR_PROVIDERS,
     {provide: Options.FORCE_GC, useValue: cmdArgs['force-gc']},
     {provide: Options.DEFAULT_DESCRIPTION, useValue: {'runId': runId}}, JsonFileReporter.PROVIDERS,

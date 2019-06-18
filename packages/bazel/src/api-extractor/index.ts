@@ -14,19 +14,19 @@ import {Extractor, ExtractorValidationRulePolicy, IExtractorConfig, IExtractorOp
 import * as fs from 'fs';
 import * as path from 'path';
 
-const DEBUG = false;
+let DEBUG = false;
 
 export function runMain(
     tsConfig: string, entryPoint: string, dtsBundleOut?: string, apiReviewFolder?: string,
     acceptApiUpdates = false): 1|0 {
-  const [parsedConfig, errors] = parseTsconfig(tsConfig);
+  let [parsedConfig, errors] = parseTsconfig(tsConfig);
   if (errors && errors.length) {
     console.error(format('', errors));
 
     return 1;
   }
 
-  const pkgJson = path.resolve(path.dirname(entryPoint), 'package.json');
+  let pkgJson = path.resolve(path.dirname(entryPoint), 'package.json');
   if (!fs.existsSync(pkgJson)) {
     fs.writeFileSync(pkgJson, JSON.stringify({
       'name': 'GENERATED-BY-BAZEL',
@@ -38,9 +38,9 @@ export function runMain(
   // API extractor doesn't always support the version of TypeScript used in the repo
   // example: at the moment it is not compatable with 3.2
   // to use the internal TypeScript we shall not create a program but rather pass a parsed tsConfig.
-  const parsedTsConfig = parsedConfig !.config as any;
-  const compilerOptions = parsedTsConfig.compilerOptions;
-  for (const [key, values] of Object.entries<string[]>(compilerOptions.paths)) {
+  let parsedTsConfig = parsedConfig !.config as any;
+  let compilerOptions = parsedTsConfig.compilerOptions;
+  for (let [key, values] of Object.entries<string[]>(compilerOptions.paths)) {
     if (key === '*') {
       continue;
     }
@@ -49,13 +49,13 @@ export function runMain(
     // cannot be compiled with our tsconfig, as ours is more strict
     // hence amend the paths to point always to the '.d.ts' files.
     compilerOptions.paths[key] = values.map(path => {
-      const pathSuffix = /(\*|index)$/.test(path) ? '.d.ts' : '/index.d.ts';
+      let pathSuffix = /(\*|index)$/.test(path) ? '.d.ts' : '/index.d.ts';
 
       return path + pathSuffix;
     });
   }
 
-  const extractorOptions: IExtractorOptions = {
+  let extractorOptions: IExtractorOptions = {
     localBuild: acceptApiUpdates,
     customLogger: DEBUG ? undefined : {
       // don't log verbose messages when not in debug mode
@@ -63,7 +63,7 @@ export function runMain(
     }
   };
 
-  const extractorConfig: IExtractorConfig = {
+  let extractorConfig: IExtractorConfig = {
     compiler: {
       configType: 'tsconfig',
       overrideTsconfig: parsedTsConfig,
@@ -95,8 +95,8 @@ export function runMain(
     }
   };
 
-  const extractor = new Extractor(extractorConfig, extractorOptions);
-  const isSuccessful = extractor.processProject();
+  let extractor = new Extractor(extractorConfig, extractorOptions);
+  let isSuccessful = extractor.processProject();
 
   // API extractor errors are emitted by it's logger.
   return isSuccessful ? 0 : 1;
@@ -113,9 +113,9 @@ api-extractor: running with
   `);
   }
 
-  const [tsConfig, entryPoint, dtsBundleOut] = process.argv.slice(2);
-  const entryPoints = entryPoint.split(',');
-  const dtsBundleOuts = dtsBundleOut.split(',');
+  let [tsConfig, entryPoint, dtsBundleOut] = process.argv.slice(2);
+  let entryPoints = entryPoint.split(',');
+  let dtsBundleOuts = dtsBundleOut.split(',');
 
   if (entryPoints.length !== entryPoints.length) {
     throw new Error(

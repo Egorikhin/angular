@@ -32,7 +32,7 @@ describe('site App', function() {
     expect(page.locationPath()).toBe('/docs');
 
     // Get the top-level nav-item headings (sub-menu toggles).
-    const navItemHeadings = page.getNavItemHeadings(page.sidenav, 1);
+    let navItemHeadings = page.getNavItemHeadings(page.sidenav, 1);
 
     // Test all headings (and sub-headings).
     expect(navItemHeadings.count()).toBeGreaterThan(0);
@@ -50,7 +50,7 @@ describe('site App', function() {
     }
 
     function testNavItemHeading(heading: ElementFinder, level: number) {
-      const children = page.getNavItemHeadingChildren(heading, level);
+      let children = page.getNavItemHeadingChildren(heading, level);
 
       // Headings are initially collapsed.
       expectToBeCollapsed(children);
@@ -61,8 +61,8 @@ describe('site App', function() {
       expect(page.locationPath()).toBe('/docs');
 
       // Recursively test child-headings (while this heading is expanded).
-      const nextLevel = level + 1;
-      const childNavItemHeadings = page.getNavItemHeadings(children, nextLevel);
+      let nextLevel = level + 1;
+      let childNavItemHeadings = page.getNavItemHeadings(children, nextLevel);
       childNavItemHeadings.each(childHeading => testNavItemHeading(childHeading!, nextLevel));
 
       // Ensure heading does not cause navigation when collapsing.
@@ -92,7 +92,7 @@ describe('site App', function() {
 
   it('should render `{@example}` dgeni tags as `<code-example>` elements with HTML escaped content', () => {
     page.navigateTo('guide/component-styles');
-    const codeExample = element.all(by.css('code-example')).first();
+    let codeExample = element.all(by.css('code-example')).first();
     expect(page.getInnerHtml(codeExample)).toContain('&lt;h1&gt;Tour of Heroes&lt;/h1&gt;');
   });
 
@@ -128,15 +128,15 @@ describe('site App', function() {
   });
 
   describe('contributors page', () => {
-    const groupButtons = element(by.css('.group-buttons')).all(by.css('.filter-button'));
-    const contributors = element(by.css('.contributor-group')).all(by.css('aio-contributor'));
+    let groupButtons = element(by.css('.group-buttons')).all(by.css('.filter-button'));
+    let contributors = element(by.css('.contributor-group')).all(by.css('aio-contributor'));
 
     beforeAll(() => page.navigateTo('about'));
 
     it('should have the expected groups', () => {
       expect(groupButtons.count()).toBe(3);
 
-      const texts = groupButtons.map<string>(btn => btn && btn.getText());
+      let texts = groupButtons.map<string>(btn => btn && btn.getText());
       expect(texts).toEqual(['ANGULAR', 'COLLABORATORS', 'GDE']);
     });
 
@@ -145,27 +145,27 @@ describe('site App', function() {
       // browser, before clicking it. By default, this aligns the top of the element to the top of
       // the window. As a result, the element may end up behing the fixed top menu, thus being
       // unclickable. To avoid this, we click the element directly using JavaScript instead.
-      const clickButton = (elementFinder: ElementFinder) => elementFinder.getWebElement().then(
+      let clickButton = (elementFinder: ElementFinder) => elementFinder.getWebElement().then(
           webElement => browser.executeScript('arguments[0].click()', webElement));
-      const getContributorNames =
+      let getContributorNames =
           () => contributors.all(by.css('h3')).map<string>(c => c && c.getText());
 
-      const names1 = getContributorNames();
+      let names1 = getContributorNames();
       expect(contributors.count()).toBeGreaterThan(1);
 
       clickButton(groupButtons.get(1));
-      const names2 = getContributorNames();
+      let names2 = getContributorNames();
       expect(contributors.count()).toBeGreaterThan(1);
       expect(names2).not.toEqual(names1);
 
       clickButton(groupButtons.get(2));
-      const names3 = getContributorNames();
+      let names3 = getContributorNames();
       expect(contributors.count()).toBeGreaterThan(1);
       expect(names3).not.toEqual(names2);
       expect(names3).not.toEqual(names1);
 
       clickButton(groupButtons.get(0));
-      const names4 = getContributorNames();
+      let names4 = getContributorNames();
       expect(contributors.count()).toBeGreaterThan(1);
       expect(names4).not.toEqual(names3);
       expect(names4).not.toEqual(names2);
@@ -219,7 +219,7 @@ describe('site App', function() {
 
     it('should search the index for words found in the url', () => {
       page.navigateTo('http/router');
-      const results = page.getSearchResults();
+      let results = page.getSearchResults();
 
       expect(results).toContain('HttpRequest');
       expect(results).toContain('Router');
