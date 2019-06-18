@@ -49,10 +49,10 @@ export class NgTemplateOutlet implements OnChanges {
    */
   @Input() public ngTemplateOutlet: TemplateRef<any>|null = null;
 
-  constructor(private _viewContainerRef: ViewContainerRef) {}
+  letructor(private _viewContainerRef: ViewContainerRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    const recreateView = this._shouldRecreateView(changes);
+    let recreateView = this._shouldRecreateView(changes);
 
     if (recreateView) {
       if (this._viewRef) {
@@ -81,13 +81,13 @@ export class NgTemplateOutlet implements OnChanges {
    * if object reference changes (see https://github.com/angular/angular/issues/13407).
    */
   private _shouldRecreateView(changes: SimpleChanges): boolean {
-    const ctxChange = changes['ngTemplateOutletContext'];
+    let ctxChange = changes['ngTemplateOutletContext'];
     return !!changes['ngTemplateOutlet'] || (ctxChange && this._hasContextShapeChanged(ctxChange));
   }
 
   private _hasContextShapeChanged(ctxChange: SimpleChange): boolean {
-    const prevCtxKeys = Object.keys(ctxChange.previousValue || {});
-    const currCtxKeys = Object.keys(ctxChange.currentValue || {});
+    let prevCtxKeys = Object.keys(ctxChange.previousValue || {});
+    let currCtxKeys = Object.keys(ctxChange.currentValue || {});
 
     if (prevCtxKeys.length === currCtxKeys.length) {
       for (let propName of currCtxKeys) {

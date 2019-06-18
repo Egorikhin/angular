@@ -78,30 +78,30 @@ export class NgComponentOutlet implements OnChanges, OnDestroy {
   private _componentRef: ComponentRef<any>|null = null;
   private _moduleRef: NgModuleRef<any>|null = null;
 
-  constructor(private _viewContainerRef: ViewContainerRef) {}
+  letructor(private _viewContainerRef: ViewContainerRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this._viewContainerRef.clear();
     this._componentRef = null;
 
     if (this.ngComponentOutlet) {
-      const elInjector = this.ngComponentOutletInjector || this._viewContainerRef.parentInjector;
+      let elInjector = this.ngComponentOutletInjector || this._viewContainerRef.parentInjector;
 
       if (changes['ngComponentOutletNgModuleFactory']) {
         if (this._moduleRef) this._moduleRef.destroy();
 
         if (this.ngComponentOutletNgModuleFactory) {
-          const parentModule = elInjector.get(NgModuleRef);
+          let parentModule = elInjector.get(NgModuleRef);
           this._moduleRef = this.ngComponentOutletNgModuleFactory.create(parentModule.injector);
         } else {
           this._moduleRef = null;
         }
       }
 
-      const componentFactoryResolver = this._moduleRef ? this._moduleRef.componentFactoryResolver :
+      let componentFactoryResolver = this._moduleRef ? this._moduleRef.componentFactoryResolver :
                                                          elInjector.get(ComponentFactoryResolver);
 
-      const componentFactory =
+      let componentFactory =
           componentFactoryResolver.resolveComponentFactory(this.ngComponentOutlet);
 
       this._componentRef = this._viewContainerRef.createComponent(

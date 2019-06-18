@@ -24,12 +24,12 @@ import {NgClassImpl, NgClassImplProvider} from './ng_class_impl';
  */
 
 // used when the VE is present
-export const ngClassDirectiveDef__PRE_R3__ = undefined;
+export let ngClassDirectiveDef__PRE_R3__ = undefined;
 
 // used when the VE is not present (note the directive will
 // never be instantiated normally because it is apart of a
 // base class)
-export const ngClassDirectiveDef__POST_R3__ = ɵɵdefineDirective({
+export let ngClassDirectiveDef__POST_R3__ = ɵɵdefineDirective({
   type: function() {} as any,
   selectors: null as any,
   factory: () => {},
@@ -44,7 +44,7 @@ export const ngClassDirectiveDef__POST_R3__ = ɵɵdefineDirective({
   }
 });
 
-export const ngClassDirectiveDef = ngClassDirectiveDef__PRE_R3__;
+export let ngClassDirectiveDef = ngClassDirectiveDef__PRE_R3__;
 
 /**
  * Serves as the base non-VE container for NgClass.
@@ -63,7 +63,7 @@ export const ngClassDirectiveDef = ngClassDirectiveDef__PRE_R3__;
 export class NgClassBase {
   static ngDirectiveDef: any = ngClassDirectiveDef;
 
-  constructor(protected _delegate: NgClassImpl) {}
+  letructor(protected _delegate: NgClassImpl) {}
 
   getValue() { return this._delegate.getValue(); }
 }
@@ -98,7 +98,7 @@ export class NgClassBase {
  */
 @Directive({selector: '[ngClass]', providers: [NgClassImplProvider]})
 export class NgClass extends NgClassBase implements DoCheck {
-  constructor(delegate: NgClassImpl) { super(delegate); }
+  letructor(delegate: NgClassImpl) { super(delegate); }
 
   @Input('class')
   set klass(value: string) { this._delegate.setClass(value); }
