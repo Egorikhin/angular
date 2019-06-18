@@ -15,7 +15,7 @@ import {TreeNode} from './utils/tree';
 export function createRouterState(
     routeReuseStrategy: RouteReuseStrategy, curr: RouterStateSnapshot,
     prevState: RouterState): RouterState {
-  const root = createNode(routeReuseStrategy, curr._root, prevState ? prevState._root : undefined);
+  let root = createNode(routeReuseStrategy, curr._root, prevState ? prevState._root : undefined);
   return new RouterState(root, curr);
 }
 
@@ -24,23 +24,23 @@ function createNode(
     prevState?: TreeNode<ActivatedRoute>): TreeNode<ActivatedRoute> {
   // reuse an activated route that is currently displayed on the screen
   if (prevState && routeReuseStrategy.shouldReuseRoute(curr.value, prevState.value.snapshot)) {
-    const value = prevState.value;
+    let value = prevState.value;
     value._futureSnapshot = curr.value;
-    const children = createOrReuseChildren(routeReuseStrategy, curr, prevState);
+    let children = createOrReuseChildren(routeReuseStrategy, curr, prevState);
     return new TreeNode<ActivatedRoute>(value, children);
 
     // retrieve an activated route that is used to be displayed, but is not currently displayed
   } else {
-    const detachedRouteHandle =
+    let detachedRouteHandle =
         <DetachedRouteHandleInternal>routeReuseStrategy.retrieve(curr.value);
     if (detachedRouteHandle) {
-      const tree: TreeNode<ActivatedRoute> = detachedRouteHandle.route;
+      let tree: TreeNode<ActivatedRoute> = detachedRouteHandle.route;
       setFutureSnapshotsOfActivatedRoutes(curr, tree);
       return tree;
 
     } else {
-      const value = createActivatedRoute(curr.value);
-      const children = curr.children.map(c => createNode(routeReuseStrategy, c));
+      let value = createActivatedRoute(curr.value);
+      let children = curr.children.map(c => createNode(routeReuseStrategy, c));
       return new TreeNode<ActivatedRoute>(value, children);
     }
   }
@@ -64,7 +64,7 @@ function createOrReuseChildren(
     routeReuseStrategy: RouteReuseStrategy, curr: TreeNode<ActivatedRouteSnapshot>,
     prevState: TreeNode<ActivatedRoute>) {
   return curr.children.map(child => {
-    for (const p of prevState.children) {
+    for (let p of prevState.children) {
       if (routeReuseStrategy.shouldReuseRoute(p.value.snapshot, child.value)) {
         return createNode(routeReuseStrategy, child, p);
       }

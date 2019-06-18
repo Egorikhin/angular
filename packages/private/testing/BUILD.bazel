@@ -30,5 +30,5 @@ ng_module(
 genrule(
     name = "bazel_define_compile_value",
     outs = ["src/bazel_define_compile_value.ts"],
-    cmd = "echo export const bazelDefineCompileValue = \"'$(compile)'\"\; > $@",
+    cmd = "echo export let bazelDefineCompileValue = \"'$(compile)'\"\; > $@",
 )

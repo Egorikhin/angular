@@ -32,18 +32,18 @@ describe('Router', () => {
     beforeEach(() => { TestBed.configureTestingModule({imports: [RouterTestingModule]}); });
 
     it('should copy config to avoid mutations of user-provided objects', () => {
-      const r: Router = TestBed.get(Router);
-      const configs: Routes = [{
+      let r: Router = TestBed.get(Router);
+      let configs: Routes = [{
         path: 'a',
         component: TestComponent,
         children: [{path: 'b', component: TestComponent}, {path: 'c', component: TestComponent}]
       }];
-      const children = configs[0].children !;
+      let children = configs[0].children !;
 
       r.resetConfig(configs);
 
-      const rConfigs = r.config;
-      const rChildren = rConfigs[0].children !;
+      let rConfigs = r.config;
+      let rChildren = rConfigs[0].children !;
 
       // routes array and shallow copy
       expect(configs).not.toBe(rConfigs);
@@ -66,8 +66,8 @@ describe('Router', () => {
     beforeEach(() => { TestBed.configureTestingModule({imports: [RouterTestingModule]}); });
 
     it('should not change root route when updating the root component', () => {
-      const r: Router = TestBed.get(Router);
-      const root = r.routerState.root;
+      let r: Router = TestBed.get(Router);
+      let root = r.routerState.root;
 
       (r as any).resetRootComponentType(NewRootComponent);
 
@@ -80,42 +80,42 @@ describe('Router', () => {
 
     it('should be idempotent', inject([Router, Location], (r: Router, location: Location) => {
          r.setUpLocationChangeListener();
-         const a = (<any>r).locationSubscription;
+         let a = (<any>r).locationSubscription;
          r.setUpLocationChangeListener();
-         const b = (<any>r).locationSubscription;
+         let b = (<any>r).locationSubscription;
 
          expect(a).toBe(b);
 
          r.dispose();
          r.setUpLocationChangeListener();
-         const c = (<any>r).locationSubscription;
+         let c = (<any>r).locationSubscription;
 
          expect(c).not.toBe(b);
        }));
   });
 
   describe('PreActivation', () => {
-    const serializer = new DefaultUrlSerializer();
-    const inj = {get: (token: any) => () => `${token}_value`};
+    let serializer = new DefaultUrlSerializer();
+    let inj = {get: (token: any) => () => `${token}_value`};
     let empty: RouterStateSnapshot;
     let logger: Logger;
     let events: any[];
 
-    const CA_CHILD = 'canActivate_child';
-    const CA_CHILD_FALSE = 'canActivate_child_false';
-    const CA_CHILD_REDIRECT = 'canActivate_child_redirect';
-    const CAC_CHILD = 'canActivateChild_child';
-    const CAC_CHILD_FALSE = 'canActivateChild_child_false';
-    const CAC_CHILD_REDIRECT = 'canActivateChild_child_redirect';
-    const CA_GRANDCHILD = 'canActivate_grandchild';
-    const CA_GRANDCHILD_FALSE = 'canActivate_grandchild_false';
-    const CA_GRANDCHILD_REDIRECT = 'canActivate_grandchild_redirect';
-    const CDA_CHILD = 'canDeactivate_child';
-    const CDA_CHILD_FALSE = 'canDeactivate_child_false';
-    const CDA_CHILD_REDIRECT = 'canDeactivate_child_redirect';
-    const CDA_GRANDCHILD = 'canDeactivate_grandchild';
-    const CDA_GRANDCHILD_FALSE = 'canDeactivate_grandchild_false';
-    const CDA_GRANDCHILD_REDIRECT = 'canDeactivate_grandchild_redirect';
+    let CA_CHILD = 'canActivate_child';
+    let CA_CHILD_FALSE = 'canActivate_child_false';
+    let CA_CHILD_REDIRECT = 'canActivate_child_redirect';
+    let CAC_CHILD = 'canActivateChild_child';
+    let CAC_CHILD_FALSE = 'canActivateChild_child_false';
+    let CAC_CHILD_REDIRECT = 'canActivateChild_child_redirect';
+    let CA_GRANDCHILD = 'canActivate_grandchild';
+    let CA_GRANDCHILD_FALSE = 'canActivate_grandchild_false';
+    let CA_GRANDCHILD_REDIRECT = 'canActivate_grandchild_redirect';
+    let CDA_CHILD = 'canDeactivate_child';
+    let CDA_CHILD_FALSE = 'canDeactivate_child_false';
+    let CDA_CHILD_REDIRECT = 'canDeactivate_child_redirect';
+    let CDA_GRANDCHILD = 'canDeactivate_grandchild';
+    let CDA_GRANDCHILD_FALSE = 'canDeactivate_grandchild_false';
+    let CDA_GRANDCHILD_REDIRECT = 'canDeactivate_grandchild_redirect';
 
     beforeEach(() => {
 
@@ -154,9 +154,9 @@ describe('Router', () => {
          *           child
          */
         let result = false;
-        const childSnapshot =
+        let childSnapshot =
             createActivatedRouteSnapshot({component: 'child', routeConfig: {path: 'child'}});
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url', new TreeNode(empty.root, [new TreeNode(childSnapshot, [])]));
 
         of ({guards: getAllRouteGuards(futureState, empty, new ChildrenOutletContexts())})
@@ -180,13 +180,13 @@ describe('Router', () => {
          *               great grandchild
          */
         let result = false;
-        const childSnapshot =
+        let childSnapshot =
             createActivatedRouteSnapshot({component: 'child', routeConfig: {path: 'child'}});
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {path: 'grandchild'}});
-        const greatGrandchildSnapshot = createActivatedRouteSnapshot(
+        let greatGrandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'great-grandchild', routeConfig: {path: 'great-grandchild'}});
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [
@@ -214,13 +214,13 @@ describe('Router', () => {
          *             grandchild
          */
         let result = false;
-        const childSnapshot =
+        let childSnapshot =
             createActivatedRouteSnapshot({component: 'child', routeConfig: {path: 'child'}});
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {path: 'grandchild'}});
-        const currentState = new (RouterStateSnapshot as any)(
+        let currentState = new (RouterStateSnapshot as any)(
             'url', new TreeNode(empty.root, [new TreeNode(childSnapshot, [])]));
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -248,19 +248,19 @@ describe('Router', () => {
          *                     great-greatgrandchild
          */
         let result = false;
-        const childSnapshot =
+        let childSnapshot =
             createActivatedRouteSnapshot({component: 'child', routeConfig: {path: 'child'}});
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {path: 'grandchild'}});
-        const greatGrandchildSnapshot = createActivatedRouteSnapshot(
+        let greatGrandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'greatgrandchild', routeConfig: {path: 'greatgrandchild'}});
-        const greatGreatGrandchildSnapshot = createActivatedRouteSnapshot(
+        let greatGreatGrandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'great-greatgrandchild', routeConfig: {path: 'great-greatgrandchild'}});
-        const currentState = new (RouterStateSnapshot as any)(
+        let currentState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root,
@@ -293,7 +293,7 @@ describe('Router', () => {
          *             grandchild (CA)
          */
 
-        const childSnapshot = createActivatedRouteSnapshot({
+        let childSnapshot = createActivatedRouteSnapshot({
           component: 'child',
           routeConfig: {
 
@@ -301,10 +301,10 @@ describe('Router', () => {
             canActivateChild: [CAC_CHILD]
           }
         });
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -324,14 +324,14 @@ describe('Router', () => {
          *             grandchild (CA)
          */
 
-        const childSnapshot = createActivatedRouteSnapshot({
+        let childSnapshot = createActivatedRouteSnapshot({
           component: 'child',
           routeConfig: {canActivate: [CA_CHILD_FALSE], canActivateChild: [CAC_CHILD]}
         });
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -351,14 +351,14 @@ describe('Router', () => {
          *             grandchild (CA)
          */
 
-        const childSnapshot = createActivatedRouteSnapshot({
+        let childSnapshot = createActivatedRouteSnapshot({
           component: 'child',
           routeConfig: {canActivate: [CA_CHILD], canActivateChild: [CAC_CHILD_FALSE]}
         });
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -378,21 +378,21 @@ describe('Router', () => {
          *                  grandchild (CA)
          */
 
-        const prevSnapshot = createActivatedRouteSnapshot(
+        let prevSnapshot = createActivatedRouteSnapshot(
             {component: 'prev', routeConfig: {canDeactivate: [CDA_CHILD]}});
 
-        const childSnapshot = createActivatedRouteSnapshot({
+        let childSnapshot = createActivatedRouteSnapshot({
           component: 'child',
           routeConfig: {canActivate: [CA_CHILD], canActivateChild: [CAC_CHILD]}
         });
 
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-        const currentState = new (RouterStateSnapshot as any)(
+        let currentState = new (RouterStateSnapshot as any)(
             'prev', new TreeNode(empty.root, [new TreeNode(prevSnapshot, [])]));
 
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -411,18 +411,18 @@ describe('Router', () => {
          *                     grandchild (CA)
          */
 
-        const prevSnapshot = createActivatedRouteSnapshot(
+        let prevSnapshot = createActivatedRouteSnapshot(
             {component: 'prev', routeConfig: {canDeactivate: [CDA_CHILD_FALSE]}});
-        const childSnapshot = createActivatedRouteSnapshot({
+        let childSnapshot = createActivatedRouteSnapshot({
           component: 'child',
           routeConfig: {canActivate: [CA_CHILD], canActivateChild: [CAC_CHILD]}
         });
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-        const currentState = new (RouterStateSnapshot as any)(
+        let currentState = new (RouterStateSnapshot as any)(
             'prev', new TreeNode(empty.root, [new TreeNode(prevSnapshot, [])]));
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -441,23 +441,23 @@ describe('Router', () => {
          *  prevGrandchild(CDA)    grandchild (CA)
          */
 
-        const prevChildSnapshot = createActivatedRouteSnapshot(
+        let prevChildSnapshot = createActivatedRouteSnapshot(
             {component: 'prev_child', routeConfig: {canDeactivate: [CDA_CHILD]}});
-        const prevGrandchildSnapshot = createActivatedRouteSnapshot(
+        let prevGrandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'prev_grandchild', routeConfig: {canDeactivate: [CDA_GRANDCHILD]}});
-        const childSnapshot = createActivatedRouteSnapshot({
+        let childSnapshot = createActivatedRouteSnapshot({
           component: 'child',
           routeConfig: {canActivate: [CA_CHILD], canActivateChild: [CAC_CHILD]}
         });
-        const grandchildSnapshot = createActivatedRouteSnapshot(
+        let grandchildSnapshot = createActivatedRouteSnapshot(
             {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-        const currentState = new (RouterStateSnapshot as any)(
+        let currentState = new (RouterStateSnapshot as any)(
             'prev', new TreeNode(empty.root, [
               new TreeNode(prevChildSnapshot, [new TreeNode(prevGrandchildSnapshot, [])])
             ]));
 
-        const futureState = new (RouterStateSnapshot as any)(
+        let futureState = new (RouterStateSnapshot as any)(
             'url',
             new TreeNode(
                 empty.root, [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -484,7 +484,7 @@ describe('Router', () => {
            *           child (CA: redirect)
            */
 
-          const childSnapshot = createActivatedRouteSnapshot({
+          let childSnapshot = createActivatedRouteSnapshot({
             component: 'child',
             routeConfig: {
 
@@ -492,7 +492,7 @@ describe('Router', () => {
             }
           });
 
-          const futureState = new (RouterStateSnapshot as any)(
+          let futureState = new (RouterStateSnapshot as any)(
               'url', new TreeNode(empty.root, [new TreeNode(childSnapshot, [])]));
 
           checkGuards(futureState, empty, TestBed, (result) => {
@@ -510,12 +510,12 @@ describe('Router', () => {
            *             grandchild (CA)
            */
 
-          const childSnapshot = createActivatedRouteSnapshot(
+          let childSnapshot = createActivatedRouteSnapshot(
               {component: 'child', routeConfig: {canActivateChild: [CAC_CHILD_REDIRECT]}});
-          const grandchildSnapshot = createActivatedRouteSnapshot(
+          let grandchildSnapshot = createActivatedRouteSnapshot(
               {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-          const futureState = new (RouterStateSnapshot as any)(
+          let futureState = new (RouterStateSnapshot as any)(
               'url', new TreeNode(
                          empty.root,
                          [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -535,12 +535,12 @@ describe('Router', () => {
            *             grandchild (CA: redirect)
            */
 
-          const childSnapshot = createActivatedRouteSnapshot(
+          let childSnapshot = createActivatedRouteSnapshot(
               {component: 'child', routeConfig: {canActivateChild: [CAC_CHILD]}});
-          const grandchildSnapshot = createActivatedRouteSnapshot(
+          let grandchildSnapshot = createActivatedRouteSnapshot(
               {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD_REDIRECT]}});
 
-          const futureState = new (RouterStateSnapshot as any)(
+          let futureState = new (RouterStateSnapshot as any)(
               'url', new TreeNode(
                          empty.root,
                          [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -560,18 +560,18 @@ describe('Router', () => {
            *                            grandchild (CA)
            */
 
-          const prevSnapshot = createActivatedRouteSnapshot(
+          let prevSnapshot = createActivatedRouteSnapshot(
               {component: 'prev', routeConfig: {canDeactivate: [CDA_CHILD_REDIRECT]}});
-          const childSnapshot = createActivatedRouteSnapshot({
+          let childSnapshot = createActivatedRouteSnapshot({
             component: 'child',
             routeConfig: {canActivate: [CA_CHILD], canActivateChild: [CAC_CHILD]}
           });
-          const grandchildSnapshot = createActivatedRouteSnapshot(
+          let grandchildSnapshot = createActivatedRouteSnapshot(
               {component: 'grandchild', routeConfig: {canActivate: [CA_GRANDCHILD]}});
 
-          const currentState = new (RouterStateSnapshot as any)(
+          let currentState = new (RouterStateSnapshot as any)(
               'prev', new TreeNode(empty.root, [new TreeNode(prevSnapshot, [])]));
-          const futureState = new (RouterStateSnapshot as any)(
+          let futureState = new (RouterStateSnapshot as any)(
               'url', new TreeNode(
                          empty.root,
                          [new TreeNode(childSnapshot, [new TreeNode(grandchildSnapshot, [])])]));
@@ -593,9 +593,9 @@ describe('Router', () => {
          *          \
          *           a
          */
-        const r = {data: 'resolver'};
-        const n = createActivatedRouteSnapshot({component: 'a', resolve: r});
-        const s = new (RouterStateSnapshot as any)(
+        let r = {data: 'resolver'};
+        let n = createActivatedRouteSnapshot({component: 'a', resolve: r});
+        let s = new (RouterStateSnapshot as any)(
             'url', new TreeNode(empty.root, [new TreeNode(n, [])]));
 
         checkResolveData(s, empty, inj, () => {
@@ -611,16 +611,16 @@ describe('Router', () => {
          *            \
          *             b (resolve: childResolve)
          */
-        const parentResolve = {data: 'resolver'};
-        const childResolve = {};
+        let parentResolve = {data: 'resolver'};
+        let childResolve = {};
 
-        const parent = createActivatedRouteSnapshot({component: null !, resolve: parentResolve});
-        const child = createActivatedRouteSnapshot({component: 'b', resolve: childResolve});
+        let parent = createActivatedRouteSnapshot({component: null !, resolve: parentResolve});
+        let child = createActivatedRouteSnapshot({component: 'b', resolve: childResolve});
 
-        const s = new (RouterStateSnapshot as any)(
+        let s = new (RouterStateSnapshot as any)(
             'url', new TreeNode(empty.root, [new TreeNode(parent, [new TreeNode(child, [])])]));
 
-        const inj = {get: (token: any) => () => Promise.resolve(`${token}_value`)};
+        let inj = {get: (token: any) => () => Promise.resolve(`${token}_value`)};
 
         checkResolveData(s, empty, inj, () => {
           expect(s.root.firstChild !.firstChild !.data).toEqual({data: 'resolver_value'});
@@ -635,17 +635,17 @@ describe('Router', () => {
          *                                  \
          *                                   n22 (resolve: r2)
          */
-        const r1 = {data: 'resolver1'};
-        const r2 = {data: 'resolver2'};
+        let r1 = {data: 'resolver1'};
+        let r2 = {data: 'resolver2'};
 
-        const n1 = createActivatedRouteSnapshot({component: 'a', resolve: r1});
-        const s1 = new (RouterStateSnapshot as any)(
+        let n1 = createActivatedRouteSnapshot({component: 'a', resolve: r1});
+        let s1 = new (RouterStateSnapshot as any)(
             'url', new TreeNode(empty.root, [new TreeNode(n1, [])]));
         checkResolveData(s1, empty, inj, () => {});
 
-        const n21 = createActivatedRouteSnapshot({component: 'a', resolve: r1});
-        const n22 = createActivatedRouteSnapshot({component: 'b', resolve: r2});
-        const s2 = new (RouterStateSnapshot as any)(
+        let n21 = createActivatedRouteSnapshot({component: 'a', resolve: r1});
+        let n22 = createActivatedRouteSnapshot({component: 'b', resolve: r2});
+        let s2 = new (RouterStateSnapshot as any)(
             'url', new TreeNode(empty.root, [new TreeNode(n21, [new TreeNode(n22, [])])]));
         checkResolveData(s2, s1, inj, () => {
           expect(s2.root.firstChild !.data).toEqual({data: 'resolver1_value'});

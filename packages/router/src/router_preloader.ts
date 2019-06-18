@@ -75,11 +75,11 @@ export class RouterPreloader implements OnDestroy {
   // TODO(issue/24571): remove '!'.
   private subscription !: Subscription;
 
-  constructor(
+  letructor(
       private router: Router, moduleLoader: NgModuleFactoryLoader, compiler: Compiler,
       private injector: Injector, private preloadingStrategy: PreloadingStrategy) {
-    const onStartLoad = (r: Route) => router.triggerEvent(new RouteConfigLoadStart(r));
-    const onEndLoad = (r: Route) => router.triggerEvent(new RouteConfigLoadEnd(r));
+    let onStartLoad = (r: Route) => router.triggerEvent(new RouteConfigLoadStart(r));
+    let onEndLoad = (r: Route) => router.triggerEvent(new RouteConfigLoadEnd(r));
 
     this.loader = new RouterConfigLoader(moduleLoader, compiler, onStartLoad, onEndLoad);
   }
@@ -92,7 +92,7 @@ export class RouterPreloader implements OnDestroy {
   }
 
   preload(): Observable<any> {
-    const ngModule = this.injector.get(NgModuleRef);
+    let ngModule = this.injector.get(NgModuleRef);
     return this.processRoutes(ngModule, this.router.config);
   }
 
@@ -102,11 +102,11 @@ export class RouterPreloader implements OnDestroy {
   ngOnDestroy(): void { this.subscription.unsubscribe(); }
 
   private processRoutes(ngModule: NgModuleRef<any>, routes: Routes): Observable<void> {
-    const res: Observable<any>[] = [];
-    for (const route of routes) {
+    let res: Observable<any>[] = [];
+    for (let route of routes) {
       // we already have the config loaded, just recurse
       if (route.loadChildren && !route.canLoad && route._loadedConfig) {
-        const childConfig = route._loadedConfig;
+        let childConfig = route._loadedConfig;
         res.push(this.processRoutes(childConfig.module, childConfig.routes));
 
         // no config loaded, fetch the config
@@ -123,7 +123,7 @@ export class RouterPreloader implements OnDestroy {
 
   private preloadConfig(ngModule: NgModuleRef<any>, route: Route): Observable<void> {
     return this.preloadingStrategy.preload(route, () => {
-      const loaded$ = this.loader.load(ngModule.injector, route);
+      let loaded$ = this.loader.load(ngModule.injector, route);
       return loaded$.pipe(mergeMap((config: LoadedRouterConfig) => {
         route._loadedConfig = config;
         return this.processRoutes(config.module, config.routes);

@@ -229,7 +229,7 @@ import {MessageBus} from 'angular2/platform/worker_app';
 @Component({...})
 @View({...})
 export class MyComponent {
-  constructor (bus: MessageBus) {
+  letructor (bus: MessageBus) {
     bus.initChannel("My Custom Channel");
   }
 }
@@ -255,7 +255,7 @@ import {MessageBus} from 'angular2/platform/worker_app';
 @Component({...})
 @View({...})
 export class MyComponent {
-  constructor (bus: MessageBus) {
+  letructor (bus: MessageBus) {
     bus.initChannel("My Custom Channel");
     bus.from("My Custom Channel").observer((message) => {
       console.log(message); // will print "hello from the UI"
@@ -421,7 +421,7 @@ import {ClientMessageBrokerFactory, PRIMITIVE, UiArguments, FnArgs} from 'angula
 @Component(...)
 @View(...)
 export class MyComponent {
-  constructor(brokerFactory: ClientMessageBrokerFactory) {
+  letructor(brokerFactory: ClientMessageBrokerFactory) {
     var broker = brokerFactory.createMessageBroker("My Broker Channel");
 
     var arguments = [new FnArg(value, PRIMITIVE)];

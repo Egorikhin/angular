@@ -57,11 +57,11 @@ An injector can have a parent. The parent relationship can be marked as a "host"
 var child = new Injector(proto, parent, true /* host */);
 ```
 
-Hosts are used to constraint dependency resolution. For instance, in the following example, DI will stop looking for `Engine` after reaching the host.
+Hosts are used to letraint dependency resolution. For instance, in the following example, DI will stop looking for `Engine` after reaching the host.
 
 ```
 class Car {
-  constructor(@Host() e: Engine) {}
+  letructor(@Host() e: Engine) {}
 }
 ```
 
@@ -80,7 +80,7 @@ Let's look at this example.
 
 ```
 class Car {
-  constructor(@Host() e: Engine) {}
+  letructor(@Host() e: Engine) {}
 }
 
 var parentProto = new ProtoInjector([
@@ -104,7 +104,7 @@ Now, let's mark `Engine` as private:
 
 ```
 class Car {
-  constructor(@Host() e: Engine) {}
+  letructor(@Host() e: Engine) {}
 }
 
 var parentProto = new ProtoInjector([
@@ -128,7 +128,7 @@ Now, let's mark `Engine` as both public and private:
 
 ```
 class Car {
-  constructor(@Host() e: Engine) {}
+  letructor(@Host() e: Engine) {}
 }
 
 var parentProto = new ProtoInjector([
@@ -202,14 +202,14 @@ class MyDirective {
   selector: 'needs-view-service'
 })
 class NeedsViewService {
-  constructor(@Host() @Inject('viewService') viewService) {}
+  letructor(@Host() @Inject('viewService') viewService) {}
 }
 
 @Directive({
   selector: 'needs-service'
 })
 class NeedsService {
-  constructor(@Host() @Inject('componentService') service1,
+  letructor(@Host() @Inject('componentService') service1,
               @Host() @Inject('directiveService') service2) {}
 }
 ```

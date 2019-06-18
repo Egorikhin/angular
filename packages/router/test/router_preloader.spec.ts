@@ -46,7 +46,7 @@ describe('RouterPreloader', () => {
 
              tick();
 
-             const c = router.config;
+             let c = router.config;
              expect((c[0] as any)._loadedConfig).not.toBeDefined();
            })));
   });
@@ -64,7 +64,7 @@ describe('RouterPreloader', () => {
            [NgModuleFactoryLoader, RouterPreloader, Router, NgModuleRef],
            (loader: SpyNgModuleFactoryLoader, preloader: RouterPreloader, router: Router,
             testModule: NgModuleRef<any>) => {
-             const events: Array<RouteConfigLoadStart|RouteConfigLoadEnd> = [];
+             let events: Array<RouteConfigLoadStart|RouteConfigLoadEnd> = [];
              @NgModule({
                declarations: [LazyLoadedCmp],
                imports:
@@ -95,17 +95,17 @@ describe('RouterPreloader', () => {
 
              tick();
 
-             const c = router.config;
+             let c = router.config;
              expect(c[0].loadChildren).toEqual('expected');
 
-             const loadedConfig: LoadedRouterConfig = (c[0] as any)._loadedConfig !;
-             const module: any = loadedConfig.module;
+             let loadedConfig: LoadedRouterConfig = (c[0] as any)._loadedConfig !;
+             let module: any = loadedConfig.module;
              expect(loadedConfig.routes[0].path).toEqual('LoadedModule1');
              expect(module._parent).toBe(testModule);
 
-             const loadedConfig2: LoadedRouterConfig =
+             let loadedConfig2: LoadedRouterConfig =
                  (loadedConfig.routes[0] as any)._loadedConfig !;
-             const module2: any = loadedConfig2.module;
+             let module2: any = loadedConfig2.module;
              expect(loadedConfig2.routes[0].path).toEqual('LoadedModule2');
              expect(module2._parent).toBe(module);
 
@@ -134,7 +134,7 @@ describe('RouterPreloader', () => {
                             class LoadedModule2 {
                             }
 
-                            const module2 = compiler.compileModuleSync(LoadedModule2).create(null);
+                            let module2 = compiler.compileModuleSync(LoadedModule2).create(null);
 
                             @NgModule({
                               imports: [RouterModule.forChild([
@@ -164,17 +164,17 @@ describe('RouterPreloader', () => {
 
                             tick();
 
-                            const c = router.config;
+                            let c = router.config;
 
-                            const loadedConfig: LoadedRouterConfig = (c[0] as any)._loadedConfig !;
-                            const module: any = loadedConfig.module;
+                            let loadedConfig: LoadedRouterConfig = (c[0] as any)._loadedConfig !;
+                            let module: any = loadedConfig.module;
                             expect(module._parent).toBe(testModule);
 
-                            const loadedConfig2: LoadedRouterConfig =
+                            let loadedConfig2: LoadedRouterConfig =
                                 (loadedConfig.routes[0] as any)._loadedConfig !;
-                            const loadedConfig3: LoadedRouterConfig =
+                            let loadedConfig3: LoadedRouterConfig =
                                 (loadedConfig2.routes[0] as any)._loadedConfig !;
-                            const module3: any = loadedConfig3.module;
+                            let module3: any = loadedConfig3.module;
                             expect(module3._parent).toBe(module2);
                           })));
   });
@@ -207,14 +207,14 @@ describe('RouterPreloader', () => {
 
              tick();
 
-             const c = router.config;
+             let c = router.config;
              expect((c[0] as any)._loadedConfig).not.toBeDefined();
              expect((c[1] as any)._loadedConfig).toBeDefined();
            })));
   });
 
   describe('should copy loaded configs', () => {
-    const configs = [{path: 'LoadedModule1', component: LazyLoadedCmp}];
+    let configs = [{path: 'LoadedModule1', component: LazyLoadedCmp}];
     @NgModule({declarations: [LazyLoadedCmp], imports: [RouterModule.forChild(configs)]})
     class LoadedModule {
     }
@@ -237,7 +237,7 @@ describe('RouterPreloader', () => {
 
              tick();
 
-             const c = router.config as{_loadedConfig: LoadedRouterConfig}[];
+             let c = router.config as{_loadedConfig: LoadedRouterConfig}[];
              expect(c[0]._loadedConfig).toBeDefined();
              expect(c[0]._loadedConfig !.routes).not.toBe(configs);
              expect(c[0]._loadedConfig !.routes[0]).not.toBe(configs[0]);

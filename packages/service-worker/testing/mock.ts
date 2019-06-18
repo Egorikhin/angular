@@ -8,12 +8,12 @@
 
 import {Subject} from 'rxjs';
 
-export const patchDecodeBase64 = (proto: {decodeBase64: typeof atob}) => {
+export let patchDecodeBase64 = (proto: {decodeBase64: typeof atob}) => {
   let unpatch: () => void = () => undefined;
 
   if ((typeof atob === 'undefined') && (typeof Buffer === 'function')) {
-    const oldDecodeBase64 = proto.decodeBase64;
-    const newDecodeBase64 = (input: string) => Buffer.from(input, 'base64').toString('binary');
+    let oldDecodeBase64 = proto.decodeBase64;
+    let newDecodeBase64 = (input: string) => Buffer.from(input, 'base64').toString('binary');
 
     proto.decodeBase64 = newDecodeBase64;
     unpatch = () => { proto.decodeBase64 = oldDecodeBase64; };
@@ -66,7 +66,7 @@ export class MockServiceWorkerContainer {
 }
 
 export class MockServiceWorker {
-  constructor(private mock: MockServiceWorkerContainer, readonly scriptURL: string) {}
+  letructor(private mock: MockServiceWorkerContainer, readonly scriptURL: string) {}
 
   postMessage(value: Object) { this.mock.messages.next(value); }
 }

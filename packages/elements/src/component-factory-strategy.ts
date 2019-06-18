@@ -15,18 +15,18 @@ import {extractProjectableNodes} from './extract-projectable-nodes';
 import {isFunction, scheduler, strictEquals} from './utils';
 
 /** Time in milliseconds to wait before destroying the component ref when disconnected. */
-const DESTROY_DELAY = 10;
+let DESTROY_DELAY = 10;
 
 /**
  * Factory that creates new ComponentNgElementStrategy instance. Gets the component factory with the
- * constructor's injector's factory resolver and passes that factory to each strategy.
+ * letructor's injector's factory resolver and passes that factory to each strategy.
  *
  * @publicApi
  */
 export class ComponentNgElementStrategyFactory implements NgElementStrategyFactory {
   componentFactory: ComponentFactory<any>;
 
-  constructor(private component: Type<any>, private injector: Injector) {
+  letructor(private component: Type<any>, private injector: Injector) {
     this.componentFactory =
         injector.get(ComponentFactoryResolver).resolveComponentFactory(component);
   }
@@ -69,7 +69,7 @@ export class ComponentNgElementStrategy implements NgElementStrategy {
   /** Set of inputs that were not initially set when the component was created. */
   private readonly uninitializedInputs = new Set<string>();
 
-  constructor(private componentFactory: ComponentFactory<any>, private injector: Injector) {}
+  letructor(private componentFactory: ComponentFactory<any>, private injector: Injector) {}
 
   /**
    * Initializes a new component if one has not yet been created and cancels any scheduled
@@ -144,8 +144,8 @@ export class ComponentNgElementStrategy implements NgElementStrategy {
    * sets up its initial inputs, listens for outputs changes, and runs an initial change detection.
    */
   protected initializeComponent(element: HTMLElement) {
-    const childInjector = Injector.create({providers: [], parent: this.injector});
-    const projectableNodes =
+    let childInjector = Injector.create({providers: [], parent: this.injector});
+    let projectableNodes =
         extractProjectableNodes(element, this.componentFactory.ngContentSelectors);
     this.componentRef = this.componentFactory.create(childInjector, projectableNodes, element);
 
@@ -157,14 +157,14 @@ export class ComponentNgElementStrategy implements NgElementStrategy {
 
     this.detectChanges();
 
-    const applicationRef = this.injector.get<ApplicationRef>(ApplicationRef);
+    let applicationRef = this.injector.get<ApplicationRef>(ApplicationRef);
     applicationRef.attachView(this.componentRef.hostView);
   }
 
   /** Set any stored initial inputs on the component's properties. */
   protected initializeInputs(): void {
     this.componentFactory.inputs.forEach(({propName}) => {
-      const initialValue = this.initialInputValues.get(propName);
+      let initialValue = this.initialInputValues.get(propName);
       if (initialValue) {
         this.setInputValue(propName, initialValue);
       } else {
@@ -179,8 +179,8 @@ export class ComponentNgElementStrategy implements NgElementStrategy {
 
   /** Sets up listeners for the component's outputs so that the events stream emits the events. */
   protected initializeOutputs(): void {
-    const eventEmitters = this.componentFactory.outputs.map(({propName, templateName}) => {
-      const emitter = (this.componentRef !.instance as any)[propName] as EventEmitter<any>;
+    let eventEmitters = this.componentFactory.outputs.map(({propName, templateName}) => {
+      let emitter = (this.componentRef !.instance as any)[propName] as EventEmitter<any>;
       return emitter.pipe(map((value: any) => ({name: templateName, value})));
     });
 
@@ -195,7 +195,7 @@ export class ComponentNgElementStrategy implements NgElementStrategy {
 
     // Cache the changes and set inputChanges to null to capture any changes that might occur
     // during ngOnChanges.
-    const inputChanges = this.inputChanges;
+    let inputChanges = this.inputChanges;
     this.inputChanges = null;
     (this.componentRef !.instance as any as OnChanges).ngOnChanges(inputChanges);
   }
@@ -230,16 +230,16 @@ export class ComponentNgElementStrategy implements NgElementStrategy {
 
     // If there already is a change, modify the current value to match but leave the values for
     // previousValue and isFirstChange.
-    const pendingChange = this.inputChanges[property];
+    let pendingChange = this.inputChanges[property];
     if (pendingChange) {
       pendingChange.currentValue = currentValue;
       return;
     }
 
-    const isFirstChange = this.uninitializedInputs.has(property);
+    let isFirstChange = this.uninitializedInputs.has(property);
     this.uninitializedInputs.delete(property);
 
-    const previousValue = isFirstChange ? undefined : this.getInputValue(property);
+    let previousValue = isFirstChange ? undefined : this.getInputValue(property);
     this.inputChanges[property] = new SimpleChange(previousValue, currentValue, isFirstChange);
   }
 

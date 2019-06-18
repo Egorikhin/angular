@@ -23,8 +23,8 @@ describe('ServiceWorkerModule', () => {
 
   let swRegisterSpy: jasmine.Spy;
 
-  const untilStable = () => {
-    const appRef: ApplicationRef = TestBed.get(ApplicationRef);
+  let untilStable = () => {
+    let appRef: ApplicationRef = TestBed.get(ApplicationRef);
     return appRef.isStable.pipe(filter(Boolean), take(1)).toPromise();
   };
 
@@ -33,7 +33,7 @@ describe('ServiceWorkerModule', () => {
           spyOn(navigator.serviceWorker, 'register').and.returnValue(Promise.resolve()));
 
   describe('register()', () => {
-    const configTestBed = async(opts: SwRegistrationOptions) => {
+    let configTestBed = async(opts: SwRegistrationOptions) => {
       TestBed.configureTestingModule({
         imports: [ServiceWorkerModule.register('sw.js', opts)],
         providers: [{provide: PLATFORM_ID, useValue: 'browser'}],
@@ -71,7 +71,7 @@ describe('ServiceWorkerModule', () => {
     });
 
     it('catches and a logs registration errors', async() => {
-      const consoleErrorSpy = spyOn(console, 'error');
+      let consoleErrorSpy = spyOn(console, 'error');
       swRegisterSpy.and.returnValue(Promise.reject('no reason'));
 
       await configTestBed({enabled: true, scope: 'foo'});
@@ -81,7 +81,7 @@ describe('ServiceWorkerModule', () => {
   });
 
   describe('SwRegistrationOptions', () => {
-    const configTestBed =
+    let configTestBed =
         (providerOpts: SwRegistrationOptions, staticOpts?: SwRegistrationOptions) => {
           TestBed.configureTestingModule({
             imports: [ServiceWorkerModule.register('sw.js', staticOpts || {scope: 'static'})],
@@ -125,9 +125,9 @@ describe('ServiceWorkerModule', () => {
     });
 
     describe('registrationStrategy', () => {
-      const configTestBedWithMockedStability =
+      let configTestBedWithMockedStability =
           (strategy?: SwRegistrationOptions['registrationStrategy']) => {
-            const isStableSub = new Subject<boolean>();
+            let isStableSub = new Subject<boolean>();
 
             TestBed.configureTestingModule({
               imports: [ServiceWorkerModule.register('sw.js')],
@@ -148,7 +148,7 @@ describe('ServiceWorkerModule', () => {
           };
 
       it('defaults to registering the SW when the app stabilizes', fakeAsync(() => {
-           const isStableSub = configTestBedWithMockedStability();
+           let isStableSub = configTestBedWithMockedStability();
 
            isStableSub.next(false);
            isStableSub.next(false);
@@ -163,7 +163,7 @@ describe('ServiceWorkerModule', () => {
          }));
 
       it('registers the SW when the app stabilizes with `registerWhenStable`', fakeAsync(() => {
-           const isStableSub = configTestBedWithMockedStability('registerWhenStable');
+           let isStableSub = configTestBedWithMockedStability('registerWhenStable');
 
            isStableSub.next(false);
            isStableSub.next(false);
@@ -221,8 +221,8 @@ describe('ServiceWorkerModule', () => {
 
       it('registers the SW on first emitted value with observable factory function',
          fakeAsync(() => {
-           const registerSub = new Subject<void>();
-           const isStableSub = configTestBedWithMockedStability(() => registerSub.asObservable());
+           let registerSub = new Subject<void>();
+           let isStableSub = configTestBedWithMockedStability(() => registerSub.asObservable());
 
            isStableSub.next(true);
            tick();

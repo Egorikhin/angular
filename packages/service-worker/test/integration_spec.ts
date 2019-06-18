@@ -27,15 +27,15 @@ import {async_beforeEach, async_fit, async_it} from './async';
     return;
   }
 
-  const dist = new MockFileSystemBuilder().addFile('/only.txt', 'this is only').build();
+  let dist = new MockFileSystemBuilder().addFile('/only.txt', 'this is only').build();
 
-  const distUpdate = new MockFileSystemBuilder().addFile('/only.txt', 'this is only v2').build();
+  let distUpdate = new MockFileSystemBuilder().addFile('/only.txt', 'this is only v2').build();
 
   function obsToSinglePromise<T>(obs: Observable<T>): Promise<T> {
     return obs.pipe(take(1)).toPromise();
   }
 
-  const manifest: Manifest = {
+  let manifest: Manifest = {
     configVersion: 1,
     timestamp: 1234567890123,
     appData: {version: '1'},
@@ -51,7 +51,7 @@ import {async_beforeEach, async_fit, async_it} from './async';
     hashTable: tmpHashTableForFs(dist),
   };
 
-  const manifestUpdate: Manifest = {
+  let manifestUpdate: Manifest = {
     configVersion: 1,
     timestamp: 1234567890123,
     appData: {version: '2'},
@@ -67,9 +67,9 @@ import {async_beforeEach, async_fit, async_it} from './async';
     hashTable: tmpHashTableForFs(distUpdate),
   };
 
-  const server = new MockServerStateBuilder().withStaticFiles(dist).withManifest(manifest).build();
+  let server = new MockServerStateBuilder().withStaticFiles(dist).withManifest(manifest).build();
 
-  const serverUpdate =
+  let serverUpdate =
       new MockServerStateBuilder().withStaticFiles(distUpdate).withManifest(manifestUpdate).build();
 
 
@@ -101,27 +101,27 @@ import {async_beforeEach, async_fit, async_it} from './async';
     });
 
     async_it('communicates back and forth via update check', async() => {
-      const update = new SwUpdate(comm);
+      let update = new SwUpdate(comm);
       await update.checkForUpdate();
     });
 
     async_it('detects an actual update', async() => {
-      const update = new SwUpdate(comm);
+      let update = new SwUpdate(comm);
       scope.updateServerState(serverUpdate);
 
-      const gotUpdateNotice =
-          (async() => { const notice = await obsToSinglePromise(update.available); })();
+      let gotUpdateNotice =
+          (async() => { let notice = await obsToSinglePromise(update.available); })();
 
       await update.checkForUpdate();
       await gotUpdateNotice;
     });
 
     async_it('receives push message notifications', async() => {
-      const push = new SwPush(comm);
+      let push = new SwPush(comm);
       scope.updateServerState(serverUpdate);
 
-      const gotPushNotice = (async() => {
-        const message = await obsToSinglePromise(push.messages);
+      let gotPushNotice = (async() => {
+        let message = await obsToSinglePromise(push.messages);
         expect(message).toEqual({
           test: 'success',
         });
@@ -134,11 +134,11 @@ import {async_beforeEach, async_fit, async_it} from './async';
     });
 
     async_it('receives push message click events', async() => {
-      const push = new SwPush(comm);
+      let push = new SwPush(comm);
       scope.updateServerState(serverUpdate);
 
-      const gotNotificationClick = (async() => {
-        const event: any = await obsToSinglePromise(push.notificationClicks);
+      let gotNotificationClick = (async() => {
+        let event: any = await obsToSinglePromise(push.notificationClicks);
         expect(event.action).toEqual('clicked');
         expect(event.notification.title).toEqual('This is a test');
       })();

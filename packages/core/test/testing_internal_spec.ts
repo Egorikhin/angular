@@ -10,7 +10,7 @@ import {SpyObject} from '@angular/core/testing/src/testing_internal';
 
 class TestObj {
   prop: any;
-  constructor(prop: any) { this.prop = prop; }
+  letructor(prop: any) { this.prop = prop; }
   someFunc(): number { return -1; }
   someComplexFunc(a: any) { return a; }
 }
@@ -19,7 +19,7 @@ class TestObj {
   describe('testing', () => {
     describe('should respect custom equality tester', () => {
       beforeEach(() => {
-        const equalIfMarried =
+        let equalIfMarried =
             (first: any, second: any) => { return first === 'kevin' && second === 'patricia'; };
         jasmine.addCustomEqualityTester(equalIfMarried);
       });
@@ -31,9 +31,9 @@ class TestObj {
 
     describe('equality', () => {
       it('should structurally compare objects', () => {
-        const expected = new TestObj(new TestObj({'one': [1, 2]}));
-        const actual = new TestObj(new TestObj({'one': [1, 2]}));
-        const falseActual = new TestObj(new TestObj({'one': [1, 3]}));
+        let expected = new TestObj(new TestObj({'one': [1, 2]}));
+        let actual = new TestObj(new TestObj({'one': [1, 2]}));
+        let falseActual = new TestObj(new TestObj({'one': [1, 3]}));
 
         expect(actual).toEqual(expected);
         expect(falseActual).not.toEqual(expected);
@@ -42,38 +42,38 @@ class TestObj {
 
     describe('toEqual for Maps', () => {
       it('should detect equality for same reference', () => {
-        const m1: Map<string, number> = new Map();
+        let m1: Map<string, number> = new Map();
         m1.set('a', 1);
         expect(m1).toEqual(m1);
       });
 
       it('should detect equality for same content', () => {
-        const m1: Map<string, number> = new Map();
+        let m1: Map<string, number> = new Map();
         m1.set('a', 1);
-        const m2: Map<string, number> = new Map();
+        let m2: Map<string, number> = new Map();
         m2.set('a', 1);
         expect(m1).toEqual(m2);
       });
 
       it('should detect missing entries', () => {
-        const m1: Map<string, number> = new Map();
+        let m1: Map<string, number> = new Map();
         m1.set('a', 1);
-        const m2: Map<string, number> = new Map();
+        let m2: Map<string, number> = new Map();
         expect(m1).not.toEqual(m2);
       });
 
       it('should detect different values', () => {
-        const m1: Map<string, number> = new Map();
+        let m1: Map<string, number> = new Map();
         m1.set('a', 1);
-        const m2: Map<string, number> = new Map();
+        let m2: Map<string, number> = new Map();
         m2.set('a', 2);
         expect(m1).not.toEqual(m2);
       });
 
       it('should detect additional entries', () => {
-        const m1: Map<string, number> = new Map();
+        let m1: Map<string, number> = new Map();
         m1.set('a', 1);
-        const m2: Map<string, number> = new Map();
+        let m2: Map<string, number> = new Map();
         m2.set('a', 1);
         m2.set('b', 2);
         expect(m1).not.toEqual(m2);
@@ -116,7 +116,7 @@ class TestObj {
       });
 
       it('should support stubs', () => {
-        const s = SpyObject.stub({'a': 1}, {'b': 2});
+        let s = SpyObject.stub({'a': 1}, {'b': 2});
         expect(s.a()).toEqual(1);
         expect(s.b()).toEqual(2);
       });

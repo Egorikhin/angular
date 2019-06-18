@@ -16,18 +16,18 @@ import {RouterScroller} from '../src/router_scroller';
 
 describe('RouterScroller', () => {
   it('defaults to disabled', () => {
-    const events = new Subject<RouterEvent>();
-    const router = <any>{
+    let events = new Subject<RouterEvent>();
+    let router = <any>{
       events,
       parseUrl: (url: any) => new DefaultUrlSerializer().parse(url),
       triggerEvent: (e: any) => events.next(e)
     };
 
-    const viewportScroller = jasmine.createSpyObj(
+    let viewportScroller = jasmine.createSpyObj(
         'viewportScroller',
         ['getScrollPosition', 'scrollToPosition', 'scrollToAnchor', 'setHistoryScrollRestoration']);
     setScroll(viewportScroller, 0, 0);
-    const scroller = new RouterScroller(router, router);
+    let scroller = new RouterScroller(router, router);
 
     expect((scroller as any).options.scrollPositionRestoration).toBe('disabled');
     expect((scroller as any).options.anchorScrolling).toBe('disabled');
@@ -35,7 +35,7 @@ describe('RouterScroller', () => {
 
   describe('scroll to top', () => {
     it('should scroll to the top', () => {
-      const {events, viewportScroller} =
+      let {events, viewportScroller} =
           createRouterScroller({scrollPositionRestoration: 'top', anchorScrolling: 'disabled'});
 
       events.next(new NavigationStart(1, '/a'));
@@ -54,7 +54,7 @@ describe('RouterScroller', () => {
 
   describe('scroll to the stored position', () => {
     it('should scroll to the stored position on popstate', () => {
-      const {events, viewportScroller} =
+      let {events, viewportScroller} =
           createRouterScroller({scrollPositionRestoration: 'enabled', anchorScrolling: 'disabled'});
 
       events.next(new NavigationStart(1, '/a'));
@@ -75,7 +75,7 @@ describe('RouterScroller', () => {
 
   describe('anchor scrolling', () => {
     it('should work (scrollPositionRestoration is disabled)', () => {
-      const {events, viewportScroller} =
+      let {events, viewportScroller} =
           createRouterScroller({scrollPositionRestoration: 'disabled', anchorScrolling: 'enabled'});
       events.next(new NavigationStart(1, '/a#anchor'));
       events.next(new NavigationEnd(1, '/a#anchor', '/a#anchor'));
@@ -94,7 +94,7 @@ describe('RouterScroller', () => {
     });
 
     it('should work (scrollPositionRestoration is enabled)', () => {
-      const {events, viewportScroller} =
+      let {events, viewportScroller} =
           createRouterScroller({scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled'});
       events.next(new NavigationStart(1, '/a#anchor'));
       events.next(new NavigationEnd(1, '/a#anchor', '/a#anchor'));
@@ -115,13 +115,13 @@ describe('RouterScroller', () => {
 
   describe('extending a scroll service', () => {
     it('work', fakeAsync(() => {
-         const {events, viewportScroller, router} = createRouterScroller(
+         let {events, viewportScroller, router} = createRouterScroller(
              {scrollPositionRestoration: 'disabled', anchorScrolling: 'disabled'});
 
          router.events
              .pipe(filter(e => e instanceof Scroll && !!e.position), switchMap(p => {
                      // can be any delay (e.g., we can wait for NgRx store to emit an event)
-                     const r = new Subject<any>();
+                     let r = new Subject<any>();
                      setTimeout(() => {
                        r.next(p);
                        r.complete();
@@ -161,19 +161,19 @@ describe('RouterScroller', () => {
     scrollPositionRestoration: 'disabled' | 'enabled' | 'top',
     anchorScrolling: 'disabled' | 'enabled'
   }) {
-    const events = new Subject<RouterEvent>();
-    const router = <any>{
+    let events = new Subject<RouterEvent>();
+    let router = <any>{
       events,
       parseUrl: (url: any) => new DefaultUrlSerializer().parse(url),
       triggerEvent: (e: any) => events.next(e)
     };
 
-    const viewportScroller = jasmine.createSpyObj(
+    let viewportScroller = jasmine.createSpyObj(
         'viewportScroller',
         ['getScrollPosition', 'scrollToPosition', 'scrollToAnchor', 'setHistoryScrollRestoration']);
     setScroll(viewportScroller, 0, 0);
 
-    const scroller =
+    let scroller =
         new RouterScroller(router, viewportScroller, {scrollPositionRestoration, anchorScrolling});
     scroller.init();
 

@@ -46,7 +46,7 @@ export class WebWorkerInstance {
  * @publicApi
  * @deprecated platform-webworker is deprecated in Angular and will be removed in version 10
  */
-export const WORKER_SCRIPT = new InjectionToken<string>('WebWorkerScript');
+export let WORKER_SCRIPT = new InjectionToken<string>('WebWorkerScript');
 
 /**
  * A multi-provider used to automatically call the `start()` method after the service is
@@ -55,10 +55,10 @@ export const WORKER_SCRIPT = new InjectionToken<string>('WebWorkerScript');
  * @publicApi
  * @deprecated platform-webworker is deprecated in Angular and will be removed in version 10
  */
-export const WORKER_UI_STARTABLE_MESSAGING_SERVICE =
+export let WORKER_UI_STARTABLE_MESSAGING_SERVICE =
     new InjectionToken<({start: () => void})[]>('WorkerRenderStartableMsgService');
 
-export const _WORKER_UI_PLATFORM_PROVIDERS: StaticProvider[] = [
+export let _WORKER_UI_PLATFORM_PROVIDERS: StaticProvider[] = [
   {provide: NgZone, useFactory: createNgZone, deps: []},
   {
     provide: MessageBasedRenderer2,
@@ -116,12 +116,12 @@ export const _WORKER_UI_PLATFORM_PROVIDERS: StaticProvider[] = [
 ];
 
 function initializeGenericWorkerRenderer(injector: Injector) {
-  const bus = injector.get(MessageBus);
-  const zone = injector.get<NgZone>(NgZone);
+  let bus = injector.get(MessageBus);
+  let zone = injector.get<NgZone>(NgZone);
   bus.attachToZone(zone);
 
   // initialize message services after the bus has been created
-  const services = injector.get(WORKER_UI_STARTABLE_MESSAGING_SERVICE);
+  let services = injector.get(WORKER_UI_STARTABLE_MESSAGING_SERVICE);
   zone.runGuarded(() => { services.forEach((svc: any) => { svc.start(); }); });
 }
 
@@ -141,7 +141,7 @@ function initWebWorkerRenderPlatform(injector: Injector): () => void {
           'You must provide your WebWorker\'s initialization script with the WORKER_SCRIPT token');
     }
 
-    const instance = injector.get(WebWorkerInstance);
+    let instance = injector.get(WebWorkerInstance);
     spawnWebWorker(scriptUri, instance);
 
     initializeGenericWorkerRenderer(injector);
@@ -151,7 +151,7 @@ function initWebWorkerRenderPlatform(injector: Injector): () => void {
 /**
  * @publicApi
  */
-export const platformWorkerUi =
+export let platformWorkerUi =
     createPlatformFactory(platformCore, 'workerUi', _WORKER_UI_PLATFORM_PROVIDERS);
 
 function _exceptionHandler(): ErrorHandler {
@@ -170,10 +170,10 @@ function createNgZone(): NgZone {
  * Spawns a new class and initializes the WebWorkerInstance
  */
 function spawnWebWorker(uri: string, instance: WebWorkerInstance): void {
-  const webWorker: Worker = new Worker(uri);
-  const sink = new PostMessageBusSink(webWorker);
-  const source = new PostMessageBusSource(webWorker);
-  const bus = new PostMessageBus(sink, source);
+  let webWorker: Worker = new Worker(uri);
+  let sink = new PostMessageBusSink(webWorker);
+  let source = new PostMessageBusSource(webWorker);
+  let bus = new PostMessageBus(sink, source);
 
   instance.init(webWorker, bus);
 }

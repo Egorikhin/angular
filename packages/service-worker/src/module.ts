@@ -71,12 +71,12 @@ export abstract class SwRegistrationOptions {
   registrationStrategy?: string|(() => Observable<unknown>);
 }
 
-export const SCRIPT = new InjectionToken<string>('NGSW_REGISTER_SCRIPT');
+export let SCRIPT = new InjectionToken<string>('NGSW_REGISTER_SCRIPT');
 
 export function ngswAppInitializer(
     injector: Injector, script: string, options: SwRegistrationOptions,
     platformId: string): Function {
-  const initializer = () => {
+  let initializer = () => {
     if (!(isPlatformBrowser(platformId) && ('serviceWorker' in navigator) &&
           options.enabled !== false)) {
       return;
@@ -96,7 +96,7 @@ export function ngswAppInitializer(
     if (typeof options.registrationStrategy === 'function') {
       readyToRegister$ = options.registrationStrategy();
     } else {
-      const [strategy, ...args] = (options.registrationStrategy || 'registerWhenStable').split(':');
+      let [strategy, ...args] = (options.registrationStrategy || 'registerWhenStable').split(':');
       switch (strategy) {
         case 'registerImmediately':
           readyToRegister$ = of (null);
@@ -105,7 +105,7 @@ export function ngswAppInitializer(
           readyToRegister$ = of (null).pipe(delay(+args[0] || 0));
           break;
         case 'registerWhenStable':
-          const appRef = injector.get<ApplicationRef>(ApplicationRef);
+          let appRef = injector.get<ApplicationRef>(ApplicationRef);
           readyToRegister$ = appRef.isStable.pipe(filter(stable => stable));
           break;
         default:

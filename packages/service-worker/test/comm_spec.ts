@@ -28,18 +28,18 @@ import {async_fit, async_it} from './async';
 
     describe('NgswCommsChannel', () => {
       it('can access the registration when it comes before subscription', done => {
-        const mock = new MockServiceWorkerContainer();
-        const comm = new NgswCommChannel(mock as any);
-        const regPromise = mock.getRegistration() as any as MockServiceWorkerRegistration;
+        let mock = new MockServiceWorkerContainer();
+        let comm = new NgswCommChannel(mock as any);
+        let regPromise = mock.getRegistration() as any as MockServiceWorkerRegistration;
 
         mock.setupSw();
 
         (comm as any).registration.subscribe((reg: any) => { done(); });
       });
       it('can access the registration when it comes after subscription', done => {
-        const mock = new MockServiceWorkerContainer();
-        const comm = new NgswCommChannel(mock as any);
-        const regPromise = mock.getRegistration() as any as MockServiceWorkerRegistration;
+        let mock = new MockServiceWorkerContainer();
+        let comm = new NgswCommChannel(mock as any);
+        let regPromise = mock.getRegistration() as any as MockServiceWorkerRegistration;
 
         (comm as any).registration.subscribe((reg: any) => { done(); });
 
@@ -89,9 +89,9 @@ import {async_fit, async_it} from './async';
           ],
         });
 
-        const context: any = global || window;
-        const originalDescriptor = Object.getOwnPropertyDescriptor(context, 'navigator');
-        const patchedDescriptor = {value: {serviceWorker: undefined}, configurable: true};
+        let context: any = global || window;
+        let originalDescriptor = Object.getOwnPropertyDescriptor(context, 'navigator');
+        let patchedDescriptor = {value: {serviceWorker: undefined}, configurable: true};
 
         try {
           // Set `navigator` to `{serviceWorker: undefined}`.
@@ -118,9 +118,9 @@ import {async_fit, async_it} from './async';
              ]
            });
 
-           const context: any = global || window;
-           const originalDescriptor = Object.getOwnPropertyDescriptor(context, 'navigator');
-           const patchedDescriptor = {value: {serviceWorker: mock}, configurable: true};
+           let context: any = global || window;
+           let originalDescriptor = Object.getOwnPropertyDescriptor(context, 'navigator');
+           let patchedDescriptor = {value: {serviceWorker: mock}, configurable: true};
 
            try {
              // Set `navigator` to `{serviceWorker: mock}`.
@@ -161,22 +161,22 @@ import {async_fit, async_it} from './async';
 
       describe('requestSubscription()', () => {
         async_it('returns a promise that resolves to the subscription', async() => {
-          const promise = push.requestSubscription({serverPublicKey: 'test'});
+          let promise = push.requestSubscription({serverPublicKey: 'test'});
           expect(promise).toEqual(jasmine.any(Promise));
 
-          const sub = await promise;
+          let sub = await promise;
           expect(sub).toEqual(jasmine.any(MockPushSubscription));
         });
 
         async_it('calls `PushManager.subscribe()` (with appropriate options)', async() => {
-          const decode = (charCodeArr: Uint8Array) =>
+          let decode = (charCodeArr: Uint8Array) =>
               Array.from(charCodeArr).map(c => String.fromCharCode(c)).join('');
 
           // atob('c3ViamVjdHM/') === 'subjects?'
-          const serverPublicKey = 'c3ViamVjdHM_';
-          const appServerKeyStr = 'subjects?';
+          let serverPublicKey = 'c3ViamVjdHM_';
+          let appServerKeyStr = 'subjects?';
 
-          const pmSubscribeSpy = spyOn(MockPushManager.prototype, 'subscribe').and.callThrough();
+          let pmSubscribeSpy = spyOn(MockPushManager.prototype, 'subscribe').and.callThrough();
           await push.requestSubscription({serverPublicKey});
 
           expect(pmSubscribeSpy).toHaveBeenCalledTimes(1);
@@ -185,15 +185,15 @@ import {async_fit, async_it} from './async';
             userVisibleOnly: true,
           });
 
-          const actualAppServerKey = pmSubscribeSpy.calls.first().args[0].applicationServerKey;
-          const actualAppServerKeyStr = decode(actualAppServerKey);
+          let actualAppServerKey = pmSubscribeSpy.calls.first().args[0].applicationServerKey;
+          let actualAppServerKeyStr = decode(actualAppServerKey);
           expect(actualAppServerKeyStr).toBe(appServerKeyStr);
         });
 
         async_it('emits the new `PushSubscription` on `SwPush.subscription`', async() => {
-          const subscriptionSpy = jasmine.createSpy('subscriptionSpy');
+          let subscriptionSpy = jasmine.createSpy('subscriptionSpy');
           push.subscription.subscribe(subscriptionSpy);
-          const sub = await push.requestSubscription({serverPublicKey: 'test'});
+          let sub = await push.requestSubscription({serverPublicKey: 'test'});
 
           expect(subscriptionSpy).toHaveBeenCalledWith(sub);
         });
@@ -247,7 +247,7 @@ import {async_fit, async_it} from './async';
         });
 
         async_it('emits `null` on `SwPush.subscription`', async() => {
-          const subscriptionSpy = jasmine.createSpy('subscriptionSpy');
+          let subscriptionSpy = jasmine.createSpy('subscriptionSpy');
           push.subscription.subscribe(subscriptionSpy);
 
           await push.requestSubscription({serverPublicKey: 'test'});
@@ -257,8 +257,8 @@ import {async_fit, async_it} from './async';
         });
 
         async_it('does not emit on `SwPush.subscription` on failure', async() => {
-          const subscriptionSpy = jasmine.createSpy('subscriptionSpy');
-          const initialSubEmit = new Promise(resolve => subscriptionSpy.and.callFake(resolve));
+          let subscriptionSpy = jasmine.createSpy('subscriptionSpy');
+          let initialSubEmit = new Promise(resolve => subscriptionSpy.and.callFake(resolve));
 
           push.subscription.subscribe(subscriptionSpy);
           await initialSubEmit;
@@ -286,10 +286,10 @@ import {async_fit, async_it} from './async';
 
       describe('messages', () => {
         it('receives push messages', () => {
-          const sendMessage = (type: string, message: string) =>
+          let sendMessage = (type: string, message: string) =>
               mock.sendMessage({type, data: {message}});
 
-          const receivedMessages: string[] = [];
+          let receivedMessages: string[] = [];
           push.messages.subscribe((msg: {message: string}) => receivedMessages.push(msg.message));
 
           sendMessage('PUSH', 'this was a push message');
@@ -306,10 +306,10 @@ import {async_fit, async_it} from './async';
 
       describe('notificationClicks', () => {
         it('receives notification clicked messages', () => {
-          const sendMessage = (type: string, action: string) =>
+          let sendMessage = (type: string, action: string) =>
               mock.sendMessage({type, data: {action}});
 
-          const receivedMessages: string[] = [];
+          let receivedMessages: string[] = [];
           push.notificationClicks.subscribe(
               (msg: {action: string}) => receivedMessages.push(msg.action));
 
