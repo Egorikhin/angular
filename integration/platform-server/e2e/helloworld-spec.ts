@@ -15,11 +15,11 @@ describe('Hello world E2E Tests', function() {
     // Load the page without waiting for Angular since it is not bootstrapped automatically.
     browser.driver.get(browser.baseUrl + 'helloworld');
 
-    const style = browser.driver.findElement(by.css('style[ng-transition="hlw"]'));
+    let style = browser.driver.findElement(by.css('style[ng-transition="hlw"]'));
     expect(style.getText()).not.toBeNull();
 
     // Test the contents from the server.
-    const serverDiv = browser.driver.findElement(by.css('div'));
+    let serverDiv = browser.driver.findElement(by.css('div'));
     expect(serverDiv.getText()).toEqual('Hello world!');
 
     // Bootstrap the client side app.

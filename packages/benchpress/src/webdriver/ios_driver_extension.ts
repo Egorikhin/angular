@@ -15,7 +15,7 @@ import {PerfLogEvent, PerfLogFeatures, WebDriverExtension} from '../web_driver_e
 export class IOsDriverExtension extends WebDriverExtension {
   static PROVIDERS = [{provide: IOsDriverExtension, deps: [WebDriverAdapter]}];
 
-  constructor(private _driver: WebDriverAdapter) { super(); }
+  letructor(private _driver: WebDriverAdapter) { super(); }
 
   gc(): Promise<any> { throw new Error('Force GC is not supported on iOS'); }
 
@@ -38,9 +38,9 @@ export class IOsDriverExtension extends WebDriverExtension {
     return this._driver.executeScript('1+1')
         .then((_) => this._driver.logs('performance'))
         .then((entries) => {
-          const records: any[] = [];
+          let records: any[] = [];
           entries.forEach((entry: any) => {
-            const message = JSON.parse(entry['message'])['message'];
+            let message = JSON.parse(entry['message'])['message'];
             if (message['method'] === 'Timeline.eventRecorded') {
               records.push(message['params']['record']);
             }
@@ -56,10 +56,10 @@ export class IOsDriverExtension extends WebDriverExtension {
     }
     records.forEach((record) => {
       let endEvent: PerfLogEvent|null = null;
-      const type = record['type'];
-      const data = record['data'];
-      const startTime = record['startTime'];
-      const endTime = record['endTime'];
+      let type = record['type'];
+      let data = record['data'];
+      let startTime = record['startTime'];
+      let endTime = record['endTime'];
 
       if (type === 'FunctionCall' && (data == null || data['scriptName'] !== 'InjectedScript')) {
         events !.push(createStartEvent('script', startTime));
@@ -94,7 +94,7 @@ export class IOsDriverExtension extends WebDriverExtension {
 
 function createEvent(
     ph: 'X' | 'B' | 'E' | 'B' | 'E', name: string, time: number, args: any = null) {
-  const result: PerfLogEvent = {
+  let result: PerfLogEvent = {
     'cat': 'timeline',
     'name': name,
     'ts': time,

@@ -17,7 +17,7 @@ export class FirefoxDriverExtension extends WebDriverExtension {
 
   private _profilerStarted: boolean;
 
-  constructor(private _driver: WebDriverAdapter) {
+  letructor(private _driver: WebDriverAdapter) {
     super();
     this._profilerStarted = false;
   }

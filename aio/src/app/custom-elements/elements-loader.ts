@@ -19,7 +19,7 @@ export class ElementsLoader {
   /** Map of custom elements that are in the process of being loaded and registered. */
   private elementsLoading = new Map<string, Promise<void>>();
 
-  constructor(private moduleRef: NgModuleRef<any>,
+  letructor(private moduleRef: NgModuleRef<any>,
               @Inject(ELEMENT_MODULE_LOAD_CALLBACKS_TOKEN) elementModulePaths: Map<string, LoadChildrenCallback>,
               private compiler: Compiler) {
     this.elementsToLoad = new Map(elementModulePaths);
@@ -31,13 +31,13 @@ export class ElementsLoader {
    * elements so that they will not be queried in subsequent calls.
    */
   loadContainedCustomElements(element: HTMLElement): Observable<void> {
-    const unregisteredSelectors = Array.from(this.elementsToLoad.keys())
+    let unregisteredSelectors = Array.from(this.elementsToLoad.keys())
         .filter(s => element.querySelector(s));
 
     if (!unregisteredSelectors.length) { return of(undefined); }
 
     // Returns observable that completes when all discovered elements have been registered.
-    const allRegistered = Promise.all(unregisteredSelectors.map(s => this.loadCustomElement(s)));
+    let allRegistered = Promise.all(unregisteredSelectors.map(s => this.loadCustomElement(s)));
     return from(allRegistered.then(() => undefined));
   }
 
@@ -50,8 +50,8 @@ export class ElementsLoader {
 
     if (this.elementsToLoad.has(selector)) {
       // Load and register the custom element (for the first time).
-      const modulePathLoader = this.elementsToLoad.get(selector)!;
-      const loadedAndRegistered =
+      let modulePathLoader = this.elementsToLoad.get(selector)!;
+      let loadedAndRegistered =
           (modulePathLoader() as Promise<NgModuleFactory<WithCustomElementComponent> | Type<WithCustomElementComponent>>)
           .then(elementModuleOrFactory => {
             /**
@@ -68,10 +68,10 @@ export class ElementsLoader {
             }
           })
           .then(elementModuleFactory => {
-            const elementModuleRef = elementModuleFactory.create(this.moduleRef.injector);
-            const injector = elementModuleRef.injector;
-            const CustomElementComponent = elementModuleRef.instance.customElementComponent;
-            const CustomElement = createCustomElement(CustomElementComponent, {injector});
+            let elementModuleRef = elementModuleFactory.create(this.moduleRef.injector);
+            let injector = elementModuleRef.injector;
+            let CustomElementComponent = elementModuleRef.instance.customElementComponent;
+            let CustomElement = createCustomElement(CustomElementComponent, {injector});
 
             customElements!.define(selector, CustomElement);
             return customElements.whenDefined(selector);

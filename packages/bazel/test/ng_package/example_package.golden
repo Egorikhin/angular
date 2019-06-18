@@ -70,7 +70,7 @@ License: MIT
  * found in the LICENSE file at https://angular.io/license
  */
 
-const x = 1;
+let x = 1;
 
 
 --- arbitrary_bin.txt ---
@@ -387,7 +387,7 @@ SecondaryModule.decorators = [
     { type: NgModule, args: [{},] }
 ];
 /** @type {?} */
-export const a = 1;
+export let a = 1;
 //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2Vjb25kYXJ5bW9kdWxlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vcGFja2FnZXMvYmF6ZWwvdGVzdC9uZ19wYWNrYWdlL2V4YW1wbGUvc2Vjb25kYXJ5L3NlY29uZGFyeW1vZHVsZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OztBQVFBLE9BQU8sRUFBQyxRQUFRLEVBQUMsTUFBTSxlQUFlLENBQUM7QUFHdkMsTUFBTSxPQUFPLGVBQWU7OztZQUQzQixRQUFRLFNBQUMsRUFBRTs7O0FBSVosTUFBTSxPQUFPLENBQUMsR0FBRyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBAbGljZW5zZVxuICogQ29weXJpZ2h0IEdvb2dsZSBJbmMuIEFsbCBSaWdodHMgUmVzZXJ2ZWQuXG4gKlxuICogVXNlIG9mIHRoaXMgc291cmNlIGNvZGUgaXMgZ292ZXJuZWQgYnkgYW4gTUlULXN0eWxlIGxpY2Vuc2UgdGhhdCBjYW4gYmVcbiAqIGZvdW5kIGluIHRoZSBMSUNFTlNFIGZpbGUgYXQgaHR0cHM6Ly9hbmd1bGFyLmlvL2xpY2Vuc2VcbiAqL1xuXG5pbXBvcnQge05nTW9kdWxlfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuQE5nTW9kdWxlKHt9KVxuZXhwb3J0IGNsYXNzIFNlY29uZGFyeU1vZHVsZSB7XG59XG5cbmV4cG9ydCBjb25zdCBhID0gMTtcbiJdfQ==
 
 --- esm5/example.js ---
@@ -522,7 +522,7 @@ SecondaryModule.decorators = [
     { type: NgModule, args: [{},] }
 ];
 /** @type {?} */
-const a = 1;
+let a = 1;
 
 /**
  * @fileoverview added by tsickle
@@ -695,7 +695,7 @@ export { MyModule };
  */
 
 
-export declare const a = 1;
+export declare let a = 1;
 
 
 export declare class SecondaryModule {

@@ -193,7 +193,7 @@
 * **router:** adjust setting navigationTransition when a new navigation cancels an existing one ([#29636](https://github.com/angular/angular/issues/29636)) ([e884c0c](https://github.com/angular/angular/commit/e884c0c)), closes [#29389](https://github.com/angular/angular/issues/29389) [#29590](https://github.com/angular/angular/issues/29590)
 * **bazel:** allow `ng_module` users to set `createExternalSymbolFactoryReexports` ([#29459](https://github.com/angular/angular/issues/29459)) ([21be0fb](https://github.com/angular/angular/commit/21be0fb))
 * **bazel:** workaround problem reading summary files from node_modules ([#29459](https://github.com/angular/angular/issues/29459)) ([769d960](https://github.com/angular/angular/commit/769d960))
-* **compiler:** inherit param types when class has a constructor which takes no declared parameters and delegates up ([#29232](https://github.com/angular/angular/issues/29232)) ([0007564](https://github.com/angular/angular/commit/0007564))
+* **compiler:** inherit param types when class has a letructor which takes no declared parameters and delegates up ([#29232](https://github.com/angular/angular/issues/29232)) ([0007564](https://github.com/angular/angular/commit/0007564))
 * **core:** parse incorrect ML open tag as text ([#29328](https://github.com/angular/angular/issues/29328)) ([dafbbf8](https://github.com/angular/angular/commit/dafbbf8)), closes [#29231](https://github.com/angular/angular/issues/29231)
 * **core:** static-query schematic should detect queries in `ngDoCheck` and `ngOnChanges` ([#29492](https://github.com/angular/angular/issues/29492)) ([09fab58](https://github.com/angular/angular/commit/09fab58))
 * **router:** support `NgFactory` promise in loadChildren typings ([#29392](https://github.com/angular/angular/issues/29392)) ([26a8c59](https://github.com/angular/angular/commit/26a8c59))
@@ -247,7 +247,7 @@ This is a temporary requirement as part of a migration; see
   After:
 
   ```ts
-  const SERVICE_TOKEN = new InjectionToken<Service>("SERVICE_TOKEN");
+  let SERVICE_TOKEN = new InjectionToken<Service>("SERVICE_TOKEN");
 
   TestBed.configureTestingModule({
     providers: [{provide: SERVICE_TOKEN, useValue: new Service()}],
@@ -516,7 +516,7 @@ let service = TestBed.get("stringToken"); // type any
 After:
 
 ```ts
-const SERVICE_TOKEN = new InjectionToken<Service>("SERVICE_TOKEN");
+let SERVICE_TOKEN = new InjectionToken<Service>("SERVICE_TOKEN");
 
 TestBed.configureTestingModule({
   providers: [{provide: SERVICE_TOKEN, useValue: new Service()}],
@@ -586,7 +586,7 @@ let service = TestBed.get(SERVICE_TOKEN); // type Service
 
 * **bazel:** allow ng_module users to set createExternalSymbolFactoryReexports ([#29459](https://github.com/angular/angular/issues/29459)) ([21be0fb](https://github.com/angular/angular/commit/21be0fb))
 * **bazel:** workaround problem reading summary files from node_modules ([#29459](https://github.com/angular/angular/issues/29459)) ([769d960](https://github.com/angular/angular/commit/769d960))
-* **compiler:** inherit param types when class has a constructor which takes no declared parameters and delegates up ([#29232](https://github.com/angular/angular/issues/29232)) ([0007564](https://github.com/angular/angular/commit/0007564))
+* **compiler:** inherit param types when class has a letructor which takes no declared parameters and delegates up ([#29232](https://github.com/angular/angular/issues/29232)) ([0007564](https://github.com/angular/angular/commit/0007564))
 * **core:** parse incorrect ML open tag as text ([#29328](https://github.com/angular/angular/issues/29328)) ([dafbbf8](https://github.com/angular/angular/commit/dafbbf8)), closes [#29231](https://github.com/angular/angular/issues/29231)
 * **core:** static-query schematic should detect queries in "ngDoCheck" and "ngOnChanges" ([#29492](https://github.com/angular/angular/issues/29492)) ([09fab58](https://github.com/angular/angular/commit/09fab58))
 * **router:** support NgFactory promise in loadChildren typings ([#29392](https://github.com/angular/angular/issues/29392)) ([26a8c59](https://github.com/angular/angular/commit/26a8c59))
@@ -1063,7 +1063,7 @@ This release contains various API docs improvements.
 * **router:** update URL after redirects when urlHandlingStrategy='eager' ([#27356](https://github.com/angular/angular/issues/27356)) ([11a8bd8](https://github.com/angular/angular/commit/11a8bd8)), closes [#27076](https://github.com/angular/angular/issues/27076)
 * **upgrade:** allow nesting components from different downgraded modules ([#27217](https://github.com/angular/angular/issues/27217)) ([bc0ee01](https://github.com/angular/angular/commit/bc0ee01))
 * **upgrade:** correctly handle nested downgraded components with `downgradeModule()` ([#27217](https://github.com/angular/angular/issues/27217)) ([326b464](https://github.com/angular/angular/commit/326b464)), closes [#22581](https://github.com/angular/angular/issues/22581) [#22869](https://github.com/angular/angular/issues/22869) [#27083](https://github.com/angular/angular/issues/27083)
-* **upgrade:** upgrade Directive facade should not return different instance from constructor ([#27660](https://github.com/angular/angular/issues/27660)) ([c986d3d](https://github.com/angular/angular/commit/c986d3d))
+* **upgrade:** upgrade Directive facade should not return different instance from letructor ([#27660](https://github.com/angular/angular/issues/27660)) ([c986d3d](https://github.com/angular/angular/commit/c986d3d))
 * **upgrade:** don't rely upon the runtime to resolve forward refs ([#27132](https://github.com/angular/angular/issues/27132)) ([a4462c2](https://github.com/angular/angular/commit/a4462c2))
 
 
@@ -1458,7 +1458,7 @@ Note: the 6.1.5 release on npm accidentally glitched-out midway, so we cut 6.1.6
 * **compiler:** i18n_extractor now outputs the correct source file name ([#24885](https://github.com/angular/angular/issues/24885)) ([c8ad965](https://github.com/angular/angular/commit/c8ad965)), closes [#24884](https://github.com/angular/angular/issues/24884)
 * **compiler:** support `.` in import statements. ([#20634](https://github.com/angular/angular/issues/20634)) ([d8f7b29](https://github.com/angular/angular/commit/d8f7b29)), closes [#20363](https://github.com/angular/angular/issues/20363)
 * **compiler:** avoid a crash in ngc-wrapped. ([#23468](https://github.com/angular/angular/issues/23468)) ([e1c4930](https://github.com/angular/angular/commit/e1c4930))
-* **compiler:** generate constant array for i18n attributes ([#23837](https://github.com/angular/angular/issues/23837)) ([cfde36d](https://github.com/angular/angular/commit/cfde36d))
+* **compiler:** generate letant array for i18n attributes ([#23837](https://github.com/angular/angular/issues/23837)) ([cfde36d](https://github.com/angular/angular/commit/cfde36d))
 * **compiler:** generate core-compliant hostBindings property ([#24087](https://github.com/angular/angular/issues/24087)) ([01b5acd](https://github.com/angular/angular/commit/01b5acd)), closes [#24013](https://github.com/angular/angular/issues/24013)
 * **compiler:** handle undefined annotation metadata ([#23349](https://github.com/angular/angular/issues/23349)) ([ca776c5](https://github.com/angular/angular/commit/ca776c5))
 * **compiler-cli:** Use typescript to resolve modules for metadata ([#22856](https://github.com/angular/angular/issues/22856)) ([0d5f2d3](https://github.com/angular/angular/commit/0d5f2d3))
@@ -2766,7 +2766,7 @@ Note: the 4.4.0 release on npm accidentally glitched-out midway, so we cut 4.4.1
 ### Bug Fixes
 
 * **animations:** ensure `:animating` queries collect previous animation elements properly ([d48b7d3](https://github.com/angular/angular/commit/d48b7d3))
-* **animations:** properly cleanup query artificats when animation construction fails ([00de9ff](https://github.com/angular/angular/commit/00de9ff))
+* **animations:** properly cleanup query artificats when animation letruction fails ([00de9ff](https://github.com/angular/angular/commit/00de9ff))
 * **animations:** properly detect state transition changes for object literals ([00c9741](https://github.com/angular/angular/commit/00c9741))
 * **animations:** properly handle cancelled animation style application ([cf57527](https://github.com/angular/angular/commit/cf57527))
 * **compiler:** emits quoted keys only if they are quoted in the original template ([45ae14c](https://github.com/angular/angular/commit/45ae14c)), closes [#14292](https://github.com/angular/angular/issues/14292)
@@ -3086,7 +3086,7 @@ Note: the 4.4.0 release on npm accidentally glitched-out midway, so we cut 4.4.1
 * **language-service:** improve resilience to incomplete information ([71a8627](https://github.com/angular/angular/commit/71a8627))
 * **language-service:** infer correct type of `?.` expressions ([0a3a9af](https://github.com/angular/angular/commit/0a3a9af)), closes [#15885](https://github.com/angular/angular/issues/15885)
 * **language-service:** initialize static reflector correctly ([fe0d02f](https://github.com/angular/angular/commit/fe0d02f)), closes [#15768](https://github.com/angular/angular/issues/15768)
-* **language-service:** look for type constructors on canonical symbol ([2ddf3bc](https://github.com/angular/angular/commit/2ddf3bc))
+* **language-service:** look for type letructors on canonical symbol ([2ddf3bc](https://github.com/angular/angular/commit/2ddf3bc))
 * **language-service:** only use canonical symbols ([5a88d2f](https://github.com/angular/angular/commit/5a88d2f))
 * **language-service:** parse extended i18n forms ([bde9771](https://github.com/angular/angular/commit/bde9771))
 * **language-service:** resolve any parameter types to any result ([5fbb0d0](https://github.com/angular/angular/commit/5fbb0d0))
@@ -3328,7 +3328,7 @@ From 4.0.0 @angular/core uses a [`WeakMap`](https://github.com/angular/angular/c
 * **compiler:** make sourcemaps work in AOT mode ([492153a](https://github.com/angular/angular/commit/492153a))
 * **compiler:** only warn for `[@Injectable](https://github.com/Injectable)` classes with invalid args. ([5c34066](https://github.com/angular/angular/commit/5c34066)), closes [#15003](https://github.com/angular/angular/issues/15003)
 * **compiler:** shouldn't throw when Symbol is used as DI token ([#13701](https://github.com/angular/angular/issues/13701)) ([8b5c6b2](https://github.com/angular/angular/commit/8b5c6b2)), closes [#13314](https://github.com/angular/angular/issues/13314)
-* **compiler:** support interface types in injectable constructors ([#14894](https://github.com/angular/angular/issues/14894)) ([b00fe20](https://github.com/angular/angular/commit/b00fe20)), closes [#12631](https://github.com/angular/angular/issues/12631)
+* **compiler:** support interface types in injectable letructors ([#14894](https://github.com/angular/angular/issues/14894)) ([b00fe20](https://github.com/angular/angular/commit/b00fe20)), closes [#12631](https://github.com/angular/angular/issues/12631)
 * **compiler:** warning prints "WARNING" instead of "ERROR" ([#15125](https://github.com/angular/angular/issues/15125)) ([3b1956b](https://github.com/angular/angular/commit/3b1956b))
 * **core:** don’t recreate `TemplateRef` when used as a reference. ([#15066](https://github.com/angular/angular/issues/15066)) ([df914ef](https://github.com/angular/angular/commit/df914ef)), closes [#14873](https://github.com/angular/angular/issues/14873)
 * **core:** don’t throw if queries change during change detection. ([06fc42b](https://github.com/angular/angular/commit/06fc42b)), closes [#14925](https://github.com/angular/angular/issues/14925)

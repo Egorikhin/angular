@@ -14,7 +14,7 @@ type TestPackage = {
   displayName: string; packagePath: string; goldenFilePath: string;
 };
 
-const packagesToTest: TestPackage[] = [
+let packagesToTest: TestPackage[] = [
   {
     displayName: 'Example NPM package',
     // Resolve the "npm_package" directory by using the runfile resolution. Note that we need to
@@ -35,12 +35,12 @@ const packagesToTest: TestPackage[] = [
  * @returns Array of all indented entries (files and directories).
  */
 function getIndentedDirectoryStructure(directoryPath: string, depth = 0): string[] {
-  const result: string[] = [];
+  let result: string[] = [];
   if (fs.statSync(directoryPath).isDirectory()) {
     // We need to sort the directories because on Windows "readdirsync" is not sorted. Since we
     // compare these in a golden file, the order needs to be consistent across different platforms.
     fs.readdirSync(directoryPath).sort().forEach(f => {
-      const filePath = path.posix.join(directoryPath, f);
+      let filePath = path.posix.join(directoryPath, f);
       result.push(
           '  '.repeat(depth) + filePath, ...getIndentedDirectoryStructure(filePath, depth + 1));
     });
@@ -56,7 +56,7 @@ function getIndentedDirectoryStructure(directoryPath: string, depth = 0): string
  * @returns Array of all files' contents.
  */
 function getDescendantFilesContents(directoryPath: string): string[] {
-  const result: string[] = [];
+  let result: string[] = [];
   if (fs.statSync(directoryPath).isDirectory()) {
     // We need to sort the directories because on Windows "readdirsync" is not sorted. Since we
     // compare these in a golden file, the order needs to be consistent across different platforms.
@@ -87,15 +87,15 @@ function getCurrentPackageContent() {
 
 /** Compares the current package output to the gold file in source control in a jasmine test. */
 function runPackageGoldTest(testPackage: TestPackage) {
-  const {displayName, packagePath, goldenFilePath} = testPackage;
+  let {displayName, packagePath, goldenFilePath} = testPackage;
 
   process.chdir(packagePath);
 
   // Gold file content from source control. We expect that the output of the package matches this.
-  const expected = fs.readFileSync(goldenFilePath, 'utf-8');
+  let expected = fs.readFileSync(goldenFilePath, 'utf-8');
 
   // Actual file content generated from the rule.
-  const actual = getCurrentPackageContent();
+  let actual = getCurrentPackageContent();
 
   // Without the `--accept` flag, compare the actual to the expected in a jasmine test.
   it(`Package "${displayName}"`, () => {
@@ -103,12 +103,12 @@ function runPackageGoldTest(testPackage: TestPackage) {
       // Compute the patch and strip the header
       let patch = createPatch(
           goldenFilePath, expected, actual, 'Golden file', 'Generated file', {context: 5});
-      const endOfHeader = patch.indexOf('\n', patch.indexOf('\n') + 1) + 1;
+      let endOfHeader = patch.indexOf('\n', patch.indexOf('\n') + 1) + 1;
       patch = patch.substring(endOfHeader);
 
       // Use string concatentation instead of whitespace inside a single template string
       // to make the structure message explicit.
-      const failureMessage = `example ng_package differs from golden file\n` +
+      let failureMessage = `example ng_package differs from golden file\n` +
           `    Diff:\n` +
           `    ${patch}\n\n` +
           `    To accept the new golden file, run:\n` +
@@ -129,8 +129,8 @@ function readFileContents(filePath: string): string {
 }
 
 if (require.main === module) {
-  const args = process.argv.slice(2);
-  const acceptingNewGold = (args[0] === '--accept');
+  let args = process.argv.slice(2);
+  let acceptingNewGold = (args[0] === '--accept');
 
   if (acceptingNewGold) {
     for (let p of packagesToTest) {

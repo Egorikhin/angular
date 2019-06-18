@@ -76,7 +76,7 @@ import {Injector, Metric, Options, Runner, SampleDescription, SampleState, Sampl
 
     it('should provide Options.EXECUTE',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const execute = () => {};
+         let execute = () => {};
          createRunner().sample({id: 'someId', execute: execute}).then((_) => {
            expect(injector.get(Options.EXECUTE)).toEqual(execute);
            async.done();
@@ -85,7 +85,7 @@ import {Injector, Metric, Options, Runner, SampleDescription, SampleState, Sampl
 
     it('should provide Options.PREPARE',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const prepare = () => {};
+         let prepare = () => {};
          createRunner().sample({id: 'someId', prepare: prepare}).then((_) => {
            expect(injector.get(Options.PREPARE)).toEqual(prepare);
            async.done();
@@ -125,16 +125,16 @@ class MockWebDriverAdapter extends WebDriverAdapter {
 }
 
 class MockValidator extends Validator {
-  constructor() { super(); }
+  letructor() { super(); }
   describe() { return {'v': 11}; }
 }
 
 class MockMetric extends Metric {
-  constructor() { super(); }
+  letructor() { super(); }
   describe() { return {'m1': 'some metric'}; }
 }
 
 class MockSampler extends Sampler {
-  constructor() { super(null !, null !, null !, null !, null !, null !, null !); }
+  letructor() { super(null !, null !, null !, null !, null !, null !, null !); }
   sample(): Promise<SampleState> { return Promise.resolve(new SampleState([], [])); }
 }

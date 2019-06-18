@@ -11,9 +11,9 @@ export interface AttrMap {
  * @param el The source of the attributes.
  */
 export function getAttrs(el: HTMLElement | ElementRef): AttrMap {
-  const attrs: NamedNodeMap = el instanceof ElementRef ? el.nativeElement.attributes : el.attributes;
-  const attrMap: AttrMap = {};
-  for (const attr of attrs as any as Attr[] /* cast due to https://github.com/Microsoft/TypeScript/issues/2695 */) {
+  let attrs: NamedNodeMap = el instanceof ElementRef ? el.nativeElement.attributes : el.attributes;
+  let attrMap: AttrMap = {};
+  for (let attr of attrs as any as Attr[] /* cast due to https://github.com/Microsoft/TypeScript/issues/2695 */) {
     attrMap[attr.name.toLowerCase()] = attr.value;
   }
   return attrMap;
@@ -24,7 +24,7 @@ export function getAttrs(el: HTMLElement | ElementRef): AttrMap {
  * @param attr Name of the attribute or a string of candidate attribute names.
  */
 export function getAttrValue(attrs: AttrMap, attr: string | string[]): string | undefined {
-  const key = (typeof attr === 'string')
+  let key = (typeof attr === 'string')
       ? attr
       : attr.find(a => attrs.hasOwnProperty(a.toLowerCase()));
 

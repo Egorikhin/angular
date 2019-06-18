@@ -9,7 +9,7 @@ import { ElementsLoader } from './elements-loader';
 export class LazyCustomElementComponent implements OnInit {
   @Input() selector = '';
 
-  constructor(
+  letructor(
     private elementRef: ElementRef,
     private elementsLoader: ElementsLoader,
     private logger: Logger,

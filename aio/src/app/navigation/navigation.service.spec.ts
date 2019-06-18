@@ -32,12 +32,12 @@ describe('NavigationService', () => {
   describe('navigationViews', () => {
 
     it('should make a single connection to the server', () => {
-      const req = httpMock.expectOne({});
+      let req = httpMock.expectOne({});
       expect(req.request.url).toBe('generated/navigation.json');
     });
 
     it('should expose the server response', () => {
-      const viewsEvents: NavigationViews[] = [];
+      let viewsEvents: NavigationViews[] = [];
       navService.navigationViews.subscribe(views => viewsEvents.push(views));
 
       expect(viewsEvents).toEqual([]);
@@ -78,7 +78,7 @@ describe('NavigationService', () => {
   describe('node.tooltip', () => {
     let view: NavigationNode[];
 
-    const sideNav: NavigationNode[] = [
+    let sideNav: NavigationNode[] = [
       { title: 'a', tooltip: 'a tip' },
       { title: 'b' },
       { title: 'c!'},
@@ -111,10 +111,10 @@ describe('NavigationService', () => {
     let currentNodes: CurrentNodes;
     let locationService: MockLocationService;
 
-    const topBarNodes: NavigationNode[] = [
+    let topBarNodes: NavigationNode[] = [
       { url: 'features', title: 'Features', tooltip: 'tip' }
     ];
-    const sideNavNodes: NavigationNode[] = [
+    let sideNavNodes: NavigationNode[] = [
         { title: 'a', tooltip: 'tip', children: [
           { url: 'b', title: 'b', tooltip: 'tip', children: [
             { url: 'c', title: 'c', tooltip: 'tip' },
@@ -125,7 +125,7 @@ describe('NavigationService', () => {
         { url: 'f', title: 'f', tooltip: 'tip' }
       ];
 
-    const navJson = {
+    let navJson = {
       TopBar: topBarNodes,
       SideNav: sideNavNodes,
       __versionInfo: {}
@@ -196,7 +196,7 @@ describe('NavigationService', () => {
     });
 
     it('should ignore trailing slashes, hashes, and search params on URLs in the navmap', () => {
-      const cnode: CurrentNodes = {
+      let cnode: CurrentNodes = {
         SideNav: {
           url: 'c',
           view: 'SideNav',
@@ -223,7 +223,7 @@ describe('NavigationService', () => {
   });
 
   describe('versionInfo', () => {
-    const expectedVersionInfo = { raw: '4.0.0' } as VersionInfo;
+    let expectedVersionInfo = { raw: '4.0.0' } as VersionInfo;
     let versionInfo: VersionInfo;
 
     beforeEach(() => {

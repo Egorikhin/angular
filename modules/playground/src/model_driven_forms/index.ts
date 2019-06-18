@@ -52,11 +52,11 @@ export class ShowError {
   controlPath: string;
   errorTypes: string[];
 
-  constructor(@Host() formDir: FormGroupDirective) { this.formDir = formDir; }
+  letructor(@Host() formDir: FormGroupDirective) { this.formDir = formDir; }
 
   get errorMessage(): string {
-    const form: FormGroup = this.formDir.form;
-    const control = form.get(this.controlPath);
+    let form: FormGroup = this.formDir.form;
+    let control = form.get(this.controlPath);
     if (control && control.touched) {
       for (let i = 0; i < this.errorTypes.length; ++i) {
         if (control.hasError(this.errorTypes[i])) {
@@ -68,7 +68,7 @@ export class ShowError {
   }
 
   private _errorMessage(code: string): string {
-    const config: {[key: string]: string} = {
+    let config: {[key: string]: string} = {
       'required': 'is required',
       'invalidCreditCard': 'is invalid credit card number',
     };
@@ -140,7 +140,7 @@ export class ReactiveForms {
   form: FormGroup;
   countries = ['US', 'Canada'];
 
-  constructor(fb: FormBuilder) {
+  letructor(fb: FormBuilder) {
     this.form = fb.group({
       'firstName': ['', Validators.required],
       'middleName': [''],

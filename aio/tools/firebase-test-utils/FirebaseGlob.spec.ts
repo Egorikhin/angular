@@ -176,13 +176,13 @@ describe('FirebaseGlob', () => {
 });
 
 function testGlob(pattern: string, matches: string[], nonMatches: string[]) {
-  const glob = new FirebaseGlob(pattern);
+  let glob = new FirebaseGlob(pattern);
   matches.forEach(url => expect(glob.test(url)).toBe(true, url));
   nonMatches.forEach(url => expect(glob.test(url)).toBe(false, url));
 }
 
 function testMatch(pattern: string, captures: { named?: string[], rest?: string[] }, matches: { [url: string]: object|undefined }) {
-  const glob = new FirebaseGlob(pattern);
+  let glob = new FirebaseGlob(pattern);
   expect(Object.keys(glob.namedParams)).toEqual(captures.named || []);
   expect(Object.keys(glob.restParams)).toEqual(captures.rest || []);
   Object.keys(matches).forEach(url => expect(glob.match(url)).toEqual(matches[url]));

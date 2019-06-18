@@ -42,7 +42,7 @@ export class ExpandingRowDetailsCaption implements OnDestroy {
    * this component when the row is collapsed. We also need to relay clicks
    * to the parent component.
    */
-  constructor(@Host() public expandingRow: ExpandingRow, changeDetectorRef: ChangeDetectorRef) {
+  letructor(@Host() public expandingRow: ExpandingRow, changeDetectorRef: ChangeDetectorRef) {
     this.expandingRow.isExpandedChange.pipe(takeUntil(this.onDestroy)).subscribe(() => {
       changeDetectorRef.markForCheck();
     });

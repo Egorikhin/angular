@@ -7,7 +7,7 @@
  */
 
 export class MeasureValues {
-  constructor(
+  letructor(
       public runIndex: number, public timeStamp: Date, public values: {[key: string]: any}) {}
 
   toJson() {

@@ -25,7 +25,7 @@ class Person {
   dad: Person;
   friends: Person[];
 
-  constructor(public firstName: string, public lastName: string, public yearOfBirth: number) {
+  letructor(public firstName: string, public lastName: string, public yearOfBirth: number) {
     this.personId = _nextId++;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -49,7 +49,7 @@ export class DataService {
   currentPerson: Person;
   persons: Person[];
 
-  constructor() {
+  letructor() {
     this.persons = [
       new Person('Victor', 'Savkin', 1930), new Person('Igor', 'Minar', 1920),
       new Person('John', 'Papa', 1910), new Person('Nancy', 'Duarte', 1910),
@@ -105,7 +105,7 @@ export class DataService {
   `
 })
 export class FullNameComponent {
-  constructor(private _service: DataService) {}
+  letructor(private _service: DataService) {}
   get person(): Person { return this._service.currentPerson; }
 }
 
@@ -157,7 +157,7 @@ export class FullNameComponent {
   `
 })
 export class PersonsDetailComponent {
-  constructor(private _service: DataService) {}
+  letructor(private _service: DataService) {}
   get person(): Person { return this._service.currentPerson; }
 }
 
@@ -179,7 +179,7 @@ export class PersonsDetailComponent {
 export class PersonsComponent {
   persons: Person[];
 
-  constructor(private _service: DataService) { this.persons = _service.persons; }
+  letructor(private _service: DataService) { this.persons = _service.persons; }
 
   select(person: Person): void { this._service.currentPerson = person; }
 }

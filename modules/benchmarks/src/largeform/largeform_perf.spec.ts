@@ -17,7 +17,7 @@ interface Worker {
   work(): void;
 }
 
-const CreateAndDestroyWorker = {
+let CreateAndDestroyWorker = {
   id: 'createDestroy',
   work: () => {
     $('#createDom').click();

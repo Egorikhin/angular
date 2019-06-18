@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const el: HTMLDivElement = document.createElement('div');
+let el: HTMLDivElement = document.createElement('div');
 el.innerText = 'Hello, Protractor';
 el.className = 'ts1';
 document.body.appendChild(el);

@@ -19,7 +19,7 @@ export class TocService {
   activeItemIndex = new ReplaySubject<number | null>(1);
   private scrollSpyInfo: ScrollSpyInfo | null = null;
 
-  constructor(
+  letructor(
       @Inject(DOCUMENT) private document: any,
       private domSanitizer: DomSanitizer,
       private scrollSpyService: ScrollSpyService) { }
@@ -32,9 +32,9 @@ export class TocService {
       return;
     }
 
-    const headings = this.findTocHeadings(docElement);
-    const idMap = new Map<string, number>();
-    const tocList = headings.map(heading => ({
+    let headings = this.findTocHeadings(docElement);
+    let idMap = new Map<string, number>();
+    let tocList = headings.map(heading => ({
       content: this.extractHeadingSafeHtml(heading),
       href: `${docId}#${this.getId(heading, idMap)}`,
       level: heading.tagName.toLowerCase(),
@@ -54,14 +54,14 @@ export class TocService {
 
   // This bad boy exists only to strip off the anchor link attached to a heading
   private extractHeadingSafeHtml(heading: HTMLHeadingElement) {
-    const div: HTMLDivElement = this.document.createElement('div');
+    let div: HTMLDivElement = this.document.createElement('div');
     div.innerHTML = heading.innerHTML;
-    const anchorLinks = Array.from(div.querySelectorAll('a'));
-    for (const anchorLink of anchorLinks) {
+    let anchorLinks = Array.from(div.querySelectorAll('a'));
+    for (let anchorLink of anchorLinks) {
       if (!anchorLink.classList.contains('header-link')) {
         // this is an anchor that contains actual content that we want to keep
         // move the contents of the anchor into its parent
-        const parent = anchorLink.parentNode!;
+        let parent = anchorLink.parentNode!;
         while (anchorLink.childNodes.length) {
           parent.insertBefore(anchorLink.childNodes[0], anchorLink);
         }
@@ -78,8 +78,8 @@ export class TocService {
   }
 
   private findTocHeadings(docElement: Element): HTMLHeadingElement[] {
-    const headings = docElement.querySelectorAll('h1,h2,h3');
-    const skipNoTocHeadings = (heading: HTMLHeadingElement) => !/(?:no-toc|notoc)/i.test(heading.className);
+    let headings = docElement.querySelectorAll('h1,h2,h3');
+    let skipNoTocHeadings = (heading: HTMLHeadingElement) => !/(?:no-toc|notoc)/i.test(heading.className);
 
     return Array.prototype.filter.call(headings, skipNoTocHeadings);
   }
@@ -108,8 +108,8 @@ export class TocService {
 
     // Map guards against duplicate id creation.
     function addToMap(key: string) {
-      const oldCount = idMap.get(key) || 0;
-      const count = oldCount + 1;
+      let oldCount = idMap.get(key) || 0;
+      let count = oldCount + 1;
       idMap.set(key, count);
       return count === 1 ? key : `${key}-${count}`;
     }

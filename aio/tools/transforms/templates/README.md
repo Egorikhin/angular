@@ -15,7 +15,7 @@ child. The template extension hierarchy looks like this (with declared blocks in
       - directive.template.html
     - enum.template.html
     - var.template.html
-      - const.template.html
+      - let.template.html
       - let.template.html
     - decorator.template.html
     - function.template.html

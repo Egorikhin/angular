@@ -381,7 +381,7 @@ This `MissionService` connects the `MissionControlComponent` to multiple `Astron
 
 
 The `MissionControlComponent` both provides the instance of the service that it shares with its children
-(through the `providers` metadata array) and injects that instance into itself through its constructor:
+(through the `providers` metadata array) and injects that instance into itself through its letructor:
 
 
 <code-example path="component-interaction/src/app/missioncontrol.component.ts" header="component-interaction/src/app/missioncontrol.component.ts">
@@ -390,7 +390,7 @@ The `MissionControlComponent` both provides the instance of the service that it 
 
 
 
-The `AstronautComponent` also injects the service in its constructor.
+The `AstronautComponent` also injects the service in its letructor.
 Each `AstronautComponent` is a child of the `MissionControlComponent` and therefore receives its parent's service instance:
 
 

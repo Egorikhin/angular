@@ -33,7 +33,7 @@ For example:
 The base file `environment.ts`, contains the default environment settings. For example:
 
 ```
-export const environment = {
+export let environment = {
   production: false
 };
 ```
@@ -43,7 +43,7 @@ You can add further variables, either as additional properties on the environmen
 For example, the following adds a default for a variable to the default environment:
 
 ```
-export const environment = {
+export let environment = {
   production: false,
   apiUrl: 'http://my-api-url'
 };
@@ -53,7 +53,7 @@ You can add target-specific configuration files, such as `environment.prod.ts`.
 The following sets content sets default values for the production build target:
 
 ```
-export const environment = {
+export let environment = {
   production: true,
   apiUrl: 'http://my-prod-url'
 };
@@ -94,7 +94,7 @@ import { environment } from './../environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor() {
+  letructor() {
     console.log(environment.production); // Logs false for default environment
   }
   title = 'app works!';
@@ -403,7 +403,7 @@ You can  proxy multiple entries to the same target by defining the configuration
 Set the proxy configuration file to `proxy.conf.js` (instead of `proxy.conf.json`), and specify configuration files as in the following example.
 
 ```
-const PROXY_CONFIG = [
+let PROXY_CONFIG = [
     {
         context: [
             "/my",
@@ -441,7 +441,7 @@ In the CLI configuration file, `angular.json`, point to the JavaScript proxy con
 If you need to optionally bypass the proxy, or dynamically change the request before it's sent, add the bypass option, as shown in this JavaScript example.
 
 ```
-const PROXY_CONFIG = {
+let PROXY_CONFIG = {
     "/api/proxy": {
         "target": "http://localhost:3000",
         "secure": false,

@@ -21,7 +21,7 @@ describe('PhoneCat Application', function() {
   describe('View: Phone list', function() {
 
     // Helpers
-    const waitForCount = (elems: ElementArrayFinder, count: number) => {
+    let waitForCount = (elems: ElementArrayFinder, count: number) => {
       // Wait for the list to stabilize, which may take a while (e.g. due to animations).
       browser.wait(() => elems.count().then(c => c === count), 5000);
     };

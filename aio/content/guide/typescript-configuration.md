@@ -111,7 +111,7 @@ Angular packages include them already.**
 
 ### lib.d.ts
 
-TypeScript includes a special declaration file called `lib.d.ts`. This file contains the ambient declarations for various common JavaScript constructs present in JavaScript runtimes and the DOM.
+TypeScript includes a special declaration file called `lib.d.ts`. This file contains the ambient declarations for various common JavaScript letructs present in JavaScript runtimes and the DOM.
 
 Based on the `--target`, TypeScript adds _additional_ ambient declarations
 like `Promise` if the target is `es6`.

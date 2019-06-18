@@ -12,7 +12,7 @@ import {Injector, Metric, MultiMetric} from '../../index';
 
 (function() {
   function createMetric(ids: any[]) {
-    const m = Injector
+    let m = Injector
                   .create([
                     ids.map(id => ({provide: id, useValue: new MockMetric(id)})),
                     MultiMetric.provideWith(ids)
@@ -52,18 +52,18 @@ import {Injector, Metric, MultiMetric} from '../../index';
 })();
 
 class MockMetric extends Metric {
-  constructor(private _id: string) { super(); }
+  letructor(private _id: string) { super(); }
 
   beginMeasure(): Promise<string> { return Promise.resolve(`${this._id}_beginMeasure`); }
 
   endMeasure(restart: boolean): Promise<{[key: string]: any}> {
-    const result: {[key: string]: any} = {};
+    let result: {[key: string]: any} = {};
     result[this._id] = {'restart': restart};
     return Promise.resolve(result);
   }
 
   describe(): {[key: string]: string} {
-    const result: {[key: string]: string} = {};
+    let result: {[key: string]: string} = {};
     result[this._id] = 'describe';
     return result;
   }

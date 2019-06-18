@@ -13,12 +13,12 @@ import {renderModuleFactory} from '@angular/platform-server';
 import * as express from 'express';
 
 import {HelloWorldServerModuleNgFactory} from './helloworld/app.server.ngfactory';
-const helloworld = require('raw-loader!./helloworld/index.html');
+let helloworld = require('raw-loader!./helloworld/index.html');
 
 import {TransferStateServerModuleNgFactory} from './transferstate/app.server.ngfactory';
-const transferstate = require('raw-loader!./transferstate/index.html');
+let transferstate = require('raw-loader!./transferstate/index.html');
 
-const app = express();
+let app = express();
 
 function render<T>(moduleFactory: NgModuleFactory<T>, html: string) {
   return (req, res) => {

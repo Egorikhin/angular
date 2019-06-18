@@ -18,10 +18,10 @@ export function sortedProps(obj: {[key: string]: any}) {
 }
 
 export function formatStats(validSamples: MeasureValues[], metricName: string): string {
-  const samples = validSamples.map(measureValues => measureValues.values[metricName]);
-  const mean = Statistic.calculateMean(samples);
-  const cv = Statistic.calculateCoefficientOfVariation(samples, mean);
-  const formattedMean = formatNum(mean);
+  let samples = validSamples.map(measureValues => measureValues.values[metricName]);
+  let mean = Statistic.calculateMean(samples);
+  let cv = Statistic.calculateCoefficientOfVariation(samples, mean);
+  let formattedMean = formatNum(mean);
   // Note: Don't use the unicode character for +- as it might cause
   // hickups for consoles...
   return isNaN(cv) ? formattedMean : `${formattedMean}+-${Math.floor(cv)}%`;

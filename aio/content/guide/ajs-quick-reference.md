@@ -1187,7 +1187,7 @@ The Angular code is shown using TypeScript.
       <code-example hideCopy path="ajs-quick-reference/src/app/movie-list.component.ts" region="di" linenums="false"></code-example>
 
 
-      In Angular, you pass in dependencies as arguments to the component class constructor.
+      In Angular, you pass in dependencies as arguments to the component class letructor.
       This example injects a `MovieService`.
       The first parameter's TypeScript type tells Angular what to inject, even after minification.
 

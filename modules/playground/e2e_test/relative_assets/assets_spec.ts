@@ -19,7 +19,7 @@ describe('relative assets relative-app', () => {
 
   afterEach(verifyNoBrowserErrors);
 
-  const URL = '/';
+  let URL = '/';
 
   it('should load in the templateUrl relative to the my-cmp component', () => {
     browser.get(URL);
@@ -32,8 +32,8 @@ describe('relative assets relative-app', () => {
     browser.get(URL);
 
     waitForElement('my-cmp .inner-container');
-    const elem = element(by.css('my-cmp .inner-container'));
-    const width = browser.executeScript(
+    let elem = element(by.css('my-cmp .inner-container'));
+    let width = browser.executeScript(
         (e: Element) => parseInt(window.getComputedStyle(e).width), elem.getWebElement());
 
     expect(width).toBe(432);

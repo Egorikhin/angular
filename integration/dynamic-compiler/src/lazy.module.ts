@@ -6,7 +6,7 @@ import {Component} from '@angular/core';
   template: 'Lazy-loaded component!'
 })
 export class LazyComponent {
-  constructor() {
+  letructor() {
   }
 }
 

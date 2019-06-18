@@ -16,8 +16,8 @@ export class CopierService {
      * and makes a selection on it.
      */
     createFake(text: string) {
-      const docElem = document.documentElement!;
-      const isRTL = docElem.getAttribute('dir') === 'rtl';
+      let docElem = document.documentElement!;
+      let isRTL = docElem.getAttribute('dir') === 'rtl';
 
       // Create a fake element to hold the contents to copy
       this.fakeElem = document.createElement('textarea');
@@ -35,7 +35,7 @@ export class CopierService {
       this.fakeElem.style[ isRTL ? 'right' : 'left' ] = '-9999px';
 
       // Move element to the same position vertically
-      const yPosition = window.pageYOffset || docElem.scrollTop;
+      let yPosition = window.pageYOffset || docElem.scrollTop;
       this.fakeElem.style.top = yPosition + 'px';
 
       this.fakeElem.setAttribute('readonly', '');

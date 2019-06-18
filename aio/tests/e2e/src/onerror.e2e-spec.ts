@@ -13,14 +13,14 @@ describe('onerror handler', function() {
 
 
   it('(called without an error object) should call ga with a payload based on the message, url, row and column arguments', async () => {
-    const message1 = await callOnError('Error: some error message', 'some-file.js', 12, 3, undefined);
+    let message1 = await callOnError('Error: some error message', 'some-file.js', 12, 3, undefined);
     expect(message1).toEqual('some error message\nsome-file.js:12:3');
-    const message2 = await callOnError('Error: some error message', undefined, undefined, undefined, undefined);
+    let message2 = await callOnError('Error: some error message', undefined, undefined, undefined, undefined);
     expect(message2).toEqual('some error message\nnull:?:?');
   });
 
   it('(called without an error object) should call ga with a payload that is no longer that 150 characters', async () => {
-    const message = await callOnError(
+    let message = await callOnError(
       'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz' +
       'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
       'some-file.js', 12, 3, undefined);
@@ -30,7 +30,7 @@ describe('onerror handler', function() {
   });
 
   it('(called with a Firefox on android style error) should call ga with a payload based on the error object', async () => {
-    const message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
+    let message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
       stack: `AppComponent@https://example.com/app/app.component.ts:31:29
 createClass@https://example.com/packages/@angular/core@5.0.0/bundles/core.umd.js:12200:20
 createDirectiveInstance@https://example.com/packages/@angular/core@5.0.0/bundles/core.umd.js:12049:37
@@ -62,7 +62,7 @@ createDirectiveInstance@core.umd.j`);
   });
 
   it('(called with a Safari 11 style error) should call ga with a payload based on the error object', async () => {
-    const message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
+    let message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
       stack: `AppComponent
       createClass
       createDirectiveInstance
@@ -93,7 +93,7 @@ cr`);
   });
 
   it('(called with a Opera 50 style error) should call ga with a payload based on the error object', async () => {
-    const message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
+    let message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
       stack: `Error: something terrible has happened. oh no. oh no.
       at new AppComponent (https://example.com/app/app.component.ts:31:29)
       at createClass (https://example.com/packages/@angular/core@5.0.0/bundles/core.umd.js:12200:20)
@@ -113,7 +113,7 @@ createDirectiveInstance@core.u`);
   });
 
   it('(called with a Chrome 64 style error) should call ga with a payload based on the error object', async () => {
-    const message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
+    let message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
       stack: `Error: something terrible has happened. oh no. oh no.
       at new AppComponent (https://example.com/app/app.component.ts:31:29)
       at createClass (https://example.com/packages/@angular/core@5.0.0/bundles/core.umd.js:12200:20)
@@ -133,7 +133,7 @@ createDirectiveInstance@core.u`);
   });
 
   it('(called with a Firefox 58 style error) should call ga with a payload based on the error object', async () => {
-    const message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
+    let message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
       stack: `AppComponent@https://example.com/app/app.component.ts:31:29
 createClass@https://example.com/packages/@angular/core@5.0.0/bundles/core.umd.js:12200:20
 createDirectiveInstance@https://example.com/packages/@angular/core@5.0.0/bundles/core.umd.js:12049:37
@@ -165,7 +165,7 @@ createDirectiveInstance@core.umd.j`);
   });
 
   it('(called with a Edge 16 style error) should call ga with a payload based on the error object', async () => {
-    const message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
+    let message = await callOnError('Error: something terrible has happened. oh no. oh no.', undefined, undefined, undefined, {
       stack: `Error: something terrible has happened. oh no. oh no.
       at AppComponent (eval code:31:21)
       at createClass (eval code:12200:13)
@@ -194,10 +194,10 @@ createViewNodes@???`);
         window.onerror(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
       }
     }, message, url, line, column, error);
-    const gaCalls = await page.ga();
-    const exceptionCall = gaCalls.find(call => call[0] === 'send' && call[1] === 'exception');
+    let gaCalls = await page.ga();
+    let exceptionCall = gaCalls.find(call => call[0] === 'send' && call[1] === 'exception');
     if (exceptionCall) {
-      const payload = exceptionCall[2];
+      let payload = exceptionCall[2];
       expect(payload.exFatal).toBe(true);
       return payload.exDescription;
     }

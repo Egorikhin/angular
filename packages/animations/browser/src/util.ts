@@ -10,23 +10,23 @@ import {Ast as AnimationAst, AstVisitor as AnimationAstVisitor} from './dsl/anim
 import {AnimationDslVisitor} from './dsl/animation_dsl_visitor';
 import {isNode} from './render/shared';
 
-export const ONE_SECOND = 1000;
+export let ONE_SECOND = 1000;
 
-export const SUBSTITUTION_EXPR_START = '{{';
-export const SUBSTITUTION_EXPR_END = '}}';
-export const ENTER_CLASSNAME = 'ng-enter';
-export const LEAVE_CLASSNAME = 'ng-leave';
-export const ENTER_SELECTOR = '.ng-enter';
-export const LEAVE_SELECTOR = '.ng-leave';
-export const NG_TRIGGER_CLASSNAME = 'ng-trigger';
-export const NG_TRIGGER_SELECTOR = '.ng-trigger';
-export const NG_ANIMATING_CLASSNAME = 'ng-animating';
-export const NG_ANIMATING_SELECTOR = '.ng-animating';
+export let SUBSTITUTION_EXPR_START = '{{';
+export let SUBSTITUTION_EXPR_END = '}}';
+export let ENTER_CLASSNAME = 'ng-enter';
+export let LEAVE_CLASSNAME = 'ng-leave';
+export let ENTER_SELECTOR = '.ng-enter';
+export let LEAVE_SELECTOR = '.ng-leave';
+export let NG_TRIGGER_CLASSNAME = 'ng-trigger';
+export let NG_TRIGGER_SELECTOR = '.ng-trigger';
+export let NG_ANIMATING_CLASSNAME = 'ng-animating';
+export let NG_ANIMATING_SELECTOR = '.ng-animating';
 
 export function resolveTimingValue(value: string | number) {
   if (typeof value == 'number') return value;
 
-  const matches = (value as string).match(/^(-?[\.\d]+)(m?s)/);
+  let matches = (value as string).match(/^(-?[\.\d]+)(m?s)/);
   if (!matches || matches.length < 2) return 0;
 
   return _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
@@ -50,12 +50,12 @@ export function resolveTiming(
 
 function parseTimeExpression(
     exp: string | number, errors: string[], allowNegativeValues?: boolean): AnimateTimings {
-  const regex = /^(-?[\.\d]+)(m?s)(?:\s+(-?[\.\d]+)(m?s))?(?:\s+([-a-z]+(?:\(.+?\))?))?$/i;
+  let regex = /^(-?[\.\d]+)(m?s)(?:\s+(-?[\.\d]+)(m?s))?(?:\s+([-a-z]+(?:\(.+?\))?))?$/i;
   let duration: number;
   let delay: number = 0;
   let easing: string = '';
   if (typeof exp === 'string') {
-    const matches = exp.match(regex);
+    let matches = exp.match(regex);
     if (matches === null) {
       errors.push(`The provided timing value "${exp}" is invalid.`);
       return {duration: 0, delay: 0, easing: ''};
@@ -63,12 +63,12 @@ function parseTimeExpression(
 
     duration = _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
 
-    const delayMatch = matches[3];
+    let delayMatch = matches[3];
     if (delayMatch != null) {
       delay = _convertTimeValueToMS(parseFloat(delayMatch), matches[4]);
     }
 
-    const easingVal = matches[5];
+    let easingVal = matches[5];
     if (easingVal) {
       easing = easingVal;
     }
@@ -102,7 +102,7 @@ export function copyObj(
 }
 
 export function normalizeStyles(styles: ɵStyleData | ɵStyleData[]): ɵStyleData {
-  const normalizedStyles: ɵStyleData = {};
+  let normalizedStyles: ɵStyleData = {};
   if (Array.isArray(styles)) {
     styles.forEach(data => copyStyles(data, false, normalizedStyles));
   } else {
@@ -143,15 +143,15 @@ function writeStyleAttribute(element: any) {
   // of them automatically.
   let styleAttrValue = '';
   for (let i = 0; i < element.style.length; i++) {
-    const key = element.style.item(i);
+    let key = element.style.item(i);
     styleAttrValue += getStyleAttributeString(element, key, element.style.getPropertyValue(key));
   }
-  for (const key in element.style) {
+  for (let key in element.style) {
     // Skip internal Domino properties that don't need to be reflected.
     if (!element.style.hasOwnProperty(key) || key.startsWith('_')) {
       continue;
     }
-    const dashKey = camelCaseToDashCase(key);
+    let dashKey = camelCaseToDashCase(key);
     styleAttrValue += getStyleAttributeString(element, dashKey, element.style[key]);
   }
   element.setAttribute('style', styleAttrValue);
@@ -160,7 +160,7 @@ function writeStyleAttribute(element: any) {
 export function setStyles(element: any, styles: ɵStyleData, formerStyles?: {[key: string]: any}) {
   if (element['style']) {
     Object.keys(styles).forEach(prop => {
-      const camelProp = dashCaseToCamelCase(prop);
+      let camelProp = dashCaseToCamelCase(prop);
       if (formerStyles && !formerStyles.hasOwnProperty(prop)) {
         formerStyles[prop] = element.style[camelProp];
       }
@@ -176,7 +176,7 @@ export function setStyles(element: any, styles: ɵStyleData, formerStyles?: {[ke
 export function eraseStyles(element: any, styles: ɵStyleData) {
   if (element['style']) {
     Object.keys(styles).forEach(prop => {
-      const camelProp = dashCaseToCamelCase(prop);
+      let camelProp = dashCaseToCamelCase(prop);
       element.style[camelProp] = '';
     });
     // On the server set the 'style' attribute since it's not automatically reflected.
@@ -197,8 +197,8 @@ export function normalizeAnimationEntry(steps: AnimationMetadata | AnimationMeta
 
 export function validateStyleParams(
     value: string | number, options: AnimationOptions, errors: any[]) {
-  const params = options.params || {};
-  const matches = extractStyleParams(value);
+  let params = options.params || {};
+  let matches = extractStyleParams(value);
   if (matches.length) {
     matches.forEach(varName => {
       if (!params.hasOwnProperty(varName)) {
@@ -209,12 +209,12 @@ export function validateStyleParams(
   }
 }
 
-const PARAM_REGEX =
+let PARAM_REGEX =
     new RegExp(`${SUBSTITUTION_EXPR_START}\\s*(.+?)\\s*${SUBSTITUTION_EXPR_END}`, 'g');
 export function extractStyleParams(value: string | number): string[] {
   let params: string[] = [];
   if (typeof value === 'string') {
-    const val = value.toString();
+    let val = value.toString();
 
     let match: any;
     while (match = PARAM_REGEX.exec(val)) {
@@ -227,8 +227,8 @@ export function extractStyleParams(value: string | number): string[] {
 
 export function interpolateParams(
     value: string | number, params: {[name: string]: any}, errors: any[]): string|number {
-  const original = value.toString();
-  const str = original.replace(PARAM_REGEX, (_, varName) => {
+  let original = value.toString();
+  let str = original.replace(PARAM_REGEX, (_, varName) => {
     let localVal = params[varName];
     // this means that the value was never overridden by the data passed in by the user
     if (!params.hasOwnProperty(varName)) {
@@ -243,7 +243,7 @@ export function interpolateParams(
 }
 
 export function iteratorToArray(iterator: any): any[] {
-  const arr: any[] = [];
+  let arr: any[] = [];
   let item = iterator.next();
   while (!item.done) {
     arr.push(item.value);
@@ -255,11 +255,11 @@ export function iteratorToArray(iterator: any): any[] {
 export function mergeAnimationOptions(
     source: AnimationOptions, destination: AnimationOptions): AnimationOptions {
   if (source.params) {
-    const p0 = source.params;
+    let p0 = source.params;
     if (!destination.params) {
       destination.params = {};
     }
-    const p1 = destination.params;
+    let p1 = destination.params;
     Object.keys(p0).forEach(param => {
       if (!p1.hasOwnProperty(param)) {
         p1[param] = p0[param];
@@ -269,7 +269,7 @@ export function mergeAnimationOptions(
   return destination;
 }
 
-const DASH_CASE_REGEXP = /-+([a-z0-9])/g;
+let DASH_CASE_REGEXP = /-+([a-z0-9])/g;
 export function dashCaseToCamelCase(input: string): string {
   return input.replace(DASH_CASE_REGEXP, (...m: any[]) => m[1].toUpperCase());
 }
@@ -284,7 +284,7 @@ export function allowPreviousPlayerStylesMerge(duration: number, delay: number) 
 
 export function balancePreviousStylesIntoKeyframes(
     element: any, keyframes: {[key: string]: any}[], previousStyles: {[key: string]: any}) {
-  const previousStyleProps = Object.keys(previousStyles);
+  let previousStyleProps = Object.keys(previousStyles);
   if (previousStyleProps.length && keyframes.length) {
     let startingKeyframe = keyframes[0];
     let missingStyleProps: string[] = [];

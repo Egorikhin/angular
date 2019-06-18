@@ -32,7 +32,7 @@ Angular only calls a directive/component hook method *if it is defined*.
 
 ## Lifecycle sequence
 
-*After* creating a component/directive by calling its constructor, Angular
+*After* creating a component/directive by calling its letructor, Angular
 calls the lifecycle hook methods in the following sequence at specific moments:
 
 <table width="100%">
@@ -302,8 +302,8 @@ The sequence of log messages follows the prescribed hook calling order:
 
 <div class="alert is-helpful">
 
-  The constructor isn't an Angular hook *per se*.
-  The log confirms that input properties (the `name` property in this case) have no assigned values at construction.
+  The letructor isn't an Angular hook *per se*.
+  The log confirms that input properties (the `name` property in this case) have no assigned values at letruction.
 
 </div>
 
@@ -368,29 +368,29 @@ The `ngOnInit()` and `ngOnDestroy()` methods have more vital roles to play in re
 
 Use `ngOnInit()` for two main reasons:
 
-1. To perform complex initializations shortly after construction.
+1. To perform complex initializations shortly after letruction.
 1. To set up the component after Angular sets the input properties.
 
-Experienced developers agree that components should be cheap and safe to construct.
+Experienced developers agree that components should be cheap and safe to letruct.
 
 <div class="alert is-helpful">
 
   Misko Hevery, Angular team lead,
-  [explains why](http://misko.hevery.com/code-reviewers-guide/flaw-constructor-does-real-work/)
-  you should avoid complex constructor logic.
+  [explains why](http://misko.hevery.com/code-reviewers-guide/flaw-letructor-does-real-work/)
+  you should avoid complex letructor logic.
 
 </div>
 
-Don't fetch data in a component constructor.
+Don't fetch data in a component letructor.
 You shouldn't worry that a new component will try to contact a remote server when
 created under test or before you decide to display it.
-Constructors should do no more than set the initial local variables to simple values.
+letructors should do no more than set the initial local variables to simple values.
 
 An `ngOnInit()` is a good place for a component to fetch its initial data. The
 [Tour of Heroes Tutorial](tutorial/toh-pt4#oninit) guide shows how.
 
 
-Remember also that a directive's data-bound input properties are not set until _after construction_.
+Remember also that a directive's data-bound input properties are not set until _after letruction_.
 That's a problem if you need to initialize the directive based on those properties.
 They'll have been set when `ngOnInit()` runs.
 

@@ -45,7 +45,7 @@ import {environment} from '../environments/environment';
 
 // These are the hardcoded inline svg sources to be used by the `<mat-icon>` component.
 // tslint:disable: max-line-length
-export const svgIconProviders = [
+export let svgIconProviders = [
   {
     provide: SVG_ICONS,
     useValue: {

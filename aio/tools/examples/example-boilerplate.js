@@ -1,16 +1,16 @@
-const fs = require('fs-extra');
-const glob = require('glob');
-const path = require('canonical-path');
-const shelljs = require('shelljs');
-const yargs = require('yargs');
+let fs = require('fs-extra');
+let glob = require('glob');
+let path = require('canonical-path');
+let shelljs = require('shelljs');
+let yargs = require('yargs');
 
-const SHARED_PATH = path.resolve(__dirname, 'shared');
-const SHARED_NODE_MODULES_PATH = path.resolve(SHARED_PATH, 'node_modules');
-const BOILERPLATE_BASE_PATH = path.resolve(SHARED_PATH, 'boilerplate');
-const BOILERPLATE_COMMON_BASE_PATH = path.resolve(BOILERPLATE_BASE_PATH, 'common');
-const EXAMPLES_BASE_PATH = path.resolve(__dirname, '../../content/examples');
+let SHARED_PATH = path.resolve(__dirname, 'shared');
+let SHARED_NODE_MODULES_PATH = path.resolve(SHARED_PATH, 'node_modules');
+let BOILERPLATE_BASE_PATH = path.resolve(SHARED_PATH, 'boilerplate');
+let BOILERPLATE_COMMON_BASE_PATH = path.resolve(BOILERPLATE_BASE_PATH, 'common');
+let EXAMPLES_BASE_PATH = path.resolve(__dirname, '../../content/examples');
 
-const BOILERPLATE_PATHS = {
+let BOILERPLATE_PATHS = {
   cli: [
     'src/environments/environment.prod.ts', 'src/environments/environment.ts',
     'src/assets/.gitkeep', 'browserslist', 'src/favicon.ico', 'karma.conf.js',
@@ -27,7 +27,7 @@ const BOILERPLATE_PATHS = {
 
 // All paths in this tool are relative to the current boilerplate folder, i.e boilerplate/i18n
 // This maps the CLI files that exists in a parent folder
-const cliRelativePath = BOILERPLATE_PATHS.cli.map(file => `../cli/${file}`);
+let cliRelativePath = BOILERPLATE_PATHS.cli.map(file => `../cli/${file}`);
 
 BOILERPLATE_PATHS.i18n = [...cliRelativePath, 'angular.json', 'package.json'];
 
@@ -57,7 +57,7 @@ BOILERPLATE_PATHS.schematics = [
   'angular.json'
 ];
 
-const EXAMPLE_CONFIG_FILENAME = 'example-config.json';
+let EXAMPLE_CONFIG_FILENAME = 'example-config.json';
 
 class ExampleBoilerPlate {
   /**
@@ -65,7 +65,7 @@ class ExampleBoilerPlate {
    */
   add(ivy = false) {
     // Get all the examples folders, indicated by those that contain a `example-config.json` file
-    const exampleFolders =
+    let exampleFolders =
         this.getFoldersContaining(EXAMPLES_BASE_PATH, EXAMPLE_CONFIG_FILENAME, 'node_modules');
 
     if (!fs.existsSync(SHARED_NODE_MODULES_PATH)) {
@@ -81,21 +81,21 @@ class ExampleBoilerPlate {
     }
 
     exampleFolders.forEach(exampleFolder => {
-      const exampleConfig = this.loadJsonFile(path.resolve(exampleFolder, EXAMPLE_CONFIG_FILENAME));
+      let exampleConfig = this.loadJsonFile(path.resolve(exampleFolder, EXAMPLE_CONFIG_FILENAME));
 
       // Link the node modules - requires admin access (on Windows) because it adds symlinks
-      const destinationNodeModules = path.resolve(exampleFolder, 'node_modules');
+      let destinationNodeModules = path.resolve(exampleFolder, 'node_modules');
       fs.ensureSymlinkSync(SHARED_NODE_MODULES_PATH, destinationNodeModules);
 
-      const boilerPlateType = exampleConfig.projectType || 'cli';
-      const boilerPlateBasePath = path.resolve(BOILERPLATE_BASE_PATH, boilerPlateType);
+      let boilerPlateType = exampleConfig.projectType || 'cli';
+      let boilerPlateBasePath = path.resolve(BOILERPLATE_BASE_PATH, boilerPlateType);
 
       // Copy the boilerplate specific files
       BOILERPLATE_PATHS[boilerPlateType].forEach(
           filePath => this.copyFile(boilerPlateBasePath, exampleFolder, filePath));
 
       // Copy the boilerplate common files
-      const useCommonBoilerplate = exampleConfig.useCommonBoilerplate !== false;
+      let useCommonBoilerplate = exampleConfig.useCommonBoilerplate !== false;
 
       if (useCommonBoilerplate) {
         BOILERPLATE_PATHS.common.forEach(filePath => this.copyFile(BOILERPLATE_COMMON_BASE_PATH, exampleFolder, filePath));
@@ -103,8 +103,8 @@ class ExampleBoilerPlate {
 
       // Copy Ivy specific files
       if (ivy) {
-        const ivyBoilerPlateType = boilerPlateType === 'systemjs' ? 'systemjs' : 'cli';
-        const ivyBoilerPlateBasePath =
+        let ivyBoilerPlateType = boilerPlateType === 'systemjs' ? 'systemjs' : 'cli';
+        let ivyBoilerPlateBasePath =
             path.resolve(BOILERPLATE_BASE_PATH, 'ivy', ivyBoilerPlateType);
         BOILERPLATE_PATHS.ivy[ivyBoilerPlateType].forEach(
             filePath => this.copyFile(ivyBoilerPlateBasePath, exampleFolder, filePath));
@@ -126,18 +126,18 @@ class ExampleBoilerPlate {
   }
 
   getFoldersContaining(basePath, filename, ignore) {
-    const pattern = path.resolve(basePath, '**', filename);
-    const ignorePattern = path.resolve(basePath, '**', ignore, '**');
+    let pattern = path.resolve(basePath, '**', filename);
+    let ignorePattern = path.resolve(basePath, '**', ignore, '**');
     return glob.sync(pattern, {ignore: [ignorePattern]}).map(file => path.dirname(file));
   }
 
   copyFile(sourceFolder, destinationFolder, filePath) {
-    const sourcePath = path.resolve(sourceFolder, filePath);
+    let sourcePath = path.resolve(sourceFolder, filePath);
 
     // normalize path if needed
     filePath = this.normalizePath(filePath);
 
-    const destinationPath = path.resolve(destinationFolder, filePath);
+    let destinationPath = path.resolve(destinationFolder, filePath);
     fs.copySync(sourcePath, destinationPath, {overwrite: true});
     fs.chmodSync(destinationPath, 444);
   }

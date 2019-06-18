@@ -23,7 +23,7 @@ export class LocationService {
     tap(path => this.gaService.locationChanged(path)),
   );
 
-  constructor(
+  letructor(
     private gaService: GaService,
     private location: Location,
     private scrollService: ScrollService,
@@ -70,14 +70,14 @@ export class LocationService {
   }
 
   search() {
-    const search: { [index: string]: string|undefined; } = {};
-    const path = this.location.path();
-    const q = path.indexOf('?');
+    let search: { [index: string]: string|undefined; } = {};
+    let path = this.location.path();
+    let q = path.indexOf('?');
     if (q > -1) {
       try {
-          const params = path.substr(q + 1).split('&');
+          let params = path.substr(q + 1).split('&');
           params.forEach(p => {
-            const pair = p.split('=');
+            let pair = p.split('=');
             if (pair[0]) {
               search[decodeURIComponent(pair[0])] = pair[1] && decodeURIComponent(pair[1]);
             }
@@ -88,8 +88,8 @@ export class LocationService {
   }
 
   setSearch(label: string, params: { [key: string]: string|undefined}) {
-    const search = Object.keys(params).reduce((acc, key) => {
-      const value = params[key];
+    let search = Object.keys(params).reduce((acc, key) => {
+      let value = params[key];
       return (value === undefined) ? acc :
         acc += (acc ? '&' : '?') + `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
     }, '');
@@ -129,7 +129,7 @@ export class LocationService {
     // If there is a target and it is not `_self` then we take this
     // as a signal that it doesn't want to be intercepted.
     // TODO: should we also allow an explicit `_self` target to opt-out?
-    const anchorTarget = anchor.target;
+    let anchorTarget = anchor.target;
     if (anchorTarget && anchorTarget !== '_self') {
       return true;
     }
@@ -138,8 +138,8 @@ export class LocationService {
       return true; // let the download happen
     }
 
-    const { pathname, search, hash } = anchor;
-    const relativeUrl = pathname + search + hash;
+    let { pathname, search, hash } = anchor;
+    let relativeUrl = pathname + search + hash;
     this.urlParser.href = relativeUrl;
 
     // don't navigate if external link or has extension

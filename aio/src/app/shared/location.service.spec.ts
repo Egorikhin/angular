@@ -53,7 +53,7 @@ describe('LocationService', () => {
       location.simulatePopState('/initial-url2');
       location.simulatePopState('/initial-url3');
 
-      const urls: string[] = [];
+      let urls: string[] = [];
       service.currentUrl.subscribe(url => urls.push(url));
 
       location.simulatePopState('/next-url1');
@@ -73,13 +73,13 @@ describe('LocationService', () => {
       location.simulatePopState('/initial-url2');
       location.simulatePopState('/initial-url3');
 
-      const urls1: string[] = [];
+      let urls1: string[] = [];
       service.currentUrl.subscribe(url => urls1.push(url));
 
       location.simulatePopState('/next-url1');
       location.simulatePopState('/next-url2');
 
-      const urls2: string[] = [];
+      let urls2: string[] = [];
       service.currentUrl.subscribe(url => urls2.push(url));
 
       location.simulatePopState('/next-url3');
@@ -98,7 +98,7 @@ describe('LocationService', () => {
     });
 
     it('should strip leading and trailing slashes', () => {
-      const urls: string[] = [];
+      let urls: string[] = [];
 
       service.currentUrl.subscribe(u => urls.push(u));
 
@@ -118,7 +118,7 @@ describe('LocationService', () => {
 
   describe('currentPath', () => {
     it('should strip leading and trailing slashes off the url', () => {
-      const paths: string[] = [];
+      let paths: string[] = [];
 
       service.currentPath.subscribe(p => paths.push(p));
 
@@ -136,7 +136,7 @@ describe('LocationService', () => {
     });
 
     it('should not strip other slashes off the url', () => {
-      const paths: string[] = [];
+      let paths: string[] = [];
 
       service.currentPath.subscribe(p => paths.push(p));
 
@@ -164,7 +164,7 @@ describe('LocationService', () => {
     });
 
     it('should strip the hash fragment off the url', () => {
-      const paths: string[] = [];
+      let paths: string[] = [];
 
       service.currentPath.subscribe(p => paths.push(p));
 
@@ -197,7 +197,7 @@ describe('LocationService', () => {
       location.simulatePopState('/initial/url2');
       location.simulatePopState('/initial/url3');
 
-      const paths: string[] = [];
+      let paths: string[] = [];
       service.currentPath.subscribe(path => paths.push(path));
 
       location.simulatePopState('/next/url1');
@@ -217,13 +217,13 @@ describe('LocationService', () => {
       location.simulatePopState('/initial/url2');
       location.simulatePopState('/initial/url3');
 
-      const paths1: string[] = [];
+      let paths1: string[] = [];
       service.currentPath.subscribe(path => paths1.push(path));
 
       location.simulatePopState('/next/url1');
       location.simulatePopState('/next/url2');
 
-      const paths2: string[] = [];
+      let paths2: string[] = [];
       service.currentPath.subscribe(path => paths2.push(path));
 
       location.simulatePopState('/next/url3');
@@ -251,7 +251,7 @@ describe('LocationService', () => {
     });
 
     it('should emit the new url', () => {
-      const urls: string[] = [];
+      let urls: string[] = [];
       service.go('some-initial-url');
 
       service.currentUrl.subscribe(url => urls.push(url));
@@ -274,8 +274,8 @@ describe('LocationService', () => {
     });
 
     it('should ignore empty URL string', () => {
-        const initialUrl = 'some/url';
-        const goExternalSpy = spyOn(service, 'goExternal');
+        let initialUrl = 'some/url';
+        let goExternalSpy = spyOn(service, 'goExternal');
         let url: string|undefined;
 
         service.go(initialUrl);
@@ -287,16 +287,16 @@ describe('LocationService', () => {
     });
 
     it('should leave the site for external url that starts with "http"', () => {
-      const goExternalSpy = spyOn(service, 'goExternal');
-      const externalUrl = 'http://some/far/away/land';
+      let goExternalSpy = spyOn(service, 'goExternal');
+      let externalUrl = 'http://some/far/away/land';
       service.go(externalUrl);
       expect(goExternalSpy).toHaveBeenCalledWith(externalUrl);
     });
 
     it('should do a "full page navigation" and remove the stored scroll position when navigating to ' +
       'internal URLs only if a ServiceWorker update has been activated', () => {
-      const goExternalSpy = spyOn(service, 'goExternal');
-      const removeStoredScrollPositionSpy = spyOn(scrollService, 'removeStoredScrollPosition');
+      let goExternalSpy = spyOn(service, 'goExternal');
+      let removeStoredScrollPositionSpy = spyOn(scrollService, 'removeStoredScrollPosition');
 
       // Internal URL - No ServiceWorker update
       service.go('some-internal-url');
@@ -312,10 +312,10 @@ describe('LocationService', () => {
     });
 
     it('should not remove the stored scroll position when navigating to external URLs', () => {
-      const removeStoredScrollPositionSpy = spyOn(scrollService, 'removeStoredScrollPosition');
-      const goExternalSpy = spyOn(service, 'goExternal');
-      const externalUrl = 'http://some/far/away/land';
-      const otherExternalUrl = 'http://some/far/far/away/land';
+      let removeStoredScrollPositionSpy = spyOn(scrollService, 'removeStoredScrollPosition');
+      let goExternalSpy = spyOn(service, 'goExternal');
+      let externalUrl = 'http://some/far/away/land';
+      let otherExternalUrl = 'http://some/far/far/away/land';
 
       // External URL - No ServiceWorker update
       service.go(externalUrl);
@@ -384,32 +384,32 @@ describe('LocationService', () => {
     });
 
     it('should call replaceState on PlatformLocation', () => {
-      const params = {};
+      let params = {};
       service.setSearch('Some label', params);
       expect(platformLocation.replaceState).toHaveBeenCalledWith(jasmine.any(Object), 'Some label', 'a/b/c');
     });
 
     it('should convert the params to a query string', () => {
-      const params = { foo: 'bar', moo: 'car' };
+      let params = { foo: 'bar', moo: 'car' };
       service.setSearch('Some label', params);
       expect(platformLocation.replaceState).toHaveBeenCalledWith(jasmine.any(Object), 'Some label', jasmine.any(String));
-      const [path, query] = platformLocation.replaceState.calls.mostRecent().args[2].split('?');
+      let [path, query] = platformLocation.replaceState.calls.mostRecent().args[2].split('?');
       expect(path).toEqual('a/b/c');
       expect(query).toContain('foo=bar');
       expect(query).toContain('moo=car');
     });
 
     it('should URL encode param values', () => {
-      const params = { query: 'a&b+c d' };
+      let params = { query: 'a&b+c d' };
       service.setSearch('', params);
-      const [, query] = platformLocation.replaceState.calls.mostRecent().args[2].split('?');
+      let [, query] = platformLocation.replaceState.calls.mostRecent().args[2].split('?');
       expect(query).toContain('query=a%26b%2Bc%20d');
     });
 
     it('should URL encode param keys', () => {
-      const params = { 'a&b+c d': 'value' };
+      let params = { 'a&b+c d': 'value' };
       service.setSearch('', params);
-      const [, query] = platformLocation.replaceState.calls.mostRecent().args[2].split('?');
+      let [, query] = platformLocation.replaceState.calls.mostRecent().args[2].split('?');
       expect(query).toContain('a%26b%2Bc%20d=value');
     });
   });
@@ -425,42 +425,42 @@ describe('LocationService', () => {
     describe('should try to navigate with go() when anchor clicked for', () => {
       it('relative local url', () => {
         anchor.href = 'some/local/url';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).toHaveBeenCalledWith('/some/local/url');
         expect(result).toBe(false);
       });
 
       it('absolute local url', () => {
         anchor.href = '/some/local/url';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).toHaveBeenCalledWith('/some/local/url');
         expect(result).toBe(false);
       });
 
       it('local url with query params', () => {
         anchor.href = 'some/local/url?query=xxx&other=yyy';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).toHaveBeenCalledWith('/some/local/url?query=xxx&other=yyy');
         expect(result).toBe(false);
       });
 
       it('local url with hash fragment', () => {
         anchor.href = 'some/local/url#somefragment';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).toHaveBeenCalledWith('/some/local/url#somefragment');
         expect(result).toBe(false);
       });
 
       it('local url with query params and hash fragment', () => {
         anchor.href = 'some/local/url?query=xxx&other=yyy#somefragment';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).toHaveBeenCalledWith('/some/local/url?query=xxx&other=yyy#somefragment');
         expect(result).toBe(false);
       });
 
       it('local url with period in a path segment but no extension', () => {
         anchor.href = 'tut.or.ial/toh-p2';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).toHaveBeenCalled();
         expect(result).toBe(false);
       });
@@ -482,21 +482,21 @@ describe('LocationService', () => {
 
       it('mouse button is not zero (middle or right)', () => {
         anchor.href = 'some/local/url';
-        const result = service.handleAnchorClick(anchor, 1, false, false);
+        let result = service.handleAnchorClick(anchor, 1, false, false);
         expect(service.go).not.toHaveBeenCalled();
         expect(result).toBe(true);
       });
 
       it('ctrl key is pressed', () => {
         anchor.href = 'some/local/url';
-        const result = service.handleAnchorClick(anchor, 0, true, false);
+        let result = service.handleAnchorClick(anchor, 0, true, false);
         expect(service.go).not.toHaveBeenCalled();
         expect(result).toBe(true);
       });
 
       it('meta key is pressed', () => {
         anchor.href = 'some/local/url';
-        const result = service.handleAnchorClick(anchor, 0, false, true);
+        let result = service.handleAnchorClick(anchor, 0, false, true);
         expect(service.go).not.toHaveBeenCalled();
         expect(result).toBe(true);
       });
@@ -531,7 +531,7 @@ describe('LocationService', () => {
 
       it('zip url', () => {
         anchor.href = 'tutorial/toh-p2.zip';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).not.toHaveBeenCalled();
         expect(result).toBe(true);
       });
@@ -565,7 +565,7 @@ describe('LocationService', () => {
 
       it('url has any extension', () => {
         anchor.href = 'tutorial/toh-p2.html';
-        const result = service.handleAnchorClick(anchor);
+        let result = service.handleAnchorClick(anchor);
         expect(service.go).not.toHaveBeenCalled();
         expect(result).toBe(true);
       });
@@ -577,24 +577,24 @@ describe('LocationService', () => {
     let gaLocationChanged: jasmine.Spy;
 
     beforeEach(() => {
-      const gaService = injector.get(GaService);
+      let gaService = injector.get(GaService);
       gaLocationChanged = gaService.locationChanged;
       // execute currentPath observable so that gaLocationChanged is called
       service.currentPath.subscribe();
     });
 
     it('should call locationChanged with initial URL', () => {
-      const initialUrl = location.path().replace(/^\/+/, '');  // strip leading slashes
+      let initialUrl = location.path().replace(/^\/+/, '');  // strip leading slashes
 
       expect(gaLocationChanged.calls.count()).toBe(1, 'gaService.locationChanged');
-      const args = gaLocationChanged.calls.first().args;
+      let args = gaLocationChanged.calls.first().args;
       expect(args[0]).toBe(initialUrl);
     });
 
     it('should call locationChanged when `go` to a page', () => {
       service.go('some-new-url');
       expect(gaLocationChanged.calls.count()).toBe(2, 'gaService.locationChanged');
-      const args = gaLocationChanged.calls.argsFor(1);
+      let args = gaLocationChanged.calls.argsFor(1);
       expect(args[0]).toBe('some-new-url');
     });
 
@@ -605,7 +605,7 @@ describe('LocationService', () => {
       service.go('some-new-url#two');
       service.go('some-new-url/?foo="true"');
       expect(gaLocationChanged.calls.count()).toBe(4, 'gaService.locationChanged called');
-      const args = gaLocationChanged.calls.allArgs();
+      let args = gaLocationChanged.calls.allArgs();
       expect(args[1]).toEqual(args[2], 'same url for hash calls');
       expect(args[1]).toEqual(args[3], 'same url for query string call');
     });
@@ -614,7 +614,7 @@ describe('LocationService', () => {
       location.simulatePopState('/next-url');
 
       expect(gaLocationChanged.calls.count()).toBe(2, 'gaService.locationChanged');
-      const args = gaLocationChanged.calls.argsFor(1);
+      let args = gaLocationChanged.calls.argsFor(1);
       expect(args[0]).toBe('next-url');
     });
 

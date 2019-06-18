@@ -1,25 +1,25 @@
 #!/usr/bin/env node
 
 // Imports
-const {readFileSync, writeFileSync} = require('fs');
-const {join, resolve} = require('path');
+let {readFileSync, writeFileSync} = require('fs');
+let {join, resolve} = require('path');
 
-// Constants
-const SRC_DIR = resolve(__dirname, '../src');
-const DIST_DIR = resolve(__dirname, '../dist');
+// letants
+let SRC_DIR = resolve(__dirname, '../src');
+let DIST_DIR = resolve(__dirname, '../dist');
 
 // Run
 _main();
 
 // Functions - Definitions
 function _main() {
-  const srcIndexPath = join(DIST_DIR, 'index.html');
-  const src404BodyPath = join(SRC_DIR, '404-body.html');
-  const dst404PagePath = join(DIST_DIR, '404.html');
+  let srcIndexPath = join(DIST_DIR, 'index.html');
+  let src404BodyPath = join(SRC_DIR, '404-body.html');
+  let dst404PagePath = join(DIST_DIR, '404.html');
 
-  const srcIndexContent = readFileSync(srcIndexPath, 'utf8');
-  const src404BodyContent = readFileSync(src404BodyPath, 'utf8');
-  const dst404PageContent = srcIndexContent.replace(/<body>[\s\S]+<\/body>/, src404BodyContent);
+  let srcIndexContent = readFileSync(srcIndexPath, 'utf8');
+  let src404BodyContent = readFileSync(src404BodyPath, 'utf8');
+  let dst404PageContent = srcIndexContent.replace(/<body>[\s\S]+<\/body>/, src404BodyContent);
 
   if (dst404PageContent === srcIndexContent) {
     throw new Error(

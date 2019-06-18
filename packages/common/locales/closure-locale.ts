@@ -11,14 +11,14 @@
 
 import {registerLocaleData} from '../src/i18n/locale_data';
 
-const u = undefined;
+let u = undefined;
 
 function plural_af(n: number): number {
   if (n === 1) return 1;
   return 5;
 }
 
-export const locale_af = [
+export let locale_af = [
   'af', [['v', 'n'], ['vm.', 'nm.'], u], u,
   [
     ['S', 'M', 'D', 'W', 'D', 'V', 'S'], ['So.', 'Ma.', 'Di.', 'Wo.', 'Do.', 'Vr.', 'Sa.'],
@@ -56,7 +56,7 @@ function plural_am(n: number): number {
   return 5;
 }
 
-export const locale_am = [
+export let locale_am = [
   'am', [['ጠ', 'ከ'], ['ጥዋት', 'ከሰዓት'], u], u,
   [
     ['እ', 'ሰ', 'ማ', 'ረ', 'ሐ', 'ዓ', 'ቅ'], ['እሑድ', 'ሰኞ', 'ማክሰ', 'ረቡዕ', 'ሐሙስ', 'ዓርብ', 'ቅዳሜ'],
@@ -96,7 +96,7 @@ function plural_ar(n: number): number {
   return 5;
 }
 
-export const locale_ar = [
+export let locale_ar = [
   'ar', [['ص', 'م'], u, u], [['ص', 'م'], u, ['صباحًا', 'مساءً']],
   [
     ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
@@ -180,7 +180,7 @@ function plural_ar_DZ(n: number): number {
   return 5;
 }
 
-export const locale_ar_DZ = [
+export let locale_ar_DZ = [
   'ar-DZ', [['ص', 'م'], u, u], [['ص', 'م'], u, ['صباحًا', 'مساءً']],
   [
     ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
@@ -260,7 +260,7 @@ function plural_az(n: number): number {
   return 5;
 }
 
-export const locale_az = [
+export let locale_az = [
   'az', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['7', '1', '2', '3', '4', '5', '6'], ['B.', 'B.E.', 'Ç.A.', 'Ç.', 'C.A.', 'C.', 'Ş.'],
@@ -311,7 +311,7 @@ function plural_be(n: number): number {
   return 5;
 }
 
-export const locale_be = [
+export let locale_be = [
   'be', [['am', 'pm'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['н', 'п', 'а', 'с', 'ч', 'п', 'с'], ['нд', 'пн', 'аў', 'ср', 'чц', 'пт', 'сб'],
@@ -376,7 +376,7 @@ function plural_bg(n: number): number {
   return 5;
 }
 
-export const locale_bg = [
+export let locale_bg = [
   'bg', [['am', 'pm'], u, ['пр.об.', 'сл.об.']], [['am', 'pm'], u, u],
   [
     ['н', 'п', 'в', 'с', 'ч', 'п', 'с'], ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
@@ -460,7 +460,7 @@ function plural_bn(n: number): number {
   return 5;
 }
 
-export const locale_bn = [
+export let locale_bn = [
   'bn', [['AM', 'PM'], u, u], u,
   [
     ['র', 'সো', 'ম', 'বু', 'বৃ', 'শু', 'শ'], ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'],
@@ -510,7 +510,7 @@ function plural_br(n: number): number {
   return 5;
 }
 
-export const locale_br = [
+export let locale_br = [
   'br', [['am', 'gm'], ['A.M.', 'G.M.'], u], [['A.M.', 'G.M.'], u, u],
   [
     ['Su', 'L', 'Mz', 'Mc', 'Y', 'G', 'Sa'], ['Sul', 'Lun', 'Meu.', 'Mer.', 'Yaou', 'Gwe.', 'Sad.'],
@@ -568,7 +568,7 @@ function plural_bs(n: number): number {
   return 5;
 }
 
-export const locale_bs = [
+export let locale_bs = [
   'bs', [['prijepodne', 'popodne'], u, u], u,
   [
     ['N', 'P', 'U', 'S', 'Č', 'P', 'S'], ['ned', 'pon', 'uto', 'sri', 'čet', 'pet', 'sub'],
@@ -620,7 +620,7 @@ function plural_ca(n: number): number {
   return 5;
 }
 
-export const locale_ca = [
+export let locale_ca = [
   'ca', [['a. m.', 'p. m.'], u, u], u,
   [
     ['dg', 'dl', 'dt', 'dc', 'dj', 'dv', 'ds'], ['dg.', 'dl.', 'dt.', 'dc.', 'dj.', 'dv.', 'ds.'],
@@ -675,7 +675,7 @@ function plural_chr(n: number): number {
   return 5;
 }
 
-export const locale_chr = [
+export let locale_chr = [
   'chr', [['Ꮜ', 'Ꮢ'], ['ᏌᎾᎴ', 'ᏒᎯᏱᎢ'], ['ᏌᎾᎴ', 'ᏒᎯᏱᎢᏗᏢ']], [['ᏌᎾᎴ', 'ᏒᎯᏱᎢ'], u, ['ᏌᎾᎴ', 'ᏒᎯᏱᎢᏗᏢ']],
   [
     ['Ꮖ', 'Ꮙ', 'Ꮤ', 'Ꮶ', 'Ꮕ', 'Ꮷ', 'Ꭴ'], ['ᏆᏍᎬ', 'ᏉᏅᎯ', 'ᏔᎵᏁ', 'ᏦᎢᏁ', 'ᏅᎩᏁ', 'ᏧᎾᎩ', 'ᏈᏕᎾ'],
@@ -703,7 +703,7 @@ function plural_cs(n: number): number {
   return 5;
 }
 
-export const locale_cs = [
+export let locale_cs = [
   'cs', [['dop.', 'odp.'], u, u], u,
   [
     ['N', 'P', 'Ú', 'S', 'Č', 'P', 'S'], ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
@@ -756,7 +756,7 @@ function plural_cy(n: number): number {
   return 5;
 }
 
-export const locale_cy = [
+export let locale_cy = [
   'cy', [['b', 'h'], ['yb', 'yh'], u], [['yb', 'yh'], u, u],
   [
     ['S', 'Ll', 'M', 'M', 'I', 'G', 'S'], ['Sul', 'Llun', 'Maw', 'Mer', 'Iau', 'Gwen', 'Sad'],
@@ -816,7 +816,7 @@ function plural_da(n: number): number {
   return 5;
 }
 
-export const locale_da = [
+export let locale_da = [
   'da', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'T', 'O', 'T', 'F', 'L'], ['søn.', 'man.', 'tir.', 'ons.', 'tor.', 'fre.', 'lør.'],
@@ -860,7 +860,7 @@ function plural_de(n: number): number {
   return 5;
 }
 
-export const locale_de = [
+export let locale_de = [
   'de', [['vm.', 'nm.'], ['vorm.', 'nachm.'], u], [['vorm.', 'nachm.'], u, u],
   [
     ['S', 'M', 'D', 'M', 'D', 'F', 'S'], ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
@@ -918,7 +918,7 @@ function plural_de_AT(n: number): number {
   return 5;
 }
 
-export const locale_de_AT = [
+export let locale_de_AT = [
   'de-AT', [['vm.', 'nm.'], ['vorm.', 'nachm.'], u], u,
   [
     ['S', 'M', 'D', 'M', 'D', 'F', 'S'], ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
@@ -976,7 +976,7 @@ function plural_de_CH(n: number): number {
   return 5;
 }
 
-export const locale_de_CH = [
+export let locale_de_CH = [
   'de-CH', [['vm.', 'nm.'], ['vorm.', 'nachm.'], u], [['vorm.', 'nachm.'], u, u],
   [
     ['S', 'M', 'D', 'M', 'D', 'F', 'S'], ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
@@ -1034,7 +1034,7 @@ function plural_el(n: number): number {
   return 5;
 }
 
-export const locale_el = [
+export let locale_el = [
   'el', [['πμ', 'μμ'], ['π.μ.', 'μ.μ.'], u], u,
   [
     ['Κ', 'Δ', 'Τ', 'Τ', 'Π', 'Π', 'Σ'], ['Κυρ', 'Δευ', 'Τρί', 'Τετ', 'Πέμ', 'Παρ', 'Σάβ'],
@@ -1072,7 +1072,7 @@ function plural_en_AU(n: number): number {
   return 5;
 }
 
-export const locale_en_AU = [
+export let locale_en_AU = [
   'en-AU', [['am', 'pm'], u, u], u,
   [
     ['Su.', 'M.', 'Tu.', 'W.', 'Th.', 'F.', 'Sa.'],
@@ -1133,7 +1133,7 @@ function plural_en_CA(n: number): number {
   return 5;
 }
 
-export const locale_en_CA = [
+export let locale_en_CA = [
   'en-CA', [['a', 'p'], ['a.m.', 'p.m.'], u], [['a.m.', 'p.m.'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'],
@@ -1171,7 +1171,7 @@ function plural_en_GB(n: number): number {
   return 5;
 }
 
-export const locale_en_GB = [
+export let locale_en_GB = [
   'en-GB', [['a', 'p'], ['am', 'pm'], u], [['am', 'pm'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -1201,7 +1201,7 @@ function plural_en_IE(n: number): number {
   return 5;
 }
 
-export const locale_en_IE = [
+export let locale_en_IE = [
   'en-IE', [['a', 'p'], ['AM', 'PM'], ['a.m.', 'p.m.']], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -1231,7 +1231,7 @@ function plural_en_IN(n: number): number {
   return 5;
 }
 
-export const locale_en_IN = [
+export let locale_en_IN = [
   'en-IN', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -1261,7 +1261,7 @@ function plural_en_SG(n: number): number {
   return 5;
 }
 
-export const locale_en_SG = [
+export let locale_en_SG = [
   'en-SG', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -1291,7 +1291,7 @@ function plural_en_ZA(n: number): number {
   return 5;
 }
 
-export const locale_en_ZA = [
+export let locale_en_ZA = [
   'en-ZA', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -1320,7 +1320,7 @@ function plural_es(n: number): number {
   return 5;
 }
 
-export const locale_es = [
+export let locale_es = [
   'es', [['a. m.', 'p. m.'], u, u], u,
   [
     ['D', 'L', 'M', 'X', 'J', 'V', 'S'], ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
@@ -1373,7 +1373,7 @@ function plural_es_419(n: number): number {
   return 5;
 }
 
-export const locale_es_419 = [
+export let locale_es_419 = [
   'es-419', [['a. m.', 'p. m.'], ['a.m.', 'p.m.'], u], [['a.m.', 'p.m.'], u, u],
   [
     ['d', 'l', 'm', 'm', 'j', 'v', 's'], ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
@@ -1434,7 +1434,7 @@ function plural_es_MX(n: number): number {
   return 5;
 }
 
-export const locale_es_MX = [
+export let locale_es_MX = [
   'es-MX', [['a. m.', 'p. m.'], u, u], u,
   [
     ['D', 'L', 'M', 'M', 'J', 'V', 'S'], ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
@@ -1500,7 +1500,7 @@ function plural_es_US(n: number): number {
   return 5;
 }
 
-export const locale_es_US = [
+export let locale_es_US = [
   'es-US', [['a. m.', 'p. m.'], u, u], u,
   [
     ['D', 'L', 'M', 'M', 'J', 'V', 'S'], ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
@@ -1552,7 +1552,7 @@ function plural_et(n: number): number {
   return 5;
 }
 
-export const locale_et = [
+export let locale_et = [
   'et', [['AM', 'PM'], u, u], u,
   [
     ['P', 'E', 'T', 'K', 'N', 'R', 'L'], u,
@@ -1581,7 +1581,7 @@ function plural_eu(n: number): number {
   return 5;
 }
 
-export const locale_eu = [
+export let locale_eu = [
   'eu', [['g', 'a'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['I', 'A', 'A', 'A', 'O', 'O', 'L'], ['ig.', 'al.', 'ar.', 'az.', 'og.', 'or.', 'lr.'],
@@ -1630,7 +1630,7 @@ function plural_fa(n: number): number {
   return 5;
 }
 
-export const locale_fa = [
+export let locale_fa = [
   'fa', [['ق', 'ب'], ['ق.ظ.', 'ب.ظ.'], ['قبل\u200cازظهر', 'بعدازظهر']],
   [['ق.ظ.', 'ب.ظ.'], u, ['قبل\u200cازظهر', 'بعدازظهر']],
   [
@@ -1679,7 +1679,7 @@ function plural_fi(n: number): number {
   return 5;
 }
 
-export const locale_fi = [
+export let locale_fi = [
   'fi', [['ap.', 'ip.'], u, u], u,
   [
     ['S', 'M', 'T', 'K', 'T', 'P', 'L'], ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
@@ -1826,7 +1826,7 @@ function plural_fr(n: number): number {
   return 5;
 }
 
-export const locale_fr = [
+export let locale_fr = [
   'fr', [['AM', 'PM'], u, u], u,
   [
     ['D', 'L', 'M', 'M', 'J', 'V', 'S'], ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
@@ -1904,7 +1904,7 @@ function plural_fr_CA(n: number): number {
   return 5;
 }
 
-export const locale_fr_CA = [
+export let locale_fr_CA = [
   'fr-CA', [['a', 'p'], ['a.m.', 'p.m.'], u], [['a.m.', 'p.m.'], u, u],
   [
     ['D', 'L', 'M', 'M', 'J', 'V', 'S'], ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
@@ -1975,7 +1975,7 @@ function plural_ga(n: number): number {
   return 5;
 }
 
-export const locale_ga = [
+export let locale_ga = [
   'ga', [['a', 'p'], ['r.n.', 'i.n.'], u], [['a', 'p'], ['a.m.', 'p.m.'], u],
   [
     ['D', 'L', 'M', 'C', 'D', 'A', 'S'], ['Domh', 'Luan', 'Máirt', 'Céad', 'Déar', 'Aoine', 'Sath'],
@@ -2010,7 +2010,7 @@ function plural_gl(n: number): number {
   return 5;
 }
 
-export const locale_gl = [
+export let locale_gl = [
   'gl', [['a.m.', 'p.m.'], u, u], u,
   [
     ['d.', 'l.', 'm.', 'm.', 'x.', 'v.', 's.'],
@@ -2064,7 +2064,7 @@ function plural_gsw(n: number): number {
   return 5;
 }
 
-export const locale_gsw = [
+export let locale_gsw = [
   'gsw', [['vorm.', 'nam.'], u, ['am Vormittag', 'am Namittag']],
   [['vorm.', 'nam.'], u, ['Vormittag', 'Namittag']],
   [
@@ -2095,7 +2095,7 @@ function plural_gu(n: number): number {
   return 5;
 }
 
-export const locale_gu = [
+export let locale_gu = [
   'gu', [['AM', 'PM'], u, u], u,
   [
     ['ર', 'સો', 'મં', 'બુ', 'ગુ', 'શુ', 'શ'], ['રવિ', 'સોમ', 'મંગળ', 'બુધ', 'ગુરુ', 'શુક્ર', 'શનિ'],
@@ -2125,7 +2125,7 @@ function plural_haw(n: number): number {
   return 5;
 }
 
-export const locale_haw = [
+export let locale_haw = [
   'haw', [['AM', 'PM'], u, u], u,
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['LP', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6'],
@@ -2153,7 +2153,7 @@ function plural_hi(n: number): number {
   return 5;
 }
 
-export const locale_hi = [
+export let locale_hi = [
   'hi', [['पू', 'अ'], ['पूर्वाह्न', 'अपराह्न'], u], u,
   [
     ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'], ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'],
@@ -2189,7 +2189,7 @@ function plural_hr(n: number): number {
   return 5;
 }
 
-export const locale_hr = [
+export let locale_hr = [
   'hr', [['AM', 'PM'], u, u], u,
   [
     ['N', 'P', 'U', 'S', 'Č', 'P', 'S'], ['ned', 'pon', 'uto', 'sri', 'čet', 'pet', 'sub'],
@@ -2249,7 +2249,7 @@ function plural_hu(n: number): number {
   return 5;
 }
 
-export const locale_hu = [
+export let locale_hu = [
   'hu', [['de.', 'du.'], u, u], u,
   [
     ['V', 'H', 'K', 'Sz', 'Cs', 'P', 'Sz'], ['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo'],
@@ -2300,7 +2300,7 @@ function plural_hy(n: number): number {
   return 5;
 }
 
-export const locale_hy = [
+export let locale_hy = [
   'hy', [['ա', 'հ'], ['ԿԱ', 'ԿՀ'], u], [['ԿԱ', 'ԿՀ'], u, u],
   [
     ['Կ', 'Ե', 'Ե', 'Չ', 'Հ', 'Ո', 'Շ'], ['կիր', 'երկ', 'երք', 'չրք', 'հնգ', 'ուր', 'շբթ'],
@@ -2336,7 +2336,7 @@ function plural_in(n: number): number {
   return 5;
 }
 
-export const locale_in = [
+export let locale_in = [
   'id', [['AM', 'PM'], u, u], u,
   [
     ['M', 'S', 'S', 'R', 'K', 'J', 'S'], ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
@@ -2375,7 +2375,7 @@ function plural_is(n: number): number {
   return 5;
 }
 
-export const locale_is = [
+export let locale_is = [
   'is', [['f.', 'e.'], ['f.h.', 'e.h.'], u], [['f.h.', 'e.h.'], u, u],
   [
     ['S', 'M', 'Þ', 'M', 'F', 'F', 'L'], ['sun.', 'mán.', 'þri.', 'mið.', 'fim.', 'fös.', 'lau.'],
@@ -2422,7 +2422,7 @@ function plural_it(n: number): number {
   return 5;
 }
 
-export const locale_it = [
+export let locale_it = [
   'it', [['m.', 'p.'], ['AM', 'PM'], u], u,
   [
     ['D', 'L', 'M', 'M', 'G', 'V', 'S'], ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'],
@@ -2466,7 +2466,7 @@ function plural_iw(n: number): number {
   return 5;
 }
 
-export const locale_iw = [
+export let locale_iw = [
   'he', [['לפנה״צ', 'אחה״צ'], u, u], [['לפנה״צ', 'אחה״צ'], ['AM', 'PM'], u],
   [
     ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'],
@@ -2495,7 +2495,7 @@ function plural_ja(n: number): number {
   return 5;
 }
 
-export const locale_ja = [
+export let locale_ja = [
   'ja', [['午前', '午後'], u, u], u,
   [
     ['日', '月', '火', '水', '木', '金', '土'], u,
@@ -2519,7 +2519,7 @@ function plural_ka(n: number): number {
   return 5;
 }
 
-export const locale_ka = [
+export let locale_ka = [
   'ka', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, ['AM', 'შუადღ. შემდეგ']],
   [
     ['კ', 'ო', 'ს', 'ო', 'ხ', 'პ', 'შ'], ['კვი', 'ორშ', 'სამ', 'ოთხ', 'ხუთ', 'პარ', 'შაბ'],
@@ -2561,7 +2561,7 @@ function plural_kk(n: number): number {
   return 5;
 }
 
-export const locale_kk = [
+export let locale_kk = [
   'kk', [['AM', 'PM'], u, u], u,
   [
     ['Ж', 'Д', 'С', 'С', 'Б', 'Ж', 'С'], ['Жс', 'Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб'],
@@ -2605,7 +2605,7 @@ function plural_km(n: number): number {
   return 5;
 }
 
-export const locale_km = [
+export let locale_km = [
   'km', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['អ', 'ច', 'អ', 'ព', 'ព', 'ស', 'ស'], ['អាទិត្យ', 'ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'], u,
@@ -2631,7 +2631,7 @@ function plural_kn(n: number): number {
   return 5;
 }
 
-export const locale_kn = [
+export let locale_kn = [
   'kn', [['ಪೂ', 'ಅ'], ['ಪೂರ್ವಾಹ್ನ', 'ಅಪರಾಹ್ನ'], u], [['ಪೂರ್ವಾಹ್ನ', 'ಅಪರಾಹ್ನ'], u, u],
   [
     ['ಭಾ', 'ಸೋ', 'ಮಂ', 'ಬು', 'ಗು', 'ಶು', 'ಶ'], ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'],
@@ -2667,7 +2667,7 @@ function plural_ko(n: number): number {
   return 5;
 }
 
-export const locale_ko = [
+export let locale_ko = [
   'ko', [['AM', 'PM'], u, ['오전', '오후']], u,
   [
     ['일', '월', '화', '수', '목', '금', '토'], u,
@@ -2690,7 +2690,7 @@ function plural_ky(n: number): number {
   return 5;
 }
 
-export const locale_ky = [
+export let locale_ky = [
   'ky', [['тң', 'тк'], u, ['таңкы', 'түштөн кийинки']], u,
   [
     ['Ж', 'Д', 'Ш', 'Ш', 'Б', 'Ж', 'И'],
@@ -2758,7 +2758,7 @@ function plural_ln(n: number): number {
   return 5;
 }
 
-export const locale_ln = [
+export let locale_ln = [
   'ln', [['ntɔ́ngɔ́', 'mpókwa'], u, u], u,
   [
     ['e', 'y', 'm', 'm', 'm', 'm', 'p'], ['eye', 'ybo', 'mbl', 'mst', 'min', 'mtn', 'mps'],
@@ -2790,7 +2790,7 @@ function plural_lo(n: number): number {
   return 5;
 }
 
-export const locale_lo = [
+export let locale_lo = [
   'lo', [['ກທ', 'ຫຼທ'], ['ກ່ອນທ່ຽງ', 'ຫຼັງທ່ຽງ'], u], u,
   [
     ['ອາ', 'ຈ', 'ອ', 'ພ', 'ພຫ', 'ສຸ', 'ສ'], ['ອາທິດ', 'ຈັນ', 'ອັງຄານ', 'ພຸດ', 'ພະຫັດ', 'ສຸກ', 'ເສົາ'],
@@ -2829,7 +2829,7 @@ function plural_lt(n: number): number {
   return 5;
 }
 
-export const locale_lt = [
+export let locale_lt = [
   'lt', [['pr. p.', 'pop.'], ['priešpiet', 'popiet'], u], u,
   [
     ['S', 'P', 'A', 'T', 'K', 'P', 'Š'], ['sk', 'pr', 'an', 'tr', 'kt', 'pn', 'št'],
@@ -2910,7 +2910,7 @@ function plural_lv(n: number): number {
   return 5;
 }
 
-export const locale_lv = [
+export let locale_lv = [
   'lv', [['priekšp.', 'pēcp.'], u, ['priekšpusdienā', 'pēcpusdienā']],
   [['priekšp.', 'pēcpusd.'], u, ['priekšpusdiena', 'pēcpusdiena']],
   [
@@ -2951,7 +2951,7 @@ function plural_mk(n: number): number {
   return 5;
 }
 
-export const locale_mk = [
+export let locale_mk = [
   'mk', [['претпл.', 'попл.'], u, ['претпладне', 'попладне']], u,
   [
     ['н', 'п', 'в', 'с', 'ч', 'п', 'с'], ['нед.', 'пон.', 'вт.', 'сре.', 'чет.', 'пет.', 'саб.'],
@@ -3001,7 +3001,7 @@ function plural_ml(n: number): number {
   return 5;
 }
 
-export const locale_ml = [
+export let locale_ml = [
   'ml', [['AM', 'PM'], u, u], u,
   [
     ['ഞ', 'തി', 'ചൊ', 'ബു', 'വ്യാ', 'വെ', 'ശ'],
@@ -3042,7 +3042,7 @@ function plural_mn(n: number): number {
   return 5;
 }
 
-export const locale_mn = [
+export let locale_mn = [
   'mn', [['үө', 'үх'], ['ҮӨ', 'ҮХ'], ['ү.ө', 'ү.х']], [['ҮӨ', 'ҮХ'], u, u],
   [
     ['Ня', 'Да', 'Мя', 'Лх', 'Пү', 'Ба', 'Бя'], u,
@@ -3078,7 +3078,7 @@ function plural_mo(n: number): number {
   return 5;
 }
 
-export const locale_mo = [
+export let locale_mo = [
   'ro-MD', [['a.m.', 'p.m.'], u, u], u,
   [
     ['D', 'L', 'Ma', 'Mi', 'J', 'V', 'S'], ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'],
@@ -3129,7 +3129,7 @@ function plural_mr(n: number): number {
   return 5;
 }
 
-export const locale_mr = [
+export let locale_mr = [
   'mr', [['स', 'सं'], ['म.पू.', 'म.उ.'], u], [['म.पू.', 'म.उ.'], u, u],
   [
     ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'], ['रवि', 'सोम', 'मंगळ', 'बुध', 'गुरु', 'शुक्र', 'शनि'],
@@ -3157,7 +3157,7 @@ function plural_ms(n: number): number {
   return 5;
 }
 
-export const locale_ms = [
+export let locale_ms = [
   'ms', [['a', 'p'], ['PG', 'PTG'], u], u,
   [
     ['A', 'I', 'S', 'R', 'K', 'J', 'S'], ['Ahd', 'Isn', 'Sel', 'Rab', 'Kha', 'Jum', 'Sab'],
@@ -3194,7 +3194,7 @@ function plural_mt(n: number): number {
   return 5;
 }
 
-export const locale_mt = [
+export let locale_mt = [
   'mt', [['am', 'pm'], ['AM', 'PM'], u], u,
   [
     ['Ħd', 'T', 'Tl', 'Er', 'Ħm', 'Ġm', 'Sb'], ['Ħad', 'Tne', 'Tli', 'Erb', 'Ħam', 'Ġim', 'Sib'],
@@ -3234,7 +3234,7 @@ function plural_my(n: number): number {
   return 5;
 }
 
-export const locale_my = [
+export let locale_my = [
   'my', [['နံနက်', 'ညနေ'], u, u], u,
   [
     ['တ', 'တ', 'အ', 'ဗ', 'က', 'သ', 'စ'],
@@ -3274,7 +3274,7 @@ function plural_ne(n: number): number {
   return 5;
 }
 
-export const locale_ne = [
+export let locale_ne = [
   'ne', [['पूर्वाह्न', 'अपराह्न'], u, u], u,
   [
     ['आ', 'सो', 'म', 'बु', 'बि', 'शु', 'श'], ['आइत', 'सोम', 'मङ्गल', 'बुध', 'बिहि', 'शुक्र', 'शनि'],
@@ -3311,7 +3311,7 @@ function plural_nl(n: number): number {
   return 5;
 }
 
-export const locale_nl = [
+export let locale_nl = [
   'nl', [['a.m.', 'p.m.'], u, u], u,
   [
     ['Z', 'M', 'D', 'W', 'D', 'V', 'Z'], ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
@@ -3350,7 +3350,7 @@ function plural_no(n: number): number {
   return 5;
 }
 
-export const locale_no = [
+export let locale_no = [
   'nb', [['a', 'p'], ['a.m.', 'p.m.'], u], [['a.m.', 'p.m.'], u, u],
   [
     ['S', 'M', 'T', 'O', 'T', 'F', 'L'], ['søn.', 'man.', 'tir.', 'ons.', 'tor.', 'fre.', 'lør.'],
@@ -3408,7 +3408,7 @@ function plural_or(n: number): number {
   return 5;
 }
 
-export const locale_or = [
+export let locale_or = [
   'or', [['ପୂ', 'ଅ'], ['AM', 'PM'], u], [['AM', 'ଅପରାହ୍ନ'], ['ପୂର୍ବାହ୍ନ', 'ଅପରାହ୍ନ'], u],
   [
     ['ର', 'ସୋ', 'ମ', 'ବୁ', 'ଗୁ', 'ଶୁ', 'ଶ'], ['ରବି', 'ସୋମ', 'ମଙ୍ଗଳ', 'ବୁଧ', 'ଗୁରୁ', 'ଶୁକ୍ର', 'ଶନି'],
@@ -3436,7 +3436,7 @@ function plural_pa(n: number): number {
   return 5;
 }
 
-export const locale_pa = [
+export let locale_pa = [
   'pa', [['ਸ.', 'ਸ਼.'], ['ਪੂ.ਦੁ.', 'ਬਾ.ਦੁ.'], u], [['ਪੂ.ਦੁ.', 'ਬਾ.ਦੁ.'], u, u],
   [
     ['ਐ', 'ਸੋ', 'ਮੰ', 'ਬੁੱ', 'ਵੀ', 'ਸ਼ੁੱ', 'ਸ਼'], ['ਐਤ', 'ਸੋਮ', 'ਮੰਗਲ', 'ਬੁੱਧ', 'ਵੀਰ', 'ਸ਼ੁੱਕਰ', 'ਸ਼ਨਿੱਚਰ'],
@@ -3472,7 +3472,7 @@ function plural_pl(n: number): number {
   return 5;
 }
 
-export const locale_pl = [
+export let locale_pl = [
   'pl', [['a', 'p'], ['AM', 'PM'], u], u,
   [
     ['n', 'p', 'w', 'ś', 'c', 'p', 's'], ['niedz.', 'pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.'],
@@ -3531,7 +3531,7 @@ function plural_pt(n: number): number {
   return 5;
 }
 
-export const locale_pt = [
+export let locale_pt = [
   'pt', [['AM', 'PM'], u, u], u,
   [
     ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'], ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
@@ -3572,7 +3572,7 @@ function plural_pt_PT(n: number): number {
   return 5;
 }
 
-export const locale_pt_PT = [
+export let locale_pt_PT = [
   'pt-PT', [['a.m.', 'p.m.'], u, ['da manhã', 'da tarde']],
   [['a.m.', 'p.m.'], u, ['manhã', 'tarde']],
   [
@@ -3618,7 +3618,7 @@ function plural_ro(n: number): number {
   return 5;
 }
 
-export const locale_ro = [
+export let locale_ro = [
   'ro', [['a.m.', 'p.m.'], u, u], u,
   [
     ['D', 'L', 'M', 'M', 'J', 'V', 'S'], ['dum.', 'lun.', 'mar.', 'mie.', 'joi', 'vin.', 'sâm.'],
@@ -3675,7 +3675,7 @@ function plural_ru(n: number): number {
   return 5;
 }
 
-export const locale_ru = [
+export let locale_ru = [
   'ru', [['AM', 'PM'], u, u], u,
   [
     ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'], u,
@@ -3731,7 +3731,7 @@ function plural_sh(n: number): number {
   return 5;
 }
 
-export const locale_sh = [
+export let locale_sh = [
   'sr-Latn', [['a', 'p'], ['pre podne', 'po podne'], u], [['pre podne', 'po podne'], u, u],
   [
     ['n', 'p', 'u', 's', 'č', 'p', 's'], ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub'],
@@ -3771,7 +3771,7 @@ function plural_si(n: number): number {
   return 5;
 }
 
-export const locale_si = [
+export let locale_si = [
   'si', [['පෙ', 'ප'], ['පෙ.ව.', 'ප.ව.'], u], [['පෙ.ව.', 'ප.ව.'], u, u],
   [
     ['ඉ', 'ස', 'අ', 'බ', 'බ්\u200dර', 'සි', 'සෙ'],
@@ -3819,7 +3819,7 @@ function plural_sk(n: number): number {
   return 5;
 }
 
-export const locale_sk = [
+export let locale_sk = [
   'sk', [['AM', 'PM'], u, u], u,
   [
     ['n', 'p', 'u', 's', 'š', 'p', 's'], ['ne', 'po', 'ut', 'st', 'št', 'pi', 'so'],
@@ -3874,7 +3874,7 @@ function plural_sl(n: number): number {
   return 5;
 }
 
-export const locale_sl = [
+export let locale_sl = [
   'sl', [['d', 'p'], ['dop.', 'pop.'], u], [['d', 'p'], ['dop.', 'pop.'], ['dopoldne', 'popoldne']],
   [
     ['n', 'p', 't', 's', 'č', 'p', 's'], ['ned.', 'pon.', 'tor.', 'sre.', 'čet.', 'pet.', 'sob.'],
@@ -3912,7 +3912,7 @@ function plural_sq(n: number): number {
   return 5;
 }
 
-export const locale_sq = [
+export let locale_sq = [
   'sq', [['e paradites', 'e pasdites'], u, u], [['paradite', 'pasdite'], u, u],
   [
     ['D', 'H', 'M', 'M', 'E', 'P', 'Sh'], ['Die', 'Hën', 'Mar', 'Mër', 'Enj', 'Pre', 'Sht'],
@@ -3960,7 +3960,7 @@ function plural_sr(n: number): number {
   return 5;
 }
 
-export const locale_sr = [
+export let locale_sr = [
   'sr', [['a', 'p'], ['пре подне', 'по подне'], u], [['пре подне', 'по подне'], u, u],
   [
     ['н', 'п', 'у', 'с', 'ч', 'п', 'с'], ['нед', 'пон', 'уто', 'сре', 'чет', 'пет', 'суб'],
@@ -3999,7 +3999,7 @@ function plural_sv(n: number): number {
   return 5;
 }
 
-export const locale_sv = [
+export let locale_sv = [
   'sv', [['fm', 'em'], u, u], [['fm', 'em'], ['f.m.', 'e.m.'], ['förmiddag', 'eftermiddag']],
   [
     ['S', 'M', 'T', 'O', 'T', 'F', 'L'], ['sön', 'mån', 'tis', 'ons', 'tors', 'fre', 'lör'],
@@ -4057,7 +4057,7 @@ function plural_sw(n: number): number {
   return 5;
 }
 
-export const locale_sw = [
+export let locale_sw = [
   'sw', [['am', 'pm'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
@@ -4092,7 +4092,7 @@ function plural_ta(n: number): number {
   return 5;
 }
 
-export const locale_ta = [
+export let locale_ta = [
   'ta', [['மு.ப', 'பி.ப'], ['முற்பகல்', 'பிற்பகல்'], u], u,
   [
     ['ஞா', 'தி', 'செ', 'பு', 'வி', 'வெ', 'ச'],
@@ -4122,7 +4122,7 @@ function plural_te(n: number): number {
   return 5;
 }
 
-export const locale_te = [
+export let locale_te = [
   'te', [['ఉ', 'సా'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['ఆ', 'సో', 'మ', 'బు', 'గు', 'శు', 'శ'], ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'],
@@ -4150,7 +4150,7 @@ function plural_th(n: number): number {
   return 5;
 }
 
-export const locale_th = [
+export let locale_th = [
   'th', [['a', 'p'], ['ก่อนเที่ยง', 'หลังเที่ยง'], u], [['ก่อนเที่ยง', 'หลังเที่ยง'], u, u],
   [
     ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'], ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
@@ -4187,7 +4187,7 @@ function plural_tl(n: number): number {
   return 5;
 }
 
-export const locale_tl = [
+export let locale_tl = [
   'fil', [['am', 'pm'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['Lin', 'Lun', 'Mar', 'Miy', 'Huw', 'Biy', 'Sab'], u,
@@ -4223,7 +4223,7 @@ function plural_tr(n: number): number {
   return 5;
 }
 
-export const locale_tr = [
+export let locale_tr = [
   'tr', [['öö', 'ös'], ['ÖÖ', 'ÖS'], u], [['ÖÖ', 'ÖS'], u, u],
   [
     ['P', 'P', 'S', 'Ç', 'P', 'C', 'C'], ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
@@ -4260,7 +4260,7 @@ function plural_uk(n: number): number {
   return 5;
 }
 
-export const locale_uk = [
+export let locale_uk = [
   'uk', [['дп', 'пп'], u, u], u,
   [
     ['Н', 'П', 'В', 'С', 'Ч', 'П', 'С'], ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
@@ -4320,7 +4320,7 @@ function plural_ur(n: number): number {
   return 5;
 }
 
-export const locale_ur = [
+export let locale_ur = [
   'ur', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'T', 'W', 'T', 'F', 'S'], ['اتوار', 'پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتہ'],
@@ -4348,7 +4348,7 @@ function plural_uz(n: number): number {
   return 5;
 }
 
-export const locale_uz = [
+export let locale_uz = [
   'uz', [['TO', 'TK'], u, u], u,
   [
     ['Y', 'D', 'S', 'C', 'P', 'J', 'S'], ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'],
@@ -4384,7 +4384,7 @@ function plural_vi(n: number): number {
   return 5;
 }
 
-export const locale_vi = [
+export let locale_vi = [
   'vi', [['s', 'c'], ['SA', 'CH'], u], [['SA', 'CH'], u, u],
   [
     ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
@@ -4428,7 +4428,7 @@ function plural_zh(n: number): number {
   return 5;
 }
 
-export const locale_zh = [
+export let locale_zh = [
   'zh', [['上午', '下午'], u, u], u,
   [
     ['日', '一', '二', '三', '四', '五', '六'],
@@ -4464,7 +4464,7 @@ function plural_zh_CN(n: number): number {
   return 5;
 }
 
-export const locale_zh_CN = [
+export let locale_zh_CN = [
   'zh-Hans', [['上午', '下午'], u, u], u,
   [
     ['日', '一', '二', '三', '四', '五', '六'],
@@ -4500,7 +4500,7 @@ function plural_zh_HK(n: number): number {
   return 5;
 }
 
-export const locale_zh_HK = [
+export let locale_zh_HK = [
   'zh-Hant-HK', [['上午', '下午'], u, u], u,
   [
     ['日', '一', '二', '三', '四', '五', '六'],
@@ -4525,7 +4525,7 @@ function plural_zh_TW(n: number): number {
   return 5;
 }
 
-export const locale_zh_TW = [
+export let locale_zh_TW = [
   'zh-Hant', [['上午', '下午'], u, u], u,
   [
     ['日', '一', '二', '三', '四', '五', '六'],
@@ -4552,7 +4552,7 @@ function plural_zu(n: number): number {
   return 5;
 }
 
-export const locale_zu = [
+export let locale_zu = [
   'zu', [['a', 'p'], ['AM', 'PM'], u], [['AM', 'PM'], u, u],
   [
     ['S', 'M', 'B', 'T', 'S', 'H', 'M'], ['Son', 'Mso', 'Bil', 'Tha', 'Sin', 'Hla', 'Mgq'],

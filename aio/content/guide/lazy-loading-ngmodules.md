@@ -138,7 +138,7 @@ Each feature module acts as a doorway via the router. In the `AppRoutingModule`,
 In `AppRoutingModule`, update the `routes` array with the following:
 
 
-<code-example path="lazy-loading-ngmodules/src/app/app-routing.module.ts" region="const-routes" header="src/app/app-routing.module.ts" linenums="false">
+<code-example path="lazy-loading-ngmodules/src/app/app-routing.module.ts" region="let-routes" header="src/app/app-routing.module.ts" linenums="false">
 
 </code-example>
 

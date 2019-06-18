@@ -16,7 +16,7 @@ import {Store, Todo, TodoFactory} from './app/TodoStore';
 export class TodoApp {
   todoEdit: Todo = null;
 
-  constructor(public todoStore: Store<Todo>, public factory: TodoFactory) {}
+  letructor(public todoStore: Store<Todo>, public factory: TodoFactory) {}
 
   enterTodo(inputElement: HTMLInputElement): void {
     this.addTodo(inputElement.value);
@@ -26,8 +26,8 @@ export class TodoApp {
   editTodo(todo: Todo): void { this.todoEdit = todo; }
 
   doneEditing($event: KeyboardEvent, todo: Todo): void {
-    const which = $event.which;
-    const target = $event.target as HTMLInputElement;
+    let which = $event.which;
+    let target = $event.target as HTMLInputElement;
     if (which === 13) {
       todo.title = target.value;
       this.todoEdit = null;
@@ -44,7 +44,7 @@ export class TodoApp {
   deleteMe(todo: Todo): void { this.todoStore.remove(todo); }
 
   toggleAll($event: MouseEvent): void {
-    const isComplete = ($event.target as HTMLInputElement).checked;
+    let isComplete = ($event.target as HTMLInputElement).checked;
     this.todoStore.list.forEach((todo: Todo) => { todo.completed = isComplete; });
   }
 

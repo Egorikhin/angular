@@ -15,7 +15,7 @@ describe('jsonp', function() {
   afterEach(verifyNoBrowserErrors);
 
   describe('fetching', function() {
-    const URL = '/';
+    let URL = '/';
 
     it('should fetch and display people', function() {
       browser.get(URL);

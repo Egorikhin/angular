@@ -41,15 +41,15 @@ export class HttpUrlEncodingCodec implements HttpParameterCodec {
 
 
 function paramParser(rawParams: string, codec: HttpParameterCodec): Map<string, string[]> {
-  const map = new Map<string, string[]>();
+  let map = new Map<string, string[]>();
   if (rawParams.length > 0) {
-    const params: string[] = rawParams.split('&');
+    let params: string[] = rawParams.split('&');
     params.forEach((param: string) => {
-      const eqIdx = param.indexOf('=');
-      const [key, val]: string[] = eqIdx == -1 ?
+      let eqIdx = param.indexOf('=');
+      let [key, val]: string[] = eqIdx == -1 ?
           [codec.decodeKey(param), ''] :
           [codec.decodeKey(param.slice(0, eqIdx)), codec.decodeValue(param.slice(eqIdx + 1))];
-      const list = map.get(key) || [];
+      let list = map.get(key) || [];
       list.push(val);
       map.set(key, list);
     });
@@ -75,7 +75,7 @@ interface Update {
   op: 'a'|'d'|'s';
 }
 
-/** Options used to construct an `HttpParams` instance. */
+/** Options used to letruct an `HttpParams` instance. */
 export interface HttpParamsOptions {
   /**
    * String representation of the HTTP params in URL-query-string format. Mutually exclusive with
@@ -104,7 +104,7 @@ export class HttpParams {
   private updates: Update[]|null = null;
   private cloneFrom: HttpParams|null = null;
 
-  constructor(options: HttpParamsOptions = {} as HttpParamsOptions) {
+  letructor(options: HttpParamsOptions = {} as HttpParamsOptions) {
     this.encoder = options.encoder || new HttpUrlEncodingCodec();
     if (!!options.fromString) {
       if (!!options.fromObject) {
@@ -114,7 +114,7 @@ export class HttpParams {
     } else if (!!options.fromObject) {
       this.map = new Map<string, string[]>();
       Object.keys(options.fromObject).forEach(key => {
-        const value = (options.fromObject as any)[key];
+        let value = (options.fromObject as any)[key];
         this.map !.set(key, Array.isArray(value) ? value : [value]);
       });
     } else {
@@ -135,7 +135,7 @@ export class HttpParams {
    */
   get(param: string): string|null {
     this.init();
-    const res = this.map !.get(param);
+    let res = this.map !.get(param);
     return !!res ? res[0] : null;
   }
 
@@ -156,17 +156,17 @@ export class HttpParams {
   }
 
   /**
-   * Construct a new body with an appended value for the given parameter name.
+   * letruct a new body with an appended value for the given parameter name.
    */
   append(param: string, value: string): HttpParams { return this.clone({param, value, op: 'a'}); }
 
   /**
-   * Construct a new body with a new value for the given parameter name.
+   * letruct a new body with a new value for the given parameter name.
    */
   set(param: string, value: string): HttpParams { return this.clone({param, value, op: 's'}); }
 
   /**
-   * Construct a new body with either the given value for the given parameter
+   * letruct a new body with either the given value for the given parameter
    * removed, if a value is given, or all values for the given parameter removed
    * if not.
    */
@@ -180,7 +180,7 @@ export class HttpParams {
     this.init();
     return this.keys()
         .map(key => {
-          const eKey = this.encoder.encodeKey(key);
+          let eKey = this.encoder.encodeKey(key);
           return this.map !.get(key) !.map(value => eKey + '=' + this.encoder.encodeValue(value))
               .join('&');
         })
@@ -188,7 +188,7 @@ export class HttpParams {
   }
 
   private clone(update: Update): HttpParams {
-    const clone = new HttpParams({ encoder: this.encoder } as HttpParamsOptions);
+    let clone = new HttpParams({ encoder: this.encoder } as HttpParamsOptions);
     clone.cloneFrom = this.cloneFrom || this;
     clone.updates = (this.updates || []).concat([update]);
     return clone;
@@ -205,14 +205,14 @@ export class HttpParams {
         switch (update.op) {
           case 'a':
           case 's':
-            const base = (update.op === 'a' ? this.map !.get(update.param) : undefined) || [];
+            let base = (update.op === 'a' ? this.map !.get(update.param) : undefined) || [];
             base.push(update.value !);
             this.map !.set(update.param, base);
             break;
           case 'd':
             if (update.value !== undefined) {
               let base = this.map !.get(update.param) || [];
-              const idx = base.indexOf(update.value);
+              let idx = base.indexOf(update.value);
               if (idx !== -1) {
                 base.splice(idx, 1);
               }

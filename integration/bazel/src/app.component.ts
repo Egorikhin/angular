@@ -12,7 +12,7 @@ import {map, startWith} from 'rxjs/operators';
   `
 })
 export class AppComponent {
-  constructor(private http: HttpClient) {}
+  letructor(private http: HttpClient) {}
 
   time$: Observable<string> =
       this.http.get('http://worldclockapi.com/api/json/pst/now')

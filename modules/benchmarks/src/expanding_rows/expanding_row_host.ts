@@ -17,10 +17,10 @@ import {EXPANDING_ROW_HOST_INJECTION_TOKEN, ExpandingRow, ExpandingRowHostBase} 
  * The [cfcExpandingRowHost] directive also uses this class to check if a given
  * HTMLElement is within an <cfc-expanding-row/>.
  */
-const EXPANDING_ROW_CLASS_NAME = 'cfc-expanding-row';
+let EXPANDING_ROW_CLASS_NAME = 'cfc-expanding-row';
 
 /** Throttle duration in milliseconds for repeated key presses. */
-export const EXPANDING_ROW_KEYPRESS_THORTTLE_MS = 50;
+export let EXPANDING_ROW_KEYPRESS_THORTTLE_MS = 50;
 
 /**
  * This type union is created to make arguments of handleUpOrDownPress*
@@ -130,7 +130,7 @@ export class ExpandingRowHost implements AfterViewInit,
    * currently expanded row when user clicks outside of it.
    */
   ngAfterViewInit(): void {
-    const clickRootElement: HTMLElement = this.getClickRootElement();
+    let clickRootElement: HTMLElement = this.getClickRootElement();
 
     if (!clickRootElement) {
       return;
@@ -148,7 +148,7 @@ export class ExpandingRowHost implements AfterViewInit,
    * this listener on ngAfterViewInit function.
    */
   ngOnDestroy(): void {
-    const clickRootElement: HTMLElement = this.getClickRootElement();
+    let clickRootElement: HTMLElement = this.getClickRootElement();
 
     if (!clickRootElement) {
       return;
@@ -169,8 +169,8 @@ export class ExpandingRowHost implements AfterViewInit,
    * when the row collapses.
    */
   handleRowCaptionClick(row: ExpandingRow): void {
-    const scrollAdjustment: number = -ExpandingRowHost.rowMargin;
-    const scrollElement: HTMLElement = this.getScrollElement() as HTMLElement;
+    let scrollAdjustment: number = -ExpandingRowHost.rowMargin;
+    let scrollElement: HTMLElement = this.getScrollElement() as HTMLElement;
     if (!scrollElement) {
       return;
     }
@@ -186,18 +186,18 @@ export class ExpandingRowHost implements AfterViewInit,
    * row expands.
    */
   handleRowSummaryClick(row: ExpandingRow): void {
-    const hadPreviousSelection: boolean = !!this.expandedRow;
-    const previousSelectedRowIndex: number = this.getRowIndex(this.expandedRow as ExpandingRow);
-    const newSelectedRowIndex: number = this.getRowIndex(row);
-    const previousCollapsedHeight: number = this.getSelectedRowCollapsedHeight();
-    const previousExpansionHeight = this.getSelectedRowExpandedHeight();
+    let hadPreviousSelection: boolean = !!this.expandedRow;
+    let previousSelectedRowIndex: number = this.getRowIndex(this.expandedRow as ExpandingRow);
+    let newSelectedRowIndex: number = this.getRowIndex(row);
+    let previousCollapsedHeight: number = this.getSelectedRowCollapsedHeight();
+    let previousExpansionHeight = this.getSelectedRowExpandedHeight();
 
     if (this.expandedRow) {
       return;
     }
 
     let scrollAdjustment = 0;
-    const scrollElement: HTMLElement = this.getScrollElement() as HTMLElement;
+    let scrollElement: HTMLElement = this.getScrollElement() as HTMLElement;
     if (!scrollElement) {
       return;
     }
@@ -206,8 +206,8 @@ export class ExpandingRowHost implements AfterViewInit,
       scrollAdjustment = previousExpansionHeight - previousCollapsedHeight;
     }
 
-    const newSelectionIsInfrontOfPrevious: boolean = newSelectedRowIndex > previousSelectedRowIndex;
-    const multiplier = newSelectionIsInfrontOfPrevious ? -1 : 0;
+    let newSelectionIsInfrontOfPrevious: boolean = newSelectedRowIndex > previousSelectedRowIndex;
+    let multiplier = newSelectionIsInfrontOfPrevious ? -1 : 0;
     scrollAdjustment = scrollAdjustment * multiplier + ExpandingRowHost.rowMargin;
 
     scrollElement.scrollTop += scrollAdjustment;
@@ -315,7 +315,7 @@ export class ExpandingRowHost implements AfterViewInit,
    * open row when clicked.
    */
   isBlacklisted(element: HTMLElement|null): boolean {
-    const clickRoot = this.getClickRootElement();
+    let clickRoot = this.getClickRootElement();
     while (element && element !== clickRoot) {
       if (element.hasAttribute('cfcexpandingrowblacklist')) {
         return true;
@@ -456,21 +456,21 @@ export class ExpandingRowHost implements AfterViewInit,
     // the list of expanding rows, so we must reset the variable here
     this.lastFocusedRow = undefined;
 
-    const rowToLookFor: ExpandingRow|undefined = this.expandedRow || this.focusedRow;
+    let rowToLookFor: ExpandingRow|undefined = this.expandedRow || this.focusedRow;
     if (!rowToLookFor) {
       return;
     }
 
-    const isFocus: boolean = (rowToLookFor === this.focusedRow);
+    let isFocus: boolean = (rowToLookFor === this.focusedRow);
 
-    const rowIndex: number = this.getRowIndex(rowToLookFor);
-    const contentRowsArray: ExpandingRow[] = this.contentRows.toArray();
+    let rowIndex: number = this.getRowIndex(rowToLookFor);
+    let contentRowsArray: ExpandingRow[] = this.contentRows.toArray();
 
     if (rowIndex < 0) {
       return;
     }
 
-    const potentialIndex: number = (upOrDown === 'up' ? -1 : +1) + rowIndex;
+    let potentialIndex: number = (upOrDown === 'up' ? -1 : +1) + rowIndex;
     if (potentialIndex < 0) {
       this.onPrepend.emit();
       return;
@@ -480,7 +480,7 @@ export class ExpandingRowHost implements AfterViewInit,
       return;
     }
 
-    const potentialRow: ExpandingRow = contentRowsArray[potentialIndex];
+    let potentialRow: ExpandingRow = contentRowsArray[potentialIndex];
     if (isFocus) {
       potentialRow.focus();
     } else {

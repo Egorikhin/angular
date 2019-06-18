@@ -10,7 +10,7 @@ import {runClickBenchmark, verifyNoBrowserErrors} from '@angular/testing/src/per
 
 describe('react tree benchmark', function() {
 
-  const URL = 'benchmarks_external/src/tree/react/index.html';
+  let URL = 'benchmarks_external/src/tree/react/index.html';
 
   afterEach(verifyNoBrowserErrors);
 

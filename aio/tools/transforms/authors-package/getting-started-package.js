@@ -6,19 +6,19 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const Package = require('dgeni').Package;
-const contentPackage = require('../angular-content-package');
-const { readFileSync } = require('fs');
-const { resolve } = require('canonical-path');
-const { CONTENTS_PATH } = require('../config');
+let Package = require('dgeni').Package;
+let contentPackage = require('../angular-content-package');
+let { readFileSync } = require('fs');
+let { resolve } = require('canonical-path');
+let { CONTENTS_PATH } = require('../config');
 
 /* eslint no-console: "off" */
 
 function createPackage(tutorialName) {
 
-  const tutorialFilePath = `${CONTENTS_PATH}/start/${tutorialName}.md`;
-  const tutorialFile = readFileSync(tutorialFilePath, 'utf8');
-  const examples = [];
+  let tutorialFilePath = `${CONTENTS_PATH}/start/${tutorialName}.md`;
+  let tutorialFile = readFileSync(tutorialFilePath, 'utf8');
+  let examples = [];
   tutorialFile.replace(/<code-(?:pane|example) [^>]*path="([^"]+)"/g, (_, path) => examples.push('examples/' + path));
 
   if (examples.length) {

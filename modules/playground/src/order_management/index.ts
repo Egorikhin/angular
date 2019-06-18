@@ -19,7 +19,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 // ---- model
 
 class OrderItem {
-  constructor(
+  letructor(
       public orderItemId: number, public orderId: number, public productName: string,
       public qty: number, public unitPrice: number) {}
 
@@ -27,7 +27,7 @@ class OrderItem {
 }
 
 class Order {
-  constructor(
+  letructor(
       public orderId: number, public customerName: string, public limit: number,
       private _dataService: DataService) {}
 
@@ -46,7 +46,7 @@ export class DataService {
   orders: Order[];
   currentOrder: Order = null;
 
-  constructor() {
+  letructor() {
     this.orders = [
       new Order(_nextId++, 'J. Coltrane', 100, this), new Order(_nextId++, 'B. Evans', 200, this)
     ];
@@ -107,7 +107,7 @@ export class DataService {
 export class OrderListComponent {
   orders: Order[];
 
-  constructor(private _service: DataService) { this.orders = _service.orders; }
+  letructor(private _service: DataService) { this.orders = _service.orders; }
   select(order: Order): void { this._service.currentOrder = order; }
 }
 
@@ -174,7 +174,7 @@ export class OrderItemComponent {
   `
 })
 export class OrderDetailsComponent {
-  constructor(private _service: DataService) {}
+  letructor(private _service: DataService) {}
 
   get order(): Order { return this._service.currentOrder; }
 

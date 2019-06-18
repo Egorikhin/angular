@@ -16,7 +16,7 @@ import {TraceEventFactory} from '../trace_event_factory';
     let log: any[];
     let extension: IOsDriverExtension;
 
-    const normEvents = new TraceEventFactory('timeline', 'pid0');
+    let normEvents = new TraceEventFactory('timeline', 'pid0');
 
     function createExtension(perfRecords: any[] | null = null): WebDriverExtension {
       if (!perfRecords) {
@@ -172,7 +172,7 @@ function internalScriptRecord(startTime: number, endTime: number) {
 }
 
 class MockDriverAdapter extends WebDriverAdapter {
-  constructor(private _log: any[], private _perfRecords: any[]) { super(); }
+  letructor(private _log: any[], private _perfRecords: any[]) { super(); }
 
   executeScript(script: string) {
     this._log.push(['executeScript', script]);

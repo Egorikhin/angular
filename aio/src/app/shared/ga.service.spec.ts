@@ -16,8 +16,8 @@ describe('GaService', () => {
     gaService = injector.get(GaService);
   });
 
-  it('should initialize ga with "create" when constructed', () => {
-    const first = gaSpy.calls.first().args;
+  it('should initialize ga with "create" when letructed', () => {
+    let first = gaSpy.calls.first().args;
     expect(first[0]).toBe('create');
   });
 
@@ -82,7 +82,7 @@ describe('GaService', () => {
   });
 
   it('should support replacing the `window.ga` function', () => {
-    const gaSpy2 = jasmine.createSpy('new ga');
+    let gaSpy2 = jasmine.createSpy('new ga');
     mockWindow.ga = gaSpy2;
     gaSpy.calls.reset();
 

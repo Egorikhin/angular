@@ -17,7 +17,7 @@ All such greatness has humble beginnings.
 
 The example in this cookbook is a dynamic form to build an
 online application experience for heroes seeking employment.
-The agency is constantly tinkering with the application process.
+The agency is letantly tinkering with the application process.
 You can create the forms on the fly *without changing the application code*.
 {@a toc}
 

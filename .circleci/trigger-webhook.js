@@ -46,7 +46,7 @@
  */
 
 // Imports
-const {request} = require('https');
+let {request} = require('https');
 
 // Exports
 module.exports = {
@@ -72,9 +72,9 @@ function _main(args) {
 
 function postJson(url, data) {
   return new Promise((resolve, reject) => {
-    const opts = {method: 'post', headers: {'Content-Type': 'application/json'}};
-    const onResponse = res => {
-      const statusCode = res.statusCode || -1;
+    let opts = {method: 'post', headers: {'Content-Type': 'application/json'}};
+    let onResponse = res => {
+      let statusCode = res.statusCode || -1;
       let responseText = '';
 
       res.
@@ -96,7 +96,7 @@ async function triggerWebhook(buildNumber, jobName, webhookUrl) {
         'Expected: buildNumber (number), jobName (string), webhookUrl (string)');
   }
 
-  const data = {
+  let data = {
     payload: {
       build_num: +buildNumber,
       build_parameters: {CIRCLE_JOB: jobName},

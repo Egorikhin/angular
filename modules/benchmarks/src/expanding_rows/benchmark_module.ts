@@ -27,7 +27,7 @@ export class BenchmarkArea {
 }
 
 declare interface ExtendedWindow extends Window { benchmarkErrors?: string[]; }
-const extendedWindow = window as ExtendedWindow;
+let extendedWindow = window as ExtendedWindow;
 
 @Injectable({providedIn: 'root'})
 export class BenchmarkErrorHandler implements ErrorHandler {

@@ -5,8 +5,8 @@ import { goldenMatcher } from './matcher';
 
 describe('Angular Language Service', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000; /* 10 seconds */
-  const PWD = process.env.PWD!;
-  const SERVER_PATH = "./node_modules/typescript/lib/tsserver.js";
+  let PWD = process.env.PWD!;
+  let SERVER_PATH = "./node_modules/typescript/lib/tsserver.js";
   let server: ChildProcess;
   let client: Client;
 
@@ -91,7 +91,7 @@ describe('Angular Language Service', () => {
       insertString: '.',
     });
 
-    const response = await client.sendRequest('completionInfo', {
+    let response = await client.sendRequest('completionInfo', {
       file: `${PWD}/project/app/app.component.ts`,
       line: 5,
       offset: 31,
@@ -104,14 +104,14 @@ describe('Angular Language Service', () => {
       file: `${PWD}/project/app/app.component.ts`,
     });
 
-    const resp1 = await client.sendRequest('reload', {
+    let resp1 = await client.sendRequest('reload', {
       file: `${PWD}/project/app/app.component.ts`,
       tmpFile: `${PWD}/project/app/app.component.ts`,
     }) as any;
     expect(resp1.command).toBe('reload');
     expect(resp1.success).toBe(true);
 
-    const resp2 = await client.sendRequest('quickinfo', {
+    let resp2 = await client.sendRequest('quickinfo', {
       file: `${PWD}/project/app/app.component.ts`,
       line: 5,
       offset: 28,
@@ -122,7 +122,7 @@ describe('Angular Language Service', () => {
       file: `${PWD}/project/app/widget.component.html`,
     });
 
-    const resp3 = await client.sendRequest('quickinfo', {
+    let resp3 = await client.sendRequest('quickinfo', {
       file: `${PWD}/project/app/widget.component.html`,
       line: 1,
       offset: 19,
@@ -135,14 +135,14 @@ describe('Angular Language Service', () => {
       file: `${PWD}/project/app/app.component.ts`,
     });
 
-    const resp1 = await client.sendRequest('reload', {
+    let resp1 = await client.sendRequest('reload', {
       file: `${PWD}/project/app/app.component.ts`,
       tmpFile: `${PWD}/project/app/app.component.ts`,
     }) as any;
     expect(resp1.command).toBe('reload');
     expect(resp1.success).toBe(true);
 
-    const resp2 = await client.sendRequest('definition', {
+    let resp2 = await client.sendRequest('definition', {
       file: `${PWD}/project/app/app.component.ts`,
       line: 5,
       offset: 28,
@@ -155,14 +155,14 @@ describe('Angular Language Service', () => {
       file: `${PWD}/project/app/app.component.ts`,
     });
 
-     const resp1 = await client.sendRequest('reload', {
+     let resp1 = await client.sendRequest('reload', {
       file: `${PWD}/project/app/app.component.ts`,
       tmpFile: `${PWD}/project/app/app.component.ts`,
     }) as any;
     expect(resp1.command).toBe('reload');
     expect(resp1.success).toBe(true);
 
-     const resp2 = await client.sendRequest('definitionAndBoundSpan', {
+     let resp2 = await client.sendRequest('definitionAndBoundSpan', {
       file: `${PWD}/project/app/app.component.ts`,
       line: 5,
       offset: 28,

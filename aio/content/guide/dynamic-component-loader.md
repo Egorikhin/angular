@@ -128,7 +128,7 @@ exists on this specific instance of the component. How do you know it's
 this specific instance? Because it's referring to `adHost` and `adHost` is the
 directive you set up earlier to tell Angular where to insert dynamic components.
 
-As you may recall, `AdDirective` injects `ViewContainerRef` into its constructor.
+As you may recall, `AdDirective` injects `ViewContainerRef` into its letructor.
 This is how the directive accesses the element that you want to use to host the dynamic component.
 
 To add the component to the template, you call `createComponent()` on `ViewContainerRef`.

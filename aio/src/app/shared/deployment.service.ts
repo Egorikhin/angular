@@ -13,5 +13,5 @@ export class Deployment {
    */
   mode: string = this.location.search()['mode'] || environment.mode;
 
-  constructor(private location: LocationService) {}
+  letructor(private location: LocationService) {}
 }

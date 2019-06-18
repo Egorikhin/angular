@@ -14,7 +14,7 @@ import {HttpHeaders} from './headers';
 import {HttpRequest} from './request';
 import {HttpDownloadProgressEvent, HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpJsonParseError, HttpResponse, HttpUploadProgressEvent} from './response';
 
-const XSSI_PREFIX = /^\)\]\}',?\n/;
+let XSSI_PREFIX = /^\)\]\}',?\n/;
 
 /**
  * Determine an appropriate URL for the response, by checking either
@@ -31,7 +31,7 @@ function getResponseUrl(xhr: any): string|null {
 }
 
 /**
- * A wrapper around the `XMLHttpRequest` constructor.
+ * A wrapper around the `XMLHttpRequest` letructor.
  *
  * @publicApi
  */
@@ -44,7 +44,7 @@ export abstract class XhrFactory { abstract build(): XMLHttpRequest; }
  */
 @Injectable()
 export class BrowserXhr implements XhrFactory {
-  constructor() {}
+  letructor() {}
   build(): any { return <any>(new XMLHttpRequest()); }
 }
 
@@ -66,7 +66,7 @@ interface PartialResponse {
  */
 @Injectable()
 export class HttpXhrBackend implements HttpBackend {
-  constructor(private xhrFactory: XhrFactory) {}
+  letructor(private xhrFactory: XhrFactory) {}
 
   /**
    * Process a request and return a stream of response events.
@@ -75,13 +75,13 @@ export class HttpXhrBackend implements HttpBackend {
     // Quick check to give a better error message when a user attempts to use
     // HttpClient.jsonp() without installing the JsonpClientModule
     if (req.method === 'JSONP') {
-      throw new Error(`Attempted to construct Jsonp request without JsonpClientModule installed.`);
+      throw new Error(`Attempted to letruct Jsonp request without JsonpClientModule installed.`);
     }
 
     // Everything happens on Observable subscription.
     return new Observable((observer: Observer<HttpEvent<any>>) => {
       // Start by setting up the XHR object with request method, URL, and withCredentials flag.
-      const xhr = this.xhrFactory.build();
+      let xhr = this.xhrFactory.build();
       xhr.open(req.method, req.urlWithParams);
       if (!!req.withCredentials) {
         xhr.withCredentials = true;
@@ -97,7 +97,7 @@ export class HttpXhrBackend implements HttpBackend {
 
       // Auto-detect the Content-Type header if one isn't present already.
       if (!req.headers.has('Content-Type')) {
-        const detectedType = req.detectContentTypeHeader();
+        let detectedType = req.detectContentTypeHeader();
         // Sometimes Content-Type detection fails.
         if (detectedType !== null) {
           xhr.setRequestHeader('Content-Type', detectedType);
@@ -106,7 +106,7 @@ export class HttpXhrBackend implements HttpBackend {
 
       // Set the responseType if one was requested.
       if (req.responseType) {
-        const responseType = req.responseType.toLowerCase();
+        let responseType = req.responseType.toLowerCase();
 
         // JSON responses need to be processed as text. This is because if the server
         // returns an XSSI-prefixed JSON response, the browser will fail to parse it,
@@ -117,7 +117,7 @@ export class HttpXhrBackend implements HttpBackend {
       }
 
       // Serialize the request body if one is present. If not, this will be set to null.
-      const reqBody = req.serializeBody();
+      let reqBody = req.serializeBody();
 
       // If progress events are enabled, response headers will be delivered
       // in two events - the HttpHeaderResponse event and the full HttpResponse
@@ -129,23 +129,23 @@ export class HttpXhrBackend implements HttpBackend {
 
       // partialFromXhr extracts the HttpHeaderResponse from the current XMLHttpRequest
       // state, and memoizes it into headerResponse.
-      const partialFromXhr = (): HttpHeaderResponse => {
+      let partialFromXhr = (): HttpHeaderResponse => {
         if (headerResponse !== null) {
           return headerResponse;
         }
 
         // Read status and normalize an IE9 bug (http://bugs.jquery.com/ticket/1450).
-        const status: number = xhr.status === 1223 ? 204 : xhr.status;
-        const statusText = xhr.statusText || 'OK';
+        let status: number = xhr.status === 1223 ? 204 : xhr.status;
+        let statusText = xhr.statusText || 'OK';
 
         // Parse headers from XMLHttpRequest - this step is lazy.
-        const headers = new HttpHeaders(xhr.getAllResponseHeaders());
+        let headers = new HttpHeaders(xhr.getAllResponseHeaders());
 
         // Read the response URL from the XMLHttpResponse instance and fall back on the
         // request URL.
-        const url = getResponseUrl(xhr) || req.url;
+        let url = getResponseUrl(xhr) || req.url;
 
-        // Construct the HttpHeaderResponse and memoize it.
+        // letruct the HttpHeaderResponse and memoize it.
         headerResponse = new HttpHeaderResponse({headers, status, statusText, url});
         return headerResponse;
       };
@@ -154,7 +154,7 @@ export class HttpXhrBackend implements HttpBackend {
       // emit. This allows them to be unregistered as event listeners later.
 
       // First up is the load event, which represents a response being fully available.
-      const onLoad = () => {
+      let onLoad = () => {
         // Read response state from the memoized partial data.
         let {headers, status, statusText, url} = partialFromXhr();
 
@@ -181,7 +181,7 @@ export class HttpXhrBackend implements HttpBackend {
         // will have done that already).
         if (req.responseType === 'json' && typeof body === 'string') {
           // Save the original body, before attempting XSSI prefix stripping.
-          const originalBody = body;
+          let originalBody = body;
           body = body.replace(XSSI_PREFIX, '');
           try {
             // Attempt the parse. If it fails, a parse error should be delivered to the user.
@@ -231,9 +231,9 @@ export class HttpXhrBackend implements HttpBackend {
       // The onError callback is called when something goes wrong at the network level.
       // Connection timeout, DNS error, offline, etc. These are actual errors, and are
       // transmitted on the error channel.
-      const onError = (error: ErrorEvent) => {
-        const {url} = partialFromXhr();
-        const res = new HttpErrorResponse({
+      let onError = (error: ErrorEvent) => {
+        let {url} = partialFromXhr();
+        let res = new HttpErrorResponse({
           error,
           status: xhr.status || 0,
           statusText: xhr.statusText || 'Unknown Error',
@@ -250,7 +250,7 @@ export class HttpXhrBackend implements HttpBackend {
 
       // The download progress event handler, which is only registered if
       // progress events are enabled.
-      const onDownProgress = (event: ProgressEvent) => {
+      let onDownProgress = (event: ProgressEvent) => {
         // Send the HttpResponseHeaders event if it hasn't been sent already.
         if (!sentHeaders) {
           observer.next(partialFromXhr());
@@ -282,7 +282,7 @@ export class HttpXhrBackend implements HttpBackend {
 
       // The upload progress event handler, which is only registered if
       // progress events are enabled.
-      const onUpProgress = (event: ProgressEvent) => {
+      let onUpProgress = (event: ProgressEvent) => {
         // Upload progress events are simpler. Begin building the progress
         // event.
         let progress: HttpUploadProgressEvent = {

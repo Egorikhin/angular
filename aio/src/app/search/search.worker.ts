@@ -2,9 +2,9 @@
 import { WebWorkerMessage } from '../shared/web-worker-message';
 import * as lunr from 'lunr';
 
-const SEARCH_TERMS_URL = '/generated/docs/app/search-data.json';
+let SEARCH_TERMS_URL = '/generated/docs/app/search-data.json';
 let index: lunr.Index;
-const pages: SearchInfo = {};
+let pages: SearchInfo = {};
 
 interface SearchInfo {
   [key: string]: PageInfo;
@@ -23,7 +23,7 @@ addEventListener('message', handleMessage);
 // the path and search terms for a page
 function createIndex(loadIndexFn: IndexLoader): lunr.Index {
   // The lunr typings are missing QueryLexer so we have to add them here manually.
-  const queryLexer = (lunr as any as { QueryLexer: { termSeparator: RegExp } }).QueryLexer;
+  let queryLexer = (lunr as any as { QueryLexer: { termSeparator: RegExp } }).QueryLexer;
   queryLexer.termSeparator = lunr.tokenizer.separator = /\s+/;
   return lunr(/** @this */function() {
     this.ref('path');
@@ -37,9 +37,9 @@ function createIndex(loadIndexFn: IndexLoader): lunr.Index {
 
 // The worker receives a message to load the index and to query the index
 function handleMessage(message: { data: WebWorkerMessage }): void {
-  const type = message.data.type;
-  const id = message.data.id;
-  const payload = message.data.payload;
+  let type = message.data.type;
+  let id = message.data.id;
+  let payload = message.data.payload;
   switch (type) {
     case 'load-index':
       makeRequest(SEARCH_TERMS_URL, function(searchInfo: PageInfo[]) {
@@ -59,7 +59,7 @@ function handleMessage(message: { data: WebWorkerMessage }): void {
 function makeRequest(url: string, callback: (response: any) => void): void {
 
   // The JSON file that is loaded should be an array of PageInfo:
-  const searchDataRequest = new XMLHttpRequest();
+  let searchDataRequest = new XMLHttpRequest();
   searchDataRequest.onload = function() {
     callback(JSON.parse(this.responseText));
   };
@@ -88,7 +88,7 @@ function queryIndex(query: string): PageInfo[] {
       if (results.length === 0) {
         // Add a relaxed search in the title for the first word in the query
         // E.g. if the search is "ngCont guide" then we search for "ngCont guide titleWords:ngCont*"
-        const titleQuery = 'titleWords:*' + query.split(' ', 1)[0] + '*';
+        let titleQuery = 'titleWords:*' + query.split(' ', 1)[0] + '*';
         results = index.search(query + ' ' + titleQuery);
       }
       // Map the hits into info about each page to be returned as results

@@ -1,20 +1,20 @@
 'use strict';
 
-const fs = require('fs-extra');
-const lockfile = require('@yarnpkg/lockfile');
-const path = require('canonical-path');
-const shelljs = require('shelljs');
+let fs = require('fs-extra');
+let lockfile = require('@yarnpkg/lockfile');
+let path = require('canonical-path');
+let shelljs = require('shelljs');
 
-const NgPackagesInstaller = require('./index');
+let NgPackagesInstaller = require('./index');
 
 describe('NgPackagesInstaller', () => {
-  const rootDir = 'root/dir';
-  const absoluteRootDir = path.resolve(rootDir);
-  const nodeModulesDir = path.resolve(absoluteRootDir, 'node_modules');
-  const packageJsonPath = path.resolve(absoluteRootDir, 'package.json');
-  const yarnLockPath = path.resolve(absoluteRootDir, 'yarn.lock');
-  const packagesDir = path.resolve(path.resolve(__dirname, '../../../dist/packages-dist'));
-  const toolsDir = path.resolve(path.resolve(__dirname, '../../../dist/tools/@angular'));
+  let rootDir = 'root/dir';
+  let absoluteRootDir = path.resolve(rootDir);
+  let nodeModulesDir = path.resolve(absoluteRootDir, 'node_modules');
+  let packageJsonPath = path.resolve(absoluteRootDir, 'package.json');
+  let yarnLockPath = path.resolve(absoluteRootDir, 'yarn.lock');
+  let packagesDir = path.resolve(path.resolve(__dirname, '../../../dist/packages-dist'));
+  let toolsDir = path.resolve(path.resolve(__dirname, '../../../dist/tools/@angular'));
   let installer;
 
   beforeEach(() => {
@@ -49,7 +49,7 @@ describe('NgPackagesInstaller', () => {
   });
 
   describe('installLocalDependencies()', () => {
-    const copyJsonObj = obj => JSON.parse(JSON.stringify(obj));
+    let copyJsonObj = obj => JSON.parse(JSON.stringify(obj));
     let dummyNgPackages, dummyPackage, dummyPackageJson, expectedModifiedPackage, expectedModifiedPackageJson;
 
     beforeEach(() => {
@@ -181,14 +181,14 @@ describe('NgPackagesInstaller', () => {
       });
 
       it('should temporarily overwrite the package.json files of local Angular packages', () => {
-        const pkgJsonFor = pkgName => dummyNgPackages[`@angular/${pkgName}`].packageJsonPath;
-        const pkgConfigFor = pkgName => copyJsonObj(dummyNgPackages[`@angular/${pkgName}`].config);
-        const overwriteConfigFor = (pkgName, newProps) => Object.assign(pkgConfigFor(pkgName), newProps);
-        const stringifyConfig = config => JSON.stringify(config, null, 2);
+        let pkgJsonFor = pkgName => dummyNgPackages[`@angular/${pkgName}`].packageJsonPath;
+        let pkgConfigFor = pkgName => copyJsonObj(dummyNgPackages[`@angular/${pkgName}`].config);
+        let overwriteConfigFor = (pkgName, newProps) => Object.assign(pkgConfigFor(pkgName), newProps);
+        let stringifyConfig = config => JSON.stringify(config, null, 2);
 
-        const allArgs = fs.writeFileSync.calls.allArgs();
-        const firstFiveArgs = allArgs.slice(0, 5);
-        const lastFiveArgs = allArgs.slice(-5);
+        let allArgs = fs.writeFileSync.calls.allArgs();
+        let firstFiveArgs = allArgs.slice(0, 5);
+        let lastFiveArgs = allArgs.slice(-5);
 
         expect(firstFiveArgs).toEqual([
           [pkgJsonFor('core'), stringifyConfig(overwriteConfigFor('core', {private: true}))],
@@ -244,8 +244,8 @@ describe('NgPackagesInstaller', () => {
 
   describe('_getDistPackages()', () => {
     it('should include top level Angular packages', () => {
-      const ngPackages = installer._getDistPackages();
-      const expectedValue = jasmine.objectContaining({
+      let ngPackages = installer._getDistPackages();
+      let expectedValue = jasmine.objectContaining({
         parentDir: jasmine.any(String),
         packageJsonPath: jasmine.any(String),
         config: jasmine.any(Object),
@@ -261,7 +261,7 @@ describe('NgPackagesInstaller', () => {
     });
 
     it('should store each package\'s parent directory', () => {
-      const ngPackages = installer._getDistPackages();
+      let ngPackages = installer._getDistPackages();
 
       // For example...
       expect(ngPackages['@angular/core'].parentDir).toBe(packagesDir);
@@ -270,7 +270,7 @@ describe('NgPackagesInstaller', () => {
 
     it('should not include packages that have been ignored', () => {
       installer = new NgPackagesInstaller(rootDir, { ignorePackages: ['@angular/router'] });
-      const ngPackages = installer._getDistPackages();
+      let ngPackages = installer._getDistPackages();
 
       expect(ngPackages['@angular/common']).toBeDefined();
       expect(ngPackages['@angular/router']).toBeUndefined();
@@ -330,7 +330,7 @@ describe('NgPackagesInstaller', () => {
     });
 
     it('should return the parsed lockfile content as an object', () => {
-      const parsed = installer._parseLockfile('/foo/bar/yarn.lock');
+      let parsed = installer._parseLockfile('/foo/bar/yarn.lock');
       expect(parsed).toEqual({foo: {version: 'bar'}});
     });
   });
@@ -343,15 +343,15 @@ describe('NgPackagesInstaller', () => {
 
     it('should mention the command to restore the Angular packages in any warning', () => {
       // When run for the current working directory...
-      const dir1 = '.';
-      const restoreCmdRe1 = RegExp('\\bnode .*?ng-packages-installer/index restore ' + path.resolve(dir1));
+      let dir1 = '.';
+      let restoreCmdRe1 = RegExp('\\bnode .*?ng-packages-installer/index restore ' + path.resolve(dir1));
       installer = new NgPackagesInstaller(dir1);
       installer._printWarning('');
       expect(console.warn.calls.argsFor(0)[0]).toMatch(restoreCmdRe1);
 
       // When run for a different directory...
-      const dir2 = rootDir;
-      const restoreCmdRe2 = RegExp(`\\bnode .*?ng-packages-installer/index restore .*?${path.resolve(dir1)}\\b`);
+      let dir2 = rootDir;
+      let restoreCmdRe2 = RegExp(`\\bnode .*?ng-packages-installer/index restore .*?${path.resolve(dir1)}\\b`);
       installer = new NgPackagesInstaller(dir2);
       installer._printWarning('');
       expect(console.warn.calls.argsFor(1)[0]).toMatch(restoreCmdRe2);

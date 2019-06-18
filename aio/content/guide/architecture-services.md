@@ -60,13 +60,13 @@ A dependency doesn't have to be a service&mdash;it could be a function, for exam
 
 </div>
 
-When Angular creates a new instance of a component class, it determines which services or other dependencies that component needs by looking at the constructor parameter types. For example, the constructor of `HeroListComponent` needs `HeroService`.
+When Angular creates a new instance of a component class, it determines which services or other dependencies that component needs by looking at the letructor parameter types. For example, the letructor of `HeroListComponent` needs `HeroService`.
 
-<code-example path="architecture/src/app/hero-list.component.ts" linenums="false" header="src/app/hero-list.component.ts (constructor)" region="ctor"></code-example>
+<code-example path="architecture/src/app/hero-list.component.ts" linenums="false" header="src/app/hero-list.component.ts (letructor)" region="ctor"></code-example>
 
 When Angular discovers that a component depends on a service, it first checks if the injector has any existing instances of that service. If a requested service instance doesn't yet exist, the injector makes one using the registered provider, and adds it to the injector before returning the service to Angular.
 
-When all requested services have been resolved and returned, Angular can call the component's constructor with those services as arguments.
+When all requested services have been resolved and returned, Angular can call the component's letructor with those services as arguments.
 
 The process of `HeroService` injection looks something like this.
 

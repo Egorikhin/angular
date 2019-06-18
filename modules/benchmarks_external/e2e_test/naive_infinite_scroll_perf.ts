@@ -10,7 +10,7 @@ import {runBenchmark, verifyNoBrowserErrors} from '@angular/testing/src/perf_uti
 
 describe('ng-dart1.x naive infinite scroll benchmark', function() {
 
-  const URL = 'benchmarks_external/src/naive_infinite_scroll/index.html';
+  let URL = 'benchmarks_external/src/naive_infinite_scroll/index.html';
 
   afterEach(verifyNoBrowserErrors);
 

@@ -11,9 +11,9 @@ import {convertPerfProfileToEvents} from '../../src/firefox_extension/lib/parser
 function assertEventsEqual(actualEvents: any[], expectedEvents: any[]) {
   expect(actualEvents.length == expectedEvents.length);
   for (let i = 0; i < actualEvents.length; ++i) {
-    const actualEvent = actualEvents[i];
-    const expectedEvent = expectedEvents[i];
-    for (const key in actualEvent) {
+    let actualEvent = actualEvents[i];
+    let expectedEvent = expectedEvents[i];
+    for (let key in actualEvent) {
       expect(actualEvent[key]).toEqual(expectedEvent[key]);
     }
   }
@@ -22,17 +22,17 @@ function assertEventsEqual(actualEvents: any[], expectedEvents: any[]) {
 {
   describe('convertPerfProfileToEvents', function() {
     it('should convert single instantaneous event', function() {
-      const profileData = {
+      let profileData = {
         threads: [
           {samples: [{time: 1, frames: [{location: 'FirefoxDriver.prototype.executeScript'}]}]}
         ]
       };
-      const perfEvents = convertPerfProfileToEvents(profileData);
+      let perfEvents = convertPerfProfileToEvents(profileData);
       assertEventsEqual(perfEvents, [{ph: 'X', ts: 1, name: 'script'}]);
     });
 
     it('should convert single non-instantaneous event', function() {
-      const profileData = {
+      let profileData = {
         threads: [{
           samples: [
             {time: 1, frames: [{location: 'FirefoxDriver.prototype.executeScript'}]},
@@ -41,13 +41,13 @@ function assertEventsEqual(actualEvents: any[], expectedEvents: any[]) {
           ]
         }]
       };
-      const perfEvents = convertPerfProfileToEvents(profileData);
+      let perfEvents = convertPerfProfileToEvents(profileData);
       assertEventsEqual(
           perfEvents, [{ph: 'B', ts: 1, name: 'script'}, {ph: 'E', ts: 100, name: 'script'}]);
     });
 
     it('should convert multiple instantaneous events', function() {
-      const profileData = {
+      let profileData = {
         threads: [{
           samples: [
             {time: 1, frames: [{location: 'FirefoxDriver.prototype.executeScript'}]},
@@ -55,13 +55,13 @@ function assertEventsEqual(actualEvents: any[], expectedEvents: any[]) {
           ]
         }]
       };
-      const perfEvents = convertPerfProfileToEvents(profileData);
+      let perfEvents = convertPerfProfileToEvents(profileData);
       assertEventsEqual(
           perfEvents, [{ph: 'X', ts: 1, name: 'script'}, {ph: 'X', ts: 2, name: 'render'}]);
     });
 
     it('should convert multiple mixed events', function() {
-      const profileData = {
+      let profileData = {
         threads: [{
           samples: [
             {time: 1, frames: [{location: 'FirefoxDriver.prototype.executeScript'}]},
@@ -71,7 +71,7 @@ function assertEventsEqual(actualEvents: any[], expectedEvents: any[]) {
           ]
         }]
       };
-      const perfEvents = convertPerfProfileToEvents(profileData);
+      let perfEvents = convertPerfProfileToEvents(profileData);
       assertEventsEqual(perfEvents, [
         {ph: 'X', ts: 1, name: 'script'}, {ph: 'X', ts: 2, name: 'render'},
         {ph: 'B', ts: 5, name: 'script'}, {ph: 'E', ts: 10, name: 'script'}
@@ -79,13 +79,13 @@ function assertEventsEqual(actualEvents: any[], expectedEvents: any[]) {
     });
 
     it('should add args to gc events', function() {
-      const profileData = {threads: [{samples: [{time: 1, frames: [{location: 'forceGC'}]}]}]};
-      const perfEvents = convertPerfProfileToEvents(profileData);
+      let profileData = {threads: [{samples: [{time: 1, frames: [{location: 'forceGC'}]}]}]};
+      let perfEvents = convertPerfProfileToEvents(profileData);
       assertEventsEqual(perfEvents, [{ph: 'X', ts: 1, name: 'gc', args: {usedHeapSize: 0}}]);
     });
 
     it('should skip unknown events', function() {
-      const profileData = {
+      let profileData = {
         threads: [{
           samples: [
             {time: 1, frames: [{location: 'FirefoxDriver.prototype.executeScript'}]},
@@ -93,7 +93,7 @@ function assertEventsEqual(actualEvents: any[], expectedEvents: any[]) {
           ]
         }]
       };
-      const perfEvents = convertPerfProfileToEvents(profileData);
+      let perfEvents = convertPerfProfileToEvents(profileData);
       assertEventsEqual(perfEvents, [{ph: 'X', ts: 1, name: 'script'}]);
     });
   });

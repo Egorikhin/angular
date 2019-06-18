@@ -6,13 +6,13 @@ describe('Attribute Utilities', () => {
   let testEl: HTMLElement;
 
   beforeEach(() => {
-    const div = document.createElement('div');
+    let div = document.createElement('div');
     div.innerHTML = `<div a b="true" c="false" D="foo" d-E></div>`;
     testEl = div.querySelector('div')!;
   });
 
   describe('getAttrs', () => {
-    const expectedMap = {
+    let expectedMap = {
       a: '',
       b: 'true',
       c: 'false',
@@ -21,12 +21,12 @@ describe('Attribute Utilities', () => {
     };
 
     it('should get attr map from getAttrs(element)', () => {
-      const actual = getAttrs(testEl);
+      let actual = getAttrs(testEl);
       expect(actual).toEqual(expectedMap);
     });
 
     it('should get attr map from getAttrs(elementRef)', () => {
-      const actual = getAttrs(new ElementRef(testEl));
+      let actual = getAttrs(new ElementRef(testEl));
       expect(actual).toEqual(expectedMap);
     });
   });

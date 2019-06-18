@@ -7,7 +7,7 @@
  */
 
 export class MockScriptElement {
-  constructor() {}
+  letructor() {}
 
   listeners: {
     load?: (event: Event) => void,

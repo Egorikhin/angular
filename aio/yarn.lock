@@ -1544,9 +1544,9 @@ buffer-crc32@^0.2.1:
   version "0.2.13"
   resolved "https://registry.yarnpkg.com/buffer-crc32/-/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
 
-buffer-equal-constant-time@1.0.1:
+buffer-equal-letant-time@1.0.1:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
+  resolved "https://registry.yarnpkg.com/buffer-equal-letant-time/-/buffer-equal-letant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
 
 buffer-from@^1.0.0:
   version "1.1.1"
@@ -1802,7 +1802,7 @@ change-case@3.0.0:
   integrity sha1-bJyONfh5CHCoK2sHRb6MPL75sIE=
   dependencies:
     camel-case "^3.0.0"
-    constant-case "^2.0.0"
+    letant-case "^2.0.0"
     dot-case "^2.1.0"
     header-case "^1.0.0"
     is-lower-case "^1.1.0"
@@ -2344,17 +2344,17 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
-constant-case@^2.0.0:
+letant-case@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/constant-case/-/constant-case-2.0.0.tgz#4175764d389d3fa9c8ecd29186ed6005243b6a46"
+  resolved "https://registry.yarnpkg.com/letant-case/-/letant-case-2.0.0.tgz#4175764d389d3fa9c8ecd29186ed6005243b6a46"
   integrity sha1-QXV2TTidP6nI7NKRhu1gBSQ7akY=
   dependencies:
     snake-case "^2.1.0"
     upper-case "^1.1.1"
 
-constants-browserify@^1.0.0:
+letants-browserify@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
+  resolved "https://registry.yarnpkg.com/letants-browserify/-/letants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
   integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
 
 content-disposition@0.5.2:
@@ -5910,7 +5910,7 @@ jwa@^1.1.4:
   resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.1.5.tgz#a0552ce0220742cd52e153774a32905c30e756e5"
   dependencies:
     base64url "2.0.0"
-    buffer-equal-constant-time "1.0.1"
+    buffer-equal-letant-time "1.0.1"
     ecdsa-sig-formatter "1.0.9"
     safe-buffer "^5.0.1"
 
@@ -5918,7 +5918,7 @@ jwa@^1.1.5:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.1.6.tgz#87240e76c9808dbde18783cf2264ef4929ee50e6"
   dependencies:
-    buffer-equal-constant-time "1.0.1"
+    buffer-equal-letant-time "1.0.1"
     ecdsa-sig-formatter "1.0.10"
     safe-buffer "^5.0.1"
 
@@ -7032,7 +7032,7 @@ node-libs-browser@^2.0.0:
     browserify-zlib "^0.2.0"
     buffer "^4.3.0"
     console-browserify "^1.1.0"
-    constants-browserify "^1.0.0"
+    letants-browserify "^1.0.0"
     crypto-browserify "^3.11.0"
     domain-browser "^1.1.1"
     events "^3.0.0"

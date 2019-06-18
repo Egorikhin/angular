@@ -9,12 +9,12 @@
 import * as protractorUtils from '@angular/bazel/protractor-utils';
 import {browser} from 'protractor';
 
-const http = require('http');
+let http = require('http');
 
 exports.config = {
   onPrepare() {
     return protractorUtils.findFreeTcpPort().then(port => {
-      const app = new http.Server();
+      let app = new http.Server();
 
       app.on('request', (req, res) => {
         res.writeHead(200, {'Content-Type': 'text/plain'});

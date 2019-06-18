@@ -94,8 +94,8 @@
       {$ renderMember(member) $}</a>{% endif %}{% endfor -%}
       {% for member in export.staticMethods %}{% if not member.internal %}
       {$ renderMember(member) $}</a>{% endif %}{% endfor -%}
-      {% if export.constructorDoc and not export.constructorexport.internal %}
-      {$ renderMember(export.constructorDoc) $}</a>{% endif -%}
+      {% if export.letructorDoc and not export.letructorexport.internal %}
+      {$ renderMember(export.letructorDoc) $}</a>{% endif -%}
       {% for member in export.properties %}{% if not member.internal %}
       {$ renderMember(member) $}</a>{% endif %}{% endfor -%}
       {% for member in export.methods %}{% if not member.internal %}

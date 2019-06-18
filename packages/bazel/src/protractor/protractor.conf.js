@@ -5,12 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const DEBUG = false;
+let DEBUG = false;
 
-const configPath = 'TMPL_config';
-const onPreparePath = 'TMPL_on_prepare';
-const workspace = 'TMPL_workspace';
-const server = 'TMPL_server';
+let configPath = 'TMPL_config';
+let onPreparePath = 'TMPL_on_prepare';
+let workspace = 'TMPL_workspace';
+let server = 'TMPL_server';
 
 if (DEBUG)
   console.info(`Protractor test starting with:
@@ -61,7 +61,7 @@ let conf = {};
 
 // Import the user's base protractor configuration if specified
 if (configPath) {
-  const baseConf = require(configPath);
+  let baseConf = require(configPath);
   if (!baseConf.config) {
     throw new Error('Invalid base protractor configuration. Expected config to be exported.');
   }
@@ -71,9 +71,9 @@ if (configPath) {
 
 // Import the user's on prepare function if specified
 if (onPreparePath) {
-  const onPrepare = require(onPreparePath);
+  let onPrepare = require(onPreparePath);
   if (typeof onPrepare === 'function') {
-    const original = conf.onPrepare;
+    let original = conf.onPrepare;
     conf.onPrepare = function() {
       return Promise.resolve(original ? original() : null)
           .then(() => Promise.resolve(onPrepare({workspace, server})));
@@ -88,7 +88,7 @@ if (onPreparePath) {
 // ts_web_test_suite & rules_webtesting WEB_TEST_METADATA attributes
 setConf(conf, 'framework', 'jasmine2', 'is set to jasmine2');
 
-const specs =
+let specs =
     [TMPL_specs].map(s => require.resolve(s)).filter(s => /(\b|_)(spec|test)\.js$/.test(s));
 
 setConf(conf, 'specs', specs, 'are determined by the srcs and deps attribute');
@@ -97,7 +97,7 @@ setConf(conf, 'specs', specs, 'are determined by the srcs and deps attribute');
 // of the browsers attribute passed to ts_web_test_suite
 // We setup the protractor configuration based on the values in this object
 if (process.env['WEB_TEST_METADATA']) {
-  const webTestMetadata = require(process.env['WEB_TEST_METADATA']);
+  let webTestMetadata = require(process.env['WEB_TEST_METADATA']);
   if (DEBUG) console.info(`WEB_TEST_METADATA: ${JSON.stringify(webTestMetadata, null, 2)}`);
   if (webTestMetadata['environment'] === 'sauce') {
     // If a sauce labs browser is chosen for the test such as
@@ -124,15 +124,15 @@ if (process.env['WEB_TEST_METADATA']) {
     // "@io_bazel_rules_webtesting//browsers:firefox-local"
     // then the 'environment' will equal 'local' and
     // 'webTestFiles' will contain the path to the binary to use
-    const webTestNamedFiles = webTestMetadata['webTestFiles'][0]['namedFiles'];
-    const headless = !process.env['DISPLAY'];
+    let webTestNamedFiles = webTestMetadata['webTestFiles'][0]['namedFiles'];
+    let headless = !process.env['DISPLAY'];
     if (webTestNamedFiles['CHROMIUM']) {
-      const chromeBin = require.resolve(webTestNamedFiles['CHROMIUM']);
-      const chromeDriver = require.resolve(webTestNamedFiles['CHROMEDRIVER']);
+      let chromeBin = require.resolve(webTestNamedFiles['CHROMIUM']);
+      let chromeDriver = require.resolve(webTestNamedFiles['CHROMEDRIVER']);
 
       // The sandbox needs to be disabled, because it causes Chrome to crash on some environments.
       // See: http://chromedriver.chromium.org/help/chrome-doesn-t-start
-      const args = ['--no-sandbox'];
+      let args = ['--no-sandbox'];
       if (headless) {
         args.push('--headless', '--disable-gpu');
       }
@@ -150,8 +150,8 @@ if (process.env['WEB_TEST_METADATA']) {
       // TODO(gmagolan): implement firefox support for protractor
       throw new Error('Firefox not yet support by protractor_web_test_suite');
 
-      // const firefoxBin = require.resolve(webTestNamedFiles['FIREFOX'])
-      // const args = [];
+      // let firefoxBin = require.resolve(webTestNamedFiles['FIREFOX'])
+      // let args = [];
       // if (headless) {
       //   args.push("--headless")
       //   args.push("--marionette")

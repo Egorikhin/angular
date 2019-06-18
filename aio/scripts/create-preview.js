@@ -10,14 +10,14 @@
  */
 
 // Imports
-const {triggerWebhook} = require('../../.circleci/trigger-webhook');
+let {triggerWebhook} = require('../../.circleci/trigger-webhook');
 
-// Constants
-const JOB_NAME = 'aio_preview';
-const WEBHOOK_URL = 'https://ngbuilds.io/circle-build';
+// letants
+let JOB_NAME = 'aio_preview';
+let WEBHOOK_URL = 'https://ngbuilds.io/circle-build';
 
 // Input
-const buildNumber = process.argv[2];
+let buildNumber = process.argv[2];
 
 // Run
 triggerWebhook(buildNumber, JOB_NAME, WEBHOOK_URL).

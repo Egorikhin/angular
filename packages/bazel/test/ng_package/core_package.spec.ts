@@ -20,8 +20,8 @@ shx.cd(path.dirname(require.resolve('angular/packages/core/npm_package/package.j
  *   p`${foo}/some/${{bar}}/path` rather than path.join(foo, 'some',
  */
 function p(templateStringArray: TemplateStringsArray) {
-  const segments = [];
-  for (const entry of templateStringArray) {
+  let segments = [];
+  for (let entry of templateStringArray) {
     segments.push(...entry.split('/').filter(s => s !== ''));
   }
   return path.join(...segments);
@@ -39,7 +39,7 @@ describe('@angular/core ng_package', () => {
 
   describe('primary entry-point', () => {
     describe('package.json', () => {
-      const packageJson = 'package.json';
+      let packageJson = 'package.json';
 
       it('should have a package.json file',
          () => { expect(shx.grep('"name":', packageJson)).toContain(`@angular/core`); });
@@ -194,13 +194,13 @@ describe('@angular/core ng_package', () => {
 
   describe('secondary entry-point', () => {
     describe('package.json', () => {
-      const packageJson = p `testing/package.json`;
+      let packageJson = p `testing/package.json`;
 
       it('should have a package.json file',
          () => { expect(shx.grep('"name":', packageJson)).toContain(`@angular/core/testing`); });
 
       it('should have its module resolution mappings defined in the nested package.json', () => {
-        const packageJson = p `testing/package.json`;
+        let packageJson = p `testing/package.json`;
         expect(shx.grep('"main":', packageJson)).toContain(`../bundles/core-testing.umd.js`);
         expect(shx.grep('"module":', packageJson)).toContain(`../fesm5/testing.js`);
         expect(shx.grep('"es2015":', packageJson)).toContain(`../fesm2015/testing.js`);
@@ -212,11 +212,11 @@ describe('@angular/core ng_package', () => {
 
     describe('typings', () => {
       if (ivyEnabled) {
-        const typingsFile = p `testing/index.d.ts`;
+        let typingsFile = p `testing/index.d.ts`;
         it('should have a typings file',
            () => { expect(shx.cat(typingsFile)).toContain(`export * from './public_api';`); });
       } else {
-        const typingsFile = p `testing/testing.d.ts`;
+        let typingsFile = p `testing/testing.d.ts`;
         it('should have a typings file',
            () => { expect(shx.cat(typingsFile)).toContain('export declare'); });
       }

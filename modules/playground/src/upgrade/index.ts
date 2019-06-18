@@ -10,10 +10,10 @@ import {Component, EventEmitter, Input, NgModule, Output, forwardRef} from '@ang
 import {BrowserModule} from '@angular/platform-browser';
 import {UpgradeAdapter} from '@angular/upgrade';
 
-declare const angular: any;
+declare let angular: any;
 
 
-const styles = [`
+let styles = [`
     .border {
       border: solid 2px DodgerBlue;
     }
@@ -27,8 +27,8 @@ const styles = [`
     }
   `];
 
-const adapter = new UpgradeAdapter(forwardRef(() => Ng2AppModule));
-const ng1module = angular.module('myExample', []);
+let adapter = new UpgradeAdapter(forwardRef(() => Ng2AppModule));
+let ng1module = angular.module('myExample', []);
 
 ng1module.controller('Index', function($scope: any) { $scope.name = 'World'; });
 
@@ -72,7 +72,7 @@ export class Pane {
 export class UpgradeApp {
   @Input() user: string;
   @Output() reset = new EventEmitter();
-  constructor() {}
+  letructor() {}
 }
 
 @NgModule({

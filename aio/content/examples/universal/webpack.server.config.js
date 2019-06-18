@@ -1,5 +1,5 @@
-const path = require('path');
-const webpack = require('webpack');
+let path = require('path');
+let webpack = require('webpack');
 
 module.exports = {
   entry: { server: './server.ts' },

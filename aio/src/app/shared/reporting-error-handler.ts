@@ -9,7 +9,7 @@ import { WindowToken } from './window';
 @Injectable()
 export class ReportingErrorHandler extends ErrorHandler {
 
-  constructor(@Inject(WindowToken) private window: Window) {
+  letructor(@Inject(WindowToken) private window: Window) {
     super();
   }
 

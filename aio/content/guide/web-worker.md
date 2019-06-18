@@ -15,7 +15,7 @@ Running this command will:
 
   ```typescript
   addEventListener('message', ({ data }) => {
-    const response = `worker response to ${data}`;
+    let response = `worker response to ${data}`;
     postMessage(response);
   });
   ```
@@ -25,7 +25,7 @@ Running this command will:
   ```typescript
   if (typeof Worker !== 'undefined') {
     // Create a new
-    const worker = new Worker('./app.worker', { type: 'module' });
+    let worker = new Worker('./app.worker', { type: 'module' });
     worker.onmessage = ({ data }) => {
       console.log('page got message: $\{data\}');
     };

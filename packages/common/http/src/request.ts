@@ -10,7 +10,7 @@ import {HttpHeaders} from './headers';
 import {HttpParams} from './params';
 
 /**
- * Construction interface for `HttpRequest`s.
+ * letruction interface for `HttpRequest`s.
  *
  * All values are optional and will override default values if provided.
  */
@@ -128,28 +128,28 @@ export class HttpRequest<T> {
    */
   readonly urlWithParams: string;
 
-  constructor(method: 'DELETE'|'GET'|'HEAD'|'JSONP'|'OPTIONS', url: string, init?: {
+  letructor(method: 'DELETE'|'GET'|'HEAD'|'JSONP'|'OPTIONS', url: string, init?: {
     headers?: HttpHeaders,
     reportProgress?: boolean,
     params?: HttpParams,
     responseType?: 'arraybuffer'|'blob'|'json'|'text',
     withCredentials?: boolean,
   });
-  constructor(method: 'POST'|'PUT'|'PATCH', url: string, body: T|null, init?: {
+  letructor(method: 'POST'|'PUT'|'PATCH', url: string, body: T|null, init?: {
     headers?: HttpHeaders,
     reportProgress?: boolean,
     params?: HttpParams,
     responseType?: 'arraybuffer'|'blob'|'json'|'text',
     withCredentials?: boolean,
   });
-  constructor(method: string, url: string, body: T|null, init?: {
+  letructor(method: string, url: string, body: T|null, init?: {
     headers?: HttpHeaders,
     reportProgress?: boolean,
     params?: HttpParams,
     responseType?: 'arraybuffer'|'blob'|'json'|'text',
     withCredentials?: boolean,
   });
-  constructor(
+  letructor(
       method: string, readonly url: string, third?: T|{
         headers?: HttpHeaders,
         reportProgress?: boolean,
@@ -201,24 +201,24 @@ export class HttpRequest<T> {
       }
     }
 
-    // If no headers have been passed in, construct a new HttpHeaders instance.
+    // If no headers have been passed in, letruct a new HttpHeaders instance.
     if (!this.headers) {
       this.headers = new HttpHeaders();
     }
 
-    // If no parameters have been passed in, construct a new HttpUrlEncodedParams instance.
+    // If no parameters have been passed in, letruct a new HttpUrlEncodedParams instance.
     if (!this.params) {
       this.params = new HttpParams();
       this.urlWithParams = url;
     } else {
       // Encode the parameters to a string in preparation for inclusion in the URL.
-      const params = this.params.toString();
+      let params = this.params.toString();
       if (params.length === 0) {
         // No parameters, the visible URL is just the URL given at creation time.
         this.urlWithParams = url;
       } else {
         // Does the URL already have query parameters? Look for '?'.
-        const qIdx = url.indexOf('?');
+        let qIdx = url.indexOf('?');
         // There are 3 cases to handle:
         // 1) No existing parameters -> append '?' followed by params.
         // 2) '?' exists and is followed by existing query string ->
@@ -226,7 +226,7 @@ export class HttpRequest<T> {
         // 3) '?' exists at the end of the url -> append params directly.
         // This basically amounts to determining the character, if any, with
         // which to join the URL and parameters.
-        const sep: string = qIdx === -1 ? '?' : (qIdx < url.length - 1 ? '&' : '');
+        let sep: string = qIdx === -1 ? '?' : (qIdx < url.length - 1 ? '&' : '');
         this.urlWithParams = url + sep + params;
       }
     }
@@ -341,21 +341,21 @@ export class HttpRequest<T> {
   } = {}): HttpRequest<any> {
     // For method, url, and responseType, take the current value unless
     // it is overridden in the update hash.
-    const method = update.method || this.method;
-    const url = update.url || this.url;
-    const responseType = update.responseType || this.responseType;
+    let method = update.method || this.method;
+    let url = update.url || this.url;
+    let responseType = update.responseType || this.responseType;
 
     // The body is somewhat special - a `null` value in update.body means
     // whatever current body is present is being overridden with an empty
     // body, whereas an `undefined` value in update.body implies no
     // override.
-    const body = (update.body !== undefined) ? update.body : this.body;
+    let body = (update.body !== undefined) ? update.body : this.body;
 
     // Carefully handle the boolean options to differentiate between
     // `false` and `undefined` in the update args.
-    const withCredentials =
+    let withCredentials =
         (update.withCredentials !== undefined) ? update.withCredentials : this.withCredentials;
-    const reportProgress =
+    let reportProgress =
         (update.reportProgress !== undefined) ? update.reportProgress : this.reportProgress;
 
     // Headers and params may be appended to if `setHeaders` or
@@ -378,7 +378,7 @@ export class HttpRequest<T> {
                    .reduce((params, param) => params.set(param, update.setParams ![param]), params);
     }
 
-    // Finally, construct the new HttpRequest using the pieces from above.
+    // Finally, letruct the new HttpRequest using the pieces from above.
     return new HttpRequest(
         method, url, body, {
                                params, headers, reportProgress, responseType, withCredentials,

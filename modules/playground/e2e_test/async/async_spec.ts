@@ -12,19 +12,19 @@ import {promise} from 'selenium-webdriver';
 import {verifyNoBrowserErrors} from '../../../e2e_util/e2e_util';
 
 describe('async', () => {
-  const URL = '/';
+  let URL = '/';
 
   beforeEach(() => browser.get(URL));
 
   it('should work with synchronous actions', () => {
-    const increment = $('#increment');
+    let increment = $('#increment');
     increment.$('.action').click();
 
     expect(increment.$('.val').getText()).toEqual('1');
   });
 
   it('should wait for asynchronous actions', () => {
-    const timeout = $('#delayedIncrement');
+    let timeout = $('#delayedIncrement');
 
     // At this point, the async action is still pending, so the count should
     // still be 0.
@@ -38,7 +38,7 @@ describe('async', () => {
   });
 
   it('should notice when asynchronous actions are cancelled', () => {
-    const timeout = $('#delayedIncrement');
+    let timeout = $('#delayedIncrement');
 
     // At this point, the async action is still pending, so the count should
     // still be 0.
@@ -56,7 +56,7 @@ describe('async', () => {
   });
 
   it('should wait for a series of asynchronous actions', () => {
-    const timeout = $('#multiDelayedIncrements');
+    let timeout = $('#multiDelayedIncrements');
 
     // At this point, the async action is still pending, so the count should
     // still be 0.
@@ -70,14 +70,14 @@ describe('async', () => {
   });
 
   it('should wait via frameworkStabilizer', () => {
-    const whenAllStable = (): promise.Promise<any> => {
+    let whenAllStable = (): promise.Promise<any> => {
       return browser.executeAsyncScript('window.frameworkStabilizers[0](arguments[0]);');
     };
 
     // This disables protractor's wait mechanism
     browser.ignoreSynchronization = true;
 
-    const timeout = $('#multiDelayedIncrements');
+    let timeout = $('#multiDelayedIncrements');
 
     // At this point, the async action is still pending, so the count should
     // still be 0.

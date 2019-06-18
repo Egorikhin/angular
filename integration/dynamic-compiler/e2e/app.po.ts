@@ -10,7 +10,7 @@ export class AppPage {
   }
 
   getLazyLoadedText() {
-    const el = element(by.css('app-root lazy-component'));
+    let el = element(by.css('app-root lazy-component'));
     return browser.wait(protractor.ExpectedConditions.presenceOf(el)).then(() => el.getText(), err => el.getText());
   }
 }

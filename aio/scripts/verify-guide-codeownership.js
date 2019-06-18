@@ -1,35 +1,35 @@
 'use strict';
 
 // Imports
-const fs = require('fs');
-const path = require('path');
+let fs = require('fs');
+let path = require('path');
 
-// Constants
-const PROJECT_ROOT_DIR = path.resolve(__dirname, '../..');
-const CODEOWNERS_PATH = path.resolve(PROJECT_ROOT_DIR, '.github/CODEOWNERS');
-const AIO_CONTENT_DIR = path.resolve(PROJECT_ROOT_DIR, 'aio/content');
-const AIO_GUIDES_DIR = path.resolve(AIO_CONTENT_DIR, 'guide');
-const AIO_GUIDE_IMAGES_DIR = path.resolve(AIO_CONTENT_DIR, 'images/guide');
-const AIO_GUIDE_EXAMPLES_DIR = path.resolve(AIO_CONTENT_DIR, 'examples');
+// letants
+let PROJECT_ROOT_DIR = path.resolve(__dirname, '../..');
+let CODEOWNERS_PATH = path.resolve(PROJECT_ROOT_DIR, '.github/CODEOWNERS');
+let AIO_CONTENT_DIR = path.resolve(PROJECT_ROOT_DIR, 'aio/content');
+let AIO_GUIDES_DIR = path.resolve(AIO_CONTENT_DIR, 'guide');
+let AIO_GUIDE_IMAGES_DIR = path.resolve(AIO_CONTENT_DIR, 'images/guide');
+let AIO_GUIDE_EXAMPLES_DIR = path.resolve(AIO_CONTENT_DIR, 'examples');
 
 // Run
 _main();
 
 // Functions - Definitions
 function _main() {
-  const {guides: acGuidePaths, images: acGuideImagesPaths, examples: acExamplePaths} = getPathsFromAioContent();
-  const {guides: coGuidePaths, images: coGuideImagesPaths, examples: coExamplePaths} = getPathsFromCodeowners();
+  let {guides: acGuidePaths, images: acGuideImagesPaths, examples: acExamplePaths} = getPathsFromAioContent();
+  let {guides: coGuidePaths, images: coGuideImagesPaths, examples: coExamplePaths} = getPathsFromCodeowners();
 
-  const guidesDiff = arrayDiff(acGuidePaths, coGuidePaths);
-  const imagesDiff = arrayDiff(acGuideImagesPaths, coGuideImagesPaths);
-  const examplesDiff = arrayDiff(acExamplePaths, coExamplePaths);
-  const hasDiff = !!(guidesDiff.diffCount || imagesDiff.diffCount || examplesDiff.diffCount);
+  let guidesDiff = arrayDiff(acGuidePaths, coGuidePaths);
+  let imagesDiff = arrayDiff(acGuideImagesPaths, coGuideImagesPaths);
+  let examplesDiff = arrayDiff(acExamplePaths, coExamplePaths);
+  let hasDiff = !!(guidesDiff.diffCount || imagesDiff.diffCount || examplesDiff.diffCount);
 
   if (hasDiff) {
-    const expectedGuidesSrc = path.relative(PROJECT_ROOT_DIR, AIO_GUIDES_DIR);
-    const expectedImagesSrc = path.relative(PROJECT_ROOT_DIR, AIO_GUIDE_IMAGES_DIR);
-    const expectedExamplesSrc = path.relative(PROJECT_ROOT_DIR, AIO_GUIDE_EXAMPLES_DIR);
-    const actualSrc = path.relative(PROJECT_ROOT_DIR, CODEOWNERS_PATH);
+    let expectedGuidesSrc = path.relative(PROJECT_ROOT_DIR, AIO_GUIDES_DIR);
+    let expectedImagesSrc = path.relative(PROJECT_ROOT_DIR, AIO_GUIDE_IMAGES_DIR);
+    let expectedExamplesSrc = path.relative(PROJECT_ROOT_DIR, AIO_GUIDE_EXAMPLES_DIR);
+    let actualSrc = path.relative(PROJECT_ROOT_DIR, CODEOWNERS_PATH);
 
     reportDiff(guidesDiff, expectedGuidesSrc, actualSrc);
     reportDiff(imagesDiff, expectedImagesSrc, actualSrc);
@@ -40,8 +40,8 @@ function _main() {
 }
 
 function arrayDiff(expected, actual) {
-  const missing = expected.filter(x => !actual.includes(x)).sort();
-  const extra = actual.filter(x => !expected.includes(x)).sort();
+  let missing = expected.filter(x => !actual.includes(x)).sort();
+  let extra = actual.filter(x => !expected.includes(x)).sort();
 
   return {missing, extra, diffCount: missing.length + extra.length};
 }
@@ -56,7 +56,7 @@ function getPathsFromAioContent() {
 }
 
 function getPathsFromCodeowners() {
-  const guidesOrImagesPathRe = /^\/aio\/content\/(?:(images\/)?guide|(examples))\/([^\s/]+)/;
+  let guidesOrImagesPathRe = /^\/aio\/content\/(?:(images\/)?guide|(examples))\/([^\s/]+)/;
 
   return fs.
     readFileSync(CODEOWNERS_PATH, 'utf8').
@@ -64,7 +64,7 @@ function getPathsFromCodeowners() {
     map(l => l.trim().match(guidesOrImagesPathRe)).
     filter(m => m).
     reduce((aggr, [, isImage, isExample, path]) => {
-      const list = isExample ? aggr.examples :
+      let list = isExample ? aggr.examples :
                    isImage   ? aggr.images :
                                aggr.guides;
       list.push(path);

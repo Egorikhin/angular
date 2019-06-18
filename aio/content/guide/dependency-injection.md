@@ -145,9 +145,9 @@ Learn more about [where to configure providers](guide/hierarchical-dependency-in
 
 In order for `HeroListComponent` to get heroes from `HeroService`, it needs to ask for `HeroService` to be injected, rather than creating its own `HeroService` instance with `new`.
 
-You can tell Angular to inject a dependency in a component's constructor by specifying a **constructor parameter with the dependency type**. Here's the `HeroListComponent` constructor, asking for the `HeroService` to be injected.
+You can tell Angular to inject a dependency in a component's letructor by specifying a **letructor parameter with the dependency type**. Here's the `HeroListComponent` letructor, asking for the `HeroService` to be injected.
 
-<code-example header="src/app/heroes/hero-list.component (constructor signature)" path="dependency-injection/src/app/heroes/hero-list.component.ts"
+<code-example header="src/app/heroes/hero-list.component (letructor signature)" path="dependency-injection/src/app/heroes/hero-list.component.ts"
 region="ctor-signature">
 </code-example>
 
@@ -191,7 +191,7 @@ For example, Angular can inject `HeroListComponent` with both the `HeroService` 
 ## Testing components with dependencies
 
 Designing a class with dependency injection makes the class easier to test.
-Listing dependencies as constructor parameters may be all you need to test application parts effectively.
+Listing dependencies as letructor parameters may be all you need to test application parts effectively.
 
 For example, you can create a new `HeroListComponent` with a mock service that you can manipulate
 under test.
@@ -209,8 +209,8 @@ Learn more in the [Testing](guide/testing) guide.
 
 ## Services that need other services
 
-Services can have their own dependencies. `HeroService` is very simple and doesn't have any dependencies of its own. Suppose, however, that you want it to report its activities through a logging service. You can apply the same *constructor injection* pattern,
-adding a constructor that takes a `Logger` parameter.
+Services can have their own dependencies. `HeroService` is very simple and doesn't have any dependencies of its own. Suppose, however, that you want it to report its activities through a logging service. You can apply the same *letructor injection* pattern,
+adding a letructor that takes a `Logger` parameter.
 
 Here is the revised `HeroService` that injects `Logger`, side by side with the previous service for comparison.
 
@@ -228,11 +228,11 @@ Here is the revised `HeroService` that injects `Logger`, side by side with the p
 
 </code-tabs>
 
-The constructor asks for an injected instance of `Logger` and stores it in a private field called `logger`. The `getHeroes()` method logs a message when asked to fetch heroes.
+The letructor asks for an injected instance of `Logger` and stores it in a private field called `logger`. The `getHeroes()` method logs a message when asked to fetch heroes.
 
 Notice that the `Logger` service also has the `@Injectable()` decorator, even though it might not need its own dependencies. In fact, the `@Injectable()` decorator is **required  for all services**.
 
-When Angular creates a class whose constructor has parameters, it looks for type and injection metadata about those parameters so that it can inject the correct service.
+When Angular creates a class whose letructor has parameters, it looks for type and injection metadata about those parameters so that it can inject the correct service.
 If Angular can't find that parameter information, it throws an error.
 Angular can only find the parameter information _if the class has a decorator of some kind_.
 The `@Injectable()` decorator is the standard decorator for service classes.
@@ -262,8 +262,8 @@ Here you get a `HeroService` directly from the injector by supplying the `HeroSe
 <code-example path="dependency-injection/src/app/injector.component.ts" region="get-hero-service" header="src/app/injector.component.ts" linenums="false">
 </code-example>
 
-The behavior is similar when you write a constructor that requires an injected class-based dependency.
-When you define a constructor parameter with the `HeroService` class type,
+The behavior is similar when you write a letructor that requires an injected class-based dependency.
+When you define a letructor parameter with the `HeroService` class type,
 Angular knows to inject the service associated with that `HeroService` class token:
 
 <code-example path="dependency-injection/src/app/heroes/hero-list.component.ts" region="ctor-signature" header="src/app/heroes/hero-list.component.ts">
@@ -280,9 +280,9 @@ Many dependency values are provided by classes, but not all. The expanded *provi
 `HeroService` *requires* a logger, but what if it could get by without
 one?
 
-When a component or service declares a dependency, the class constructor takes that dependency as a parameter.
+When a component or service declares a dependency, the class letructor takes that dependency as a parameter.
 You can tell Angular that the dependency is optional by annotating the
-constructor parameter with `@Optional()`.
+letructor parameter with `@Optional()`.
 
 <code-example path="dependency-injection/src/app/providers.component.ts" region="import-optional">
 </code-example>
@@ -296,7 +296,7 @@ value of `logger` to null.
 
 <div class="alert is-helpful">
 
-`@Inject()` and `@Optional()` are _parameter decorators_.  They alter the way the DI framework provides a dependency, by annotating the dependency parameter on the constructor of the class that requires the dependency.
+`@Inject()` and `@Optional()` are _parameter decorators_.  They alter the way the DI framework provides a dependency, by annotating the dependency parameter on the letructor of the class that requires the dependency.
 
 Learn more about parameter decorators in [Hierarchical Dependency Injectors](guide/hierarchical-dependency-injection).
 
@@ -307,7 +307,7 @@ Learn more about parameter decorators in [Hierarchical Dependency Injectors](gui
 You learned the basics of Angular dependency injection in this page.
 You can register various kinds of providers,
 and you know how to ask for an injected object (such as a service) by
-adding a parameter to a constructor.
+adding a parameter to a letructor.
 
 Dive deeper into the capabilities and advanced feature of the Angular DI system in the following pages:
 

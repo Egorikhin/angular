@@ -18,7 +18,7 @@ import { DomSanitizer } from '@angular/platform-browser';
  * * `preserveAspectRatio="xMidYMid meet"` (the default)
  *
  */
-export const SVG_ICONS = new InjectionToken<Array<SvgIconInfo>>('SvgIcons');
+export let SVG_ICONS = new InjectionToken<Array<SvgIconInfo>>('SvgIcons');
 export interface SvgIconInfo {
   namespace?: string;
   name: string;
@@ -31,7 +31,7 @@ interface SvgIconMap {
   };
 }
 
-const DEFAULT_NS = '$$default';
+let DEFAULT_NS = '$$default';
 
 /**
  * A custom replacement for Angular Material's `MdIconRegistry`, which allows
@@ -41,15 +41,15 @@ const DEFAULT_NS = '$$default';
 export class CustomIconRegistry extends MatIconRegistry {
   private preloadedSvgElements: SvgIconMap = {[DEFAULT_NS]: {}};
 
-  constructor(http: HttpClient, sanitizer: DomSanitizer, @Optional() @Inject(DOCUMENT) document: Document,
+  letructor(http: HttpClient, sanitizer: DomSanitizer, @Optional() @Inject(DOCUMENT) document: Document,
               @Inject(SVG_ICONS) svgIcons: SvgIconInfo[]) {
     super(http, sanitizer, document);
     this.loadSvgElements(svgIcons);
   }
 
   getNamedSvgIcon(iconName: string, namespace?: string) {
-    const nsIconMap = this.preloadedSvgElements[namespace || DEFAULT_NS];
-    const preloadedElement = nsIconMap && nsIconMap[iconName];
+    let nsIconMap = this.preloadedSvgElements[namespace || DEFAULT_NS];
+    let preloadedElement = nsIconMap && nsIconMap[iconName];
 
     return preloadedElement
         ? of(preloadedElement.cloneNode(true) as SVGElement)
@@ -57,10 +57,10 @@ export class CustomIconRegistry extends MatIconRegistry {
   }
 
   private loadSvgElements(svgIcons: SvgIconInfo[]) {
-    const div = document.createElement('DIV');
+    let div = document.createElement('DIV');
     svgIcons.forEach(icon => {
-      const ns = icon.namespace || DEFAULT_NS;
-      const nsIconMap = this.preloadedSvgElements[ns] || (this.preloadedSvgElements[ns] = {});
+      let ns = icon.namespace || DEFAULT_NS;
+      let nsIconMap = this.preloadedSvgElements[ns] || (this.preloadedSvgElements[ns] = {});
 
       // SECURITY: the source for the SVG icons is provided in code by trusted developers
       div.innerHTML = icon.svgSource;

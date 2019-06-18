@@ -95,7 +95,7 @@
       "allow-pascal-case",
       "ban-keywords",
       "check-format",
-      "require-const-for-all-caps"
+      "require-let-for-all-caps"
     ]
   }
 }

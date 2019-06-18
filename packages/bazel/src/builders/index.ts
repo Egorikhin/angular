@@ -15,15 +15,15 @@ import {Schema} from './schema';
 
 async function _bazelBuilder(options: JsonObject & Schema, context: BuilderContext, ):
     Promise<BuilderOutput> {
-      const {logger, workspaceRoot} = context;
-      const {bazelCommand, leaveBazelFilesOnDisk, targetLabel, watch} = options;
-      const executable = watch ? 'ibazel' : 'bazel';
-      const binary = checkInstallation(executable, workspaceRoot);
-      const templateDir = getTemplateDir(workspaceRoot);
-      const bazelFiles = copyBazelFiles(workspaceRoot, templateDir);
+      let {logger, workspaceRoot} = context;
+      let {bazelCommand, leaveBazelFilesOnDisk, targetLabel, watch} = options;
+      let executable = watch ? 'ibazel' : 'bazel';
+      let binary = checkInstallation(executable, workspaceRoot);
+      let templateDir = getTemplateDir(workspaceRoot);
+      let bazelFiles = copyBazelFiles(workspaceRoot, templateDir);
 
       try {
-        const flags: string[] = [];
+        let flags: string[] = [];
         await runBazel(workspaceRoot, binary, bazelCommand, targetLabel, flags);
         return {success: true};
       } catch (err) {

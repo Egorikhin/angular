@@ -5,11 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const Package = require('dgeni').Package;
-const apiPackage = require('../angular-api-package');
-const { API_SOURCE_PATH } = require('../config');
+let Package = require('dgeni').Package;
+let apiPackage = require('../angular-api-package');
+let { API_SOURCE_PATH } = require('../config');
 
-const packageMap = {
+let packageMap = {
   animations: ['animations/index.ts', 'animations/browser/index.ts', 'animations/browser/testing/index.ts'],
   common: ['common/index.ts', 'common/testing/index.ts', 'common/upgrade/index.ts', 'common/http/index.ts', 'common/http/testing/index.ts'],
   core: ['core/index.ts', 'core/testing/index.ts'],

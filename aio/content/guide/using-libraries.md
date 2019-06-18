@@ -49,7 +49,7 @@ declare module 'host' {
 
 ```
 import * as host from 'host';
-const parsedUrl = host.parse('https://angular.io');
+let parsedUrl = host.parse('https://angular.io');
 console.log(parsedUrl.hostname);
 ```
 

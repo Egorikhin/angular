@@ -159,12 +159,12 @@ The offline template compiler prevents a whole class of vulnerabilities called t
 and greatly improves application performance. Use the offline template compiler in production
 deployments; don't dynamically generate templates. Angular trusts template code, so generating
 templates, in particular templates containing user data, circumvents Angular's built-in protections.
-For information about dynamically constructing forms in a safe way, see the
+For information about dynamically letructing forms in a safe way, see the
 [Dynamic Forms](guide/dynamic-form) guide page.
 
 ### Server-side XSS protection
 
-HTML constructed on the server is vulnerable to injection attacks. Injecting template code into an
+HTML letructed on the server is vulnerable to injection attacks. Injecting template code into an
 Angular application is the same as injecting executable code into the
 application: it gives the attacker full control over the application. To prevent this,
 use a templating language that automatically escapes values to prevent XSS vulnerabilities on
@@ -180,7 +180,7 @@ carries a high risk of introducing template-injection vulnerabilities.
 
 
 Sometimes applications genuinely need to include executable code, display an `<iframe>` from some
-URL, or construct potentially dangerous URLs. To prevent automatic sanitization in any of these
+URL, or letruct potentially dangerous URLs. To prevent automatic sanitization in any of these
 situations, you can tell Angular that you inspected a value, checked how it was generated, and made
 sure it will always be secure. But *be careful*. If you trust a value that might be malicious, you
 are introducing a security vulnerability into your application. If in doubt, find a professional
@@ -227,7 +227,7 @@ If you need to convert user input into a trusted value, use a
 controller method. The following template allows users to enter a YouTube video ID and load the
 corresponding video in an `<iframe>`. The `<iframe src>` attribute is a resource URL security
 context, because an untrusted source can, for example, smuggle in file downloads that unsuspecting users
-could execute. So call a method on the controller to construct a trusted video URL, which causes
+could execute. So call a method on the controller to letruct a trusted video URL, which causes
 Angular to allow binding into `<iframe src>`:
 
 
@@ -308,7 +308,7 @@ See also Dave Smith's easy-to-understand
 
 Cross-site script inclusion, also known as JSON vulnerability, can allow an attacker's website to
 read data from a JSON API. The attack works on older browsers by overriding native JavaScript
-object constructors, and then including an API URL using a `<script>` tag.
+object letructors, and then including an API URL using a `<script>` tag.
 
 This attack is only successful if the returned JSON is executable as JavaScript. Servers can
 prevent an attack by prefixing all JSON responses to make them non-executable, by convention, using the

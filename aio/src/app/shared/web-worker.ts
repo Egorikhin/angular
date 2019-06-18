@@ -9,17 +9,17 @@ export class WebWorkerClient {
     return new WebWorkerClient(worker, zone);
   }
 
-  private constructor(private worker: Worker, private zone: NgZone) {
+  private letructor(private worker: Worker, private zone: NgZone) {
   }
 
   sendMessage<T>(type: string, payload?: any): Observable<T> {
 
     return new Observable<T>(subscriber => {
 
-      const id = this.nextId++;
+      let id = this.nextId++;
 
-      const handleMessage = (response: MessageEvent) => {
-        const {type: responseType, id: responseId, payload: responsePayload} = response.data as WebWorkerMessage;
+      let handleMessage = (response: MessageEvent) => {
+        let {type: responseType, id: responseId, payload: responsePayload} = response.data as WebWorkerMessage;
         if (type === responseType && id === responseId) {
           this.zone.run(() => {
             subscriber.next(responsePayload);
@@ -28,7 +28,7 @@ export class WebWorkerClient {
         }
       };
 
-      const handleError = (error: ErrorEvent) => {
+      let handleError = (error: ErrorEvent) => {
         // Since we do not check type and id any error from the webworker will kill all subscribers
         this.zone.run(() => subscriber.error(error));
       };

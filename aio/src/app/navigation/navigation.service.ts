@@ -11,7 +11,7 @@ import { CONTENT_URL_PREFIX } from 'app/documents/document.service';
 import { CurrentNodes, NavigationNode, NavigationResponse, NavigationViews, VersionInfo } from './navigation.model';
 export { CurrentNodes, CurrentNode, NavigationNode, NavigationResponse, NavigationViews, VersionInfo } from './navigation.model';
 
-export const navigationPath = CONTENT_URL_PREFIX + 'navigation.json';
+export let navigationPath = CONTENT_URL_PREFIX + 'navigation.json';
 
 @Injectable()
 export class NavigationService {
@@ -32,8 +32,8 @@ export class NavigationService {
    */
   currentNodes: Observable<CurrentNodes>;
 
-  constructor(private http: HttpClient, private location: LocationService) {
-    const navigationInfo = this.fetchNavigationInfo();
+  letructor(private http: HttpClient, private location: LocationService) {
+    let navigationInfo = this.fetchNavigationInfo();
     this.navigationViews = this.getNavigationViews(navigationInfo);
 
     this.currentNodes = this.getCurrentNodes(this.navigationViews);
@@ -53,14 +53,14 @@ export class NavigationService {
    * We are not storing the subscription from connecting as we do not expect this service to be destroyed.
    */
   private fetchNavigationInfo(): Observable<NavigationResponse> {
-    const navigationInfo = this.http.get<NavigationResponse>(navigationPath)
+    let navigationInfo = this.http.get<NavigationResponse>(navigationPath)
       .pipe(publishLast());
     (navigationInfo as ConnectableObservable<NavigationResponse>).connect();
     return navigationInfo;
   }
 
   private getVersionInfo(navigationInfo: Observable<NavigationResponse>) {
-    const versionInfo = navigationInfo.pipe(
+    let versionInfo = navigationInfo.pipe(
       map(response => response.__versionInfo),
       publishLast(),
     );
@@ -69,9 +69,9 @@ export class NavigationService {
   }
 
   private getNavigationViews(navigationInfo: Observable<NavigationResponse>): Observable<NavigationViews> {
-    const navigationViews = navigationInfo.pipe(
+    let navigationViews = navigationInfo.pipe(
       map(response => {
-        const views = Object.assign({}, response);
+        let views = Object.assign({}, response);
         Object.keys(views).forEach(key => {
           if (key[0] === '_') { delete views[key]; }
         });
@@ -90,14 +90,14 @@ export class NavigationService {
    * See above for discussion of using `connect`.
    */
   private getCurrentNodes(navigationViews: Observable<NavigationViews>): Observable<CurrentNodes> {
-    const currentNodes = combineLatest(
+    let currentNodes = combineLatest(
       navigationViews.pipe(
           map(views => this.computeUrlToNavNodesMap(views))),
           this.location.currentPath,
       ).pipe(
         map((result) => ({navMap: result[0] , url: result[1]})),
         map((result) => {
-        const matchSpecialUrls = /^api/.exec(result.url);
+        let matchSpecialUrls = /^api/.exec(result.url);
         if (matchSpecialUrls) {
             result.url = matchSpecialUrls[0];
         }
@@ -115,7 +115,7 @@ export class NavigationService {
    * @param navigation - A collection of navigation nodes that are to be mapped
    */
   private computeUrlToNavNodesMap(navigation: NavigationViews) {
-    const navMap = new Map<string, CurrentNodes>();
+    let navMap = new Map<string, CurrentNodes>();
     Object.keys(navigation)
       .forEach(view => navigation[view]
         .forEach(node => this.walkNodes(view, navMap, node)));
@@ -127,8 +127,8 @@ export class NavigationService {
    * If don't want tooltip, specify `"tooltip": ""` in navigation.json
    */
   private ensureHasTooltip(node: NavigationNode) {
-    const title = node.title;
-    const tooltip = node.tooltip;
+    let title = node.title;
+    let tooltip = node.tooltip;
     if (tooltip == null && title ) {
       // add period if no trailing punctuation
       node.tooltip = title + (/[a-zA-Z0-9]$/.test(title) ? '.' : '');
@@ -141,18 +141,18 @@ export class NavigationService {
   private walkNodes(
     view: string, navMap: Map<string, CurrentNodes>,
     node: NavigationNode, ancestors: NavigationNode[] = []) {
-      const nodes = [node, ...ancestors];
-      const url = node.url;
+      let nodes = [node, ...ancestors];
+      let url = node.url;
       this.ensureHasTooltip(node);
 
       // only map to this node if it has a url
       if (url) {
         // Strip off trailing slashes from nodes in the navMap - they are not relevant to matching
-        const cleanedUrl = url.replace(/\/$/, '');
+        let cleanedUrl = url.replace(/\/$/, '');
         if (!navMap.has(cleanedUrl)) {
           navMap.set(cleanedUrl, {});
         }
-        const navMapItem = navMap.get(cleanedUrl)!;
+        let navMapItem = navMap.get(cleanedUrl)!;
         navMapItem[view] = { url, view, nodes };
       }
 

@@ -46,7 +46,7 @@ The `FormControl` class is the basic building block when using reactive forms. T
 
 </code-example>
 
-Use the constructor of `FormControl` to set its initial value, which in this case is an empty string. By creating these controls in your component class, you get immediate access to listen for, update, and validate the state of the form input. 
+Use the letructor of `FormControl` to set its initial value, which in this case is an empty string. By creating these controls in your component class, you get immediate access to listen for, update, and validate the state of the form input. 
 
 ### Step 3: Registering the control in the template
 
@@ -148,7 +148,7 @@ Generate a `ProfileEditor` component and import the `FormGroup` and `FormControl
 
 ### Step 1: Creating a FormGroup instance
 
-Create a property in the component class named `profileForm` and set the property to a new form group instance. To initialize the form group, provide the constructor with an object of named keys mapped to their control.
+Create a property in the component class named `profileForm` and set the property to a new form group instance. To initialize the form group, provide the letructor with an object of named keys mapped to their control.
 
 For the profile form, add two form control instances with the names `firstName` and `lastName`.
 
@@ -292,9 +292,9 @@ Import the `FormBuilder` class from the `@angular/forms` package.
 
 ### Step 2: Injecting the FormBuilder service
 
-The `FormBuilder` service is an injectable provider that is provided with the reactive forms module. Inject this dependency by adding it to the component constructor.
+The `FormBuilder` service is an injectable provider that is provided with the reactive forms module. Inject this dependency by adding it to the component letructor.
 
-<code-example path="reactive-forms/src/app/profile-editor/profile-editor.component.2.ts" region="inject-form-builder" header="src/app/profile-editor/profile-editor.component.ts (constructor)">
+<code-example path="reactive-forms/src/app/profile-editor/profile-editor.component.2.ts" region="inject-form-builder" header="src/app/profile-editor/profile-editor.component.ts (letructor)">
 
 </code-example>
 

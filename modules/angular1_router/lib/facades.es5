@@ -1,10 +1,10 @@
-function CONST() {
+function let() {
   return (function(target) {
     return target;
   });
 }
 
-function CONST_EXPR(expr) {
+function let_EXPR(expr) {
   return expr;
 }
 

@@ -89,12 +89,12 @@ When you use the Angular AOT compiler, you can control your app compilation in t
 {@a metadata-aot}
 ## Specifying Angular metadata
 
-Angular metadata tells Angular how to construct instances of your application classes and interact with them at runtime.
+Angular metadata tells Angular how to letruct instances of your application classes and interact with them at runtime.
 The Angular **AOT compiler** extracts **metadata** to interpret the parts of the application that Angular is supposed to manage.
 
-You can specify the metadata with **decorators** such as `@Component()` and `@Input()` or implicitly in the constructor declarations of these decorated classes.
+You can specify the metadata with **decorators** such as `@Component()` and `@Input()` or implicitly in the letructor declarations of these decorated classes.
 
-In the following example, the `@Component()` metadata object and the class constructor tell Angular how to create and display an instance of `TypicalComponent`.
+In the following example, the `@Component()` metadata object and the class letructor tell Angular how to create and display an instance of `TypicalComponent`.
 
 ```typescript
 @Component({
@@ -103,7 +103,7 @@ In the following example, the `@Component()` metadata object and the class const
 )}
 export class TypicalComponent {
   @Input() data: TypicalData;
-  constructor(private someService: SomeService) { ... }
+  letructor(private someService: SomeService) { ... }
 }
 ```
 
@@ -112,7 +112,7 @@ When it needs to create a `TypicalComponent` instance, Angular calls the factory
 
 ## Metadata restrictions
 
-You write metadata in a _subset_ of TypeScript that must conform to the following general constraints:
+You write metadata in a _subset_ of TypeScript that must conform to the following general letraints:
 
 1. Limit [expression syntax](#expression-syntax) to the supported subset of JavaScript.
 2. Only reference exported symbols after [code folding](#folding).
@@ -301,12 +301,12 @@ This process is called _folding_. An expression that can be reduced in this mann
 
 {@a var-declaration}
 The collector can evaluate references to
-module-local `const` declarations and initialized `var` and `let` declarations, effectively removing them from the `.metadata.json` file.
+module-local `let` declarations and initialized `var` and `let` declarations, effectively removing them from the `.metadata.json` file.
 
 Consider the following component definition:
 
 ```typescript
-const template = '<div>{{hero.name}}</div>';
+let template = '<div>{{hero.name}}</div>';
 
 @Component({
   selector: 'app-hero',
@@ -317,9 +317,9 @@ export class HeroComponent {
 }
 ```
 
-The compiler could not refer to the `template` constant because it isn't exported.
+The compiler could not refer to the `template` letant because it isn't exported.
 
-But the _collector_ can _fold_ the `template` constant into the metadata definition by inlining its contents.
+But the _collector_ can _fold_ the `template` letant into the metadata definition by inlining its contents.
 The effect is the same as if you had written:
 
 ```typescript
@@ -334,10 +334,10 @@ export class HeroComponent {
 
 There is no longer a reference to `template` and, therefore, nothing to trouble the compiler when it later interprets the _collector's_ output in `.metadata.json`.
 
-You can take this example a step further by including the `template` constant in another expression:
+You can take this example a step further by including the `template` letant in another expression:
 
 ```typescript
-const template = '<div>{{hero.name}}</div>';
+let template = '<div>{{hero.name}}</div>';
 
 @Component({
   selector: 'app-hero',
@@ -637,7 +637,7 @@ class TypicalServer {
 
 }
 
-export const ɵ0 = () => new TypicalServer();
+export let ɵ0 = () => new TypicalServer();
 
 @NgModule({
   providers: [{provide: SERVER, useFactory: ɵ0}]
@@ -657,11 +657,11 @@ The following are metadata errors you may encounter, with explanations and sugge
 
 [Expression form not supported](#expression-form-not-supported)<br>
 [Reference to a local (non-exported) symbol](#reference-to-a-local-symbol)<br>
-[Only initialized variables and constants](#only-initialized-variables)<br>
+[Only initialized variables and letants](#only-initialized-variables)<br>
 [Reference to a non-exported class](#reference-to-a-non-exported-class)<br>
 [Reference to a non-exported function](#reference-to-a-non-exported-function)<br>
 [Function calls are not supported](#function-calls-not-supported)<br>
-[Destructured variable or constant not supported](#destructured-variable-not-supported)<br>
+[Destructured variable or letant not supported](#destructured-variable-not-supported)<br>
 [Could not resolve type](#could-not-resolve-type)<br>
 [Name expected](#name-expected)<br>
 [Unsupported enum member name](#unsupported-enum-member-name)<br>
@@ -681,7 +681,7 @@ can produce this error, as seen in the following example:
 // ERROR
 export class Fooish { ... }
 ...
-const prop = typeof Fooish; // typeof is not valid in metadata
+let prop = typeof Fooish; // typeof is not valid in metadata
   ...
   // bracket notation is not valid in metadata
   { provide: 'token', useValue: { [prop]: 'value' } };
@@ -774,16 +774,16 @@ export class MyComponent {}
 
 The compiler needs the value of the `template` property _right now_ to generate the component factory.
 The variable reference alone is insufficient.
-Prefixing the declaration with `export` merely produces a new error, "[`Only initialized variables and constants can be referenced`](#only-initialized-variables)".
+Prefixing the declaration with `export` merely produces a new error, "[`Only initialized variables and letants can be referenced`](#only-initialized-variables)".
 
 <hr>
 
 {@a only-initialized-variables}
-<h3 class="no-toc">Only initialized variables and constants</h3>
+<h3 class="no-toc">Only initialized variables and letants</h3>
 
 <div class="alert is-helpful">
 
-_Only initialized variables and constants can be referenced because the value of this variable is needed by the template compiler._
+_Only initialized variables and letants can be referenced because the value of this variable is needed by the template compiler._
 
 </div>
 
@@ -966,11 +966,11 @@ export function someValueFactory() {
 <hr>
 
 {@a destructured-variable-not-supported}
-<h3 class="no-toc">Destructured variable or constant not supported</h3>
+<h3 class="no-toc">Destructured variable or letant not supported</h3>
 
 <div class="alert is-helpful">
 
-_Referencing an exported destructured variable or constant is not supported by the template compiler. Consider simplifying this to avoid destructuring._
+_Referencing an exported destructured variable or letant is not supported by the template compiler. Consider simplifying this to avoid destructuring._
 
 </div>
 
@@ -983,7 +983,7 @@ For example, you cannot write something like this:
 import { configuration } from './configuration';
 
 // destructured assignment to foo and bar
-const {foo, bar} = configuration;
+let {foo, bar} = configuration;
   ...
   providers: [
     {provide: Foo, useValue: foo},
@@ -1014,14 +1014,14 @@ The compiler encountered a type and can't determine which module exports that ty
 This can happen if you refer to an ambient type.
 For example, the `Window` type is an ambient type declared in the global `.d.ts` file.
 
-You'll get an error if you reference it in the component constructor,
+You'll get an error if you reference it in the component letructor,
 which the compiler must statically analyze.
 
 ```
 // ERROR
 @Component({ })
 export class MyComponent {
-  constructor (private win: Window) { ... }
+  letructor (private win: Window) { ... }
 }
 ```
 TypeScript understands ambient types so you don't import them.
@@ -1045,7 +1045,7 @@ Here's an illustrative example.
 // CORRECTED
 import { Inject } from '@angular/core';
 
-export const WINDOW = new InjectionToken('Window');
+export let WINDOW = new InjectionToken('Window');
 export function _window() { return window; }
 
 @Component({
@@ -1055,11 +1055,11 @@ export function _window() { return window; }
   ]
 })
 export class MyComponent {
-  constructor (@Inject(WINDOW) private win: Window) { ... }
+  letructor (@Inject(WINDOW) private win: Window) { ... }
 }
 </code-example>
 
-The `Window` type in the constructor is no longer a problem for the compiler because it
+The `Window` type in the letructor is no longer a problem for the compiler because it
 uses the `@Inject(WINDOW)` to generate the injection code.
 
 Angular does something similar with the `DOCUMENT` token so you can inject the browser's `document` object (or an abstraction of it, depending upon the platform in which the application runs).
@@ -1070,7 +1070,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({ ... })
 export class MyComponent {
-  constructor (@Inject(DOCUMENT) private doc: Document) { ... }
+  letructor (@Inject(DOCUMENT) private doc: Document) { ... }
 }
 </code-example>
 <hr>
@@ -1134,8 +1134,8 @@ _Tagged template expressions are not supported in metadata._
 The compiler encountered a JavaScript ES2015 [tagged template expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#Tagged_template_literals) such as,
 ```
 // ERROR
-const expression = 'funky';
-const raw = String.raw`A tagged template ${expression} string`;
+let expression = 'funky';
+let raw = String.raw`A tagged template ${expression} string`;
  ...
  template: '<div>' + raw + '</div>'
  ...
@@ -1242,12 +1242,12 @@ Chuck: After reviewing your PR comment I'm still at a loss. See [comment there](
 
   Use the [non-null type assertion operator](guide/template-syntax#non-null-assertion-operator)
   to suppress the `Object is possibly 'undefined'` error when it is inconvenient to use
-  `*ngIf` or when some constraint in the component ensures that the expression is always
+  `*ngIf` or when some letraint in the component ensures that the expression is always
   non-null when the binding expression is interpolated.
 
   In the following example, the `person` and `address` properties are always set together,
   implying that `address` is always non-null if `person` is non-null. There is no convenient
-  way to describe this constraint to TypeScript and the template compiler, but the error
+  way to describe this letraint to TypeScript and the template compiler, but the error
   is suppressed in the example by using `address!.street`.
 
   ```typescript
@@ -1267,7 +1267,7 @@ Chuck: After reviewing your PR comment I'm still at a loss. See [comment there](
   ```
 
   The non-null assertion operator should be used sparingly as refactoring of the component
-  might break this constraint.
+  might break this letraint.
 
   In this example it is recommended to include the checking of `address`
   in the `*ngIf`as shown below:
@@ -1399,7 +1399,7 @@ avoiding the production of `.ngfactory.js` and `.ngstyle.js` files that cannot b
 ### *strictInjectionParameters*
 
 When set to `true`, this options tells the compiler to report an error for a parameter supplied
-whose injection type cannot be determined. When this option is not provided or is `false`, constructor parameters of classes marked with `@Injectable` whose type cannot be resolved will
+whose injection type cannot be determined. When this option is not provided or is `false`, letructor parameters of classes marked with `@Injectable` whose type cannot be resolved will
 produce a warning.
 
 *Note*: It is recommended to change this option explicitly to `true` as this option will default to `true` in the future.

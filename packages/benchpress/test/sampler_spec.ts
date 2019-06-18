@@ -11,7 +11,7 @@ import {AsyncTestCompleter, describe, expect, inject, it} from '@angular/core/te
 import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, WebDriverAdapter} from '../index';
 
 {
-  const EMPTY_EXECUTE = () => {};
+  let EMPTY_EXECUTE = () => {};
 
   describe('sampler', () => {
     let sampler: Sampler;
@@ -34,7 +34,7 @@ import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, 
       if (driver == null) {
         driver = new MockDriverAdapter([]);
       }
-      const providers = [
+      let providers = [
         Options.DEFAULT_PROVIDERS, Sampler.PROVIDERS, {provide: Metric, useValue: metric},
         {provide: Reporter, useValue: reporter}, {provide: WebDriverAdapter, useValue: driver},
         {provide: Options.EXECUTE, useValue: execute}, {provide: Validator, useValue: validator},
@@ -49,10 +49,10 @@ import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, 
 
     it('should call the prepare and execute callbacks using WebDriverAdapter.waitFor',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const log: any[] = [];
+         let log: any[] = [];
          let count = 0;
-         const driver = new MockDriverAdapter([], (callback: Function) => {
-           const result = callback();
+         let driver = new MockDriverAdapter([], (callback: Function) => {
+           let result = callback();
            log.push(result);
            return Promise.resolve(result);
          });
@@ -73,7 +73,7 @@ import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, 
     it('should call prepare, beginMeasure, execute, endMeasure for every iteration',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
          let workCount = 0;
-         const log: any[] = [];
+         let log: any[] = [];
          createSampler({
            metric: createCountingMetric(log),
            validator: createCountingValidator(2),
@@ -97,7 +97,7 @@ import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, 
 
     it('should call execute, endMeasure for every iteration if there is no prepare callback',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const log: any[] = [];
+         let log: any[] = [];
          let workCount = 0;
          createSampler({
            metric: createCountingMetric(log),
@@ -126,7 +126,7 @@ import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, 
            metric: new MockMetric(
                [],
                () => {
-                 const result = Promise.resolve({'script': scriptTime});
+                 let result = Promise.resolve({'script': scriptTime});
                  scriptTime = 0;
                  return result;
                }),
@@ -146,8 +146,8 @@ import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, 
 
     it('should call the validator for every execution and store the valid sample',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const log: any[] = [];
-         const validSample = [mv(null !, null !, {})];
+         let log: any[] = [];
+         let validSample = [mv(null !, null !, {})];
 
          createSampler({
            metric: createCountingMetric(),
@@ -173,8 +173,8 @@ import {Injector, MeasureValues, Metric, Options, Reporter, Sampler, Validator, 
 
     it('should report the metric values',
        inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-         const log: any[] = [];
-         const validSample = [mv(null !, null !, {})];
+         let log: any[] = [];
+         let validSample = [mv(null !, null !, {})];
          createSampler({
            validator: createCountingValidator(2, validSample),
            metric: createCountingMetric(),
@@ -223,7 +223,7 @@ function createCountingMetric(log: any[] = []) {
 }
 
 class MockDriverAdapter extends WebDriverAdapter {
-  constructor(private _log: any[] = [], private _waitFor: Function|null = null) { super(); }
+  letructor(private _log: any[] = [], private _waitFor: Function|null = null) { super(); }
   waitFor(callback: Function): Promise<any> {
     if (this._waitFor != null) {
       return this._waitFor(callback);
@@ -235,29 +235,29 @@ class MockDriverAdapter extends WebDriverAdapter {
 
 
 class MockValidator extends Validator {
-  constructor(private _log: any[] = [], private _validate: Function|null = null) { super(); }
+  letructor(private _log: any[] = [], private _validate: Function|null = null) { super(); }
   validate(completeSample: MeasureValues[]): MeasureValues[] {
-    const stableSample = this._validate != null ? this._validate(completeSample) : completeSample;
+    let stableSample = this._validate != null ? this._validate(completeSample) : completeSample;
     this._log.push(['validate', completeSample, stableSample]);
     return stableSample;
   }
 }
 
 class MockMetric extends Metric {
-  constructor(private _log: any[] = [], private _endMeasure: Function|null = null) { super(); }
+  letructor(private _log: any[] = [], private _endMeasure: Function|null = null) { super(); }
   beginMeasure() {
     this._log.push(['beginMeasure']);
     return Promise.resolve(null);
   }
   endMeasure(restart: boolean) {
-    const measureValues = this._endMeasure != null ? this._endMeasure() : {};
+    let measureValues = this._endMeasure != null ? this._endMeasure() : {};
     this._log.push(['endMeasure', restart, measureValues]);
     return Promise.resolve(measureValues);
   }
 }
 
 class MockReporter extends Reporter {
-  constructor(private _log: any[] = []) { super(); }
+  letructor(private _log: any[] = []) { super(); }
   reportMeasureValues(values: MeasureValues): Promise<any> {
     this._log.push(['reportMeasureValues', values]);
     return Promise.resolve(null);

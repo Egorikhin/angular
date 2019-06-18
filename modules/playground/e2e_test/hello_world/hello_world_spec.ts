@@ -15,7 +15,7 @@ describe('hello world', function() {
   afterEach(verifyNoBrowserErrors);
 
   describe('hello world app', function() {
-    const URL = '/';
+    let URL = '/';
 
     it('should greet', function() {
       browser.get(URL);

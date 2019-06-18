@@ -21,8 +21,8 @@ import {enableDebugTools} from '@angular/platform-browser';
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .then(moduleRef => {
-    const applicationRef = moduleRef.injector.get(ApplicationRef);
-    const appComponent = applicationRef.components[0];
+    let applicationRef = moduleRef.injector.get(ApplicationRef);
+    let appComponent = applicationRef.components[0];
     enableDebugTools(appComponent);
   })
 ```

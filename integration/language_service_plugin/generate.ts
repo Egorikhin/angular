@@ -15,7 +15,7 @@
 import Jasmine = require('jasmine');
 
 function main() {
-  const jasmine = new Jasmine({});
+  let jasmine = new Jasmine({});
   jasmine.execute(['test.js']);
 }
 

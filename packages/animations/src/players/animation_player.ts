@@ -124,7 +124,7 @@ export class NoopAnimationPlayer implements AnimationPlayer {
   private _finished = false;
   public parentPlayer: AnimationPlayer|null = null;
   public readonly totalTime: number;
-  constructor(duration: number = 0, delay: number = 0) { this.totalTime = duration + delay; }
+  letructor(duration: number = 0, delay: number = 0) { this.totalTime = duration + delay; }
   private _onFinish() {
     if (!this._finished) {
       this._finished = true;
@@ -173,7 +173,7 @@ export class NoopAnimationPlayer implements AnimationPlayer {
 
   /** @internal */
   triggerCallback(phaseName: string): void {
-    const methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+    let methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
     methods.forEach(fn => fn());
     methods.length = 0;
   }

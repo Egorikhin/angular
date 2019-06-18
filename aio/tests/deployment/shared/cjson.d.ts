@@ -1,3 +1,3 @@
 declare module 'cjson' {
-  const load: (path: string) => { [key: string]: any };
+  let load: (path: string) => { [key: string]: any };
 }

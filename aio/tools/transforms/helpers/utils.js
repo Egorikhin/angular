@@ -5,7 +5,7 @@ module.exports = {
    * @param {Function} mapper
    */
   mapObject(obj, mapper) {
-    const mappedObj = {};
+    let mappedObj = {};
     Object.keys(obj).forEach(key => { mappedObj[key] = mapper(key, obj[key]); });
     return mappedObj;
   },
@@ -16,7 +16,7 @@ module.exports = {
    * @param {string} str
    */
   parseAttributes(str) {
-    const attrMap = {};
+    let attrMap = {};
     let index = 0;
 
     skipSpace();
@@ -27,11 +27,11 @@ module.exports = {
     }
 
     function takeAttribute() {
-      const key = takeKey();
+      let key = takeKey();
       skipSpace();
       if (tryEquals()) {
         skipSpace();
-        const quote = tryQuote();
+        let quote = tryQuote();
         attrMap[key] = takeValue(quote);
         // skip the closing quote or whitespace
         index++;
@@ -63,7 +63,7 @@ module.exports = {
     }
 
     function tryQuote() {
-      const quote = str[index];
+      let quote = str[index];
       if (['"', '\''].indexOf(quote) !== -1) {
         index++;
         return quote;

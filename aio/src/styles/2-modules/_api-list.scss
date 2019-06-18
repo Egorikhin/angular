@@ -127,7 +127,7 @@ aio-api-list {
   width: 16px;
 
   // SYMBOL TYPES
-  // Symbol mapping variables in *constants*
+  // Symbol mapping variables in *letants*
   @each $name, $symbol in $api-symbols {
     &.#{$name} {
       background: map-get($symbol, background);

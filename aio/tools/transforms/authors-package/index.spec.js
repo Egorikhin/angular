@@ -1,8 +1,8 @@
 /* eslint jasmine/prefer-toHaveBeenCalledWith:0 */
-const fs = require('fs');
-const {resolve} = require('canonical-path');
-const {generateDocs} = require('./index.js');
-const { DOCS_OUTPUT_PATH } = require('../config');
+let fs = require('fs');
+let {resolve} = require('canonical-path');
+let {generateDocs} = require('./index.js');
+let { DOCS_OUTPUT_PATH } = require('../config');
 
 describe('authors-package (integration tests)', () => {
   let originalJasmineTimeout;

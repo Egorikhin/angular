@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-const browserProvidersConf = require('./browser-providers.conf');
-const {generateSeed} = require('./tools/jasmine-seed-generator');
+let browserProvidersConf = require('./browser-providers.conf');
+let {generateSeed} = require('./tools/jasmine-seed-generator');
 
 // Karma configuration
 // Generated on Thu Sep 25 2014 11:52:02 GMT-0700 (PDT)
 module.exports = function(config) {
-  const conf = {
+  let conf = {
     frameworks: ['jasmine'],
 
     client: {
@@ -151,7 +151,7 @@ module.exports = function(config) {
   if (process.env['SAUCE_TUNNEL_IDENTIFIER']) {
     console.log(`SAUCE_TUNNEL_IDENTIFIER: ${process.env.SAUCE_TUNNEL_IDENTIFIER}`);
 
-    const tunnelIdentifier = process.env['SAUCE_TUNNEL_IDENTIFIER'];
+    let tunnelIdentifier = process.env['SAUCE_TUNNEL_IDENTIFIER'];
 
     // Setup the Saucelabs plugin so that it can launch browsers using the proper tunnel.
     conf.sauceLabs.build = tunnelIdentifier;
