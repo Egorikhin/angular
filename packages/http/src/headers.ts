@@ -43,7 +43,7 @@ export class Headers {
   _normalizedNames: Map<string, string> = new Map();
 
   // TODO(vicb): any -> string|string[]
-  constructor(headers?: Headers|{[name: string]: any}|null) {
+  letructor(headers?: Headers|{[name: string]: any}|null) {
     if (!headers) {
       return;
     }
@@ -56,7 +56,7 @@ export class Headers {
     }
 
     Object.keys(headers).forEach((name: string) => {
-      const values: string[] = Array.isArray(headers[name]) ? headers[name] : [headers[name]];
+      let values: string[] = Array.isArray(headers[name]) ? headers[name] : [headers[name]];
       this.delete(name);
       values.forEach(value => this.append(name, value));
     });
@@ -66,13 +66,13 @@ export class Headers {
    * Returns a new Headers instance from the given DOMString of Response Headers
    */
   static fromResponseHeaderString(headersString: string): Headers {
-    const headers = new Headers();
+    let headers = new Headers();
 
     headersString.split('\n').forEach(line => {
-      const index = line.indexOf(':');
+      let index = line.indexOf(':');
       if (index > 0) {
-        const name = line.slice(0, index);
-        const value = line.slice(index + 1).trim();
+        let name = line.slice(0, index);
+        let value = line.slice(index + 1).trim();
         headers.set(name, value);
       }
     });
@@ -84,7 +84,7 @@ export class Headers {
    * Appends a header to existing list of header values for a given header name.
    */
   append(name: string, value: string): void {
-    const values = this.getAll(name);
+    let values = this.getAll(name);
 
     if (values === null) {
       this.set(name, value);
@@ -97,7 +97,7 @@ export class Headers {
    * Deletes all header values for the given name.
    */
   delete (name: string): void {
-    const lcName = name.toLowerCase();
+    let lcName = name.toLowerCase();
     this._normalizedNames.delete(lcName);
     this._headers.delete(lcName);
   }
@@ -112,7 +112,7 @@ export class Headers {
    * Returns first header that matches given name.
    */
   get(name: string): string|null {
-    const values = this.getAll(name);
+    let values = this.getAll(name);
 
     if (values === null) {
       return null;
@@ -155,10 +155,10 @@ export class Headers {
    */
   // TODO(vicb): returns {[name: string]: string[]}
   toJSON(): {[name: string]: any} {
-    const serialized: {[name: string]: string[]} = {};
+    let serialized: {[name: string]: string[]} = {};
 
     this._headers.forEach((values: string[], name: string) => {
-      const split: string[] = [];
+      let split: string[] = [];
       values.forEach(v => split.push(...v.split(',')));
       serialized[this._normalizedNames.get(name) !] = split;
     });
@@ -179,7 +179,7 @@ export class Headers {
   entries() { throw new Error('"entries" method is not implemented on Headers class'); }
 
   private mayBeSetNormalizedName(name: string): void {
-    const lcName = name.toLowerCase();
+    let lcName = name.toLowerCase();
 
     if (!this._normalizedNames.has(lcName)) {
       this._normalizedNames.set(lcName, name);

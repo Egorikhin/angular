@@ -47,7 +47,7 @@ if (isBrowser) {
       afterEach(() => { expect(actuallyDone).toEqual(true); });
 
       it('should run async tests with ResourceLoaders', async(() => {
-           const resourceLoader = new ResourceLoaderImpl();
+           let resourceLoader = new ResourceLoaderImpl();
            resourceLoader
                .get('/base/angular/packages/platform-browser/test/static_assets/test.html')
                .then(() => { actuallyDone = true; });
@@ -88,7 +88,7 @@ if (isBrowser) {
         TestBed.configureTestingModule({
           imports: [TestModule],
         });
-        const compiler = TestBed.get(Compiler) as Compiler;
+        let compiler = TestBed.get(Compiler) as Compiler;
         expect(compiler.getModuleId(TestModule)).toBe('test-module');
       });
     });
@@ -96,16 +96,16 @@ if (isBrowser) {
     describe('errors', () => {
       let originalJasmineIt: any;
 
-      const patchJasmineIt = () => {
+      let patchJasmineIt = () => {
         let resolve: (result: any) => void;
         let reject: (error: any) => void;
-        const promise = new Promise((res, rej) => {
+        let promise = new Promise((res, rej) => {
           resolve = res;
           reject = rej;
         });
         originalJasmineIt = jasmine.getEnv().it;
         jasmine.getEnv().it = (description: string, fn: (done: DoneFn) => void): any => {
-          const done = (() => resolve(null)) as DoneFn;
+          let done = (() => resolve(null)) as DoneFn;
           done.fail = reject;
           fn(done);
           return null;
@@ -113,10 +113,10 @@ if (isBrowser) {
         return promise;
       };
 
-      const restoreJasmineIt = () => { jasmine.getEnv().it = originalJasmineIt; };
+      let restoreJasmineIt = () => { jasmine.getEnv().it = originalJasmineIt; };
 
       it('should fail when an ResourceLoader fails', done => {
-        const itPromise = patchJasmineIt();
+        let itPromise = patchJasmineIt();
 
         it('should fail with an error from a promise', async(() => {
              TestBed.configureTestingModule({declarations: [BadTemplateUrl]});
@@ -138,7 +138,7 @@ if (isBrowser) {
       it('should allow an external templateUrl', async(() => {
            TestBed.configureTestingModule({declarations: [ExternalTemplateComp]});
            TestBed.compileComponents().then(() => {
-             const componentFixture = TestBed.createComponent(ExternalTemplateComp);
+             let componentFixture = TestBed.createComponent(ExternalTemplateComp);
              componentFixture.detectChanges();
              expect(componentFixture.nativeElement.textContent).toEqual('from external template');
            });

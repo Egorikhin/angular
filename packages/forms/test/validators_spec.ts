@@ -17,18 +17,18 @@ import {first, map} from 'rxjs/operators';
 (function() {
   function validator(key: string, error: any): ValidatorFn {
     return (c: AbstractControl) => {
-      const r: ValidationErrors = {};
+      let r: ValidationErrors = {};
       r[key] = error;
       return r;
     };
   }
 
   class AsyncValidatorDirective implements AsyncValidator {
-    constructor(private expected: string, private error: any) {}
+    letructor(private expected: string, private error: any) {}
 
     validate(c: any): Observable<ValidationErrors> {
       return Observable.create((obs: any) => {
-        const error = this.expected !== c.value ? this.error : null;
+        let error = this.expected !== c.value ? this.error : null;
         obs.next(error);
         obs.complete();
       });
@@ -189,12 +189,12 @@ import {first, map} from 'rxjs/operators';
       });
 
       it('should not error when FormArray has valid length', () => {
-        const fa = new FormArray([new FormControl(''), new FormControl('')]);
+        let fa = new FormArray([new FormControl(''), new FormControl('')]);
         expect(Validators.minLength(2)(fa)).toBeNull();
       });
 
       it('should error when FormArray has invalid length', () => {
-        const fa = new FormArray([new FormControl('')]);
+        let fa = new FormArray([new FormControl('')]);
         expect(Validators.minLength(2)(fa)).toEqual({
           'minlength': {'requiredLength': 2, 'actualLength': 1}
         });
@@ -221,12 +221,12 @@ import {first, map} from 'rxjs/operators';
       });
 
       it('should not error when FormArray has valid length', () => {
-        const fa = new FormArray([new FormControl(''), new FormControl('')]);
+        let fa = new FormArray([new FormControl(''), new FormControl('')]);
         expect(Validators.maxLength(2)(fa)).toBeNull();
       });
 
       it('should error when FormArray has invalid length', () => {
-        const fa = new FormArray([new FormControl(''), new FormControl('')]);
+        let fa = new FormArray([new FormControl(''), new FormControl('')]);
         expect(Validators.maxLength(1)(fa)).toEqual({
           'maxlength': {'requiredLength': 1, 'actualLength': 2}
         });
@@ -257,12 +257,12 @@ import {first, map} from 'rxjs/operators';
       });
 
       it('should accept RegExp object', () => {
-        const pattern: RegExp = new RegExp('[a-zA-Z ]+');
+        let pattern: RegExp = new RegExp('[a-zA-Z ]+');
         expect(Validators.pattern(pattern)(new FormControl('aaAA'))).toBeNull();
       });
 
       it('should error on failure to match RegExp object', () => {
-        const pattern: RegExp = new RegExp('^[a-zA-Z ]*$');
+        let pattern: RegExp = new RegExp('^[a-zA-Z ]*$');
         expect(Validators.pattern(pattern)(new FormControl('aaa0'))).toEqual({
           'pattern': {'requiredPattern': '/^[a-zA-Z ]*$/', 'actualValue': 'aaa0'}
         });
@@ -292,22 +292,22 @@ import {first, map} from 'rxjs/operators';
          () => { expect(Validators.compose(null !)).toBe(null); });
 
       it('should collect errors from all the validators', () => {
-        const c = Validators.compose([validator('a', true), validator('b', true)]) !;
+        let c = Validators.compose([validator('a', true), validator('b', true)]) !;
         expect(c(new FormControl(''))).toEqual({'a': true, 'b': true});
       });
 
       it('should run validators left to right', () => {
-        const c = Validators.compose([validator('a', 1), validator('a', 2)]) !;
+        let c = Validators.compose([validator('a', 1), validator('a', 2)]) !;
         expect(c(new FormControl(''))).toEqual({'a': 2});
       });
 
       it('should return null when no errors', () => {
-        const c = Validators.compose([Validators.nullValidator, Validators.nullValidator]) !;
+        let c = Validators.compose([Validators.nullValidator, Validators.nullValidator]) !;
         expect(c(new FormControl(''))).toBeNull();
       });
 
       it('should ignore nulls', () => {
-        const c = Validators.compose([null !, Validators.required]) !;
+        let c = Validators.compose([null !, Validators.required]) !;
         expect(c(new FormControl(''))).toEqual({'required': true});
       });
     });
@@ -317,7 +317,7 @@ import {first, map} from 'rxjs/operators';
       describe('promises', () => {
         function promiseValidator(response: {[key: string]: any}): AsyncValidatorFn {
           return (c: AbstractControl) => {
-            const res = c.value != 'expected' ? response : null;
+            let res = c.value != 'expected' ? response : null;
             return Promise.resolve(res);
           };
         }
@@ -326,7 +326,7 @@ import {first, map} from 'rxjs/operators';
            () => { expect(Validators.composeAsync(null !)).toBeNull(); });
 
         it('should collect errors from all the validators', fakeAsync(() => {
-             const v = Validators.composeAsync(
+             let v = Validators.composeAsync(
                  [promiseValidator({'one': true}), promiseValidator({'two': true})]) !;
 
              let errorMap: {[key: string]: any} = undefined !;
@@ -339,7 +339,7 @@ import {first, map} from 'rxjs/operators';
            }));
 
         it('should normalize and evaluate async validator-directives correctly', fakeAsync(() => {
-             const v = Validators.composeAsync([normalizeAsyncValidator(
+             let v = Validators.composeAsync([normalizeAsyncValidator(
                  new AsyncValidatorDirective('expected', {'one': true}))]) !;
 
              let errorMap: {[key: string]: any} = undefined !;
@@ -352,7 +352,7 @@ import {first, map} from 'rxjs/operators';
            }));
 
         it('should return null when no errors', fakeAsync(() => {
-             const v = Validators.composeAsync([promiseValidator({'one': true})]) !;
+             let v = Validators.composeAsync([promiseValidator({'one': true})]) !;
 
              let errorMap: {[key: string]: any} = undefined !;
              (v(new FormControl('expected')) as Observable<ValidationErrors|null>)
@@ -364,7 +364,7 @@ import {first, map} from 'rxjs/operators';
            }));
 
         it('should ignore nulls', fakeAsync(() => {
-             const v = Validators.composeAsync([promiseValidator({'one': true}), null !]) !;
+             let v = Validators.composeAsync([promiseValidator({'one': true}), null !]) !;
 
              let errorMap: {[key: string]: any} = undefined !;
              (v(new FormControl('invalid')) as Observable<ValidationErrors|null>)
@@ -379,7 +379,7 @@ import {first, map} from 'rxjs/operators';
       describe('observables', () => {
         function observableValidator(response: {[key: string]: any}): AsyncValidatorFn {
           return (c: AbstractControl) => {
-            const res = c.value != 'expected' ? response : null;
+            let res = c.value != 'expected' ? response : null;
             return of (res);
           };
         }
@@ -388,7 +388,7 @@ import {first, map} from 'rxjs/operators';
            () => { expect(Validators.composeAsync(null !)).toBeNull(); });
 
         it('should collect errors from all the validators', () => {
-          const v = Validators.composeAsync(
+          let v = Validators.composeAsync(
               [observableValidator({'one': true}), observableValidator({'two': true})]) !;
 
           let errorMap: {[key: string]: any} = undefined !;
@@ -400,7 +400,7 @@ import {first, map} from 'rxjs/operators';
         });
 
         it('should normalize and evaluate async validator-directives correctly', () => {
-          const v = Validators.composeAsync(
+          let v = Validators.composeAsync(
               [normalizeAsyncValidator(new AsyncValidatorDirective('expected', {'one': true}))]) !;
 
           let errorMap: {[key: string]: any} = undefined !;
@@ -412,7 +412,7 @@ import {first, map} from 'rxjs/operators';
         });
 
         it('should return null when no errors', () => {
-          const v = Validators.composeAsync([observableValidator({'one': true})]) !;
+          let v = Validators.composeAsync([observableValidator({'one': true})]) !;
 
           let errorMap: {[key: string]: any} = undefined !;
           (v(new FormControl('expected')) as Observable<ValidationErrors|null>)
@@ -423,7 +423,7 @@ import {first, map} from 'rxjs/operators';
         });
 
         it('should ignore nulls', () => {
-          const v = Validators.composeAsync([observableValidator({'one': true}), null !]) !;
+          let v = Validators.composeAsync([observableValidator({'one': true}), null !]) !;
 
           let errorMap: {[key: string]: any} = undefined !;
           (v(new FormControl('invalid')) as Observable<ValidationErrors|null>)
@@ -438,7 +438,7 @@ import {first, map} from 'rxjs/operators';
                return (c: AbstractControl) => { return timer(time).pipe(map(() => errorMap)); };
              }
 
-             const v = Validators.composeAsync(
+             let v = Validators.composeAsync(
                  [getTimerObs(100, {one: true}), getTimerObs(200, {two: true})]) !;
 
              let errorMap: {[key: string]: any} = undefined !;

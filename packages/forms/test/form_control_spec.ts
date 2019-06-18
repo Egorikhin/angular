@@ -17,9 +17,9 @@ import {FormArray} from '@angular/forms/src/model';
   function asyncValidator(expected: string, timeouts = {}) {
     return (c: FormControl) => {
       let resolve: (result: any) => void = undefined !;
-      const promise = new Promise(res => { resolve = res; });
-      const t = (timeouts as any)[c.value] != null ? (timeouts as any)[c.value] : 0;
-      const res = c.value != expected ? {'async': true} : null;
+      let promise = new Promise(res => { resolve = res; });
+      let t = (timeouts as any)[c.value] != null ? (timeouts as any)[c.value] : 0;
+      let res = c.value != expected ? {'async': true} : null;
 
       if (t == 0) {
         resolve(res);
@@ -32,7 +32,7 @@ import {FormArray} from '@angular/forms/src/model';
   }
 
   function asyncValidatorReturningObservable(c: FormControl) {
-    const e = new EventEmitter();
+    let e = new EventEmitter();
     Promise.resolve(null).then(() => { e.emit({'async': true}); });
     return e;
   }
@@ -43,13 +43,13 @@ import {FormArray} from '@angular/forms/src/model';
 
   describe('FormControl', () => {
     it('should default the value to null', () => {
-      const c = new FormControl();
+      let c = new FormControl();
       expect(c.value).toBe(null);
     });
 
     describe('markAllAsTouched', () => {
       it('should mark only the control itself as touched', () => {
-        const control = new FormControl('');
+        let control = new FormControl('');
         expect(control.touched).toBe(false);
         control.markAllAsTouched();
         expect(control.touched).toBe(true);
@@ -58,27 +58,27 @@ import {FormArray} from '@angular/forms/src/model';
 
     describe('boxed values', () => {
       it('should support valid boxed values on creation', () => {
-        const c = new FormControl({value: 'some val', disabled: true}, null !, null !);
+        let c = new FormControl({value: 'some val', disabled: true}, null !, null !);
         expect(c.disabled).toBe(true);
         expect(c.value).toBe('some val');
         expect(c.status).toBe('DISABLED');
       });
 
       it('should honor boxed value with disabled control when validating', () => {
-        const c = new FormControl({value: '', disabled: true}, Validators.required);
+        let c = new FormControl({value: '', disabled: true}, Validators.required);
         expect(c.disabled).toBe(true);
         expect(c.valid).toBe(false);
         expect(c.status).toBe('DISABLED');
       });
 
       it('should not treat objects as boxed values if they have more than two props', () => {
-        const c = new FormControl({value: '', disabled: true, test: 'test'}, null !, null !);
+        let c = new FormControl({value: '', disabled: true, test: 'test'}, null !, null !);
         expect(c.value).toEqual({value: '', disabled: true, test: 'test'});
         expect(c.disabled).toBe(false);
       });
 
       it('should not treat objects as boxed values if disabled is missing', () => {
-        const c = new FormControl({value: '', test: 'test'}, null !, null !);
+        let c = new FormControl({value: '', test: 'test'}, null !, null !);
         expect(c.value).toEqual({value: '', test: 'test'});
         expect(c.disabled).toBe(false);
       });
@@ -88,23 +88,23 @@ import {FormArray} from '@angular/forms/src/model';
     describe('updateOn', () => {
 
       it('should default to on change', () => {
-        const c = new FormControl('');
+        let c = new FormControl('');
         expect(c.updateOn).toEqual('change');
       });
 
       it('should default to on change with an options obj', () => {
-        const c = new FormControl('', {validators: Validators.required});
+        let c = new FormControl('', {validators: Validators.required});
         expect(c.updateOn).toEqual('change');
       });
 
       it('should set updateOn when updating on blur', () => {
-        const c = new FormControl('', {updateOn: 'blur'});
+        let c = new FormControl('', {updateOn: 'blur'});
         expect(c.updateOn).toEqual('blur');
       });
 
       describe('in groups and arrays', () => {
         it('should default to group updateOn when not set in control', () => {
-          const g =
+          let g =
               new FormGroup({one: new FormControl(), two: new FormControl()}, {updateOn: 'blur'});
 
           expect(g.get('one') !.updateOn).toEqual('blur');
@@ -112,14 +112,14 @@ import {FormArray} from '@angular/forms/src/model';
         });
 
         it('should default to array updateOn when not set in control', () => {
-          const a = new FormArray([new FormControl(), new FormControl()], {updateOn: 'blur'});
+          let a = new FormArray([new FormControl(), new FormControl()], {updateOn: 'blur'});
 
           expect(a.get([0]) !.updateOn).toEqual('blur');
           expect(a.get([1]) !.updateOn).toEqual('blur');
         });
 
         it('should set updateOn with nested groups', () => {
-          const g = new FormGroup(
+          let g = new FormGroup(
               {
                 group: new FormGroup({one: new FormControl(), two: new FormControl()}),
               },
@@ -131,7 +131,7 @@ import {FormArray} from '@angular/forms/src/model';
         });
 
         it('should set updateOn with nested arrays', () => {
-          const g = new FormGroup(
+          let g = new FormGroup(
               {
                 arr: new FormArray([new FormControl(), new FormControl()]),
               },
@@ -143,7 +143,7 @@ import {FormArray} from '@angular/forms/src/model';
         });
 
         it('should allow control updateOn to override group updateOn', () => {
-          const g = new FormGroup(
+          let g = new FormGroup(
               {one: new FormControl('', {updateOn: 'change'}), two: new FormControl()},
               {updateOn: 'blur'});
 
@@ -152,7 +152,7 @@ import {FormArray} from '@angular/forms/src/model';
         });
 
         it('should set updateOn with complex setup', () => {
-          const g = new FormGroup({
+          let g = new FormGroup({
             group: new FormGroup(
                 {one: new FormControl('', {updateOn: 'change'}), two: new FormControl()},
                 {updateOn: 'blur'}),
@@ -174,18 +174,18 @@ import {FormArray} from '@angular/forms/src/model';
     describe('validator', () => {
 
       it('should run validator with the initial value', () => {
-        const c = new FormControl('value', Validators.required);
+        let c = new FormControl('value', Validators.required);
         expect(c.valid).toEqual(true);
       });
 
       it('should rerun the validator when the value changes', () => {
-        const c = new FormControl('value', Validators.required);
+        let c = new FormControl('value', Validators.required);
         c.setValue(null);
         expect(c.valid).toEqual(false);
       });
 
       it('should support arrays of validator functions if passed', () => {
-        const c = new FormControl('value', [Validators.required, Validators.minLength(3)]);
+        let c = new FormControl('value', [Validators.required, Validators.minLength(3)]);
         c.setValue('a');
         expect(c.valid).toEqual(false);
 
@@ -194,7 +194,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should support single validator from options obj', () => {
-        const c = new FormControl(null, {validators: Validators.required});
+        let c = new FormControl(null, {validators: Validators.required});
         expect(c.valid).toEqual(false);
         expect(c.errors).toEqual({required: true});
 
@@ -203,7 +203,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should support multiple validators from options obj', () => {
-        const c =
+        let c =
             new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]});
         expect(c.valid).toEqual(false);
         expect(c.errors).toEqual({required: true});
@@ -217,22 +217,22 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should support a null validators value', () => {
-        const c = new FormControl(null, {validators: null});
+        let c = new FormControl(null, {validators: null});
         expect(c.valid).toEqual(true);
       });
 
       it('should support an empty options obj', () => {
-        const c = new FormControl(null, {});
+        let c = new FormControl(null, {});
         expect(c.valid).toEqual(true);
       });
 
       it('should return errors', () => {
-        const c = new FormControl(null, Validators.required);
+        let c = new FormControl(null, Validators.required);
         expect(c.errors).toEqual({'required': true});
       });
 
       it('should set single validator', () => {
-        const c = new FormControl(null);
+        let c = new FormControl(null);
         expect(c.valid).toEqual(true);
 
         c.setValidators(Validators.required);
@@ -245,7 +245,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should set multiple validators from array', () => {
-        const c = new FormControl('');
+        let c = new FormControl('');
         expect(c.valid).toEqual(true);
 
         c.setValidators([Validators.minLength(5), Validators.required]);
@@ -261,7 +261,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should clear validators', () => {
-        const c = new FormControl('', Validators.required);
+        let c = new FormControl('', Validators.required);
         expect(c.valid).toEqual(false);
 
         c.clearValidators();
@@ -272,7 +272,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should add after clearing', () => {
-        const c = new FormControl('', Validators.required);
+        let c = new FormControl('', Validators.required);
         expect(c.valid).toEqual(false);
 
         c.clearValidators();
@@ -285,7 +285,7 @@ import {FormArray} from '@angular/forms/src/model';
 
     describe('asyncValidator', () => {
       it('should run validator with the initial value', fakeAsync(() => {
-           const c = new FormControl('value', null !, asyncValidator('expected'));
+           let c = new FormControl('value', null !, asyncValidator('expected'));
            tick();
 
            expect(c.valid).toEqual(false);
@@ -293,7 +293,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should support validators returning observables', fakeAsync(() => {
-           const c = new FormControl('value', null !, asyncValidatorReturningObservable);
+           let c = new FormControl('value', null !, asyncValidatorReturningObservable);
            tick();
 
            expect(c.valid).toEqual(false);
@@ -301,7 +301,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should rerun the validator when the value changes', fakeAsync(() => {
-           const c = new FormControl('value', null !, asyncValidator('expected'));
+           let c = new FormControl('value', null !, asyncValidator('expected'));
 
            c.setValue('expected');
            tick();
@@ -310,7 +310,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should run the async validator only when the sync validator passes', fakeAsync(() => {
-           const c = new FormControl('', Validators.required, asyncValidator('expected'));
+           let c = new FormControl('', Validators.required, asyncValidator('expected'));
            tick();
 
            expect(c.errors).toEqual({'required': true});
@@ -322,7 +322,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should mark the control as pending while running the async validation', fakeAsync(() => {
-           const c = new FormControl('', null !, asyncValidator('expected'));
+           let c = new FormControl('', null !, asyncValidator('expected'));
 
            expect(c.pending).toEqual(true);
 
@@ -332,7 +332,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should only use the latest async validation run', fakeAsync(() => {
-           const c = new FormControl(
+           let c = new FormControl(
                '', null !, asyncValidator('expected', {'long': 200, 'expected': 100}));
 
            c.setValue('long');
@@ -344,7 +344,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should support arrays of async validator functions if passed', fakeAsync(() => {
-           const c =
+           let c =
                new FormControl('value', null !, [asyncValidator('expected'), otherAsyncValidator]);
            tick();
 
@@ -353,7 +353,7 @@ import {FormArray} from '@angular/forms/src/model';
 
 
       it('should support a single async validator from options obj', fakeAsync(() => {
-           const c = new FormControl('value', {asyncValidators: asyncValidator('expected')});
+           let c = new FormControl('value', {asyncValidators: asyncValidator('expected')});
            expect(c.pending).toEqual(true);
            tick();
 
@@ -362,7 +362,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should support multiple async validators from options obj', fakeAsync(() => {
-           const c = new FormControl(
+           let c = new FormControl(
                'value', {asyncValidators: [asyncValidator('expected'), otherAsyncValidator]});
            expect(c.pending).toEqual(true);
            tick();
@@ -372,7 +372,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should support a mix of validators from options obj', fakeAsync(() => {
-           const c = new FormControl(
+           let c = new FormControl(
                '', {validators: Validators.required, asyncValidators: asyncValidator('expected')});
            tick();
            expect(c.errors).toEqual({required: true});
@@ -386,7 +386,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should add single async validator', fakeAsync(() => {
-           const c = new FormControl('value', null !);
+           let c = new FormControl('value', null !);
 
            c.setAsyncValidators(asyncValidator('expected'));
            expect(c.asyncValidator).not.toEqual(null);
@@ -398,7 +398,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should add async validator from array', fakeAsync(() => {
-           const c = new FormControl('value', null !);
+           let c = new FormControl('value', null !);
 
            c.setAsyncValidators([asyncValidator('expected')]);
            expect(c.asyncValidator).not.toEqual(null);
@@ -410,7 +410,7 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should clear async validators', fakeAsync(() => {
-           const c = new FormControl('value', [asyncValidator('expected'), otherAsyncValidator]);
+           let c = new FormControl('value', [asyncValidator('expected'), otherAsyncValidator]);
 
            c.clearValidators();
 
@@ -419,7 +419,7 @@ import {FormArray} from '@angular/forms/src/model';
 
       it('should not change validity state if control is disabled while async validating',
          fakeAsync(() => {
-           const c = new FormControl('value', [asyncValidator('expected')]);
+           let c = new FormControl('value', [asyncValidator('expected')]);
            c.disable();
            tick();
            expect(c.status).toEqual('DISABLED');
@@ -428,12 +428,12 @@ import {FormArray} from '@angular/forms/src/model';
 
     describe('dirty', () => {
       it('should be false after creating a control', () => {
-        const c = new FormControl('value');
+        let c = new FormControl('value');
         expect(c.dirty).toEqual(false);
       });
 
       it('should be true after changing the value of the control', () => {
-        const c = new FormControl('value');
+        let c = new FormControl('value');
         c.markAsDirty();
         expect(c.dirty).toEqual(true);
       });
@@ -441,12 +441,12 @@ import {FormArray} from '@angular/forms/src/model';
 
     describe('touched', () => {
       it('should be false after creating a control', () => {
-        const c = new FormControl('value');
+        let c = new FormControl('value');
         expect(c.touched).toEqual(false);
       });
 
       it('should be true after markAsTouched runs', () => {
-        const c = new FormControl('value');
+        let c = new FormControl('value');
         c.markAsTouched();
         expect(c.touched).toEqual(true);
       });
@@ -594,7 +594,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should not set the parent when explicitly specified', () => {
-        const g = new FormGroup({'one': c});
+        let g = new FormGroup({'one': c});
         c.patchValue('newValue', {onlySelf: true});
         expect(g.value).toEqual({'one': 'initial value'});
       });
@@ -616,7 +616,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should update the value of any parent controls with passed value', () => {
-        const g = new FormGroup({'one': c});
+        let g = new FormGroup({'one': c});
         c.setValue('new value');
         expect(g.value).toEqual({'one': 'new value'});
 
@@ -625,7 +625,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should update the value of any parent controls with null value', () => {
-        const g = new FormGroup({'one': c});
+        let g = new FormGroup({'one': c});
         c.setValue('new value');
         expect(g.value).toEqual({'one': 'new value'});
 
@@ -642,7 +642,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should set the parent pristine state if all pristine', () => {
-        const g = new FormGroup({'one': c});
+        let g = new FormGroup({'one': c});
         c.markAsDirty();
         expect(g.pristine).toBe(false);
 
@@ -651,8 +651,8 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should not set the parent pristine state if it has other dirty controls', () => {
-        const c2 = new FormControl('two');
-        const g = new FormGroup({'one': c, 'two': c2});
+        let c2 = new FormControl('two');
+        let g = new FormGroup({'one': c, 'two': c2});
         c.markAsDirty();
         c2.markAsDirty();
 
@@ -669,7 +669,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should set the parent untouched state if all untouched', () => {
-        const g = new FormGroup({'one': c});
+        let g = new FormGroup({'one': c});
         c.markAsTouched();
         expect(g.untouched).toBe(false);
 
@@ -678,8 +678,8 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should not set the parent untouched state if other touched controls', () => {
-        const c2 = new FormControl('two');
-        const g = new FormGroup({'one': c, 'two': c2});
+        let c2 = new FormControl('two');
+        let g = new FormGroup({'one': c, 'two': c2});
         c.markAsTouched();
         c2.markAsTouched();
 
@@ -780,9 +780,9 @@ import {FormArray} from '@angular/forms/src/model';
          }));
 
       it('should fire an event after the status has been updated to pending', fakeAsync(() => {
-           const c = new FormControl('old', Validators.required, asyncValidator('expected'));
+           let c = new FormControl('old', Validators.required, asyncValidator('expected'));
 
-           const log: any[] /** TODO #9100 */ = [];
+           let log: any[] /** TODO #9100 */ = [];
            c.valueChanges.subscribe({next: (value: any) => log.push(`value: '${value}'`)});
 
            c.statusChanges.subscribe({next: (status: any) => log.push(`status: '${status}'`)});
@@ -834,7 +834,7 @@ import {FormArray} from '@angular/forms/src/model';
 
     describe('setErrors', () => {
       it('should set errors on a control', () => {
-        const c = new FormControl('someValue');
+        let c = new FormControl('someValue');
 
         c.setErrors({'someError': true});
 
@@ -843,7 +843,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should reset the errors and validity when the value changes', () => {
-        const c = new FormControl('someValue', Validators.required);
+        let c = new FormControl('someValue', Validators.required);
 
         c.setErrors({'someError': true});
         c.setValue('');
@@ -852,8 +852,8 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should update the parent group\'s validity', () => {
-        const c = new FormControl('someValue');
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('someValue');
+        let g = new FormGroup({'one': c});
 
         expect(g.valid).toEqual(true);
 
@@ -863,8 +863,8 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should not reset parent\'s errors', () => {
-        const c = new FormControl('someValue');
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('someValue');
+        let g = new FormGroup({'one': c});
 
         g.setErrors({'someGroupError': true});
         c.setErrors({'someError': true});
@@ -873,8 +873,8 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should reset errors when updating a value', () => {
-        const c = new FormControl('oldValue');
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('oldValue');
+        let g = new FormGroup({'one': c});
 
         g.setErrors({'someGroupError': true});
         c.setErrors({'someError': true});
@@ -889,7 +889,7 @@ import {FormArray} from '@angular/forms/src/model';
     describe('disable() & enable()', () => {
 
       it('should mark the control as disabled', () => {
-        const c = new FormControl(null);
+        let c = new FormControl(null);
         expect(c.disabled).toBe(false);
         expect(c.valid).toBe(true);
 
@@ -903,7 +903,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should set the control status as disabled', () => {
-        const c = new FormControl(null);
+        let c = new FormControl(null);
         expect(c.status).toEqual('VALID');
 
         c.disable();
@@ -914,7 +914,7 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should retain the original value when disabled', () => {
-        const c = new FormControl('some value');
+        let c = new FormControl('some value');
         expect(c.value).toEqual('some value');
 
         c.disable();
@@ -925,8 +925,8 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should keep the disabled control in the group, but return false for contains()', () => {
-        const c = new FormControl('');
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('');
+        let g = new FormGroup({'one': c});
 
         expect(g.get('one')).toBeDefined();
         expect(g.contains('one')).toBe(true);
@@ -937,9 +937,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should mark the parent group disabled if all controls are disabled', () => {
-        const c = new FormControl();
-        const c2 = new FormControl();
-        const g = new FormGroup({'one': c, 'two': c2});
+        let c = new FormControl();
+        let c2 = new FormControl();
+        let g = new FormGroup({'one': c, 'two': c2});
         expect(g.enabled).toBe(true);
 
         c.disable();
@@ -953,9 +953,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should update the parent group value when child control status changes', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const g = new FormGroup({'one': c, 'two': c2});
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let g = new FormGroup({'one': c, 'two': c2});
         expect(g.value).toEqual({'one': 'one', 'two': 'two'});
 
         c.disable();
@@ -969,9 +969,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should mark the parent array disabled if all controls are disabled', () => {
-        const c = new FormControl();
-        const c2 = new FormControl();
-        const a = new FormArray([c, c2]);
+        let c = new FormControl();
+        let c2 = new FormControl();
+        let a = new FormArray([c, c2]);
         expect(a.enabled).toBe(true);
 
         c.disable();
@@ -985,9 +985,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should update the parent array value when child control status changes', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const a = new FormArray([c, c2]);
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let a = new FormArray([c, c2]);
         expect(a.value).toEqual(['one', 'two']);
 
         c.disable();
@@ -1001,9 +1001,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should ignore disabled array controls when determining dirtiness', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const a = new FormArray([c, c2]);
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let a = new FormArray([c, c2]);
         c.markAsDirty();
         expect(a.dirty).toBe(true);
 
@@ -1016,9 +1016,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should not make a dirty array not dirty when disabling controls', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const a = new FormArray([c, c2]);
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let a = new FormArray([c, c2]);
 
         a.markAsDirty();
         expect(a.dirty).toBe(true);
@@ -1032,9 +1032,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should ignore disabled controls in validation', () => {
-        const c = new FormControl(null, Validators.required);
-        const c2 = new FormControl(null);
-        const g = new FormGroup({one: c, two: c2});
+        let c = new FormControl(null, Validators.required);
+        let c2 = new FormControl(null);
+        let g = new FormGroup({one: c, two: c2});
         expect(g.valid).toBe(false);
 
         c.disable();
@@ -1045,9 +1045,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should ignore disabled controls when serializing value in a group', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const g = new FormGroup({one: c, two: c2});
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let g = new FormGroup({one: c, two: c2});
         expect(g.value).toEqual({one: 'one', two: 'two'});
 
         c.disable();
@@ -1058,9 +1058,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should ignore disabled controls when serializing value in an array', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const a = new FormArray([c, c2]);
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let a = new FormArray([c, c2]);
         expect(a.value).toEqual(['one', 'two']);
 
         c.disable();
@@ -1071,9 +1071,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should ignore disabled controls when determining dirtiness', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const g = new FormGroup({one: c, two: c2});
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let g = new FormGroup({one: c, two: c2});
         c.markAsDirty();
         expect(g.dirty).toBe(true);
 
@@ -1086,9 +1086,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should not make a dirty group not dirty when disabling controls', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const g = new FormGroup({one: c, two: c2});
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let g = new FormGroup({one: c, two: c2});
 
         g.markAsDirty();
         expect(g.dirty).toBe(true);
@@ -1102,9 +1102,9 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should ignore disabled controls when determining touched state', () => {
-        const c = new FormControl('one');
-        const c2 = new FormControl('two');
-        const g = new FormGroup({one: c, two: c2});
+        let c = new FormControl('one');
+        let c2 = new FormControl('two');
+        let g = new FormGroup({one: c, two: c2});
         c.markAsTouched();
         expect(g.touched).toBe(true);
 
@@ -1117,8 +1117,8 @@ import {FormArray} from '@angular/forms/src/model';
       });
 
       it('should not run validators on disabled controls', () => {
-        const validator = jasmine.createSpy('validator');
-        const c = new FormControl('', validator);
+        let validator = jasmine.createSpy('validator');
+        let c = new FormControl('', validator);
         expect(validator.calls.count()).toEqual(1);
 
         c.disable();
@@ -1133,7 +1133,7 @@ import {FormArray} from '@angular/forms/src/model';
 
       describe('disabled errors', () => {
         it('should clear out the errors when disabled', () => {
-          const c = new FormControl('', Validators.required);
+          let c = new FormControl('', Validators.required);
           expect(c.errors).toEqual({required: true});
 
           c.disable();
@@ -1144,7 +1144,7 @@ import {FormArray} from '@angular/forms/src/model';
         });
 
         it('should clear out async errors when disabled', fakeAsync(() => {
-             const c = new FormControl('', null !, asyncValidator('expected'));
+             let c = new FormControl('', null !, asyncValidator('expected'));
              tick();
              expect(c.errors).toEqual({'async': true});
 
@@ -1188,7 +1188,7 @@ import {FormArray} from '@angular/forms/src/model';
         });
 
         it('should throw when sync validator passed into async validator param', () => {
-          const fn = () => new FormControl('', syncValidator, syncValidator);
+          let fn = () => new FormControl('', syncValidator, syncValidator);
           // test for the specific error since without the error check it would still throw an error
           // but
           // not a meaningful one

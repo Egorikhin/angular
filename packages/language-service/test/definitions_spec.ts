@@ -70,16 +70,16 @@ describe('definitions', () => {
 
   function localReference(code: string) {
     addCode(code, fileName => {
-      const refResult = mockHost.getReferenceMarkers(fileName) !;
-      for (const name in refResult.references) {
-        const references = refResult.references[name];
-        const definitions = refResult.definitions[name];
+      let refResult = mockHost.getReferenceMarkers(fileName) !;
+      for (let name in refResult.references) {
+        let references = refResult.references[name];
+        let definitions = refResult.definitions[name];
         expect(definitions).toBeDefined();  // If this fails the test data is wrong.
-        for (const reference of references) {
-          const definition = ngService.getDefinitionAt(fileName, reference.start);
+        for (let reference of references) {
+          let definition = ngService.getDefinitionAt(fileName, reference.start);
           if (definition) {
             definition.forEach(d => expect(d.fileName).toEqual(fileName));
-            const match = matchingSpan(definition.map(d => d.span), definitions);
+            let match = matchingSpan(definition.map(d => d.span), definitions);
             if (!match) {
               throw new Error(
                   `Expected one of ${stringifySpans(definition.map(d => d.span))} to match one of ${stringifySpans(definitions)}`);
@@ -96,25 +96,25 @@ describe('definitions', () => {
   function reference(referencedFile: string, span: Span, code: string): void;
   function reference(referencedFile: string, definition: string, code: string): void;
   function reference(referencedFile: string, p1?: any, p2?: any): void {
-    const code: string = p2 ? p2 : p1;
-    const definition: string = p2 ? p1 : undefined;
+    let code: string = p2 ? p2 : p1;
+    let definition: string = p2 ? p1 : undefined;
     let span: Span = p2 && p1.start != null ? p1 : undefined;
     if (definition && !span) {
-      const referencedFileMarkers = mockHost.getReferenceMarkers(referencedFile) !;
+      let referencedFileMarkers = mockHost.getReferenceMarkers(referencedFile) !;
       expect(referencedFileMarkers).toBeDefined();  // If this fails the test data is wrong.
-      const spans = referencedFileMarkers.definitions[definition];
+      let spans = referencedFileMarkers.definitions[definition];
       expect(spans).toBeDefined();  // If this fails the test data is wrong.
       span = spans[0];
     }
     addCode(code, fileName => {
-      const refResult = mockHost.getReferenceMarkers(fileName) !;
+      let refResult = mockHost.getReferenceMarkers(fileName) !;
       let tests = 0;
-      for (const name in refResult.references) {
-        const references = refResult.references[name];
+      for (let name in refResult.references) {
+        let references = refResult.references[name];
         expect(reference).toBeDefined();  // If this fails the test data is wrong.
-        for (const reference of references) {
+        for (let reference of references) {
           tests++;
-          const definition = ngService.getDefinitionAt(fileName, reference.start);
+          let definition = ngService.getDefinitionAt(fileName, reference.start);
           if (definition) {
             definition.forEach(d => {
               if (d.fileName.indexOf(referencedFile) < 0) {
@@ -137,9 +137,9 @@ describe('definitions', () => {
   }
 
   function addCode(code: string, cb: (fileName: string, content?: string) => void) {
-    const fileName = '/app/app.component.ts';
-    const originalContent = mockHost.getFileContent(fileName);
-    const newContent = originalContent + code;
+    let fileName = '/app/app.component.ts';
+    let originalContent = mockHost.getFileContent(fileName);
+    let newContent = originalContent + code;
     mockHost.override(fileName, originalContent + code);
     try {
       cb(fileName, newContent);
@@ -150,8 +150,8 @@ describe('definitions', () => {
 });
 
 function matchingSpan(aSpans: Span[], bSpans: Span[]): Span|undefined {
-  for (const a of aSpans) {
-    for (const b of bSpans) {
+  for (let a of aSpans) {
+    for (let b of bSpans) {
       if (a.start == b.start && a.end == b.end) {
         return a;
       }

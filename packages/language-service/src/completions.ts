@@ -15,9 +15,9 @@ import {attributeNames, elementNames, eventNames, propertyNames} from './html_in
 import {Completion, Completions, Span, Symbol, SymbolTable, TemplateSource} from './types';
 import {diagnosticInfoFromTemplateInfo, findTemplateAstAt, flatten, getSelectors, hasTemplateReference, inSpan, removeSuffix, spanOf, uniqueByName} from './utils';
 
-const TEMPLATE_ATTR_PREFIX = '*';
+let TEMPLATE_ATTR_PREFIX = '*';
 
-const hiddenHtmlElements = {
+let hiddenHtmlElements = {
   html: true,
   script: true,
   noscript: true,
@@ -107,7 +107,7 @@ function attributeCompletions(info: TemplateInfo, path: AstPath<HtmlAst>): Compl
 
 function attributeCompletionsForElement(
     info: TemplateInfo, elementName: string, element?: Element): Completions {
-  const attributes = getAttributeInfosForElement(info, elementName, element);
+  let attributes = getAttributeInfosForElement(info, elementName, element);
 
   // Map all the attributes to a completion
   return attributes.map<Completion>(attr => ({
@@ -142,21 +142,21 @@ function getAttributeInfosForElement(
   let {selectors, map: selectorMap} = getSelectors(info);
   if (selectors && selectors.length) {
     // All the attributes that are selectable should be shown.
-    const applicableSelectors =
+    let applicableSelectors =
         selectors.filter(selector => !selector.element || selector.element == elementName);
-    const selectorAndAttributeNames =
+    let selectorAndAttributeNames =
         applicableSelectors.map(selector => ({selector, attrs: selector.attrs.filter(a => !!a)}));
     let attrs = flatten(selectorAndAttributeNames.map<AttrInfo[]>(selectorAndAttr => {
-      const directive = selectorMap.get(selectorAndAttr.selector) !;
-      const result = selectorAndAttr.attrs.map<AttrInfo>(
+      let directive = selectorMap.get(selectorAndAttr.selector) !;
+      let result = selectorAndAttr.attrs.map<AttrInfo>(
           name => ({name, input: name in directive.inputs, output: name in directive.outputs}));
       return result;
     }));
 
     // Add template attribute if a directive contains a template reference
     selectorAndAttributeNames.forEach(selectorAndAttr => {
-      const selector = selectorAndAttr.selector;
-      const directive = selectorMap.get(selector);
+      let selector = selectorAndAttr.selector;
+      let directive = selectorMap.get(selector);
       if (directive && hasTemplateReference(directive.type) && selector.attrs.length &&
           selector.attrs[0]) {
         attrs.push({name: selector.attrs[0], template: true});
@@ -173,7 +173,7 @@ function getAttributeInfosForElement(
     matcher.match(elementSelector, selector => {
       let directive = selectorMap.get(selector);
       if (directive) {
-        const {inputs, outputs} = directive;
+        let {inputs, outputs} = directive;
         attrs.push(...Object.keys(inputs).map(name => ({name: inputs[name], input: true})));
         attrs.push(...Object.keys(outputs).map(name => ({name: outputs[name], output: true})));
       }
@@ -191,18 +191,18 @@ function getAttributeInfosForElement(
 
 function attributeValueCompletions(
     info: TemplateInfo, position: number, attr: Attribute): Completions|undefined {
-  const path = findTemplateAstAt(info.templateAst, position);
-  const mostSpecific = path.tail;
-  const dinfo = diagnosticInfoFromTemplateInfo(info);
+  let path = findTemplateAstAt(info.templateAst, position);
+  let mostSpecific = path.tail;
+  let dinfo = diagnosticInfoFromTemplateInfo(info);
   if (mostSpecific) {
-    const visitor =
+    let visitor =
         new ExpressionVisitor(info, position, attr, () => getExpressionScope(dinfo, path, false));
     mostSpecific.visit(visitor, null);
     if (!visitor.result || !visitor.result.length) {
       // Try allwoing widening the path
-      const widerPath = findTemplateAstAt(info.templateAst, position, /* allowWidening */ true);
+      let widerPath = findTemplateAstAt(info.templateAst, position, /* allowWidening */ true);
       if (widerPath.tail) {
-        const widerVisitor = new ExpressionVisitor(
+        let widerVisitor = new ExpressionVisitor(
             info, position, attr, () => getExpressionScope(dinfo, widerPath, false));
         widerPath.tail.visit(widerVisitor, null);
         return widerVisitor.result;
@@ -230,7 +230,7 @@ function elementCompletions(info: TemplateInfo, path: AstPath<HtmlAst>): Complet
 
 function entityCompletions(value: string, position: number): Completions|undefined {
   // Look for entity completions
-  const re = /&[A-Za-z]*;?(?!\d)/g;
+  let re = /&[A-Za-z]*;?(?!\d)/g;
   let found: RegExpExecArray|null;
   let result: Completions|undefined = undefined;
   while (found = re.exec(value)) {
@@ -246,8 +246,8 @@ function entityCompletions(value: string, position: number): Completions|undefin
 
 function interpolationCompletions(info: TemplateInfo, position: number): Completions|undefined {
   // Look for an interpolation in at the position.
-  const templatePath = findTemplateAstAt(info.templateAst, position);
-  const mostSpecific = templatePath.tail;
+  let templatePath = findTemplateAstAt(info.templateAst, position);
+  let mostSpecific = templatePath.tail;
   if (mostSpecific) {
     let visitor = new ExpressionVisitor(
         info, position, undefined,
@@ -281,7 +281,7 @@ class ExpressionVisitor extends NullTemplateVisitor {
   private getExpressionScope: () => SymbolTable;
   result: Completions;
 
-  constructor(
+  letructor(
       private info: TemplateInfo, private position: number, private attr?: Attribute,
       getExpressionScope?: () => SymbolTable) {
     super();
@@ -304,30 +304,30 @@ class ExpressionVisitor extends NullTemplateVisitor {
       // TemplateAst was produce so
       // do that now.
 
-      const key = this.attr.name.substr(TEMPLATE_ATTR_PREFIX.length);
+      let key = this.attr.name.substr(TEMPLATE_ATTR_PREFIX.length);
 
       // Find the selector
-      const selectorInfo = getSelectors(this.info);
-      const selectors = selectorInfo.selectors;
-      const selector =
+      let selectorInfo = getSelectors(this.info);
+      let selectors = selectorInfo.selectors;
+      let selector =
           selectors.filter(s => s.attrs.some((attr, i) => i % 2 == 0 && attr == key))[0];
 
-      const templateBindingResult =
+      let templateBindingResult =
           this.info.expressionParser.parseTemplateBindings(key, this.attr.value, null);
 
       // find the template binding that contains the position
       if (!this.attr.valueSpan) return;
-      const valueRelativePosition = this.position - this.attr.valueSpan.start.offset;
-      const bindings = templateBindingResult.templateBindings;
-      const binding =
+      let valueRelativePosition = this.position - this.attr.valueSpan.start.offset;
+      let bindings = templateBindingResult.templateBindings;
+      let binding =
           bindings.find(
               binding => inSpan(valueRelativePosition, binding.span, /* exclusive */ true)) ||
           bindings.find(binding => inSpan(valueRelativePosition, binding.span));
 
-      const keyCompletions = () => {
+      let keyCompletions = () => {
         let keys: string[] = [];
         if (selector) {
-          const attrNames = selector.attrs.filter((_, i) => i % 2 == 0);
+          let attrNames = selector.attrs.filter((_, i) => i % 2 == 0);
           keys = attrNames.filter(name => name.startsWith(key) && name != key)
                      .map(name => lowerName(name.substr(key.length)));
         }
@@ -340,14 +340,14 @@ class ExpressionVisitor extends NullTemplateVisitor {
         // selector.
         keyCompletions();
       } else if (binding.keyIsVar) {
-        const equalLocation = this.attr.value.indexOf('=');
+        let equalLocation = this.attr.value.indexOf('=');
         this.result = [];
         if (equalLocation >= 0 && valueRelativePosition >= equalLocation) {
           // We are after the '=' in a let clause. The valid values here are the members of the
           // template reference's type parameter.
-          const directiveMetadata = selectorInfo.map.get(selector);
+          let directiveMetadata = selectorInfo.map.get(selector);
           if (directiveMetadata) {
-            const contextTable =
+            let contextTable =
                 this.info.template.query.getTemplateContext(directiveMetadata.type.reference);
             if (contextTable) {
               this.result = this.symbolsToCompletions(contextTable.values());
@@ -363,7 +363,7 @@ class ExpressionVisitor extends NullTemplateVisitor {
             (binding.key &&
              valueRelativePosition > binding.span.start + (binding.key.length - key.length)) ||
             !binding.key) {
-          const span = new ParseSpan(0, this.attr.value.length);
+          let span = new ParseSpan(0, this.attr.value.length);
           this.attributeValueCompletions(
               binding.expression ? binding.expression.ast :
                                    new PropertyRead(span, new ImplicitReceiver(span), ''),
@@ -376,9 +376,9 @@ class ExpressionVisitor extends NullTemplateVisitor {
   }
 
   visitBoundText(ast: BoundTextAst) {
-    const expressionPosition = this.position - ast.sourceSpan.start.offset;
+    let expressionPosition = this.position - ast.sourceSpan.start.offset;
     if (inSpan(expressionPosition, ast.value.span)) {
-      const completions = getExpressionCompletions(
+      let completions = getExpressionCompletions(
           this.getExpressionScope(), ast.value, expressionPosition, this.info.template.query);
       if (completions) {
         this.result = this.symbolsToCompletions(completions);
@@ -387,7 +387,7 @@ class ExpressionVisitor extends NullTemplateVisitor {
   }
 
   private attributeValueCompletions(value: AST, position?: number) {
-    const symbols = getExpressionCompletions(
+    let symbols = getExpressionCompletions(
         this.getExpressionScope(), value, position == null ? this.attributeValuePosition : position,
         this.info.template.query);
     if (symbols) {
@@ -433,9 +433,9 @@ function nameOfAttr(attr: AttrInfo): string {
   return result.join('');
 }
 
-const templateAttr = /^(\w+:)?(template$|^\*)/;
+let templateAttr = /^(\w+:)?(template$|^\*)/;
 function createElementCssSelector(element: Element): CssSelector {
-  const cssSelector = new CssSelector();
+  let cssSelector = new CssSelector();
   let elNameNoNs = splitNsName(element.name)[1];
 
   cssSelector.setElement(elNameNoNs);
@@ -445,7 +445,7 @@ function createElementCssSelector(element: Element): CssSelector {
       let [_, attrNameNoNs] = splitNsName(attr.name);
       cssSelector.addAttribute(attrNameNoNs, attr.value);
       if (attr.name.toLowerCase() == 'class') {
-        const classes = attr.value.split(/s+/g);
+        let classes = attr.value.split(/s+/g);
         classes.forEach(className => cssSelector.addClassName(className));
       }
     }

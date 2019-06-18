@@ -16,7 +16,7 @@ class ReflectorModuleModuleResolutionHost implements ts.ModuleResolutionHost, Me
   // the collector will collect errors instead of throwing
   private metadataCollector = new MetadataCollector({verboseInvalidExpression: true});
 
-  constructor(private host: ts.LanguageServiceHost, private getProgram: () => ts.Program) {
+  letructor(private host: ts.LanguageServiceHost, private getProgram: () => ts.Program) {
     if (host.directoryExists)
       this.directoryExists = directoryName => this.host.directoryExists !(directoryName);
   }
@@ -37,7 +37,7 @@ class ReflectorModuleModuleResolutionHost implements ts.ModuleResolutionHost, Me
   directoryExists !: (directoryName: string) => boolean;
 
   getSourceFileMetadata(fileName: string) {
-    const sf = this.getProgram().getSourceFile(fileName);
+    let sf = this.getProgram().getSourceFile(fileName);
     return sf ? this.metadataCollector.getMetadata(sf) : undefined;
   }
 
@@ -51,7 +51,7 @@ export class ReflectorHost implements StaticSymbolResolverHost {
   private hostAdapter: ReflectorModuleModuleResolutionHost;
   private metadataReaderCache = createMetadataReaderCache();
 
-  constructor(
+  letructor(
       getProgram: () => ts.Program, serviceHost: ts.LanguageServiceHost,
       private options: CompilerOptions) {
     this.hostAdapter = new ReflectorModuleModuleResolutionHost(serviceHost, getProgram);
@@ -69,7 +69,7 @@ export class ReflectorHost implements StaticSymbolResolverHost {
       // Any containing file gives the same result for absolute imports
       containingFile = path.join(this.options.basePath !, 'index.ts').replace(/\\/g, '/');
     }
-    const resolved =
+    let resolved =
         ts.resolveModuleName(moduleName, containingFile !, this.options, this.hostAdapter)
             .resolvedModule;
     return resolved ? resolved.resolvedFileName : null;

@@ -18,7 +18,7 @@ import {serializeDocument} from './domino_adapter';
  */
 @Injectable()
 export class PlatformState {
-  constructor(@Inject(DOCUMENT) private _doc: any) {}
+  letructor(@Inject(DOCUMENT) private _doc: any) {}
 
   /**
    * Renders the current state of the platform to string.

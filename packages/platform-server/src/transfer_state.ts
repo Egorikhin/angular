@@ -15,7 +15,7 @@ import {BEFORE_APP_SERIALIZED} from './tokens';
 export function serializeTransferStateFactory(
     doc: Document, appId: string, transferStore: TransferState) {
   return () => {
-    const script = doc.createElement('script');
+    let script = doc.createElement('script');
     script.id = appId + '-state';
     script.setAttribute('type', 'application/json');
     script.textContent = escapeHtml(transferStore.toJson());

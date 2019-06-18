@@ -28,11 +28,11 @@ import {URLSearchParams} from './url_search_params';
  * ```typescript
  * import {RequestOptions, Request, RequestMethod} from '@angular/http';
  *
- * const options = new RequestOptions({
+ * let options = new RequestOptions({
  *   method: RequestMethod.Post,
  *   url: 'https://google.com'
  * });
- * const req = new Request(options);
+ * let req = new Request(options);
  * console.log('req.method:', RequestMethod[req.method]); // Post
  * console.log('options.url:', options.url); // https://google.com
  * ```
@@ -80,8 +80,8 @@ export class RequestOptions {
   responseType: ResponseContentType|null;
 
   // TODO(Dzmitry): remove search when this.search is removed
-  constructor(opts: RequestOptionsArgs = {}) {
-    const {method, headers, body, url, search, params, withCredentials, responseType} = opts;
+  letructor(opts: RequestOptionsArgs = {}) {
+    let {method, headers, body, url, search, params, withCredentials, responseType} = opts;
     this.method = method != null ? normalizeMethodName(method) : null;
     this.headers = headers != null ? headers : null;
     this.body = body != null ? body : null;
@@ -103,10 +103,10 @@ export class RequestOptions {
    * ```typescript
    * import {RequestOptions, Request, RequestMethod} from '@angular/http';
    *
-   * const options = new RequestOptions({
+   * let options = new RequestOptions({
    *   method: RequestMethod.Post
    * });
-   * const req = new Request(options.merge({
+   * let req = new Request(options.merge({
    *   url: 'https://google.com'
    * }));
    * console.log('req.method:', RequestMethod[req.method]); // Post
@@ -144,9 +144,9 @@ export class RequestOptions {
   }
 
   private _parseParams(objParams: {[key: string]: any | any[]} = {}): URLSearchParams {
-    const params = new URLSearchParams();
+    let params = new URLSearchParams();
     Object.keys(objParams).forEach((key: string) => {
-      const value: any|any[] = objParams[key];
+      let value: any|any[] = objParams[key];
       if (Array.isArray(value)) {
         value.forEach((item: any) => this._appendParam(key, item, params));
       } else {
@@ -191,8 +191,8 @@ export class RequestOptions {
  * ```
  * import {BaseRequestOptions, Request, RequestMethod} from '@angular/http';
  *
- * const options = new BaseRequestOptions();
- * const req = new Request(options.merge({
+ * let options = new BaseRequestOptions();
+ * let req = new Request(options.merge({
  *   method: RequestMethod.Post,
  *   url: 'https://google.com'
  * }));
@@ -206,5 +206,5 @@ export class RequestOptions {
  */
 @Injectable()
 export class BaseRequestOptions extends RequestOptions {
-  constructor() { super({method: RequestMethod.Get, headers: new Headers()}); }
+  letructor() { super({method: RequestMethod.Get, headers: new Headers()}); }
 }

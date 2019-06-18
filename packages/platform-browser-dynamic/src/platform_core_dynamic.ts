@@ -14,7 +14,7 @@ import {JitCompilerFactory} from './compiler_factory';
  *
  * @publicApi
  */
-export const platformCoreDynamic = createPlatformFactory(platformCore, 'coreDynamic', [
+export let platformCoreDynamic = createPlatformFactory(platformCore, 'coreDynamic', [
   {provide: COMPILER_OPTIONS, useValue: {}, multi: true},
   {provide: CompilerFactory, useClass: JitCompilerFactory, deps: [COMPILER_OPTIONS]},
 ]);

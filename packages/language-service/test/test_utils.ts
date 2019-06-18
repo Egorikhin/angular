@@ -19,26 +19,26 @@ export type MockDirectory = {
   [name: string]: MockData | undefined;
 };
 
-const angularts = /@angular\/(\w|\/|-)+\.tsx?$/;
-const rxjsts = /rxjs\/(\w|\/)+\.tsx?$/;
-const rxjsmetadata = /rxjs\/(\w|\/)+\.metadata\.json?$/;
-const tsxfile = /\.tsx$/;
+let angularts = /@angular\/(\w|\/|-)+\.tsx?$/;
+let rxjsts = /rxjs\/(\w|\/)+\.tsx?$/;
+let rxjsmetadata = /rxjs\/(\w|\/)+\.metadata\.json?$/;
+let tsxfile = /\.tsx$/;
 
 /* The missing cache does two things. First it improves performance of the
    tests as it reduces the number of OS calls made during testing. Also it
    improves debugging experience as fewer exceptions are raised allow you
    to use stopping on all exceptions. */
-const missingCache = new Map<string, boolean>();
-const cacheUsed = new Set<string>();
-const reportedMissing = new Set<string>();
+let missingCache = new Map<string, boolean>();
+let cacheUsed = new Set<string>();
+let reportedMissing = new Set<string>();
 
 /**
  * The cache is valid if all the returned entries are empty.
  */
 export function validateCache(): {exists: string[], unused: string[], reported: string[]} {
-  const exists: string[] = [];
-  const unused: string[] = [];
-  for (const fileName of iterableToArray(missingCache.keys())) {
+  let exists: string[] = [];
+  let unused: string[] = [];
+  for (let fileName of iterableToArray(missingCache.keys())) {
     if (fs.existsSync(fileName)) {
       exists.push(fileName);
     }
@@ -75,10 +75,10 @@ export class MockTypescriptHost implements ts.LanguageServiceHost {
   private existsCache = new Map<string, boolean>();
   private fileCache = new Map<string, string|undefined>();
 
-  constructor(
+  letructor(
       private scriptNames: string[], private data: MockData,
       private node_modules: string = 'node_modules', private myPath: typeof path = path) {
-    const support = setup();
+    let support = setup();
     this.nodeModulesPath = path.posix.join(support.basePath, 'node_modules');
     this.angularPath = path.posix.join(this.nodeModulesPath, '@angular');
     this.options = {
@@ -131,7 +131,7 @@ export class MockTypescriptHost implements ts.LanguageServiceHost {
   }
 
   getScriptSnapshot(fileName: string): ts.IScriptSnapshot|undefined {
-    const content = this.getFileContent(fileName);
+    let content = this.getFileContent(fileName);
     if (content) return ts.ScriptSnapshot.fromString(content);
     return undefined;
   }
@@ -171,7 +171,7 @@ export class MockTypescriptHost implements ts.LanguageServiceHost {
   }
 
   getFileContent(fileName: string): string|undefined {
-    const content = this.getRawFileContent(fileName);
+    let content = this.getRawFileContent(fileName);
     if (content) return removeReferenceMarkers(removeLocationMarkers(content));
   }
 
@@ -189,7 +189,7 @@ export class MockTypescriptHost implements ts.LanguageServiceHost {
         return undefined;
       }
 
-      const effectiveName = this.getEffectiveName(fileName);
+      let effectiveName = this.getEffectiveName(fileName);
       if (effectiveName === fileName) {
         return open(fileName, this.data);
       } else if (
@@ -198,7 +198,7 @@ export class MockTypescriptHost implements ts.LanguageServiceHost {
         if (this.fileCache.has(effectiveName)) {
           return this.fileCache.get(effectiveName);
         } else if (this.pathExists(effectiveName)) {
-          const content = fs.readFileSync(effectiveName, 'utf8');
+          let content = fs.readFileSync(effectiveName, 'utf8');
           this.fileCache.set(effectiveName, content);
           return content;
         } else {
@@ -215,17 +215,17 @@ export class MockTypescriptHost implements ts.LanguageServiceHost {
       return this.existsCache.get(path) !;
     }
 
-    const exists = fs.existsSync(path);
+    let exists = fs.existsSync(path);
     this.existsCache.set(path, exists);
     return exists;
   }
 
   private getEffectiveName(name: string): string {
-    const node_modules = this.node_modules;
-    const at_angular = '/@angular';
+    let node_modules = this.node_modules;
+    let at_angular = '/@angular';
     if (name.startsWith('/' + node_modules)) {
       if (this.nodeModulesPath && !name.startsWith('/' + node_modules + at_angular)) {
-        const result =
+        let result =
             this.myPath.posix.join(this.nodeModulesPath, name.substr(node_modules.length + 1));
         if (!name.match(rxjsts) && this.pathExists(result)) {
           return result;
@@ -241,9 +241,9 @@ export class MockTypescriptHost implements ts.LanguageServiceHost {
 }
 
 function iterableToArray<T>(iterator: IterableIterator<T>) {
-  const result: T[] = [];
+  let result: T[] = [];
   while (true) {
-    const next = iterator.next();
+    let next = iterator.next();
     if (next.done) break;
     result.push(next.value);
   }
@@ -277,7 +277,7 @@ function directoryExists(dirname: string, data: MockData): boolean {
   return !!result && typeof result !== 'string';
 }
 
-const locationMarker = /\~\{(\w+(-\w+)*)\}/g;
+let locationMarker = /\~\{(\w+(-\w+)*)\}/g;
 
 function removeLocationMarkers(value: string): string {
   return value.replace(locationMarker, '');
@@ -295,7 +295,7 @@ function getLocationMarkers(value: string): {[name: string]: number} {
   return result;
 }
 
-const referenceMarker = /«(((\w|\-)+)|([^ᐱ]*ᐱ(\w+)ᐱ.[^»]*))»/g;
+let referenceMarker = /«(((\w|\-)+)|([^ᐱ]*ᐱ(\w+)ᐱ.[^»]*))»/g;
 
 export type ReferenceMarkers = {
   [name: string]: Span[]
@@ -307,18 +307,18 @@ export interface ReferenceResult {
 }
 
 function getReferenceMarkers(value: string): ReferenceResult {
-  const references: ReferenceMarkers = {};
-  const definitions: ReferenceMarkers = {};
+  let references: ReferenceMarkers = {};
+  let definitions: ReferenceMarkers = {};
   value = removeLocationMarkers(value);
 
   let adjustment = 0;
-  const text = value.replace(
+  let text = value.replace(
       referenceMarker, (match: string, text: string, reference: string, _: string,
                         definition: string, definitionName: string, index: number): string => {
-        const result = reference ? text : text.replace(/ᐱ/g, '');
-        const span: Span = {start: index - adjustment, end: index - adjustment + result.length};
-        const markers = reference ? references : definitions;
-        const name = reference || definitionName;
+        let result = reference ? text : text.replace(/ᐱ/g, '');
+        let span: Span = {start: index - adjustment, end: index - adjustment + result.length};
+        let markers = reference ? references : definitions;
+        let name = reference || definitionName;
         (markers[name] = (markers[name] || [])).push(span);
         adjustment += match.length - result.length;
         return result;
@@ -363,11 +363,11 @@ export function includeDiagnostic(
 export function includeDiagnostic(diagnostics: Diagnostics, message: string, p1?: any, p2?: any) {
   expect(diagnostics).toBeDefined();
   if (diagnostics) {
-    const diagnostic = findDiagnostic(diagnostics, message);
+    let diagnostic = findDiagnostic(diagnostics, message);
     expect(diagnostic).toBeDefined(`no diagnostic contains '${message}`);
     if (diagnostic && p1 != null) {
-      const at = typeof p1 === 'number' ? p1 : p2.indexOf(p1);
-      const len = typeof p2 === 'number' ? p2 : p1.length;
+      let at = typeof p1 === 'number' ? p1 : p2.indexOf(p1);
+      let len = typeof p2 === 'number' ? p2 : p1.length;
       expect(diagnostic.span.start)
           .toEqual(
               at,

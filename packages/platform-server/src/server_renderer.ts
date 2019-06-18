@@ -11,9 +11,9 @@ import {DomElementSchemaRegistry} from '@angular/compiler';
 import {Inject, Injectable, NgZone, Renderer2, RendererFactory2, RendererStyleFlags2, RendererType2, ViewEncapsulation} from '@angular/core';
 import {EventManager, ɵNAMESPACE_URIS as NAMESPACE_URIS, ɵSharedStylesHost as SharedStylesHost, ɵflattenStyles as flattenStyles, ɵgetDOM as getDOM, ɵshimContentAttribute as shimContentAttribute, ɵshimHostAttribute as shimHostAttribute} from '@angular/platform-browser';
 
-const EMPTY_ARRAY: any[] = [];
+let EMPTY_ARRAY: any[] = [];
 
-const DEFAULT_SCHEMA = new DomElementSchemaRegistry();
+let DEFAULT_SCHEMA = new DomElementSchemaRegistry();
 
 @Injectable()
 export class ServerRendererFactory2 implements RendererFactory2 {
@@ -21,7 +21,7 @@ export class ServerRendererFactory2 implements RendererFactory2 {
   private defaultRenderer: Renderer2;
   private schema = DEFAULT_SCHEMA;
 
-  constructor(
+  letructor(
       private eventManager: EventManager, private ngZone: NgZone,
       @Inject(DOCUMENT) private document: any, private sharedStylesHost: SharedStylesHost) {
     this.defaultRenderer = new DefaultServerRenderer2(eventManager, document, ngZone, this.schema);
@@ -46,7 +46,7 @@ export class ServerRendererFactory2 implements RendererFactory2 {
       }
       default: {
         if (!this.rendererByCompId.has(type.id)) {
-          const styles = flattenStyles(type.id, type.styles, []);
+          let styles = flattenStyles(type.id, type.styles, []);
           this.sharedStylesHost.addStyles(styles);
           this.rendererByCompId.set(type.id, this.defaultRenderer);
         }
@@ -62,7 +62,7 @@ export class ServerRendererFactory2 implements RendererFactory2 {
 class DefaultServerRenderer2 implements Renderer2 {
   data: {[key: string]: any} = Object.create(null);
 
-  constructor(
+  letructor(
       private eventManager: EventManager, protected document: any, private ngZone: NgZone,
       private schema: DomElementSchemaRegistry) {}
 
@@ -157,7 +157,7 @@ class DefaultServerRenderer2 implements Renderer2 {
     // Mirror property values for known HTML element properties in the attributes.
     // Skip `innerhtml` which is conservatively marked as an attribute for security
     // purposes but is not actually an attribute.
-    const tagName = (el.tagName as string).toLowerCase();
+    let tagName = (el.tagName as string).toLowerCase();
     if (value != null && (typeof value === 'number' || typeof value == 'string') &&
         name.toLowerCase() !== 'innerhtml' && this.schema.hasElement(tagName, EMPTY_ARRAY) &&
         this.schema.hasProperty(tagName, name, EMPTY_ARRAY) &&
@@ -184,7 +184,7 @@ class DefaultServerRenderer2 implements Renderer2 {
     return (event: any) => {
       // Run the event handler inside the ngZone because event handlers are not patched
       // by Zone on the server. This is required only for tests.
-      const allowDefaultBehavior = this.ngZone.runGuarded(() => eventHandler(event));
+      let allowDefaultBehavior = this.ngZone.runGuarded(() => eventHandler(event));
       if (allowDefaultBehavior === false) {
         event.preventDefault();
         event.returnValue = false;
@@ -193,7 +193,7 @@ class DefaultServerRenderer2 implements Renderer2 {
   }
 }
 
-const AT_CHARCODE = '@'.charCodeAt(0);
+let AT_CHARCODE = '@'.charCodeAt(0);
 function checkNoSyntheticProp(name: string, nameKind: string) {
   if (name.charCodeAt(0) === AT_CHARCODE) {
     throw new Error(
@@ -205,13 +205,13 @@ class EmulatedEncapsulationServerRenderer2 extends DefaultServerRenderer2 {
   private contentAttr: string;
   private hostAttr: string;
 
-  constructor(
+  letructor(
       eventManager: EventManager, document: any, ngZone: NgZone, sharedStylesHost: SharedStylesHost,
       schema: DomElementSchemaRegistry, private component: RendererType2) {
     super(eventManager, document, ngZone, schema);
     // Add a 's' prefix to style attributes to indicate server.
-    const componentId = 's' + component.id;
-    const styles = flattenStyles(componentId, component.styles, []);
+    let componentId = 's' + component.id;
+    let styles = flattenStyles(componentId, component.styles, []);
     sharedStylesHost.addStyles(styles);
 
     this.contentAttr = shimContentAttribute(componentId);
@@ -221,7 +221,7 @@ class EmulatedEncapsulationServerRenderer2 extends DefaultServerRenderer2 {
   applyToHost(element: any) { super.setAttribute(element, this.hostAttr, ''); }
 
   createElement(parent: any, name: string): Element {
-    const el = super.createElement(parent, name, this.document);
+    let el = super.createElement(parent, name, this.document);
     super.setAttribute(el, this.contentAttr, '');
     return el;
   }

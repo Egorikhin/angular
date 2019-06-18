@@ -72,8 +72,8 @@ describe('hover', () => {
     addCode(
         ` @Component({template: '<div #«chart»></div>'}) export class MyComponent {  }`,
         fileName => {
-          const markers = mockHost.getReferenceMarkers(fileName) !;
-          const hover = ngService.getHoverAt(fileName, markers.references.chart[0].start);
+          let markers = mockHost.getReferenceMarkers(fileName) !;
+          let hover = ngService.getHoverAt(fileName, markers.references.chart[0].start);
           expect(hover).toBeUndefined();
         });
   });
@@ -81,14 +81,14 @@ describe('hover', () => {
   function hover(code: string, hoverText: string) {
     addCode(code, fileName => {
       let tests = 0;
-      const markers = mockHost.getReferenceMarkers(fileName) !;
-      const keys = Object.keys(markers.references).concat(Object.keys(markers.definitions));
-      for (const referenceName of keys) {
-        const references = (markers.references[referenceName] ||
+      let markers = mockHost.getReferenceMarkers(fileName) !;
+      let keys = Object.keys(markers.references).concat(Object.keys(markers.definitions));
+      for (let referenceName of keys) {
+        let references = (markers.references[referenceName] ||
                             []).concat(markers.definitions[referenceName] || []);
-        for (const reference of references) {
+        for (let reference of references) {
           tests++;
-          const hover = ngService.getHoverAt(fileName, reference.start);
+          let hover = ngService.getHoverAt(fileName, reference.start);
           if (!hover) throw new Error(`Expected a hover at location ${reference.start}`);
           expect(hover.span).toEqual(reference);
           expect(toText(hover)).toEqual(hoverText);
@@ -99,9 +99,9 @@ describe('hover', () => {
   }
 
   function addCode(code: string, cb: (fileName: string, content?: string) => void) {
-    const fileName = '/app/app.component.ts';
-    const originalContent = mockHost.getFileContent(fileName);
-    const newContent = originalContent + code;
+    let fileName = '/app/app.component.ts';
+    let originalContent = mockHost.getFileContent(fileName);
+    let newContent = originalContent + code;
     mockHost.override(fileName, originalContent + code);
     try {
       cb(fileName, newContent);

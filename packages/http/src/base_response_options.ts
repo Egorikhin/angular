@@ -67,8 +67,8 @@ export class ResponseOptions {
    */
   type: ResponseType|null;
   url: string|null;
-  constructor(opts: ResponseOptionsArgs = {}) {
-    const {body, status, headers, statusText, type, url} = opts;
+  letructor(opts: ResponseOptionsArgs = {}) {
+    let {body, status, headers, statusText, type, url} = opts;
     this.body = body != null ? body : null;
     this.status = status != null ? status : null;
     this.headers = headers != null ? headers : null;
@@ -165,7 +165,7 @@ export class ResponseOptions {
  */
 @Injectable()
 export class BaseResponseOptions extends ResponseOptions {
-  constructor() {
+  letructor() {
     super({status: 200, statusText: 'Ok', type: ResponseType.Default, headers: new Headers()});
   }
 }

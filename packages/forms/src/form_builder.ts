@@ -34,7 +34,7 @@ function isAbstractControlOptions(options: AbstractControlOptions | {[key: strin
 export class FormBuilder {
   /**
    * @description
-   * Construct a new `FormGroup` instance.
+   * letruct a new `FormGroup` instance.
    *
    * @param controlsConfig A collection of child controls. The key for each child is the name
    * under which it is registered.
@@ -56,7 +56,7 @@ export class FormBuilder {
   group(
       controlsConfig: {[key: string]: any},
       options: AbstractControlOptions|{[key: string]: any}|null = null): FormGroup {
-    const controls = this._reduceControls(controlsConfig);
+    let controls = this._reduceControls(controlsConfig);
 
     let validators: ValidatorFn|ValidatorFn[]|null = null;
     let asyncValidators: AsyncValidatorFn|AsyncValidatorFn[]|null = null;
@@ -80,7 +80,7 @@ export class FormBuilder {
 
   /**
    * @description
-   * Construct a new `FormControl` with the given state, validators and options.
+   * letruct a new `FormControl` with the given state, validators and options.
    *
    * @param formState Initializes the control with an initial state value, or
    * with an object that contains both a value and a disabled status.
@@ -109,7 +109,7 @@ export class FormBuilder {
   }
 
   /**
-   * Constructs a new `FormArray` from the given array of configurations,
+   * letructs a new `FormArray` from the given array of configurations,
    * validators and options.
    *
    * @param controlsConfig An array of child controls or control configs. Each
@@ -126,13 +126,13 @@ export class FormBuilder {
       controlsConfig: any[],
       validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
       asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null): FormArray {
-    const controls = controlsConfig.map(c => this._createControl(c));
+    let controls = controlsConfig.map(c => this._createControl(c));
     return new FormArray(controls, validatorOrOpts, asyncValidator);
   }
 
   /** @internal */
   _reduceControls(controlsConfig: {[k: string]: any}): {[key: string]: AbstractControl} {
-    const controls: {[key: string]: AbstractControl} = {};
+    let controls: {[key: string]: AbstractControl} = {};
     Object.keys(controlsConfig).forEach(controlName => {
       controls[controlName] = this._createControl(controlsConfig[controlName]);
     });
@@ -146,9 +146,9 @@ export class FormBuilder {
       return controlConfig;
 
     } else if (Array.isArray(controlConfig)) {
-      const value = controlConfig[0];
-      const validator: ValidatorFn = controlConfig.length > 1 ? controlConfig[1] : null;
-      const asyncValidator: AsyncValidatorFn = controlConfig.length > 2 ? controlConfig[2] : null;
+      let value = controlConfig[0];
+      let validator: ValidatorFn = controlConfig.length > 1 ? controlConfig[1] : null;
+      let asyncValidator: AsyncValidatorFn = controlConfig.length > 2 ? controlConfig[2] : null;
       return this.control(value, validator, asyncValidator);
 
     } else {

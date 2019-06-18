@@ -15,11 +15,11 @@ declare namespace goog {
    * Note: Don't use this to check for advanced compilation,
    * as it is sometimes true.
    */
-  export const DEBUG: boolean;
-  export const getMsg: (input: string, placeholders?: {[key: string]: string}) => string;
+  export let DEBUG: boolean;
+  export let getMsg: (input: string, placeholders?: {[key: string]: string}) => string;
 }
 
 /**
  * Use this flag to check for advanced compilation.
  */
-declare const COMPILED: boolean;
+declare let COMPILED: boolean;

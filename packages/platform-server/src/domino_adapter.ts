@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-const domino = require('domino');
+let domino = require('domino');
 
 import {ɵBrowserDomAdapter as BrowserDomAdapter, ɵsetRootDomAdapter as setRootDomAdapter} from '@angular/platform-browser';
 
@@ -135,7 +135,7 @@ export class DominoAdapter extends BrowserDomAdapter {
   }
 
   getBaseHref(doc: Document): string {
-    const base = this.querySelector(doc.documentElement !, 'base');
+    let base = this.querySelector(doc.documentElement !, 'base');
     let href = '';
     if (base) {
       href = this.getHref(base);
@@ -146,18 +146,18 @@ export class DominoAdapter extends BrowserDomAdapter {
 
   /** @internal */
   _readStyleAttribute(element: any): {[name: string]: string} {
-    const styleMap: {[name: string]: string} = {};
-    const styleAttribute = element.getAttribute('style');
+    let styleMap: {[name: string]: string} = {};
+    let styleAttribute = element.getAttribute('style');
     if (styleAttribute) {
-      const styleList = styleAttribute.split(/;+/g);
+      let styleList = styleAttribute.split(/;+/g);
       for (let i = 0; i < styleList.length; i++) {
-        const style = styleList[i].trim();
+        let style = styleList[i].trim();
         if (style.length > 0) {
-          const colonIndex = style.indexOf(':');
+          let colonIndex = style.indexOf(':');
           if (colonIndex === -1) {
             throw new Error(`Invalid CSS style: ${style}`);
           }
-          const name = style.substr(0, colonIndex).trim();
+          let name = style.substr(0, colonIndex).trim();
           styleMap[name] = style.substr(colonIndex + 1).trim();
         }
       }
@@ -167,8 +167,8 @@ export class DominoAdapter extends BrowserDomAdapter {
   /** @internal */
   _writeStyleAttribute(element: any, styleMap: {[name: string]: string}) {
     let styleAttrValue = '';
-    for (const key in styleMap) {
-      const newValue = styleMap[key];
+    for (let key in styleMap) {
+      let newValue = styleMap[key];
       if (newValue) {
         styleAttrValue += key + ':' + styleMap[key] + ';';
       }
@@ -177,7 +177,7 @@ export class DominoAdapter extends BrowserDomAdapter {
   }
   setStyle(element: any, styleName: string, styleValue?: string|null) {
     styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-    const styleMap = this._readStyleAttribute(element);
+    let styleMap = this._readStyleAttribute(element);
     styleMap[styleName] = styleValue || '';
     this._writeStyleAttribute(element, styleMap);
   }
@@ -187,11 +187,11 @@ export class DominoAdapter extends BrowserDomAdapter {
     this.setStyle(element, styleName, '');
   }
   getStyle(element: any, styleName: string): string {
-    const styleMap = this._readStyleAttribute(element);
+    let styleMap = this._readStyleAttribute(element);
     return styleMap[styleName] || '';
   }
   hasStyle(element: any, styleName: string, styleValue?: string): boolean {
-    const value = this.getStyle(element, styleName);
+    let value = this.getStyle(element, styleName);
     return styleValue ? value == styleValue : value.length > 0;
   }
 
@@ -199,8 +199,8 @@ export class DominoAdapter extends BrowserDomAdapter {
     el.dispatchEvent(evt);
 
     // Dispatch the event to the window also.
-    const doc = el.ownerDocument || el;
-    const win = (doc as any).defaultView;
+    let doc = el.ownerDocument || el;
+    let win = (doc as any).defaultView;
     if (win) {
       win.dispatchEvent(evt);
     }

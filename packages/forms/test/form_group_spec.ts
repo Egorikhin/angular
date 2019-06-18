@@ -21,9 +21,9 @@ import {of } from 'rxjs';
   function asyncValidator(expected: string, timeouts = {}) {
     return (c: AbstractControl) => {
       let resolve: (result: any) => void = undefined !;
-      const promise = new Promise(res => { resolve = res; });
-      const t = (timeouts as any)[c.value] != null ? (timeouts as any)[c.value] : 0;
-      const res = c.value != expected ? {'async': true} : null;
+      let promise = new Promise(res => { resolve = res; });
+      let t = (timeouts as any)[c.value] != null ? (timeouts as any)[c.value] : 0;
+      let res = c.value != expected ? {'async': true} : null;
 
       if (t == 0) {
         resolve(res);
@@ -36,7 +36,7 @@ import {of } from 'rxjs';
   }
 
   function asyncValidatorReturningObservable(c: FormControl) {
-    const e = new EventEmitter();
+    let e = new EventEmitter();
     Promise.resolve(null).then(() => { e.emit({'async': true}); });
     return e;
   }
@@ -46,17 +46,17 @@ import {of } from 'rxjs';
   describe('FormGroup', () => {
     describe('value', () => {
       it('should be the reduced value of the child controls', () => {
-        const g = new FormGroup({'one': new FormControl('111'), 'two': new FormControl('222')});
+        let g = new FormGroup({'one': new FormControl('111'), 'two': new FormControl('222')});
         expect(g.value).toEqual({'one': '111', 'two': '222'});
       });
 
       it('should be empty when there are no child controls', () => {
-        const g = new FormGroup({});
+        let g = new FormGroup({});
         expect(g.value).toEqual({});
       });
 
       it('should support nested groups', () => {
-        const g = new FormGroup({
+        let g = new FormGroup({
           'one': new FormControl('111'),
           'nested': new FormGroup({'two': new FormControl('222')})
         });
@@ -88,7 +88,7 @@ import {of } from 'rxjs';
 
     describe('markAllAsTouched', () => {
       it('should mark all descendants as touched', () => {
-        const formGroup: FormGroup = new FormGroup({
+        let formGroup: FormGroup = new FormGroup({
           'c1': new FormControl('v1'),
           'group': new FormGroup({'c2': new FormControl('v2'), 'c3': new FormControl('v3')}),
           'array': new FormArray([
@@ -99,15 +99,15 @@ import {of } from 'rxjs';
 
         expect(formGroup.touched).toBe(false);
 
-        const control1 = formGroup.get('c1') as FormControl;
+        let control1 = formGroup.get('c1') as FormControl;
 
         expect(control1.touched).toBe(false);
 
-        const innerGroup = formGroup.get('group') as FormGroup;
+        let innerGroup = formGroup.get('group') as FormGroup;
 
         expect(innerGroup.touched).toBe(false);
 
-        const innerGroupFirstChildCtrl = innerGroup.get('c2') as FormControl;
+        let innerGroupFirstChildCtrl = innerGroup.get('c2') as FormControl;
 
         expect(innerGroupFirstChildCtrl.touched).toBe(false);
 
@@ -121,27 +121,27 @@ import {of } from 'rxjs';
 
         expect(innerGroupFirstChildCtrl.touched).toBe(true);
 
-        const innerGroupSecondChildCtrl = innerGroup.get('c3') as FormControl;
+        let innerGroupSecondChildCtrl = innerGroup.get('c3') as FormControl;
 
         expect(innerGroupSecondChildCtrl.touched).toBe(true);
 
-        const array = formGroup.get('array') as FormArray;
+        let array = formGroup.get('array') as FormArray;
 
         expect(array.touched).toBe(true);
 
-        const arrayFirstChildCtrl = array.at(0) as FormControl;
+        let arrayFirstChildCtrl = array.at(0) as FormControl;
 
         expect(arrayFirstChildCtrl.touched).toBe(true);
 
-        const arraySecondChildCtrl = array.at(1) as FormControl;
+        let arraySecondChildCtrl = array.at(1) as FormControl;
 
         expect(arraySecondChildCtrl.touched).toBe(true);
 
-        const arrayFirstChildGroup = array.at(2) as FormGroup;
+        let arrayFirstChildGroup = array.at(2) as FormGroup;
 
         expect(arrayFirstChildGroup.touched).toBe(true);
 
-        const arrayFirstChildGroupFirstChildCtrl = arrayFirstChildGroup.get('c4') as FormControl;
+        let arrayFirstChildGroupFirstChildCtrl = arrayFirstChildGroup.get('c4') as FormControl;
 
         expect(arrayFirstChildGroupFirstChildCtrl.touched).toBe(true);
       });
@@ -149,7 +149,7 @@ import {of } from 'rxjs';
 
     describe('adding and removing controls', () => {
       it('should update value and validity when control is added', () => {
-        const g = new FormGroup({'one': new FormControl('1')});
+        let g = new FormGroup({'one': new FormControl('1')});
         expect(g.value).toEqual({'one': '1'});
         expect(g.valid).toBe(true);
 
@@ -160,7 +160,7 @@ import {of } from 'rxjs';
       });
 
       it('should update value and validity when control is removed', () => {
-        const g = new FormGroup(
+        let g = new FormGroup(
             {'one': new FormControl('1'), 'two': new FormControl('2', Validators.minLength(10))});
         expect(g.value).toEqual({'one': '1', 'two': '2'});
         expect(g.valid).toBe(false);
@@ -245,13 +245,13 @@ import {of } from 'rxjs';
       });
 
       it('should set parent values', () => {
-        const form = new FormGroup({'parent': g});
+        let form = new FormGroup({'parent': g});
         g.setValue({'one': 'one', 'two': 'two'});
         expect(form.value).toEqual({'parent': {'one': 'one', 'two': 'two'}});
       });
 
       it('should not update the parent when explicitly specified', () => {
-        const form = new FormGroup({'parent': g});
+        let form = new FormGroup({'parent': g});
         g.setValue({'one': 'one', 'two': 'two'}, {onlySelf: true});
 
         expect(form.value).toEqual({parent: {'one': '', 'two': ''}});
@@ -276,7 +276,7 @@ import {of } from 'rxjs';
       });
 
       it('should throw if no controls are set yet', () => {
-        const empty = new FormGroup({});
+        let empty = new FormGroup({});
         expect(() => empty.setValue({
           'one': 'one'
         })).toThrowError(new RegExp(`no form controls registered with this group`));
@@ -359,13 +359,13 @@ import {of } from 'rxjs';
       });
 
       it('should set parent values', () => {
-        const form = new FormGroup({'parent': g});
+        let form = new FormGroup({'parent': g});
         g.patchValue({'one': 'one', 'two': 'two'});
         expect(form.value).toEqual({'parent': {'one': 'one', 'two': 'two'}});
       });
 
       it('should not update the parent when explicitly specified', () => {
-        const form = new FormGroup({'parent': g});
+        let form = new FormGroup({'parent': g});
         g.patchValue({'one': 'one', 'two': 'two'}, {onlySelf: true});
 
         expect(form.value).toEqual({parent: {'one': '', 'two': ''}});
@@ -483,7 +483,7 @@ import {of } from 'rxjs';
       });
 
       it('should set the value of its parent if value passed', () => {
-        const form = new FormGroup({'g': g});
+        let form = new FormGroup({'g': g});
         g.setValue({'one': 'new value', 'two': 'new value'});
 
         g.reset({'one': 'initial value', 'two': ''});
@@ -491,7 +491,7 @@ import {of } from 'rxjs';
       });
 
       it('should clear the value of its parent if no value passed', () => {
-        const form = new FormGroup({'g': g});
+        let form = new FormGroup({'g': g});
         g.setValue({'one': 'new value', 'two': 'new value'});
 
         g.reset();
@@ -499,7 +499,7 @@ import {of } from 'rxjs';
       });
 
       it('should not update the parent when explicitly specified', () => {
-        const form = new FormGroup({'g': g});
+        let form = new FormGroup({'g': g});
         g.reset({'one': 'new value', 'two': 'new value'}, {onlySelf: true});
 
         expect(form.value).toEqual({g: {'one': 'initial value', 'two': ''}});
@@ -525,8 +525,8 @@ import {of } from 'rxjs';
       });
 
       it('should mark the parent as pristine if all siblings pristine', () => {
-        const c3 = new FormControl('');
-        const form = new FormGroup({'g': g, 'c3': c3});
+        let c3 = new FormControl('');
+        let form = new FormGroup({'g': g, 'c3': c3});
 
         g.markAsDirty();
         expect(form.pristine).toBe(false);
@@ -536,8 +536,8 @@ import {of } from 'rxjs';
       });
 
       it('should not mark the parent pristine if any dirty siblings', () => {
-        const c3 = new FormControl('');
-        const form = new FormGroup({'g': g, 'c3': c3});
+        let c3 = new FormControl('');
+        let form = new FormGroup({'g': g, 'c3': c3});
 
         g.markAsDirty();
         c3.markAsDirty();
@@ -567,8 +567,8 @@ import {of } from 'rxjs';
       });
 
       it('should mark the parent untouched if all siblings untouched', () => {
-        const c3 = new FormControl('');
-        const form = new FormGroup({'g': g, 'c3': c3});
+        let c3 = new FormControl('');
+        let form = new FormGroup({'g': g, 'c3': c3});
 
         g.markAsTouched();
         expect(form.untouched).toBe(false);
@@ -578,8 +578,8 @@ import {of } from 'rxjs';
       });
 
       it('should not mark the parent untouched if any touched siblings', () => {
-        const c3 = new FormControl('');
-        const form = new FormGroup({'g': g, 'c3': c3});
+        let c3 = new FormControl('');
+        let form = new FormGroup({'g': g, 'c3': c3});
 
         g.markAsTouched();
         c3.markAsTouched();
@@ -657,7 +657,7 @@ import {of } from 'rxjs';
 
         it('should mark as pristine and not dirty before emitting valueChange and statusChange events when resetting',
            () => {
-             const pristineAndNotDirty = () => {
+             let pristineAndNotDirty = () => {
                expect(form.pristine).toBe(true);
                expect(form.dirty).toBe(false);
              };
@@ -717,7 +717,7 @@ import {of } from 'rxjs';
       });
 
       it('should not get inherited properties',
-         () => { expect(group.get('constructor')).toBe(null); });
+         () => { expect(group.get('letructor')).toBe(null); });
     });
 
     describe('statusChanges', () => {
@@ -733,7 +733,7 @@ import {of } from 'rxjs';
       // TODO(kara): update these tests to use fake Async
       it('should fire a statusChange if child has async validation change',
          inject([AsyncTestCompleter], (async: AsyncTestCompleter) => {
-           const loggedValues: string[] = [];
+           let loggedValues: string[] = [];
            group.statusChanges.subscribe({
              next: (status: string) => {
                loggedValues.push(status);
@@ -749,40 +749,40 @@ import {of } from 'rxjs';
 
     describe('getError', () => {
       it('should return the error when it is present', () => {
-        const c = new FormControl('', Validators.required);
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('', Validators.required);
+        let g = new FormGroup({'one': c});
         expect(c.getError('required')).toEqual(true);
         expect(g.getError('required', ['one'])).toEqual(true);
       });
 
       it('should return null otherwise', () => {
-        const c = new FormControl('not empty', Validators.required);
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('not empty', Validators.required);
+        let g = new FormGroup({'one': c});
         expect(c.getError('invalid')).toEqual(null);
         expect(g.getError('required', ['one'])).toEqual(null);
         expect(g.getError('required', ['invalid'])).toEqual(null);
       });
 
       it('should be able to traverse group with single string', () => {
-        const c = new FormControl('', Validators.required);
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('', Validators.required);
+        let g = new FormGroup({'one': c});
         expect(c.getError('required')).toEqual(true);
         expect(g.getError('required', 'one')).toEqual(true);
       });
 
       it('should be able to traverse group with string delimited by dots', () => {
-        const c = new FormControl('', Validators.required);
-        const g2 = new FormGroup({'two': c});
-        const g1 = new FormGroup({'one': g2});
+        let c = new FormControl('', Validators.required);
+        let g2 = new FormGroup({'two': c});
+        let g1 = new FormGroup({'one': g2});
         expect(c.getError('required')).toEqual(true);
         expect(g1.getError('required', 'one.two')).toEqual(true);
       });
 
       it('should traverse group with form array using string and numbers', () => {
-        const c = new FormControl('', Validators.required);
-        const g2 = new FormGroup({'two': c});
-        const a = new FormArray([g2]);
-        const g1 = new FormGroup({'one': a});
+        let c = new FormControl('', Validators.required);
+        let g2 = new FormGroup({'two': c});
+        let a = new FormArray([g2]);
+        let g1 = new FormGroup({'one': a});
         expect(c.getError('required')).toEqual(true);
         expect(g1.getError('required', ['one', 0, 'two'])).toEqual(true);
       });
@@ -790,39 +790,39 @@ import {of } from 'rxjs';
 
     describe('hasError', () => {
       it('should return true when it is present', () => {
-        const c = new FormControl('', Validators.required);
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('', Validators.required);
+        let g = new FormGroup({'one': c});
         expect(c.hasError('required')).toEqual(true);
         expect(g.hasError('required', ['one'])).toEqual(true);
       });
 
       it('should return false otherwise', () => {
-        const c = new FormControl('not empty', Validators.required);
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('not empty', Validators.required);
+        let g = new FormGroup({'one': c});
         expect(c.hasError('invalid')).toEqual(false);
         expect(g.hasError('required', ['one'])).toEqual(false);
         expect(g.hasError('required', ['invalid'])).toEqual(false);
       });
 
       it('should be able to traverse group with single string', () => {
-        const c = new FormControl('', Validators.required);
-        const g = new FormGroup({'one': c});
+        let c = new FormControl('', Validators.required);
+        let g = new FormGroup({'one': c});
         expect(c.hasError('required')).toEqual(true);
         expect(g.hasError('required', 'one')).toEqual(true);
       });
 
       it('should be able to traverse group with string delimited by dots', () => {
-        const c = new FormControl('', Validators.required);
-        const g2 = new FormGroup({'two': c});
-        const g1 = new FormGroup({'one': g2});
+        let c = new FormControl('', Validators.required);
+        let g2 = new FormGroup({'two': c});
+        let g1 = new FormGroup({'one': g2});
         expect(c.hasError('required')).toEqual(true);
         expect(g1.hasError('required', 'one.two')).toEqual(true);
       });
       it('should traverse group with form array using string and numbers', () => {
-        const c = new FormControl('', Validators.required);
-        const g2 = new FormGroup({'two': c});
-        const a = new FormArray([g2]);
-        const g1 = new FormGroup({'one': a});
+        let c = new FormControl('', Validators.required);
+        let g2 = new FormGroup({'two': c});
+        let a = new FormArray([g2]);
+        let g1 = new FormGroup({'one': a});
         expect(c.getError('required')).toEqual(true);
         expect(g1.getError('required', ['one', 0, 'two'])).toEqual(true);
       });
@@ -836,8 +836,8 @@ import {of } from 'rxjs';
       }
 
       it('should run a single validator when the value changes', () => {
-        const c = new FormControl(null);
-        const g = new FormGroup({'one': c}, simpleValidator);
+        let c = new FormControl(null);
+        let g = new FormGroup({'one': c}, simpleValidator);
 
         c.setValue('correct');
 
@@ -851,7 +851,7 @@ import {of } from 'rxjs';
       });
 
       it('should support multiple validators from array', () => {
-        const g = new FormGroup({one: new FormControl()}, [simpleValidator, containsValidator]);
+        let g = new FormGroup({one: new FormControl()}, [simpleValidator, containsValidator]);
         expect(g.valid).toEqual(false);
         expect(g.errors).toEqual({missing: true, broken: true});
 
@@ -864,7 +864,7 @@ import {of } from 'rxjs';
       });
 
       it('should set single validator from options obj', () => {
-        const g = new FormGroup({one: new FormControl()}, {validators: simpleValidator});
+        let g = new FormGroup({one: new FormControl()}, {validators: simpleValidator});
         expect(g.valid).toEqual(false);
         expect(g.errors).toEqual({broken: true});
 
@@ -873,7 +873,7 @@ import {of } from 'rxjs';
       });
 
       it('should set multiple validators from options obj', () => {
-        const g = new FormGroup(
+        let g = new FormGroup(
             {one: new FormControl()}, {validators: [simpleValidator, containsValidator]});
         expect(g.valid).toEqual(false);
         expect(g.errors).toEqual({missing: true, broken: true});
@@ -890,8 +890,8 @@ import {of } from 'rxjs';
 
     describe('asyncValidator', () => {
       it('should run the async validator', fakeAsync(() => {
-           const c = new FormControl('value');
-           const g = new FormGroup({'one': c}, null !, asyncValidator('expected'));
+           let c = new FormControl('value');
+           let g = new FormGroup({'one': c}, null !, asyncValidator('expected'));
 
            expect(g.pending).toEqual(true);
 
@@ -902,7 +902,7 @@ import {of } from 'rxjs';
          }));
 
       it('should set multiple async validators from array', fakeAsync(() => {
-           const g = new FormGroup(
+           let g = new FormGroup(
                {'one': new FormControl('value')}, null !,
                [asyncValidator('expected'), otherObservableValidator]);
            expect(g.pending).toEqual(true);
@@ -913,7 +913,7 @@ import {of } from 'rxjs';
          }));
 
       it('should set single async validator from options obj', fakeAsync(() => {
-           const g = new FormGroup(
+           let g = new FormGroup(
                {'one': new FormControl('value')}, {asyncValidators: asyncValidator('expected')});
            expect(g.pending).toEqual(true);
 
@@ -923,7 +923,7 @@ import {of } from 'rxjs';
          }));
 
       it('should set multiple async validators from options obj', fakeAsync(() => {
-           const g = new FormGroup(
+           let g = new FormGroup(
                {'one': new FormControl('value')},
                {asyncValidators: [asyncValidator('expected'), otherObservableValidator]});
            expect(g.pending).toEqual(true);
@@ -934,8 +934,8 @@ import {of } from 'rxjs';
          }));
 
       it('should set the parent group\'s status to pending', fakeAsync(() => {
-           const c = new FormControl('value', null !, asyncValidator('expected'));
-           const g = new FormGroup({'one': c});
+           let c = new FormControl('value', null !, asyncValidator('expected'));
+           let g = new FormGroup({'one': c});
 
            expect(g.pending).toEqual(true);
 
@@ -946,8 +946,8 @@ import {of } from 'rxjs';
 
       it('should run the parent group\'s async validator when children are pending',
          fakeAsync(() => {
-           const c = new FormControl('value', null !, asyncValidator('expected'));
-           const g = new FormGroup({'one': c}, null !, asyncValidator('expected'));
+           let c = new FormControl('value', null !, asyncValidator('expected'));
+           let g = new FormGroup({'one': c}, null !, asyncValidator('expected'));
 
            tick(1);
 
@@ -958,7 +958,7 @@ import {of } from 'rxjs';
 
     describe('disable() & enable()', () => {
       it('should mark the group as disabled', () => {
-        const g = new FormGroup({'one': new FormControl(null)});
+        let g = new FormGroup({'one': new FormControl(null)});
         expect(g.disabled).toBe(false);
         expect(g.valid).toBe(true);
 
@@ -972,7 +972,7 @@ import {of } from 'rxjs';
       });
 
       it('should set the group status as disabled', () => {
-        const g = new FormGroup({'one': new FormControl(null)});
+        let g = new FormGroup({'one': new FormControl(null)});
         expect(g.status).toEqual('VALID');
 
         g.disable();
@@ -983,9 +983,9 @@ import {of } from 'rxjs';
       });
 
       it('should mark children of the group as disabled', () => {
-        const c1 = new FormControl(null);
-        const c2 = new FormControl(null);
-        const g = new FormGroup({'one': c1, 'two': c2});
+        let c1 = new FormControl(null);
+        let c2 = new FormControl(null);
+        let g = new FormGroup({'one': c1, 'two': c2});
         expect(c1.disabled).toBe(false);
         expect(c2.disabled).toBe(false);
 
@@ -999,7 +999,7 @@ import {of } from 'rxjs';
       });
 
       it('should ignore disabled controls in validation', () => {
-        const g = new FormGroup({
+        let g = new FormGroup({
           nested: new FormGroup({one: new FormControl(null, Validators.required)}),
           two: new FormControl('two')
         });
@@ -1013,7 +1013,7 @@ import {of } from 'rxjs';
       });
 
       it('should ignore disabled controls when serializing value', () => {
-        const g = new FormGroup(
+        let g = new FormGroup(
             {nested: new FormGroup({one: new FormControl('one')}), two: new FormControl('two')});
         expect(g.value).toEqual({'nested': {'one': 'one'}, 'two': 'two'});
 
@@ -1025,7 +1025,7 @@ import {of } from 'rxjs';
       });
 
       it('should update its value when disabled with disabled children', () => {
-        const g = new FormGroup(
+        let g = new FormGroup(
             {nested: new FormGroup({one: new FormControl('one'), two: new FormControl('two')})});
 
         g.get('nested.two') !.disable();
@@ -1039,7 +1039,7 @@ import {of } from 'rxjs';
       });
 
       it('should update its value when enabled with disabled children', () => {
-        const g = new FormGroup(
+        let g = new FormGroup(
             {nested: new FormGroup({one: new FormControl('one'), two: new FormControl('two')})});
 
         g.get('nested.two') !.disable();
@@ -1050,7 +1050,7 @@ import {of } from 'rxjs';
       });
 
       it('should ignore disabled controls when determining dirtiness', () => {
-        const g = new FormGroup(
+        let g = new FormGroup(
             {nested: new FormGroup({one: new FormControl('one')}), two: new FormControl('two')});
         g.get('nested.one') !.markAsDirty();
         expect(g.dirty).toBe(true);
@@ -1064,7 +1064,7 @@ import {of } from 'rxjs';
       });
 
       it('should ignore disabled controls when determining touched state', () => {
-        const g = new FormGroup(
+        let g = new FormGroup(
             {nested: new FormGroup({one: new FormControl('one')}), two: new FormControl('two')});
         g.get('nested.one') !.markAsTouched();
         expect(g.touched).toBe(true);
@@ -1078,7 +1078,7 @@ import {of } from 'rxjs';
       });
 
       it('should keep empty, disabled groups disabled when updating validity', () => {
-        const group = new FormGroup({});
+        let group = new FormGroup({});
         expect(group.status).toEqual('VALID');
 
         group.disable();
@@ -1095,7 +1095,7 @@ import {of } from 'rxjs';
       });
 
       it('should re-enable empty, disabled groups', () => {
-        const group = new FormGroup({});
+        let group = new FormGroup({});
         group.disable();
         expect(group.status).toEqual('DISABLED');
 
@@ -1104,8 +1104,8 @@ import {of } from 'rxjs';
       });
 
       it('should not run validators on disabled controls', () => {
-        const validator = jasmine.createSpy('validator');
-        const g = new FormGroup({'one': new FormControl()}, validator);
+        let validator = jasmine.createSpy('validator');
+        let g = new FormGroup({'one': new FormControl()}, validator);
         expect(validator.calls.count()).toEqual(1);
 
         g.disable();
@@ -1120,7 +1120,7 @@ import {of } from 'rxjs';
 
       describe('disabled errors', () => {
         it('should clear out group errors when disabled', () => {
-          const g = new FormGroup({'one': new FormControl()}, () => ({'expected': true}));
+          let g = new FormGroup({'one': new FormControl()}, () => ({'expected': true}));
           expect(g.errors).toEqual({'expected': true});
 
           g.disable();
@@ -1131,7 +1131,7 @@ import {of } from 'rxjs';
         });
 
         it('should re-populate group errors when enabled from a child', () => {
-          const g = new FormGroup({'one': new FormControl()}, () => ({'expected': true}));
+          let g = new FormGroup({'one': new FormControl()}, () => ({'expected': true}));
           g.disable();
           expect(g.errors).toEqual(null);
 
@@ -1140,7 +1140,7 @@ import {of } from 'rxjs';
         });
 
         it('should clear out async group errors when disabled', fakeAsync(() => {
-             const g =
+             let g =
                  new FormGroup({'one': new FormControl()}, null !, asyncValidator('expected'));
              tick();
              expect(g.errors).toEqual({'async': true});
@@ -1154,7 +1154,7 @@ import {of } from 'rxjs';
            }));
 
         it('should re-populate async group errors when enabled from a child', fakeAsync(() => {
-             const g =
+             let g =
                  new FormGroup({'one': new FormControl()}, null !, asyncValidator('expected'));
              tick();
              expect(g.errors).toEqual({'async': true});
@@ -1267,7 +1267,7 @@ import {of } from 'rxjs';
       });
 
       it('should replace existing control with new control', () => {
-        const c2 = new FormControl('new!', Validators.minLength(10));
+        let c2 = new FormControl('new!', Validators.minLength(10));
         g.setControl('one', c2);
 
         expect(g.controls['one']).toEqual(c2);
@@ -1276,7 +1276,7 @@ import {of } from 'rxjs';
       });
 
       it('should add control if control did not exist before', () => {
-        const c2 = new FormControl('new!', Validators.minLength(10));
+        let c2 = new FormControl('new!', Validators.minLength(10));
         g.setControl('two', c2);
 
         expect(g.controls['two']).toEqual(c2);
@@ -1291,8 +1291,8 @@ import {of } from 'rxjs';
       });
 
       it('should only emit value change event once', () => {
-        const logger: string[] = [];
-        const c2 = new FormControl('new!');
+        let logger: string[] = [];
+        let c2 = new FormControl('new!');
         g.valueChanges.subscribe(() => logger.push('change!'));
         g.setControl('one', c2);
         expect(logger).toEqual(['change!']);

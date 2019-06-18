@@ -45,7 +45,7 @@ export abstract class Connection {
 export abstract class XSRFStrategy { abstract configureRequest(req: Request): void; }
 
 /**
- * Interface for options to construct a RequestOptions, based on
+ * Interface for options to letruct a RequestOptions, based on
  * [RequestInit](https://fetch.spec.whatwg.org/#requestinit) from the Fetch spec.
  *
  * @deprecated see https://angular.io/guide/http
@@ -64,12 +64,12 @@ export interface RequestOptionsArgs {
 }
 
 /**
- * Required structure when constructing new Request();
+ * Required structure when letructing new Request();
  */
 export interface RequestArgs extends RequestOptionsArgs { url: string|null; }
 
 /**
- * Interface for options to construct a Response, based on
+ * Interface for options to letruct a Response, based on
  * [ResponseInit](https://fetch.spec.whatwg.org/#responseinit) from the Fetch spec.
  *
  * @deprecated see https://angular.io/guide/http

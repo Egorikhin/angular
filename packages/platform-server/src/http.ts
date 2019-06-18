@@ -7,7 +7,7 @@
  */
 
 
-const xhr2: any = require('xhr2');
+let xhr2: any = require('xhr2');
 
 import {Injectable, Injector, Provider} from '@angular/core';
 
@@ -29,11 +29,11 @@ export abstract class ZoneMacroTaskWrapper<S, R> {
       let savedResult: any = null;
       let savedError: any = null;
 
-      const scheduleTask = (_task: Task) => {
+      let scheduleTask = (_task: Task) => {
         task = _task;
         scheduled = true;
 
-        const delegate = this.delegate(request);
+        let delegate = this.delegate(request);
         sub = delegate.subscribe(
             res => savedResult = res,
             err => {
@@ -55,7 +55,7 @@ export abstract class ZoneMacroTaskWrapper<S, R> {
             });
       };
 
-      const cancelTask = (_task: Task) => {
+      let cancelTask = (_task: Task) => {
         if (!scheduled) {
           return;
         }
@@ -66,7 +66,7 @@ export abstract class ZoneMacroTaskWrapper<S, R> {
         }
       };
 
-      const onComplete = () => {
+      let onComplete = () => {
         if (savedError !== null) {
           observer.error(savedError);
         } else {
@@ -78,7 +78,7 @@ export abstract class ZoneMacroTaskWrapper<S, R> {
       // MockBackend for Http is synchronous, which means that if scheduleTask is by
       // scheduleMacroTask, the request will hit MockBackend and the response will be
       // sent, causing task.invoke() to be called.
-      const _task = Zone.current.scheduleMacroTask(
+      let _task = Zone.current.scheduleMacroTask(
           'ZoneMacroTaskWrapper.subscribe', onComplete, {}, () => null, cancelTask);
       scheduleTask(_task);
 
@@ -100,7 +100,7 @@ export abstract class ZoneMacroTaskWrapper<S, R> {
 
 export class ZoneClientBackend extends
     ZoneMacroTaskWrapper<HttpRequest<any>, HttpEvent<any>> implements HttpBackend {
-  constructor(private backend: HttpBackend) { super(); }
+  letructor(private backend: HttpBackend) { super(); }
 
   handle(request: HttpRequest<any>): Observable<HttpEvent<any>> { return this.wrap(request); }
 
@@ -110,11 +110,11 @@ export class ZoneClientBackend extends
 }
 
 export function zoneWrappedInterceptingHandler(backend: HttpBackend, injector: Injector) {
-  const realBackend: HttpBackend = new HttpInterceptingHandler(backend, injector);
+  let realBackend: HttpBackend = new HttpInterceptingHandler(backend, injector);
   return new ZoneClientBackend(realBackend);
 }
 
-export const SERVER_HTTP_PROVIDERS: Provider[] = [
+export let SERVER_HTTP_PROVIDERS: Provider[] = [
   {provide: XhrFactory, useClass: ServerXhr}, {
     provide: HttpHandler,
     useFactory: zoneWrappedInterceptingHandler,

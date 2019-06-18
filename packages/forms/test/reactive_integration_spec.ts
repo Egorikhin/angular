@@ -28,13 +28,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
     describe('basic functionality', () => {
       it('should work with single controls', () => {
-        const fixture = initTest(FormControlComp);
-        const control = new FormControl('old value');
+        let fixture = initTest(FormControlComp);
+        let control = new FormControl('old value');
         fixture.componentInstance.control = control;
         fixture.detectChanges();
 
         // model -> view
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         expect(input.nativeElement.value).toEqual('old value');
 
         input.nativeElement.value = 'updated value';
@@ -45,30 +45,30 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should work with formGroups (model -> view)', () => {
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({'login': new FormControl('loginValue')});
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         expect(input.nativeElement.value).toEqual('loginValue');
       });
 
       it('should add novalidate by default to form', () => {
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({'login': new FormControl('loginValue')});
         fixture.detectChanges();
 
-        const form = fixture.debugElement.query(By.css('form'));
+        let form = fixture.debugElement.query(By.css('form'));
         expect(form.nativeElement.getAttribute('novalidate')).toEqual('');
       });
 
       it('work with formGroups (view -> model)', () => {
-        const fixture = initTest(FormGroupComp);
-        const form = new FormGroup({'login': new FormControl('oldValue')});
+        let fixture = initTest(FormGroupComp);
+        let form = new FormGroup({'login': new FormControl('oldValue')});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         input.nativeElement.value = 'updatedValue';
         dispatchEvent(input.nativeElement, 'input');
 
@@ -80,27 +80,27 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
     describe('re-bound form groups', () => {
 
       it('should update DOM elements initially', () => {
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({'login': new FormControl('oldValue')});
         fixture.detectChanges();
 
         fixture.componentInstance.form = new FormGroup({'login': new FormControl('newValue')});
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         expect(input.nativeElement.value).toEqual('newValue');
       });
 
       it('should update model when UI changes', () => {
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({'login': new FormControl('oldValue')});
         fixture.detectChanges();
 
-        const newForm = new FormGroup({'login': new FormControl('newValue')});
+        let newForm = new FormGroup({'login': new FormControl('newValue')});
         fixture.componentInstance.form = newForm;
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         input.nativeElement.value = 'Nancy';
         dispatchEvent(input.nativeElement, 'input');
         fixture.detectChanges();
@@ -113,19 +113,19 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should update nested form group model when UI changes', () => {
-        const fixture = initTest(NestedFormGroupComp);
+        let fixture = initTest(NestedFormGroupComp);
         fixture.componentInstance.form = new FormGroup(
             {'signin': new FormGroup({'login': new FormControl(), 'password': new FormControl()})});
         fixture.detectChanges();
 
-        const newForm = new FormGroup({
+        let newForm = new FormGroup({
           'signin': new FormGroup(
               {'login': new FormControl('Nancy'), 'password': new FormControl('secret')})
         });
         fixture.componentInstance.form = newForm;
         fixture.detectChanges();
 
-        const inputs = fixture.debugElement.queryAll(By.css('input'));
+        let inputs = fixture.debugElement.queryAll(By.css('input'));
         expect(inputs[0].nativeElement.value).toEqual('Nancy');
         expect(inputs[1].nativeElement.value).toEqual('secret');
 
@@ -141,8 +141,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should pick up dir validators from form controls', () => {
-        const fixture = initTest(LoginIsEmptyWrapper, LoginIsEmptyValidator);
-        const form = new FormGroup({
+        let fixture = initTest(LoginIsEmptyWrapper, LoginIsEmptyValidator);
+        let form = new FormGroup({
           'login': new FormControl(''),
           'min': new FormControl(''),
           'max': new FormControl(''),
@@ -152,7 +152,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         fixture.detectChanges();
         expect(form.get('login') !.errors).toEqual({required: true});
 
-        const newForm = new FormGroup({
+        let newForm = new FormGroup({
           'login': new FormControl(''),
           'min': new FormControl(''),
           'max': new FormControl(''),
@@ -165,8 +165,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should pick up dir validators from nested form groups', () => {
-        const fixture = initTest(NestedFormGroupComp, LoginIsEmptyValidator);
-        const form = new FormGroup({
+        let fixture = initTest(NestedFormGroupComp, LoginIsEmptyValidator);
+        let form = new FormGroup({
           'signin':
               new FormGroup({'login': new FormControl(''), 'password': new FormControl('')})
         });
@@ -174,7 +174,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         fixture.detectChanges();
         expect(form.get('signin') !.valid).toBe(false);
 
-        const newForm = new FormGroup({
+        let newForm = new FormGroup({
           'signin':
               new FormGroup({'login': new FormControl(''), 'password': new FormControl('')})
         });
@@ -185,8 +185,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should strip named controls that are not found', () => {
-        const fixture = initTest(NestedFormGroupComp, LoginIsEmptyValidator);
-        const form = new FormGroup({
+        let fixture = initTest(NestedFormGroupComp, LoginIsEmptyValidator);
+        let form = new FormGroup({
           'signin':
               new FormGroup({'login': new FormControl(''), 'password': new FormControl('')})
         });
@@ -199,7 +199,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         let emailInput = fixture.debugElement.query(By.css('[formControlName="email"]'));
         expect(emailInput.nativeElement.value).toEqual('email');
 
-        const newForm = new FormGroup({
+        let newForm = new FormGroup({
           'signin':
               new FormGroup({'login': new FormControl(''), 'password': new FormControl('')})
         });
@@ -211,9 +211,9 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should strip array controls that are not found', () => {
-        const fixture = initTest(FormArrayComp);
-        const cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
-        const form = new FormGroup({cities: cityArray});
+        let fixture = initTest(FormArrayComp);
+        let cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
+        let form = new FormGroup({cities: cityArray});
         fixture.componentInstance.form = form;
         fixture.componentInstance.cityArray = cityArray;
         fixture.detectChanges();
@@ -226,8 +226,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         inputs = fixture.debugElement.queryAll(By.css('input'));
         expect(inputs[2]).toBeDefined();
 
-        const newArr = new FormArray([new FormControl('SF'), new FormControl('NY')]);
-        const newForm = new FormGroup({cities: newArr});
+        let newArr = new FormArray([new FormControl('SF'), new FormControl('NY')]);
+        let newForm = new FormGroup({cities: newArr});
         fixture.componentInstance.form = newForm;
         fixture.componentInstance.cityArray = newArr;
         fixture.detectChanges();
@@ -239,8 +239,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       describe('nested control rebinding', () => {
 
         it('should attach dir to control when leaf control changes', () => {
-          const form = new FormGroup({'login': new FormControl('oldValue')});
-          const fixture = initTest(FormGroupComp);
+          let form = new FormGroup({'login': new FormControl('oldValue')});
+          let fixture = initTest(FormGroupComp);
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
@@ -248,7 +248,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           form.addControl('login', new FormControl('newValue'));
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input'));
+          let input = fixture.debugElement.query(By.css('input'));
           expect(input.nativeElement.value).toEqual('newValue');
 
           input.nativeElement.value = 'user input';
@@ -263,8 +263,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should attach dirs to all child controls when group control changes', () => {
-          const fixture = initTest(NestedFormGroupComp, LoginIsEmptyValidator);
-          const form = new FormGroup({
+          let fixture = initTest(NestedFormGroupComp, LoginIsEmptyValidator);
+          let form = new FormGroup({
             signin: new FormGroup(
                 {login: new FormControl('oldLogin'), password: new FormControl('oldPassword')})
           });
@@ -278,7 +278,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
                   {login: new FormControl('newLogin'), password: new FormControl('newPassword')}));
           fixture.detectChanges();
 
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.value).toEqual('newLogin');
           expect(inputs[1].nativeElement.value).toEqual('newPassword');
 
@@ -295,9 +295,9 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should attach dirs to all present child controls when array control changes', () => {
-          const fixture = initTest(FormArrayComp);
-          const cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
-          const form = new FormGroup({cities: cityArray});
+          let fixture = initTest(FormArrayComp);
+          let cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
+          let form = new FormGroup({cities: cityArray});
           fixture.componentInstance.form = form;
           fixture.componentInstance.cityArray = cityArray;
           fixture.detectChanges();
@@ -306,7 +306,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           form.addControl('cities', new FormArray([new FormControl('LA')]));
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input'));
+          let input = fixture.debugElement.query(By.css('input'));
           expect(input.nativeElement.value).toEqual('LA');
 
           input.nativeElement.value = 'MTV';
@@ -321,15 +321,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should remove controls correctly after re-binding a form array', () => {
-          const fixture = initTest(FormArrayComp);
-          const cityArray =
+          let fixture = initTest(FormArrayComp);
+          let cityArray =
               new FormArray([new FormControl('SF'), new FormControl('NY'), new FormControl('LA')]);
-          const form = new FormGroup({cities: cityArray});
+          let form = new FormGroup({cities: cityArray});
           fixture.componentInstance.form = form;
           fixture.componentInstance.cityArray = cityArray;
           fixture.detectChanges();
 
-          const newArr =
+          let newArr =
               new FormArray([new FormControl('SF'), new FormControl('NY'), new FormControl('LA')]);
           fixture.componentInstance.cityArray = newArr;
           form.setControl('cities', newArr);
@@ -367,15 +367,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should submit properly after removing controls on a re-bound array', () => {
-          const fixture = initTest(FormArrayComp);
-          const cityArray =
+          let fixture = initTest(FormArrayComp);
+          let cityArray =
               new FormArray([new FormControl('SF'), new FormControl('NY'), new FormControl('LA')]);
-          const form = new FormGroup({cities: cityArray});
+          let form = new FormGroup({cities: cityArray});
           fixture.componentInstance.form = form;
           fixture.componentInstance.cityArray = cityArray;
           fixture.detectChanges();
 
-          const newArr =
+          let newArr =
               new FormArray([new FormControl('SF'), new FormControl('NY'), new FormControl('LA')]);
           fixture.componentInstance.cityArray = newArr;
           form.setControl('cities', newArr);
@@ -384,19 +384,19 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           newArr.removeAt(0);
           fixture.detectChanges();
 
-          const formEl = fixture.debugElement.query(By.css('form'));
+          let formEl = fixture.debugElement.query(By.css('form'));
           expect(() => dispatchEvent(formEl.nativeElement, 'submit')).not.toThrowError();
         });
 
         it('should insert controls properly on a re-bound array', () => {
-          const fixture = initTest(FormArrayComp);
-          const cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
-          const form = new FormGroup({cities: cityArray});
+          let fixture = initTest(FormArrayComp);
+          let cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
+          let form = new FormGroup({cities: cityArray});
           fixture.componentInstance.form = form;
           fixture.componentInstance.cityArray = cityArray;
           fixture.detectChanges();
 
-          const newArr = new FormArray([new FormControl('SF'), new FormControl('NY')]);
+          let newArr = new FormArray([new FormControl('SF'), new FormControl('NY')]);
           fixture.componentInstance.cityArray = newArr;
           form.setControl('cities', newArr);
           fixture.detectChanges();
@@ -409,7 +409,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           expect(inputs[1].nativeElement.value).toEqual('LA');
           expect(inputs[2].nativeElement.value).toEqual('NY');
 
-          const lastInput = inputs[2].nativeElement;
+          let lastInput = inputs[2].nativeElement;
           lastInput.value = 'Tulsa';
           dispatchEvent(lastInput, 'input');
           fixture.detectChanges();
@@ -428,14 +428,14 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
     describe('form arrays', () => {
       it('should support form arrays', () => {
-        const fixture = initTest(FormArrayComp);
-        const cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
-        const form = new FormGroup({cities: cityArray});
+        let fixture = initTest(FormArrayComp);
+        let cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
+        let form = new FormGroup({cities: cityArray});
         fixture.componentInstance.form = form;
         fixture.componentInstance.cityArray = cityArray;
         fixture.detectChanges();
 
-        const inputs = fixture.debugElement.queryAll(By.css('input'));
+        let inputs = fixture.debugElement.queryAll(By.css('input'));
 
         // model -> view
         expect(inputs[0].nativeElement.value).toEqual('SF');
@@ -451,9 +451,9 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should support pushing new controls to form arrays', () => {
-        const fixture = initTest(FormArrayComp);
-        const cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
-        const form = new FormGroup({cities: cityArray});
+        let fixture = initTest(FormArrayComp);
+        let cityArray = new FormArray([new FormControl('SF'), new FormControl('NY')]);
+        let form = new FormGroup({cities: cityArray});
         fixture.componentInstance.form = form;
         fixture.componentInstance.cityArray = cityArray;
         fixture.detectChanges();
@@ -461,23 +461,23 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         cityArray.push(new FormControl('LA'));
         fixture.detectChanges();
 
-        const inputs = fixture.debugElement.queryAll(By.css('input'));
+        let inputs = fixture.debugElement.queryAll(By.css('input'));
         expect(inputs[2].nativeElement.value).toEqual('LA');
         expect(form.value).toEqual({cities: ['SF', 'NY', 'LA']});
       });
 
       it('should support form groups nested in form arrays', () => {
-        const fixture = initTest(FormArrayNestedGroup);
-        const cityArray = new FormArray([
+        let fixture = initTest(FormArrayNestedGroup);
+        let cityArray = new FormArray([
           new FormGroup({town: new FormControl('SF'), state: new FormControl('CA')}),
           new FormGroup({town: new FormControl('NY'), state: new FormControl('NY')})
         ]);
-        const form = new FormGroup({cities: cityArray});
+        let form = new FormGroup({cities: cityArray});
         fixture.componentInstance.form = form;
         fixture.componentInstance.cityArray = cityArray;
         fixture.detectChanges();
 
-        const inputs = fixture.debugElement.queryAll(By.css('input'));
+        let inputs = fixture.debugElement.queryAll(By.css('input'));
         expect(inputs[0].nativeElement.value).toEqual('SF');
         expect(inputs[1].nativeElement.value).toEqual('CA');
         expect(inputs[2].nativeElement.value).toEqual('NY');
@@ -499,28 +499,28 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
     describe('programmatic changes', () => {
       it('should update the value in the DOM when setValue() is called', () => {
-        const fixture = initTest(FormGroupComp);
-        const login = new FormControl('oldValue');
-        const form = new FormGroup({'login': login});
+        let fixture = initTest(FormGroupComp);
+        let login = new FormControl('oldValue');
+        let form = new FormGroup({'login': login});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
         login.setValue('newValue');
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         expect(input.nativeElement.value).toEqual('newValue');
       });
 
       describe('disabled controls', () => {
         it('should add disabled attribute to an individual control when instantiated as disabled',
            () => {
-             const fixture = initTest(FormControlComp);
-             const control = new FormControl({value: 'some value', disabled: true});
+             let fixture = initTest(FormControlComp);
+             let control = new FormControl({value: 'some value', disabled: true});
              fixture.componentInstance.control = control;
              fixture.detectChanges();
 
-             const input = fixture.debugElement.query(By.css('input'));
+             let input = fixture.debugElement.query(By.css('input'));
              expect(input.nativeElement.disabled).toBe(true);
 
              control.enable();
@@ -529,13 +529,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
            });
 
         it('should add disabled attribute to formControlName when instantiated as disabled', () => {
-          const fixture = initTest(FormGroupComp);
-          const control = new FormControl({value: 'some value', disabled: true});
+          let fixture = initTest(FormGroupComp);
+          let control = new FormControl({value: 'some value', disabled: true});
           fixture.componentInstance.form = new FormGroup({login: control});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input'));
+          let input = fixture.debugElement.query(By.css('input'));
           expect(input.nativeElement.disabled).toBe(true);
 
           control.enable();
@@ -545,15 +545,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
         it('should add disabled attribute to an individual control when disable() is called',
            () => {
-             const fixture = initTest(FormControlComp);
-             const control = new FormControl('some value');
+             let fixture = initTest(FormControlComp);
+             let control = new FormControl('some value');
              fixture.componentInstance.control = control;
              fixture.detectChanges();
 
              control.disable();
              fixture.detectChanges();
 
-             const input = fixture.debugElement.query(By.css('input'));
+             let input = fixture.debugElement.query(By.css('input'));
              expect(input.nativeElement.disabled).toBe(true);
 
              control.enable();
@@ -563,15 +563,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
         it('should add disabled attribute to child controls when disable() is called on group',
            () => {
-             const fixture = initTest(FormGroupComp);
-             const form = new FormGroup({'login': new FormControl('login')});
+             let fixture = initTest(FormGroupComp);
+             let form = new FormGroup({'login': new FormControl('login')});
              fixture.componentInstance.form = form;
              fixture.detectChanges();
 
              form.disable();
              fixture.detectChanges();
 
-             const inputs = fixture.debugElement.queryAll(By.css('input'));
+             let inputs = fixture.debugElement.queryAll(By.css('input'));
              expect(inputs[0].nativeElement.disabled).toBe(true);
 
              form.enable();
@@ -581,15 +581,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
 
         it('should not add disabled attribute to custom controls when disable() is called', () => {
-          const fixture = initTest(MyInputForm, MyInput);
-          const control = new FormControl('some value');
+          let fixture = initTest(MyInputForm, MyInput);
+          let control = new FormControl('some value');
           fixture.componentInstance.form = new FormGroup({login: control});
           fixture.detectChanges();
 
           control.disable();
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('my-input'));
+          let input = fixture.debugElement.query(By.css('my-input'));
           expect(input.nativeElement.getAttribute('disabled')).toBe(null);
         });
 
@@ -600,13 +600,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
     describe('user input', () => {
 
       it('should mark controls as touched after interacting with the DOM control', () => {
-        const fixture = initTest(FormGroupComp);
-        const login = new FormControl('oldValue');
-        const form = new FormGroup({'login': login});
+        let fixture = initTest(FormGroupComp);
+        let login = new FormControl('oldValue');
+        let form = new FormGroup({'login': login});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const loginEl = fixture.debugElement.query(By.css('input'));
+        let loginEl = fixture.debugElement.query(By.css('input'));
         expect(login.touched).toBe(false);
 
         dispatchEvent(loginEl.nativeElement, 'blur');
@@ -618,12 +618,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
     describe('submit and reset events', () => {
       it('should emit ngSubmit event with the original submit event on submit', () => {
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({'login': new FormControl('loginValue')});
         fixture.componentInstance.event = null !;
         fixture.detectChanges();
 
-        const formEl = fixture.debugElement.query(By.css('form')).nativeElement;
+        let formEl = fixture.debugElement.query(By.css('form')).nativeElement;
         dispatchEvent(formEl, 'submit');
 
         fixture.detectChanges();
@@ -631,14 +631,14 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should mark formGroup as submitted on submit event', () => {
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({'login': new FormControl('loginValue')});
         fixture.detectChanges();
 
-        const formGroupDir = fixture.debugElement.children[0].injector.get(FormGroupDirective);
+        let formGroupDir = fixture.debugElement.children[0].injector.get(FormGroupDirective);
         expect(formGroupDir.submitted).toBe(false);
 
-        const formEl = fixture.debugElement.query(By.css('form')).nativeElement;
+        let formEl = fixture.debugElement.query(By.css('form')).nativeElement;
         dispatchEvent(formEl, 'submit');
 
         fixture.detectChanges();
@@ -646,13 +646,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should set value in UI when form resets to that value programmatically', () => {
-        const fixture = initTest(FormGroupComp);
-        const login = new FormControl('some value');
-        const form = new FormGroup({'login': login});
+        let fixture = initTest(FormGroupComp);
+        let login = new FormControl('some value');
+        let form = new FormGroup({'login': login});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
+        let loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
         expect(loginEl.value).toBe('some value');
 
         form.reset({'login': 'reset value'});
@@ -660,13 +660,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should clear value in UI when form resets programmatically', () => {
-        const fixture = initTest(FormGroupComp);
-        const login = new FormControl('some value');
-        const form = new FormGroup({'login': login});
+        let fixture = initTest(FormGroupComp);
+        let login = new FormControl('some value');
+        let form = new FormGroup({'login': login});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
+        let loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
         expect(loginEl.value).toBe('some value');
 
         form.reset();
@@ -678,14 +678,14 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
     describe('value changes and status changes', () => {
 
       it('should mark controls as dirty before emitting a value change event', () => {
-        const fixture = initTest(FormGroupComp);
-        const login = new FormControl('oldValue');
+        let fixture = initTest(FormGroupComp);
+        let login = new FormControl('oldValue');
         fixture.componentInstance.form = new FormGroup({'login': login});
         fixture.detectChanges();
 
         login.valueChanges.subscribe(() => { expect(login.dirty).toBe(true); });
 
-        const loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
+        let loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
         loginEl.value = 'newValue';
 
         dispatchEvent(loginEl, 'input');
@@ -693,13 +693,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
       it('should mark control as pristine before emitting a value change event when resetting ',
          () => {
-           const fixture = initTest(FormGroupComp);
-           const login = new FormControl('oldValue');
-           const form = new FormGroup({'login': login});
+           let fixture = initTest(FormGroupComp);
+           let login = new FormControl('oldValue');
+           let form = new FormGroup({'login': login});
            fixture.componentInstance.form = form;
            fixture.detectChanges();
 
-           const loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
+           let loginEl = fixture.debugElement.query(By.css('input')).nativeElement;
            loginEl.value = 'newValue';
            dispatchEvent(loginEl, 'input');
 
@@ -714,12 +714,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
     describe('setting status classes', () => {
       it('should work with single fields', () => {
-        const fixture = initTest(FormControlComp);
-        const control = new FormControl('', Validators.required);
+        let fixture = initTest(FormControlComp);
+        let control = new FormControl('', Validators.required);
         fixture.componentInstance.control = control;
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input')).nativeElement;
+        let input = fixture.debugElement.query(By.css('input')).nativeElement;
         expect(sortedClassList(input)).toEqual(['ng-invalid', 'ng-pristine', 'ng-untouched']);
 
         dispatchEvent(input, 'blur');
@@ -735,12 +735,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should work with single fields and async validators', fakeAsync(() => {
-           const fixture = initTest(FormControlComp);
-           const control = new FormControl('', null !, uniqLoginAsyncValidator('good'));
+           let fixture = initTest(FormControlComp);
+           let control = new FormControl('', null !, uniqLoginAsyncValidator('good'));
            fixture.debugElement.componentInstance.control = control;
            fixture.detectChanges();
 
-           const input = fixture.debugElement.query(By.css('input')).nativeElement;
+           let input = fixture.debugElement.query(By.css('input')).nativeElement;
            expect(sortedClassList(input)).toEqual(['ng-pending', 'ng-pristine', 'ng-untouched']);
 
            dispatchEvent(input, 'blur');
@@ -756,13 +756,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          }));
 
       it('should work with single fields that combines async and sync validators', fakeAsync(() => {
-           const fixture = initTest(FormControlComp);
-           const control =
+           let fixture = initTest(FormControlComp);
+           let control =
                new FormControl('', Validators.required, uniqLoginAsyncValidator('good'));
            fixture.debugElement.componentInstance.control = control;
            fixture.detectChanges();
 
-           const input = fixture.debugElement.query(By.css('input')).nativeElement;
+           let input = fixture.debugElement.query(By.css('input')).nativeElement;
            expect(sortedClassList(input)).toEqual(['ng-invalid', 'ng-pristine', 'ng-untouched']);
 
            dispatchEvent(input, 'blur');
@@ -789,12 +789,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          }));
 
       it('should work with single fields in parent forms', () => {
-        const fixture = initTest(FormGroupComp);
-        const form = new FormGroup({'login': new FormControl('', Validators.required)});
+        let fixture = initTest(FormGroupComp);
+        let form = new FormGroup({'login': new FormControl('', Validators.required)});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input')).nativeElement;
+        let input = fixture.debugElement.query(By.css('input')).nativeElement;
         expect(sortedClassList(input)).toEqual(['ng-invalid', 'ng-pristine', 'ng-untouched']);
 
         dispatchEvent(input, 'blur');
@@ -810,13 +810,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should work with formGroup', () => {
-        const fixture = initTest(FormGroupComp);
-        const form = new FormGroup({'login': new FormControl('', Validators.required)});
+        let fixture = initTest(FormGroupComp);
+        let form = new FormGroup({'login': new FormControl('', Validators.required)});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input')).nativeElement;
-        const formEl = fixture.debugElement.query(By.css('form')).nativeElement;
+        let input = fixture.debugElement.query(By.css('input')).nativeElement;
+        let formEl = fixture.debugElement.query(By.css('form')).nativeElement;
 
         expect(sortedClassList(formEl)).toEqual(['ng-invalid', 'ng-pristine', 'ng-untouched']);
 
@@ -839,12 +839,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       describe('on blur', () => {
 
         it('should not update value or validity based on user input until blur', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -861,13 +861,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not update parent group value/validity from child until blur', () => {
-          const fixture = initTest(FormGroupComp);
-          const form = new FormGroup(
+          let fixture = initTest(FormGroupComp);
+          let form = new FormGroup(
               {login: new FormControl('', {validators: Validators.required, updateOn: 'blur'})});
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -885,29 +885,29 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not wait for blur event to update if value is set programmatically', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
           control.setValue('Nancy');
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           expect(input.value).toEqual('Nancy', 'Expected value to propagate to view immediately.');
           expect(control.value).toEqual('Nancy', 'Expected model value to update immediately.');
           expect(control.valid).toBe(true, 'Expected validation to run immediately.');
         });
 
         it('should not update dirty state until control is blurred', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
           expect(control.dirty).toBe(false, 'Expected control to start out pristine.');
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -921,14 +921,14 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should update touched when control is blurred', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
           expect(control.touched).toBe(false, 'Expected control to start out untouched.');
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           dispatchEvent(input, 'blur');
           fixture.detectChanges();
 
@@ -937,13 +937,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should continue waiting for blur to update if previously blurred', () => {
-          const fixture = initTest(FormControlComp);
-          const control =
+          let fixture = initTest(FormControlComp);
+          let control =
               new FormControl('Nancy', {validators: Validators.required, updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           dispatchEvent(input, 'blur');
           fixture.detectChanges();
 
@@ -964,12 +964,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not use stale pending value if value set programmatically', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'aa';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -984,13 +984,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should set initial value and validity on init', () => {
-          const fixture = initTest(FormControlComp);
-          const control =
+          let fixture = initTest(FormControlComp);
+          let control =
               new FormControl('Nancy', {validators: Validators.maxLength(3), updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
 
           expect(input.value).toEqual('Nancy', 'Expected value to be set in the view.');
           expect(control.value).toEqual('Nancy', 'Expected initial model value to be set.');
@@ -998,12 +998,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should reset properly', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'aa';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1023,16 +1023,16 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not emit valueChanges or statusChanges until blur', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
-          const values: string[] = [];
+          let values: string[] = [];
 
-          const sub =
+          let sub =
               merge(control.valueChanges, control.statusChanges).subscribe(val => values.push(val));
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1049,16 +1049,16 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not emit valueChanges or statusChanges on blur if value unchanged', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {validators: Validators.required, updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
-          const values: string[] = [];
+          let values: string[] = [];
 
-          const sub =
+          let sub =
               merge(control.valueChanges, control.statusChanges).subscribe(val => values.push(val));
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           dispatchEvent(input, 'blur');
           fixture.detectChanges();
           expect(values).toEqual(
@@ -1098,12 +1098,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should mark as pristine properly if pending dirty', () => {
-          const fixture = initTest(FormControlComp);
-          const control = new FormControl('', {updateOn: 'blur'});
+          let fixture = initTest(FormControlComp);
+          let control = new FormControl('', {updateOn: 'blur'});
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'aa';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1121,13 +1121,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should update on blur with group updateOn', () => {
-          const fixture = initTest(FormGroupComp);
-          const control = new FormControl('', Validators.required);
-          const formGroup = new FormGroup({login: control}, {updateOn: 'blur'});
+          let fixture = initTest(FormGroupComp);
+          let control = new FormControl('', Validators.required);
+          let formGroup = new FormGroup({login: control}, {updateOn: 'blur'});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1145,15 +1145,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should update on blur with array updateOn', () => {
-          const fixture = initTest(FormArrayComp);
-          const control = new FormControl('', Validators.required);
-          const cityArray = new FormArray([control], {updateOn: 'blur'});
-          const formGroup = new FormGroup({cities: cityArray});
+          let fixture = initTest(FormArrayComp);
+          let control = new FormControl('', Validators.required);
+          let cityArray = new FormArray([control], {updateOn: 'blur'});
+          let formGroup = new FormGroup({cities: cityArray});
           fixture.componentInstance.form = formGroup;
           fixture.componentInstance.cityArray = cityArray;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1172,17 +1172,17 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
 
         it('should allow child control updateOn blur to override group updateOn', () => {
-          const fixture = initTest(NestedFormGroupComp);
-          const loginControl =
+          let fixture = initTest(NestedFormGroupComp);
+          let loginControl =
               new FormControl('', {validators: Validators.required, updateOn: 'change'});
-          const passwordControl = new FormControl('', Validators.required);
-          const formGroup = new FormGroup(
+          let passwordControl = new FormControl('', Validators.required);
+          let formGroup = new FormGroup(
               {signin: new FormGroup({login: loginControl, password: passwordControl})},
               {updateOn: 'blur'});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const [loginInput, passwordInput] = fixture.debugElement.queryAll(By.css('input'));
+          let [loginInput, passwordInput] = fixture.debugElement.queryAll(By.css('input'));
           loginInput.nativeElement.value = 'Nancy';
           dispatchEvent(loginInput.nativeElement, 'input');
           fixture.detectChanges();
@@ -1213,28 +1213,28 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       describe('on submit', () => {
 
         it('should set initial value and validity on init', () => {
-          const fixture = initTest(FormGroupComp);
-          const form = new FormGroup({
+          let fixture = initTest(FormGroupComp);
+          let form = new FormGroup({
             login:
                 new FormControl('Nancy', {validators: Validators.required, updateOn: 'submit'})
           });
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           expect(input.value).toEqual('Nancy', 'Expected initial value to propagate to view.');
           expect(form.value).toEqual({login: 'Nancy'}, 'Expected initial value to be set.');
           expect(form.valid).toBe(true, 'Expected form to run validation on initial value.');
         });
 
         it('should not update value or validity until submit', () => {
-          const fixture = initTest(FormGroupComp);
-          const formGroup = new FormGroup(
+          let fixture = initTest(FormGroupComp);
+          let formGroup = new FormGroup(
               {login: new FormControl('', {validators: Validators.required, updateOn: 'submit'})});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1250,7 +1250,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
               .toEqual({login: ''}, 'Expected form value to remain unchanged on blur.');
           expect(formGroup.valid).toBe(false, 'Expected form validation not to run on blur.');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1260,18 +1260,18 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not update after submit until a second submit', () => {
-          const fixture = initTest(FormGroupComp);
-          const formGroup = new FormGroup(
+          let fixture = initTest(FormGroupComp);
+          let formGroup = new FormGroup(
               {login: new FormControl('', {validators: Validators.required, updateOn: 'submit'})});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1293,8 +1293,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not wait for submit to set value programmatically', () => {
-          const fixture = initTest(FormGroupComp);
-          const formGroup = new FormGroup(
+          let fixture = initTest(FormGroupComp);
+          let formGroup = new FormGroup(
               {login: new FormControl('', {validators: Validators.required, updateOn: 'submit'})});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
@@ -1302,7 +1302,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           formGroup.setValue({login: 'Nancy'});
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           expect(input.value).toEqual('Nancy', 'Expected view value to update immediately.');
           expect(formGroup.value)
               .toEqual({login: 'Nancy'}, 'Expected form value to update immediately.');
@@ -1310,12 +1310,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not update dirty until submit', () => {
-          const fixture = initTest(FormGroupComp);
-          const formGroup = new FormGroup({login: new FormControl('', {updateOn: 'submit'})});
+          let fixture = initTest(FormGroupComp);
+          let formGroup = new FormGroup({login: new FormControl('', {updateOn: 'submit'})});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           dispatchEvent(input, 'input');
           fixture.detectChanges();
 
@@ -1326,7 +1326,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
           expect(formGroup.dirty).toBe(false, 'Expected dirty not to change on blur.');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1334,18 +1334,18 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not update touched until submit', () => {
-          const fixture = initTest(FormGroupComp);
-          const formGroup = new FormGroup({login: new FormControl('', {updateOn: 'submit'})});
+          let fixture = initTest(FormGroupComp);
+          let formGroup = new FormGroup({login: new FormControl('', {updateOn: 'submit'})});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           dispatchEvent(input, 'blur');
           fixture.detectChanges();
 
           expect(formGroup.touched).toBe(false, 'Expected touched not to change until submit.');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1353,13 +1353,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should reset properly', () => {
-          const fixture = initTest(FormGroupComp);
-          const formGroup = new FormGroup(
+          let fixture = initTest(FormGroupComp);
+          let formGroup = new FormGroup(
               {login: new FormControl('', {validators: Validators.required, updateOn: 'submit'})});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1375,7 +1375,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           expect(formGroup.dirty).toBe(false, 'Expected dirty to stay false on reset.');
           expect(formGroup.touched).toBe(false, 'Expected touched to stay false on reset.');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1386,20 +1386,20 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not emit valueChanges or statusChanges until submit', () => {
-          const fixture = initTest(FormGroupComp);
-          const control =
+          let fixture = initTest(FormGroupComp);
+          let control =
               new FormControl('', {validators: Validators.required, updateOn: 'submit'});
-          const formGroup = new FormGroup({login: control});
+          let formGroup = new FormGroup({login: control});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const values: any[] = [];
-          const streams = merge(
+          let values: any[] = [];
+          let streams = merge(
               control.valueChanges, control.statusChanges, formGroup.valueChanges,
               formGroup.statusChanges);
-          const sub = streams.subscribe(val => values.push(val));
+          let sub = streams.subscribe(val => values.push(val));
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1411,7 +1411,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
           expect(values).toEqual([], 'Expected no valueChanges or statusChanges on blur');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1423,26 +1423,26 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not emit valueChanges or statusChanges on submit if value unchanged', () => {
-          const fixture = initTest(FormGroupComp);
-          const control =
+          let fixture = initTest(FormGroupComp);
+          let control =
               new FormControl('', {validators: Validators.required, updateOn: 'submit'});
-          const formGroup = new FormGroup({login: control});
+          let formGroup = new FormGroup({login: control});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const values: (string | {[key: string]: string})[] = [];
-          const streams = merge(
+          let values: (string | {[key: string]: string})[] = [];
+          let streams = merge(
               control.valueChanges, control.statusChanges, formGroup.valueChanges,
               formGroup.statusChanges);
-          const sub = streams.subscribe(val => values.push(val));
+          let sub = streams.subscribe(val => values.push(val));
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
           expect(values).toEqual(
               [], 'Expected no valueChanges or statusChanges if value unchanged.');
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1482,11 +1482,11 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should not run validation for onChange controls on submit', () => {
-          const validatorSpy = jasmine.createSpy('validator');
-          const groupValidatorSpy = jasmine.createSpy('groupValidatorSpy');
+          let validatorSpy = jasmine.createSpy('validator');
+          let groupValidatorSpy = jasmine.createSpy('groupValidatorSpy');
 
-          const fixture = initTest(NestedFormGroupComp);
-          const formGroup = new FormGroup({
+          let fixture = initTest(NestedFormGroupComp);
+          let formGroup = new FormGroup({
             signin: new FormGroup({login: new FormControl(), password: new FormControl()}),
             email: new FormControl('', {updateOn: 'submit'})
           });
@@ -1496,7 +1496,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           formGroup.get('signin.login') !.setValidators(validatorSpy);
           formGroup.get('signin') !.setValidators(groupValidatorSpy);
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1506,12 +1506,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should mark as untouched properly if pending touched', () => {
-          const fixture = initTest(FormGroupComp);
-          const formGroup = new FormGroup({login: new FormControl('', {updateOn: 'submit'})});
+          let fixture = initTest(FormGroupComp);
+          let formGroup = new FormGroup({login: new FormControl('', {updateOn: 'submit'})});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           dispatchEvent(input, 'blur');
           fixture.detectChanges();
 
@@ -1520,7 +1520,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
           expect(formGroup.touched).toBe(false, 'Expected group to become untouched.');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1528,13 +1528,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should update on submit with group updateOn', () => {
-          const fixture = initTest(FormGroupComp);
-          const control = new FormControl('', Validators.required);
-          const formGroup = new FormGroup({login: control}, {updateOn: 'submit'});
+          let fixture = initTest(FormGroupComp);
+          let control = new FormControl('', Validators.required);
+          let formGroup = new FormGroup({login: control}, {updateOn: 'submit'});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1548,7 +1548,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           expect(control.value).toEqual('', 'Expected value to remain unchanged until submit.');
           expect(control.valid).toBe(false, 'Expected no validation to occur until submit.');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1558,15 +1558,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should update on submit with array updateOn', () => {
-          const fixture = initTest(FormArrayComp);
-          const control = new FormControl('', Validators.required);
-          const cityArray = new FormArray([control], {updateOn: 'submit'});
-          const formGroup = new FormGroup({cities: cityArray});
+          let fixture = initTest(FormArrayComp);
+          let control = new FormControl('', Validators.required);
+          let cityArray = new FormArray([control], {updateOn: 'submit'});
+          let formGroup = new FormGroup({cities: cityArray});
           fixture.componentInstance.form = formGroup;
           fixture.componentInstance.cityArray = cityArray;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input')).nativeElement;
+          let input = fixture.debugElement.query(By.css('input')).nativeElement;
           input.value = 'Nancy';
           dispatchEvent(input, 'input');
           fixture.detectChanges();
@@ -1575,7 +1575,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           expect(control.valid).toBe(false, 'Expected no validation to occur until submit.');
 
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1585,17 +1585,17 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         });
 
         it('should allow child control updateOn submit to override group updateOn', () => {
-          const fixture = initTest(NestedFormGroupComp);
-          const loginControl =
+          let fixture = initTest(NestedFormGroupComp);
+          let loginControl =
               new FormControl('', {validators: Validators.required, updateOn: 'change'});
-          const passwordControl = new FormControl('', Validators.required);
-          const formGroup = new FormGroup(
+          let passwordControl = new FormControl('', Validators.required);
+          let formGroup = new FormGroup(
               {signin: new FormGroup({login: loginControl, password: passwordControl})},
               {updateOn: 'submit'});
           fixture.componentInstance.form = formGroup;
           fixture.detectChanges();
 
-          const [loginInput, passwordInput] = fixture.debugElement.queryAll(By.css('input'));
+          let [loginInput, passwordInput] = fixture.debugElement.queryAll(By.css('input'));
           loginInput.nativeElement.value = 'Nancy';
           dispatchEvent(loginInput.nativeElement, 'input');
           fixture.detectChanges();
@@ -1612,7 +1612,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           expect(passwordControl.valid)
               .toBe(false, 'Expected no validation to occur until submit.');
 
-          const form = fixture.debugElement.query(By.css('form')).nativeElement;
+          let form = fixture.debugElement.query(By.css('form')).nativeElement;
           dispatchEvent(form, 'submit');
           fixture.detectChanges();
 
@@ -1638,7 +1638,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       describe('deprecation warnings', () => {
 
         it('should warn once by default when using ngModel with formControlName', fakeAsync(() => {
-             const fixture = initTest(FormGroupNgModel);
+             let fixture = initTest(FormGroupNgModel);
              fixture.componentInstance.form =
                  new FormGroup({'login': new FormControl(''), 'password': new FormControl('')});
              fixture.detectChanges();
@@ -1657,7 +1657,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
            }));
 
         it('should warn once by default when using ngModel with formControl', fakeAsync(() => {
-             const fixture = initTest(FormControlNgModel);
+             let fixture = initTest(FormControlNgModel);
              fixture.componentInstance.control = new FormControl('');
              fixture.componentInstance.passwordControl = new FormControl('');
              fixture.detectChanges();
@@ -1683,7 +1683,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
                    [ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'always'})]
              });
 
-             const fixture = TestBed.createComponent(FormControlNgModel);
+             let fixture = TestBed.createComponent(FormControlNgModel);
              fixture.componentInstance.control = new FormControl('');
              fixture.componentInstance.passwordControl = new FormControl('');
              fixture.detectChanges();
@@ -1702,7 +1702,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
                imports: [ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'})]
              });
 
-             const fixture = TestBed.createComponent(FormControlNgModel);
+             let fixture = TestBed.createComponent(FormControlNgModel);
              fixture.componentInstance.control = new FormControl('');
              fixture.componentInstance.passwordControl = new FormControl('');
              fixture.detectChanges();
@@ -1714,14 +1714,14 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should support ngModel for complex forms', fakeAsync(() => {
-           const fixture = initTest(FormGroupNgModel);
+           let fixture = initTest(FormGroupNgModel);
            fixture.componentInstance.form =
                new FormGroup({'login': new FormControl(''), 'password': new FormControl('')});
            fixture.componentInstance.login = 'oldValue';
            fixture.detectChanges();
            tick();
 
-           const input = fixture.debugElement.query(By.css('input')).nativeElement;
+           let input = fixture.debugElement.query(By.css('input')).nativeElement;
            expect(input.value).toEqual('oldValue');
 
            input.value = 'updatedValue';
@@ -1732,14 +1732,14 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          }));
 
       it('should support ngModel for single fields', fakeAsync(() => {
-           const fixture = initTest(FormControlNgModel);
+           let fixture = initTest(FormControlNgModel);
            fixture.componentInstance.control = new FormControl('');
            fixture.componentInstance.passwordControl = new FormControl('');
            fixture.componentInstance.login = 'oldValue';
            fixture.detectChanges();
            tick();
 
-           const input = fixture.debugElement.query(By.css('input')).nativeElement;
+           let input = fixture.debugElement.query(By.css('input')).nativeElement;
            expect(input.value).toEqual('oldValue');
 
            input.value = 'updatedValue';
@@ -1751,13 +1751,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
       it('should not update the view when the value initially came from the view', fakeAsync(() => {
            if (isNode) return;
-           const fixture = initTest(FormControlNgModel);
+           let fixture = initTest(FormControlNgModel);
            fixture.componentInstance.control = new FormControl('');
            fixture.componentInstance.passwordControl = new FormControl('');
            fixture.detectChanges();
            tick();
 
-           const input = fixture.debugElement.query(By.css('input')).nativeElement;
+           let input = fixture.debugElement.query(By.css('input')).nativeElement;
            input.value = 'aa';
            input.setSelectionRange(1, 2);
            dispatchEvent(input, 'input');
@@ -1770,15 +1770,15 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          }));
 
       it('should work with updateOn submit', fakeAsync(() => {
-           const fixture = initTest(FormGroupNgModel);
-           const formGroup = new FormGroup(
+           let fixture = initTest(FormGroupNgModel);
+           let formGroup = new FormGroup(
                {login: new FormControl('', {updateOn: 'submit'}), password: new FormControl('')});
            fixture.componentInstance.form = formGroup;
            fixture.componentInstance.login = 'initial';
            fixture.detectChanges();
            tick();
 
-           const input = fixture.debugElement.query(By.css('input')).nativeElement;
+           let input = fixture.debugElement.query(By.css('input')).nativeElement;
            input.value = 'Nancy';
            dispatchEvent(input, 'input');
            fixture.detectChanges();
@@ -1787,7 +1787,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
            expect(fixture.componentInstance.login)
                .toEqual('initial', 'Expected ngModel value to remain unchanged on input.');
 
-           const form = fixture.debugElement.query(By.css('form')).nativeElement;
+           let form = fixture.debugElement.query(By.css('form')).nativeElement;
            dispatchEvent(form, 'submit');
            fixture.detectChanges();
            tick();
@@ -1801,12 +1801,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
     describe('validations', () => {
       it('required validator should validate checkbox', () => {
-        const fixture = initTest(FormControlCheckboxRequiredValidator);
-        const control = new FormControl(false, Validators.requiredTrue);
+        let fixture = initTest(FormControlCheckboxRequiredValidator);
+        let control = new FormControl(false, Validators.requiredTrue);
         fixture.componentInstance.control = control;
         fixture.detectChanges();
 
-        const checkbox = fixture.debugElement.query(By.css('input'));
+        let checkbox = fixture.debugElement.query(By.css('input'));
         expect(checkbox.nativeElement.checked).toBe(false);
         expect(control.hasError('required')).toEqual(true);
 
@@ -1819,8 +1819,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should use sync validators defined in html', () => {
-        const fixture = initTest(LoginIsEmptyWrapper, LoginIsEmptyValidator);
-        const form = new FormGroup({
+        let fixture = initTest(LoginIsEmptyWrapper, LoginIsEmptyValidator);
+        let form = new FormGroup({
           'login': new FormControl(''),
           'min': new FormControl(''),
           'max': new FormControl(''),
@@ -1829,10 +1829,10 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const required = fixture.debugElement.query(By.css('[required]'));
-        const minLength = fixture.debugElement.query(By.css('[minlength]'));
-        const maxLength = fixture.debugElement.query(By.css('[maxlength]'));
-        const pattern = fixture.debugElement.query(By.css('[pattern]'));
+        let required = fixture.debugElement.query(By.css('[required]'));
+        let minLength = fixture.debugElement.query(By.css('[minlength]'));
+        let maxLength = fixture.debugElement.query(By.css('[maxlength]'));
+        let pattern = fixture.debugElement.query(By.css('[pattern]'));
 
         required.nativeElement.value = '';
         minLength.nativeElement.value = '1';
@@ -1864,8 +1864,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should use sync validators using bindings', () => {
-        const fixture = initTest(ValidationBindingsForm);
-        const form = new FormGroup({
+        let fixture = initTest(ValidationBindingsForm);
+        let form = new FormGroup({
           'login': new FormControl(''),
           'min': new FormControl(''),
           'max': new FormControl(''),
@@ -1878,10 +1878,10 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         fixture.componentInstance.pattern = '.{3,}';
         fixture.detectChanges();
 
-        const required = fixture.debugElement.query(By.css('[name=required]'));
-        const minLength = fixture.debugElement.query(By.css('[name=minlength]'));
-        const maxLength = fixture.debugElement.query(By.css('[name=maxlength]'));
-        const pattern = fixture.debugElement.query(By.css('[name=pattern]'));
+        let required = fixture.debugElement.query(By.css('[name=required]'));
+        let minLength = fixture.debugElement.query(By.css('[name=minlength]'));
+        let maxLength = fixture.debugElement.query(By.css('[name=maxlength]'));
+        let pattern = fixture.debugElement.query(By.css('[name=pattern]'));
 
         required.nativeElement.value = '';
         minLength.nativeElement.value = '1';
@@ -1912,8 +1912,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('changes on bound properties should change the validation state of the form', () => {
-        const fixture = initTest(ValidationBindingsForm);
-        const form = new FormGroup({
+        let fixture = initTest(ValidationBindingsForm);
+        let form = new FormGroup({
           'login': new FormControl(''),
           'min': new FormControl(''),
           'max': new FormControl(''),
@@ -1922,10 +1922,10 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         fixture.componentInstance.form = form;
         fixture.detectChanges();
 
-        const required = fixture.debugElement.query(By.css('[name=required]'));
-        const minLength = fixture.debugElement.query(By.css('[name=minlength]'));
-        const maxLength = fixture.debugElement.query(By.css('[name=maxlength]'));
-        const pattern = fixture.debugElement.query(By.css('[name=pattern]'));
+        let required = fixture.debugElement.query(By.css('[name=required]'));
+        let minLength = fixture.debugElement.query(By.css('[name=minlength]'));
+        let maxLength = fixture.debugElement.query(By.css('[name=maxlength]'));
+        let pattern = fixture.debugElement.query(By.css('[name=pattern]'));
 
         required.nativeElement.value = '';
         minLength.nativeElement.value = '1';
@@ -1987,8 +1987,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should support rebound controls with rebound validators', () => {
-        const fixture = initTest(ValidationBindingsForm);
-        const form = new FormGroup({
+        let fixture = initTest(ValidationBindingsForm);
+        let form = new FormGroup({
           'login': new FormControl(''),
           'min': new FormControl(''),
           'max': new FormControl(''),
@@ -2001,7 +2001,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         fixture.componentInstance.pattern = '.{3,}';
         fixture.detectChanges();
 
-        const newForm = new FormGroup({
+        let newForm = new FormGroup({
           'login': new FormControl(''),
           'min': new FormControl(''),
           'max': new FormControl(''),
@@ -2024,8 +2024,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should use async validators defined in the html', fakeAsync(() => {
-           const fixture = initTest(UniqLoginWrapper, UniqLoginValidator);
-           const form = new FormGroup({'login': new FormControl('')});
+           let fixture = initTest(UniqLoginWrapper, UniqLoginValidator);
+           let form = new FormGroup({'login': new FormControl('')});
            tick();
            fixture.componentInstance.form = form;
            fixture.detectChanges();
@@ -2035,7 +2035,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
            expect(form.hasError('uniqLogin', ['login'])).toEqual(true);
 
-           const input = fixture.debugElement.query(By.css('input'));
+           let input = fixture.debugElement.query(By.css('input'));
            input.nativeElement.value = 'expected';
            dispatchEvent(input.nativeElement, 'input');
            tick(100);
@@ -2044,13 +2044,13 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          }));
 
       it('should use sync validators defined in the model', () => {
-        const fixture = initTest(FormGroupComp);
-        const form = new FormGroup({'login': new FormControl('aa', Validators.required)});
+        let fixture = initTest(FormGroupComp);
+        let form = new FormGroup({'login': new FormControl('aa', Validators.required)});
         fixture.componentInstance.form = form;
         fixture.detectChanges();
         expect(form.valid).toEqual(true);
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         input.nativeElement.value = '';
         dispatchEvent(input.nativeElement, 'input');
 
@@ -2058,17 +2058,17 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
       });
 
       it('should use async validators defined in the model', fakeAsync(() => {
-           const fixture = initTest(FormGroupComp);
-           const control =
+           let fixture = initTest(FormGroupComp);
+           let control =
                new FormControl('', Validators.required, uniqLoginAsyncValidator('expected'));
-           const form = new FormGroup({'login': control});
+           let form = new FormGroup({'login': control});
            fixture.componentInstance.form = form;
            fixture.detectChanges();
            tick();
 
            expect(form.hasError('required', ['login'])).toEqual(true);
 
-           const input = fixture.debugElement.query(By.css('input'));
+           let input = fixture.debugElement.query(By.css('input'));
            input.nativeElement.value = 'wrong value';
            dispatchEvent(input.nativeElement, 'input');
 
@@ -2085,8 +2085,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          }));
 
       it('async validator should not override result of sync validator', fakeAsync(() => {
-           const fixture = initTest(FormGroupComp);
-           const control =
+           let fixture = initTest(FormGroupComp);
+           let control =
                new FormControl('', Validators.required, uniqLoginAsyncValidator('expected', 100));
            fixture.componentInstance.form = new FormGroup({'login': control});
            fixture.detectChanges();
@@ -2094,7 +2094,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
            expect(control.hasError('required')).toEqual(true);
 
-           const input = fixture.debugElement.query(By.css('input'));
+           let input = fixture.debugElement.query(By.css('input'));
            input.nativeElement.value = 'expected';
            dispatchEvent(input.nativeElement, 'input');
 
@@ -2108,8 +2108,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          }));
 
       it('should cancel observable properly between validation runs', fakeAsync(() => {
-           const fixture = initTest(FormControlComp);
-           const resultArr: number[] = [];
+           let fixture = initTest(FormControlComp);
+           let resultArr: number[] = [];
            fixture.componentInstance.control =
                new FormControl('', null !, observableValidator(resultArr));
            fixture.detectChanges();
@@ -2117,7 +2117,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 
            expect(resultArr.length).toEqual(1, `Expected source observable to emit once on init.`);
 
-           const input = fixture.debugElement.query(By.css('input'));
+           let input = fixture.debugElement.query(By.css('input'));
            input.nativeElement.value = 'a';
            dispatchEvent(input.nativeElement, 'input');
            fixture.detectChanges();
@@ -2137,7 +2137,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
     describe('errors', () => {
 
       it('should throw if a form isn\'t passed into formGroup', () => {
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
 
         expect(() => fixture.detectChanges())
             .toThrowError(new RegExp(`formGroup expects a FormGroup instance`));
@@ -2151,7 +2151,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
 
         expect(() => fixture.detectChanges())
             .toThrowError(
@@ -2168,7 +2168,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
 
         expect(() => fixture.detectChanges())
             .toThrowError(
@@ -2187,7 +2187,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
 
         expect(() => fixture.detectChanges())
             .toThrowError(
@@ -2204,7 +2204,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
 
         expect(() => fixture.detectChanges())
             .toThrowError(
@@ -2223,7 +2223,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
 
         expect(() => fixture.detectChanges())
             .toThrowError(
@@ -2239,7 +2239,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
          </div>`
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
 
         expect(() => fixture.detectChanges())
             .toThrowError(
@@ -2256,7 +2256,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({});
 
         expect(() => fixture.detectChanges())
@@ -2274,7 +2274,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({});
 
         expect(() => fixture.detectChanges()).not.toThrowError();
@@ -2292,7 +2292,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({person: new FormGroup({})});
 
         expect(() => fixture.detectChanges())
@@ -2312,7 +2312,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         `
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({});
 
         expect(() => fixture.detectChanges())
@@ -2329,7 +2329,7 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
           </form>`
           }
         });
-        const fixture = initTest(FormGroupComp);
+        let fixture = initTest(FormGroupComp);
         fixture.componentInstance.form = new FormGroup({'food': new FormControl('fish')});
 
         expect(() => fixture.detectChanges())
@@ -2341,19 +2341,19 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
     describe('IME events', () => {
 
       it('should determine IME event handling depending on platform by default', () => {
-        const fixture = initTest(FormControlComp);
+        let fixture = initTest(FormControlComp);
         fixture.componentInstance.control = new FormControl('oldValue');
         fixture.detectChanges();
 
-        const inputEl = fixture.debugElement.query(By.css('input'));
-        const inputNativeEl = inputEl.nativeElement;
+        let inputEl = fixture.debugElement.query(By.css('input'));
+        let inputNativeEl = inputEl.nativeElement;
         expect(inputNativeEl.value).toEqual('oldValue');
 
         inputEl.triggerEventHandler('compositionstart', null);
 
         inputNativeEl.value = 'updatedValue';
         dispatchEvent(inputNativeEl, 'input');
-        const isAndroid = /android (\d+)/.test(getDOM().getUserAgent().toLowerCase());
+        let isAndroid = /android (\d+)/.test(getDOM().getUserAgent().toLowerCase());
 
         if (isAndroid) {
           // On Android, values should update immediately
@@ -2372,12 +2372,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         TestBed.overrideComponent(
             FormControlComp,
             {set: {providers: [{provide: COMPOSITION_BUFFER_MODE, useValue: true}]}});
-        const fixture = initTest(FormControlComp);
+        let fixture = initTest(FormControlComp);
         fixture.componentInstance.control = new FormControl('oldValue');
         fixture.detectChanges();
 
-        const inputEl = fixture.debugElement.query(By.css('input'));
-        const inputNativeEl = inputEl.nativeElement;
+        let inputEl = fixture.debugElement.query(By.css('input'));
+        let inputNativeEl = inputEl.nativeElement;
         expect(inputNativeEl.value).toEqual('oldValue');
 
         inputEl.triggerEventHandler('compositionstart', null);
@@ -2400,12 +2400,12 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
         TestBed.overrideComponent(
             FormControlComp,
             {set: {providers: [{provide: COMPOSITION_BUFFER_MODE, useValue: false}]}});
-        const fixture = initTest(FormControlComp);
+        let fixture = initTest(FormControlComp);
         fixture.componentInstance.control = new FormControl('oldValue');
         fixture.detectChanges();
 
-        const inputEl = fixture.debugElement.query(By.css('input'));
-        const inputNativeEl = inputEl.nativeElement;
+        let inputEl = fixture.debugElement.query(By.css('input'));
+        let inputNativeEl = inputEl.nativeElement;
         expect(inputNativeEl.value).toEqual('oldValue');
 
         inputEl.triggerEventHandler('compositionstart', null);
@@ -2426,8 +2426,8 @@ import {MyInput, MyInputForm} from './value_accessor_integration_spec';
 function uniqLoginAsyncValidator(expectedValue: string, timeout: number = 0) {
   return (c: AbstractControl) => {
     let resolve: (result: any) => void;
-    const promise = new Promise(res => { resolve = res; });
-    const res = (c.value == expectedValue) ? null : {'uniqLogin': true};
+    let promise = new Promise(res => { resolve = res; });
+    let res = (c.value == expectedValue) ? null : {'uniqLogin': true};
     setTimeout(() => resolve(res), timeout);
     return promise;
   };

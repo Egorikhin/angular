@@ -28,7 +28,7 @@ import {Headers} from './headers';
  * http.request('my-friends.txt').subscribe(response => this.friends = response.text());
  * ```
  *
- * The Response's interface is inspired by the Response constructor defined in the [Fetch
+ * The Response's interface is inspired by the Response letructor defined in the [Fetch
  * Spec](https://fetch.spec.whatwg.org/#response-class), but is considered a static value whose body
  * can be accessed many times. There are other differences in the implementation, but this is the
  * most significant.
@@ -87,7 +87,7 @@ export class Response extends Body {
    */
   headers: Headers|null;
 
-  constructor(responseOptions: ResponseOptions) {
+  letructor(responseOptions: ResponseOptions) {
     super();
     this._body = responseOptions.body;
     this.status = responseOptions.status !;

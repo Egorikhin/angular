@@ -17,7 +17,7 @@ import {ResourceLoaderImpl} from './resource_loader/resource_loader_impl';
 /**
  * @publicApi
  */
-export const INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS: StaticProvider[] = [
+export let INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS: StaticProvider[] = [
   INTERNAL_BROWSER_PLATFORM_PROVIDERS,
   {
     provide: COMPILER_OPTIONS,

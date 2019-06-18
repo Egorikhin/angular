@@ -24,13 +24,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
     it('should support <input> without type', () => {
       TestBed.overrideComponent(
           FormControlComp, {set: {template: `<input [formControl]="control">`}});
-      const fixture = initTest(FormControlComp);
-      const control = new FormControl('old');
+      let fixture = initTest(FormControlComp);
+      let control = new FormControl('old');
       fixture.componentInstance.control = control;
       fixture.detectChanges();
 
       // model -> view
-      const input = fixture.debugElement.query(By.css('input'));
+      let input = fixture.debugElement.query(By.css('input'));
       expect(input.nativeElement.value).toEqual('old');
 
       input.nativeElement.value = 'new';
@@ -41,13 +41,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
     });
 
     it('should support <input type=text>', () => {
-      const fixture = initTest(FormGroupComp);
-      const form = new FormGroup({'login': new FormControl('old')});
+      let fixture = initTest(FormGroupComp);
+      let form = new FormGroup({'login': new FormControl('old')});
       fixture.componentInstance.form = form;
       fixture.detectChanges();
 
       // model -> view
-      const input = fixture.debugElement.query(By.css('input'));
+      let input = fixture.debugElement.query(By.css('input'));
       expect(input.nativeElement.value).toEqual('old');
 
       input.nativeElement.value = 'new';
@@ -58,12 +58,12 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
     });
 
     it('should ignore the change event for <input type=text>', () => {
-      const fixture = initTest(FormGroupComp);
-      const form = new FormGroup({'login': new FormControl('oldValue')});
+      let fixture = initTest(FormGroupComp);
+      let form = new FormGroup({'login': new FormControl('oldValue')});
       fixture.componentInstance.form = form;
       fixture.detectChanges();
 
-      const input = fixture.debugElement.query(By.css('input'));
+      let input = fixture.debugElement.query(By.css('input'));
       form.valueChanges.subscribe({next: (value) => { throw 'Should not happen'; }});
       input.nativeElement.value = 'updatedValue';
 
@@ -73,13 +73,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
     it('should support <textarea>', () => {
       TestBed.overrideComponent(
           FormControlComp, {set: {template: `<textarea [formControl]="control"></textarea>`}});
-      const fixture = initTest(FormControlComp);
-      const control = new FormControl('old');
+      let fixture = initTest(FormControlComp);
+      let control = new FormControl('old');
       fixture.componentInstance.control = control;
       fixture.detectChanges();
 
       // model -> view
-      const textarea = fixture.debugElement.query(By.css('textarea'));
+      let textarea = fixture.debugElement.query(By.css('textarea'));
       expect(textarea.nativeElement.value).toEqual('old');
 
       textarea.nativeElement.value = 'new';
@@ -92,13 +92,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
     it('should support <type=checkbox>', () => {
       TestBed.overrideComponent(
           FormControlComp, {set: {template: `<input type="checkbox" [formControl]="control">`}});
-      const fixture = initTest(FormControlComp);
-      const control = new FormControl(true);
+      let fixture = initTest(FormControlComp);
+      let control = new FormControl(true);
       fixture.componentInstance.control = control;
       fixture.detectChanges();
 
       // model -> view
-      const input = fixture.debugElement.query(By.css('input'));
+      let input = fixture.debugElement.query(By.css('input'));
       expect(input.nativeElement.checked).toBe(true);
 
       input.nativeElement.checked = false;
@@ -110,13 +110,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
     describe('should support <type=number>', () => {
       it('with basic use case', () => {
-        const fixture = initTest(FormControlNumberInput);
-        const control = new FormControl(10);
+        let fixture = initTest(FormControlNumberInput);
+        let control = new FormControl(10);
         fixture.componentInstance.control = control;
         fixture.detectChanges();
 
         // model -> view
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         expect(input.nativeElement.value).toEqual('10');
 
         input.nativeElement.value = '20';
@@ -127,12 +127,12 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
       });
 
       it('when value is cleared in the UI', () => {
-        const fixture = initTest(FormControlNumberInput);
-        const control = new FormControl(10, Validators.required);
+        let fixture = initTest(FormControlNumberInput);
+        let control = new FormControl(10, Validators.required);
         fixture.componentInstance.control = control;
         fixture.detectChanges();
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         input.nativeElement.value = '';
         dispatchEvent(input.nativeElement, 'input');
 
@@ -147,14 +147,14 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
       });
 
       it('when value is cleared programmatically', () => {
-        const fixture = initTest(FormControlNumberInput);
-        const control = new FormControl(10);
+        let fixture = initTest(FormControlNumberInput);
+        let control = new FormControl(10);
         fixture.componentInstance.control = control;
         fixture.detectChanges();
 
         control.setValue(null);
 
-        const input = fixture.debugElement.query(By.css('input'));
+        let input = fixture.debugElement.query(By.css('input'));
         expect(input.nativeElement.value).toEqual('');
       });
     });
@@ -165,12 +165,12 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it(`should support primitive values`, () => {
           if (isNode) return;
-          const fixture = initTest(FormControlNameSelect);
+          let fixture = initTest(FormControlNameSelect);
           fixture.detectChanges();
 
           // model -> view
-          const select = fixture.debugElement.query(By.css('select'));
-          const sfOption = fixture.debugElement.query(By.css('option'));
+          let select = fixture.debugElement.query(By.css('select'));
+          let sfOption = fixture.debugElement.query(By.css('option'));
           expect(select.nativeElement.value).toEqual('SF');
           expect(sfOption.nativeElement.selected).toBe(true);
 
@@ -185,18 +185,18 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it(`should support objects`, () => {
           if (isNode) return;
-          const fixture = initTest(FormControlSelectNgValue);
+          let fixture = initTest(FormControlSelectNgValue);
           fixture.detectChanges();
 
           // model -> view
-          const select = fixture.debugElement.query(By.css('select'));
-          const sfOption = fixture.debugElement.query(By.css('option'));
+          let select = fixture.debugElement.query(By.css('select'));
+          let sfOption = fixture.debugElement.query(By.css('option'));
           expect(select.nativeElement.value).toEqual('0: Object');
           expect(sfOption.nativeElement.selected).toBe(true);
         });
 
         it('should throw an error if compareWith is not a function', () => {
-          const fixture = initTest(FormControlSelectWithCompareFn);
+          let fixture = initTest(FormControlSelectWithCompareFn);
           fixture.componentInstance.compareFn = null !;
           expect(() => fixture.detectChanges())
               .toThrowError(/compareWith must be a function, but received null/);
@@ -204,23 +204,23 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it('should compare options using provided compareWith function', () => {
           if (isNode) return;
-          const fixture = initTest(FormControlSelectWithCompareFn);
+          let fixture = initTest(FormControlSelectWithCompareFn);
           fixture.detectChanges();
 
-          const select = fixture.debugElement.query(By.css('select'));
-          const sfOption = fixture.debugElement.query(By.css('option'));
+          let select = fixture.debugElement.query(By.css('select'));
+          let sfOption = fixture.debugElement.query(By.css('option'));
           expect(select.nativeElement.value).toEqual('0: Object');
           expect(sfOption.nativeElement.selected).toBe(true);
         });
 
         it('should support re-assigning the options array with compareWith', () => {
           if (isNode) return;
-          const fixture = initTest(FormControlSelectWithCompareFn);
+          let fixture = initTest(FormControlSelectWithCompareFn);
           fixture.detectChanges();
 
           // Option IDs start out as 0 and 1, so setting the select value to "1: Object"
           // will select the second option (NY).
-          const select = fixture.debugElement.query(By.css('select'));
+          let select = fixture.debugElement.query(By.css('select'));
           select.nativeElement.value = '1: Object';
           dispatchEvent(select.nativeElement, 'change');
           fixture.detectChanges();
@@ -234,7 +234,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
           // be created by ngFor. These instances will have different option IDs, subsequent
           // to the first: 2 and 3. For the second option to stay selected, the select
           // value will need to have the ID of the current second option: 3.
-          const nyOption = fixture.debugElement.queryAll(By.css('option'))[1];
+          let nyOption = fixture.debugElement.queryAll(By.css('option'))[1];
           expect(select.nativeElement.value).toEqual('3: Object');
           expect(nyOption.nativeElement.selected).toBe(true);
         });
@@ -244,15 +244,15 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
       describe('in template-driven forms', () => {
         it('with option values that are objects', fakeAsync(() => {
              if (isNode) return;
-             const fixture = initTest(NgModelSelectForm);
-             const comp = fixture.componentInstance;
+             let fixture = initTest(NgModelSelectForm);
+             let comp = fixture.componentInstance;
              comp.cities = [{'name': 'SF'}, {'name': 'NYC'}, {'name': 'Buffalo'}];
              comp.selectedCity = comp.cities[1];
              fixture.detectChanges();
              tick();
 
-             const select = fixture.debugElement.query(By.css('select'));
-             const nycOption = fixture.debugElement.queryAll(By.css('option'))[1];
+             let select = fixture.debugElement.query(By.css('select'));
+             let nycOption = fixture.debugElement.queryAll(By.css('option'))[1];
 
              // model -> view
              expect(select.nativeElement.value).toEqual('1: Object');
@@ -269,8 +269,8 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it('when new options are added', fakeAsync(() => {
              if (isNode) return;
-             const fixture = initTest(NgModelSelectForm);
-             const comp = fixture.componentInstance;
+             let fixture = initTest(NgModelSelectForm);
+             let comp = fixture.componentInstance;
              comp.cities = [{'name': 'SF'}, {'name': 'NYC'}];
              comp.selectedCity = comp.cities[1];
              fixture.detectChanges();
@@ -281,21 +281,21 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
              fixture.detectChanges();
              tick();
 
-             const select = fixture.debugElement.query(By.css('select'));
-             const buffalo = fixture.debugElement.queryAll(By.css('option'))[2];
+             let select = fixture.debugElement.query(By.css('select'));
+             let buffalo = fixture.debugElement.queryAll(By.css('option'))[2];
              expect(select.nativeElement.value).toEqual('2: Object');
              expect(buffalo.nativeElement.selected).toBe(true);
            }));
 
         it('when options are removed', fakeAsync(() => {
-             const fixture = initTest(NgModelSelectForm);
-             const comp = fixture.componentInstance;
+             let fixture = initTest(NgModelSelectForm);
+             let comp = fixture.componentInstance;
              comp.cities = [{'name': 'SF'}, {'name': 'NYC'}];
              comp.selectedCity = comp.cities[1];
              fixture.detectChanges();
              tick();
 
-             const select = fixture.debugElement.query(By.css('select'));
+             let select = fixture.debugElement.query(By.css('select'));
              expect(select.nativeElement.value).toEqual('1: Object');
 
              comp.cities.pop();
@@ -307,8 +307,8 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it('when option values have same content, but different identities', fakeAsync(() => {
              if (isNode) return;
-             const fixture = initTest(NgModelSelectForm);
-             const comp = fixture.componentInstance;
+             let fixture = initTest(NgModelSelectForm);
+             let comp = fixture.componentInstance;
              comp.cities = [{'name': 'SF'}, {'name': 'NYC'}, {'name': 'NYC'}];
              comp.selectedCity = comp.cities[0];
              fixture.detectChanges();
@@ -317,20 +317,20 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
              fixture.detectChanges();
              tick();
 
-             const select = fixture.debugElement.query(By.css('select'));
-             const secondNYC = fixture.debugElement.queryAll(By.css('option'))[2];
+             let select = fixture.debugElement.query(By.css('select'));
+             let secondNYC = fixture.debugElement.queryAll(By.css('option'))[2];
              expect(select.nativeElement.value).toEqual('2: Object');
              expect(secondNYC.nativeElement.selected).toBe(true);
            }));
 
         it('should work with null option', fakeAsync(() => {
-             const fixture = initTest(NgModelSelectWithNullForm);
-             const comp = fixture.componentInstance;
+             let fixture = initTest(NgModelSelectWithNullForm);
+             let comp = fixture.componentInstance;
              comp.cities = [{'name': 'SF'}, {'name': 'NYC'}];
              comp.selectedCity = null;
              fixture.detectChanges();
 
-             const select = fixture.debugElement.query(By.css('select'));
+             let select = fixture.debugElement.query(By.css('select'));
 
              select.nativeElement.value = '2: Object';
              dispatchEvent(select.nativeElement, 'change');
@@ -346,8 +346,8 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
            }));
 
         it('should throw an error when compareWith is not a function', () => {
-          const fixture = initTest(NgModelSelectWithCustomCompareFnForm);
-          const comp = fixture.componentInstance;
+          let fixture = initTest(NgModelSelectWithCustomCompareFnForm);
+          let comp = fixture.componentInstance;
           comp.compareFn = null !;
           expect(() => fixture.detectChanges())
               .toThrowError(/compareWith must be a function, but received null/);
@@ -355,22 +355,22 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it('should compare options using provided compareWith function', fakeAsync(() => {
              if (isNode) return;
-             const fixture = initTest(NgModelSelectWithCustomCompareFnForm);
-             const comp = fixture.componentInstance;
+             let fixture = initTest(NgModelSelectWithCustomCompareFnForm);
+             let comp = fixture.componentInstance;
              comp.selectedCity = {id: 1, name: 'SF'};
              comp.cities = [{id: 1, name: 'SF'}, {id: 2, name: 'LA'}];
              fixture.detectChanges();
              tick();
 
-             const select = fixture.debugElement.query(By.css('select'));
-             const sfOption = fixture.debugElement.query(By.css('option'));
+             let select = fixture.debugElement.query(By.css('select'));
+             let sfOption = fixture.debugElement.query(By.css('option'));
              expect(select.nativeElement.value).toEqual('0: Object');
              expect(sfOption.nativeElement.selected).toBe(true);
            }));
 
         it('should support re-assigning the options array with compareWith', fakeAsync(() => {
              if (isNode) return;
-             const fixture = initTest(NgModelSelectWithCustomCompareFnForm);
+             let fixture = initTest(NgModelSelectWithCustomCompareFnForm);
              fixture.componentInstance.selectedCity = {id: 1, name: 'SF'};
              fixture.componentInstance.cities = [{id: 1, name: 'SF'}, {id: 2, name: 'NY'}];
              fixture.detectChanges();
@@ -378,12 +378,12 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
              // Option IDs start out as 0 and 1, so setting the select value to "1: Object"
              // will select the second option (NY).
-             const select = fixture.debugElement.query(By.css('select'));
+             let select = fixture.debugElement.query(By.css('select'));
              select.nativeElement.value = '1: Object';
              dispatchEvent(select.nativeElement, 'change');
              fixture.detectChanges();
 
-             const model = fixture.debugElement.children[0].injector.get(NgModel);
+             let model = fixture.debugElement.children[0].injector.get(NgModel);
              expect(model.value).toEqual({id: 2, name: 'NY'});
 
              fixture.componentInstance.cities = [{id: 1, name: 'SF'}, {id: 2, name: 'NY'}];
@@ -394,7 +394,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
              // be created by ngFor. These instances will have different option IDs, subsequent
              // to the first: 2 and 3. For the second option to stay selected, the select
              // value will need to have the ID of the current second option: 3.
-             const nyOption = fixture.debugElement.queryAll(By.css('option'))[1];
+             let nyOption = fixture.debugElement.queryAll(By.css('option'))[1];
              expect(select.nativeElement.value).toEqual('3: Object');
              expect(nyOption.nativeElement.selected).toBe(true);
            }));
@@ -410,28 +410,28 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it('should support primitive values', () => {
           if (isNode) return;
-          const fixture = initTest(FormControlSelectMultiple);
+          let fixture = initTest(FormControlSelectMultiple);
           fixture.detectChanges();
 
-          const select = fixture.debugElement.query(By.css('select'));
-          const sfOption = fixture.debugElement.query(By.css('option'));
+          let select = fixture.debugElement.query(By.css('select'));
+          let sfOption = fixture.debugElement.query(By.css('option'));
           expect(select.nativeElement.value).toEqual(`0: 'SF'`);
           expect(sfOption.nativeElement.selected).toBe(true);
         });
 
         it('should support objects', () => {
           if (isNode) return;
-          const fixture = initTest(FormControlSelectMultipleNgValue);
+          let fixture = initTest(FormControlSelectMultipleNgValue);
           fixture.detectChanges();
 
-          const select = fixture.debugElement.query(By.css('select'));
-          const sfOption = fixture.debugElement.query(By.css('option'));
+          let select = fixture.debugElement.query(By.css('select'));
+          let sfOption = fixture.debugElement.query(By.css('option'));
           expect(select.nativeElement.value).toEqual('0: Object');
           expect(sfOption.nativeElement.selected).toBe(true);
         });
 
         it('should throw an error when compareWith is not a function', () => {
-          const fixture = initTest(FormControlSelectMultipleWithCompareFn);
+          let fixture = initTest(FormControlSelectMultipleWithCompareFn);
           fixture.componentInstance.compareFn = null !;
           expect(() => fixture.detectChanges())
               .toThrowError(/compareWith must be a function, but received null/);
@@ -439,12 +439,12 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it('should compare options using provided compareWith function', fakeAsync(() => {
              if (isNode) return;
-             const fixture = initTest(FormControlSelectMultipleWithCompareFn);
+             let fixture = initTest(FormControlSelectMultipleWithCompareFn);
              fixture.detectChanges();
              tick();
 
-             const select = fixture.debugElement.query(By.css('select'));
-             const sfOption = fixture.debugElement.query(By.css('option'));
+             let select = fixture.debugElement.query(By.css('select'));
+             let sfOption = fixture.debugElement.query(By.css('option'));
              expect(select.nativeElement.value).toEqual('0: Object');
              expect(sfOption.nativeElement.selected).toBe(true);
            }));
@@ -461,25 +461,25 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
           comp.cities = [{'name': 'SF'}, {'name': 'NYC'}, {'name': 'Buffalo'}];
         });
 
-        const detectChangesAndTick = (): void => {
+        let detectChangesAndTick = (): void => {
           fixture.detectChanges();
           tick();
         };
 
-        const setSelectedCities = (selectedCities: any): void => {
+        let setSelectedCities = (selectedCities: any): void => {
           comp.selectedCities = selectedCities;
           detectChangesAndTick();
         };
 
-        const selectOptionViaUI = (valueString: string): void => {
-          const select = fixture.debugElement.query(By.css('select'));
+        let selectOptionViaUI = (valueString: string): void => {
+          let select = fixture.debugElement.query(By.css('select'));
           select.nativeElement.value = valueString;
           dispatchEvent(select.nativeElement, 'change');
           detectChangesAndTick();
         };
 
-        const assertOptionElementSelectedState = (selectedStates: boolean[]): void => {
-          const options = fixture.debugElement.queryAll(By.css('option'));
+        let assertOptionElementSelectedState = (selectedStates: boolean[]): void => {
+          let options = fixture.debugElement.queryAll(By.css('option'));
           if (options.length !== selectedStates.length) {
             throw 'the selected state values to assert does not match the number of options';
           }
@@ -518,8 +518,8 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
       });
 
       it('should throw an error when compareWith is not a function', () => {
-        const fixture = initTest(NgModelSelectMultipleWithCustomCompareFnForm);
-        const comp = fixture.componentInstance;
+        let fixture = initTest(NgModelSelectMultipleWithCustomCompareFnForm);
+        let comp = fixture.componentInstance;
         comp.compareFn = null !;
         expect(() => fixture.detectChanges())
             .toThrowError(/compareWith must be a function, but received null/);
@@ -527,15 +527,15 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
       it('should compare options using provided compareWith function', fakeAsync(() => {
            if (isNode) return;
-           const fixture = initTest(NgModelSelectMultipleWithCustomCompareFnForm);
-           const comp = fixture.componentInstance;
+           let fixture = initTest(NgModelSelectMultipleWithCustomCompareFnForm);
+           let comp = fixture.componentInstance;
            comp.cities = [{id: 1, name: 'SF'}, {id: 2, name: 'LA'}];
            comp.selectedCities = [comp.cities[0]];
            fixture.detectChanges();
            tick();
 
-           const select = fixture.debugElement.query(By.css('select'));
-           const sfOption = fixture.debugElement.query(By.css('option'));
+           let select = fixture.debugElement.query(By.css('select'));
+           let sfOption = fixture.debugElement.query(By.css('option'));
            expect(select.nativeElement.value).toEqual('0: Object');
            expect(sfOption.nativeElement.selected).toBe(true);
          }));
@@ -547,14 +547,14 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
       describe('in reactive forms', () => {
 
         it('should support basic functionality', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const form =
+          let fixture = initTest(FormControlRadioButtons);
+          let form =
               new FormGroup({'food': new FormControl('fish'), 'drink': new FormControl('sprite')});
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
           // model -> view
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.checked).toEqual(false);
           expect(inputs[1].nativeElement.checked).toEqual(true);
 
@@ -574,19 +574,19 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('should support an initial undefined value', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const form = new FormGroup({'food': new FormControl(), 'drink': new FormControl()});
+          let fixture = initTest(FormControlRadioButtons);
+          let form = new FormGroup({'food': new FormControl(), 'drink': new FormControl()});
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.checked).toEqual(false);
           expect(inputs[1].nativeElement.checked).toEqual(false);
         });
 
         it('should reset properly', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const form =
+          let fixture = initTest(FormControlRadioButtons);
+          let form =
               new FormGroup({'food': new FormControl('fish'), 'drink': new FormControl('sprite')});
           fixture.componentInstance.form = form;
           fixture.detectChanges();
@@ -594,14 +594,14 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
           form.reset();
           fixture.detectChanges();
 
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.checked).toEqual(false);
           expect(inputs[1].nativeElement.checked).toEqual(false);
         });
 
         it('should properly set value to null and undefined', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const form = new FormGroup(
+          let fixture = initTest(FormControlRadioButtons);
+          let form = new FormGroup(
               {'food': new FormControl('chicken'), 'drink': new FormControl('sprite')});
           fixture.componentInstance.form = form;
           fixture.detectChanges();
@@ -609,7 +609,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
           form.get('food') !.setValue(null);
           fixture.detectChanges();
 
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.checked).toEqual(false);
 
           form.get('food') !.setValue('chicken');
@@ -621,13 +621,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('should use formControlName to group radio buttons when name is absent', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const foodCtrl = new FormControl('fish');
-          const drinkCtrl = new FormControl('sprite');
+          let fixture = initTest(FormControlRadioButtons);
+          let foodCtrl = new FormControl('fish');
+          let drinkCtrl = new FormControl('sprite');
           fixture.componentInstance.form = new FormGroup({'food': foodCtrl, 'drink': drinkCtrl});
           fixture.detectChanges();
 
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.checked).toEqual(false);
           expect(inputs[1].nativeElement.checked).toEqual(true);
           expect(inputs[2].nativeElement.checked).toEqual(false);
@@ -637,7 +637,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
           inputs[0].nativeElement.checked = true;
           fixture.detectChanges();
 
-          const value = fixture.componentInstance.form.value;
+          let value = fixture.componentInstance.form.value;
           expect(value.food).toEqual('chicken');
           expect(inputs[1].nativeElement.checked).toEqual(false);
           expect(inputs[2].nativeElement.checked).toEqual(false);
@@ -653,9 +653,9 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('should support removing controls from <type=radio>', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const showRadio = new FormControl('yes');
-          const form =
+          let fixture = initTest(FormControlRadioButtons);
+          let showRadio = new FormControl('yes');
+          let form =
               new FormGroup({'food': new FormControl('fish'), 'drink': new FormControl('sprite')});
           fixture.componentInstance.form = form;
           fixture.componentInstance.showRadio = showRadio;
@@ -665,7 +665,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
           });
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('[value="no"]'));
+          let input = fixture.debugElement.query(By.css('[value="no"]'));
           dispatchEvent(input.nativeElement, 'change');
 
           fixture.detectChanges();
@@ -687,8 +687,8 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
               `
             }
           });
-          const fixture = initTest(FormControlRadioButtons);
-          const form = new FormGroup({
+          let fixture = initTest(FormControlRadioButtons);
+          let form = new FormGroup({
             food: new FormControl('fish'),
             nested: new FormGroup({food: new FormControl('fish')})
           });
@@ -696,7 +696,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
           fixture.detectChanges();
 
           // model -> view
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.checked).toEqual(false);
           expect(inputs[1].nativeElement.checked).toEqual(true);
           expect(inputs[2].nativeElement.checked).toEqual(false);
@@ -716,13 +716,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('should disable all radio buttons when disable() is called', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const form =
+          let fixture = initTest(FormControlRadioButtons);
+          let form =
               new FormGroup({food: new FormControl('fish'), drink: new FormControl('cola')});
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.disabled).toEqual(false);
           expect(inputs[1].nativeElement.disabled).toEqual(false);
           expect(inputs[2].nativeElement.disabled).toEqual(false);
@@ -748,15 +748,15 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('should disable all radio buttons when initially disabled', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const form = new FormGroup({
+          let fixture = initTest(FormControlRadioButtons);
+          let form = new FormGroup({
             food: new FormControl({value: 'fish', disabled: true}),
             drink: new FormControl('cola')
           });
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.disabled).toEqual(true);
           expect(inputs[1].nativeElement.disabled).toEqual(true);
           expect(inputs[2].nativeElement.disabled).toEqual(false);
@@ -764,19 +764,19 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('should work with reusing controls', () => {
-          const fixture = initTest(FormControlRadioButtons);
-          const food = new FormControl('chicken');
+          let fixture = initTest(FormControlRadioButtons);
+          let food = new FormControl('chicken');
           fixture.componentInstance.form =
               new FormGroup({'food': food, 'drink': new FormControl('')});
           fixture.detectChanges();
 
-          const newForm = new FormGroup({'food': food, 'drink': new FormControl('')});
+          let newForm = new FormGroup({'food': food, 'drink': new FormControl('')});
           fixture.componentInstance.form = newForm;
           fixture.detectChanges();
 
           newForm.setValue({food: 'fish', drink: ''});
           fixture.detectChanges();
-          const inputs = fixture.debugElement.queryAll(By.css('input'));
+          let inputs = fixture.debugElement.queryAll(By.css('input'));
           expect(inputs[0].nativeElement.checked).toBe(false);
           expect(inputs[1].nativeElement.checked).toBe(true);
         });
@@ -785,13 +785,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
       describe('in template-driven forms', () => {
         it('should support basic functionality', fakeAsync(() => {
-             const fixture = initTest(NgModelRadioForm);
+             let fixture = initTest(NgModelRadioForm);
              fixture.componentInstance.food = 'fish';
              fixture.detectChanges();
              tick();
 
              // model -> view
-             const inputs = fixture.debugElement.queryAll(By.css('input'));
+             let inputs = fixture.debugElement.queryAll(By.css('input'));
              expect(inputs[0].nativeElement.checked).toEqual(false);
              expect(inputs[1].nativeElement.checked).toEqual(true);
 
@@ -804,13 +804,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
            }));
 
         it('should support multiple named <type=radio> groups', fakeAsync(() => {
-             const fixture = initTest(NgModelRadioForm);
+             let fixture = initTest(NgModelRadioForm);
              fixture.componentInstance.food = 'fish';
              fixture.componentInstance.drink = 'sprite';
              fixture.detectChanges();
              tick();
 
-             const inputs = fixture.debugElement.queryAll(By.css('input'));
+             let inputs = fixture.debugElement.queryAll(By.css('input'));
              expect(inputs[0].nativeElement.checked).toEqual(false);
              expect(inputs[1].nativeElement.checked).toEqual(true);
              expect(inputs[2].nativeElement.checked).toEqual(false);
@@ -827,11 +827,11 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
            }));
 
         it('should support initial undefined value', fakeAsync(() => {
-             const fixture = initTest(NgModelRadioForm);
+             let fixture = initTest(NgModelRadioForm);
              fixture.detectChanges();
              tick();
 
-             const inputs = fixture.debugElement.queryAll(By.css('input'));
+             let inputs = fixture.debugElement.queryAll(By.css('input'));
              expect(inputs[0].nativeElement.checked).toEqual(false);
              expect(inputs[1].nativeElement.checked).toEqual(false);
              expect(inputs[2].nativeElement.checked).toEqual(false);
@@ -839,23 +839,23 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
            }));
 
         it('should support resetting properly', fakeAsync(() => {
-             const fixture = initTest(NgModelRadioForm);
+             let fixture = initTest(NgModelRadioForm);
              fixture.componentInstance.food = 'chicken';
              fixture.detectChanges();
              tick();
 
-             const form = fixture.debugElement.query(By.css('form'));
+             let form = fixture.debugElement.query(By.css('form'));
              dispatchEvent(form.nativeElement, 'reset');
              fixture.detectChanges();
              tick();
 
-             const inputs = fixture.debugElement.queryAll(By.css('input'));
+             let inputs = fixture.debugElement.queryAll(By.css('input'));
              expect(inputs[0].nativeElement.checked).toEqual(false);
              expect(inputs[1].nativeElement.checked).toEqual(false);
            }));
 
         it('should support setting value to null and undefined', fakeAsync(() => {
-             const fixture = initTest(NgModelRadioForm);
+             let fixture = initTest(NgModelRadioForm);
              fixture.componentInstance.food = 'chicken';
              fixture.detectChanges();
              tick();
@@ -864,7 +864,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
              fixture.detectChanges();
              tick();
 
-             const inputs = fixture.debugElement.queryAll(By.css('input'));
+             let inputs = fixture.debugElement.queryAll(By.css('input'));
              expect(inputs[0].nativeElement.checked).toEqual(false);
              expect(inputs[1].nativeElement.checked).toEqual(false);
 
@@ -880,16 +880,16 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
            }));
 
         it('should disable radio controls properly with programmatic call', fakeAsync(() => {
-             const fixture = initTest(NgModelRadioForm);
+             let fixture = initTest(NgModelRadioForm);
              fixture.componentInstance.food = 'fish';
              fixture.detectChanges();
              tick();
 
-             const form = fixture.debugElement.children[0].injector.get(NgForm);
+             let form = fixture.debugElement.children[0].injector.get(NgForm);
              form.control.get('food') !.disable();
              tick();
 
-             const inputs = fixture.debugElement.queryAll(By.css('input'));
+             let inputs = fixture.debugElement.queryAll(By.css('input'));
              expect(inputs[0].nativeElement.disabled).toBe(true);
              expect(inputs[1].nativeElement.disabled).toBe(true);
              expect(inputs[2].nativeElement.disabled).toBe(false);
@@ -921,13 +921,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
       describe('in reactive forms', () => {
 
         it('with basic use case', () => {
-          const fixture = initTest(FormControlRangeInput);
-          const control = new FormControl(10);
+          let fixture = initTest(FormControlRangeInput);
+          let control = new FormControl(10);
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
           // model -> view
-          const input = fixture.debugElement.query(By.css('input'));
+          let input = fixture.debugElement.query(By.css('input'));
           expect(input.nativeElement.value).toEqual('10');
 
           input.nativeElement.value = '20';
@@ -938,12 +938,12 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('when value is cleared in the UI', () => {
-          const fixture = initTest(FormControlNumberInput);
-          const control = new FormControl(10, Validators.required);
+          let fixture = initTest(FormControlNumberInput);
+          let control = new FormControl(10, Validators.required);
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
-          const input = fixture.debugElement.query(By.css('input'));
+          let input = fixture.debugElement.query(By.css('input'));
           input.nativeElement.value = '';
           dispatchEvent(input.nativeElement, 'input');
 
@@ -958,14 +958,14 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
         });
 
         it('when value is cleared programmatically', () => {
-          const fixture = initTest(FormControlNumberInput);
-          const control = new FormControl(10);
+          let fixture = initTest(FormControlNumberInput);
+          let control = new FormControl(10);
           fixture.componentInstance.control = control;
           fixture.detectChanges();
 
           control.setValue(null);
 
-          const input = fixture.debugElement.query(By.css('input'));
+          let input = fixture.debugElement.query(By.css('input'));
           expect(input.nativeElement.value).toEqual('');
         });
 
@@ -973,16 +973,16 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
       describe('in template-driven forms', () => {
         it('with basic use case', fakeAsync(() => {
-             const fixture = initTest(NgModelRangeForm);
+             let fixture = initTest(NgModelRangeForm);
              // model -> view
              fixture.componentInstance.val = 4;
              fixture.detectChanges();
              tick();
-             const input = fixture.debugElement.query(By.css('input'));
+             let input = fixture.debugElement.query(By.css('input'));
              expect(input.nativeElement.value).toBe('4');
              fixture.detectChanges();
              tick();
-             const newVal = '4';
+             let newVal = '4';
              input.triggerEventHandler('input', {target: {value: newVal}});
              tick();
              // view -> model
@@ -998,13 +998,13 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
       describe('in reactive forms', () => {
         it('should support basic functionality', () => {
-          const fixture = initTest(WrappedValueForm, WrappedValue);
-          const form = new FormGroup({'login': new FormControl('aa')});
+          let fixture = initTest(WrappedValueForm, WrappedValue);
+          let form = new FormGroup({'login': new FormControl('aa')});
           fixture.componentInstance.form = form;
           fixture.detectChanges();
 
           // model -> view
-          const input = fixture.debugElement.query(By.css('input'));
+          let input = fixture.debugElement.query(By.css('input'));
           expect(input.nativeElement.value).toEqual('!aa!');
 
           input.nativeElement.value = '!bb!';
@@ -1021,11 +1021,11 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
         it('should support non builtin input elements that fire a change event without a \'target\' property',
            () => {
-             const fixture = initTest(MyInputForm, MyInput);
+             let fixture = initTest(MyInputForm, MyInput);
              fixture.componentInstance.form = new FormGroup({'login': new FormControl('aa')});
              fixture.detectChanges();
 
-             const input = fixture.debugElement.query(By.css('my-input'));
+             let input = fixture.debugElement.query(By.css('my-input'));
              expect(input.componentInstance.value).toEqual('!aa!');
 
              input.componentInstance.value = '!bb!';
@@ -1036,7 +1036,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
            });
 
         it('should support custom accessors without setDisabledState - formControlName', () => {
-          const fixture = initTest(WrappedValueForm, WrappedValue);
+          let fixture = initTest(WrappedValueForm, WrappedValue);
           fixture.componentInstance.form = new FormGroup({
             'login': new FormControl({value: 'aa', disabled: true}),
           });
@@ -1050,7 +1050,7 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
              TestBed.overrideComponent(
                  FormControlComp,
                  {set: {template: `<input type="text" [formControl]="control" wrapped-value>`}});
-             const fixture = initTest(FormControlComp);
+             let fixture = initTest(FormControlComp);
              fixture.componentInstance.control = new FormControl({value: 'aa', disabled: true});
              fixture.detectChanges();
              expect(fixture.componentInstance.control.status).toEqual('DISABLED');
@@ -1059,14 +1059,14 @@ import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util'
 
       describe('in template-driven forms', () => {
         it('should support standard writing to view and model', async(() => {
-             const fixture = initTest(NgModelCustomWrapper, NgModelCustomComp);
+             let fixture = initTest(NgModelCustomWrapper, NgModelCustomComp);
              fixture.componentInstance.name = 'Nancy';
              fixture.detectChanges();
              fixture.whenStable().then(() => {
                fixture.detectChanges();
                fixture.whenStable().then(() => {
                  // model -> view
-                 const customInput = fixture.debugElement.query(By.css('[name="custom"]'));
+                 let customInput = fixture.debugElement.query(By.css('[name="custom"]'));
                  expect(customInput.nativeElement.value).toEqual('Nancy');
 
                  customInput.nativeElement.value = 'Carson';
@@ -1359,7 +1359,7 @@ export class MyInput implements ControlValueAccessor {
   // TODO(issue/24571): remove '!'.
   value !: string;
 
-  constructor(cd: NgControl) { cd.valueAccessor = this; }
+  letructor(cd: NgControl) { cd.valueAccessor = this; }
 
   writeValue(value: any) { this.value = `!${value}!`; }
 

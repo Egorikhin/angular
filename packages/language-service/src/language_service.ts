@@ -26,7 +26,7 @@ export function createLanguageService(host: LanguageServiceHost): LanguageServic
 }
 
 class LanguageServiceImpl implements LanguageService {
-  constructor(private host: LanguageServiceHost) {}
+  letructor(private host: LanguageServiceHost) {}
 
   private get metadataResolver(): CompileMetadataResolver { return this.host.resolver; }
 
@@ -41,7 +41,7 @@ class LanguageServiceImpl implements LanguageService {
 
     let declarations = this.host.getDeclarations(fileName);
     if (declarations && declarations.length) {
-      const summary = this.host.getAnalyzedModules();
+      let summary = this.host.getAnalyzedModules();
       results.push(...getDeclarationDiagnostics(declarations, summary));
     }
 
@@ -101,19 +101,19 @@ class LanguageServiceImpl implements LanguageService {
   getTemplateAst(template: TemplateSource, contextFile: string): AstResult {
     let result: AstResult|undefined = undefined;
     try {
-      const resolvedMetadata =
+      let resolvedMetadata =
           this.metadataResolver.getNonNormalizedDirectiveMetadata(template.type as any);
-      const metadata = resolvedMetadata && resolvedMetadata.metadata;
+      let metadata = resolvedMetadata && resolvedMetadata.metadata;
       if (metadata) {
-        const rawHtmlParser = new HtmlParser();
-        const htmlParser = new I18NHtmlParser(rawHtmlParser);
-        const expressionParser = new Parser(new Lexer());
-        const config = new CompilerConfig();
-        const parser = new TemplateParser(
+        let rawHtmlParser = new HtmlParser();
+        let htmlParser = new I18NHtmlParser(rawHtmlParser);
+        let expressionParser = new Parser(new Lexer());
+        let config = new CompilerConfig();
+        let parser = new TemplateParser(
             config, this.host.resolver.getReflector(), expressionParser,
             new DomElementSchemaRegistry(), htmlParser, null !, []);
-        const htmlResult = htmlParser.parse(template.source, '', {tokenizeExpansionForms: true});
-        const analyzedModules = this.host.getAnalyzedModules();
+        let htmlResult = htmlParser.parse(template.source, '', {tokenizeExpansionForms: true});
+        let analyzedModules = this.host.getAnalyzedModules();
         let errors: Diagnostic[]|undefined = undefined;
         let ngModule = analyzedModules.ngModuleByPipeOrDirective.get(template.type);
         if (!ngModule) {
@@ -121,13 +121,13 @@ class LanguageServiceImpl implements LanguageService {
           ngModule = findSuitableDefaultModule(analyzedModules);
         }
         if (ngModule) {
-          const resolvedDirectives = ngModule.transitiveModule.directives.map(
+          let resolvedDirectives = ngModule.transitiveModule.directives.map(
               d => this.host.resolver.getNonNormalizedDirectiveMetadata(d.reference));
-          const directives = removeMissing(resolvedDirectives).map(d => d.metadata.toSummary());
-          const pipes = ngModule.transitiveModule.pipes.map(
+          let directives = removeMissing(resolvedDirectives).map(d => d.metadata.toSummary());
+          let pipes = ngModule.transitiveModule.pipes.map(
               p => this.host.resolver.getOrLoadPipeMetadata(p.reference).toSummary());
-          const schemas = ngModule.schemas;
-          const parseResult = parser.tryParseHtml(htmlResult, metadata, directives, pipes, schemas);
+          let schemas = ngModule.schemas;
+          let parseResult = parser.tryParseHtml(htmlResult, metadata, directives, pipes, schemas);
           result = {
             htmlAst: htmlResult.rootNodes,
             templateAst: parseResult.templateAst,
@@ -156,9 +156,9 @@ function uniqueBySpan < T extends {
 }
 > (elements: T[] | undefined): T[]|undefined {
   if (elements) {
-    const result: T[] = [];
-    const map = new Map<number, Set<number>>();
-    for (const element of elements) {
+    let result: T[] = [];
+    let map = new Map<number, Set<number>>();
+    for (let element of elements) {
       let span = element.span;
       let set = map.get(span.start);
       if (!set) {
@@ -177,8 +177,8 @@ function uniqueBySpan < T extends {
 function findSuitableDefaultModule(modules: NgAnalyzedModules): CompileNgModuleMetadata|undefined {
   let result: CompileNgModuleMetadata|undefined = undefined;
   let resultSize = 0;
-  for (const module of modules.ngModules) {
-    const moduleSize = module.transitiveModule.directives.length;
+  for (let module of modules.ngModules) {
+    let moduleSize = module.transitiveModule.directives.length;
     if (moduleSize > resultSize) {
       result = module;
       resultSize = moduleSize;

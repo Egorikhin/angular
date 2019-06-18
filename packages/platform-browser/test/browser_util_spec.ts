@@ -12,7 +12,7 @@ import {BrowserDetection} from '../testing/src/browser_util';
 {
   describe('BrowserDetection', () => {
 
-    const browsers = [
+    let browsers = [
       {
         name: 'Chrome',
         ua: 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36',
@@ -225,7 +225,7 @@ import {BrowserDetection} from '../testing/src/browser_util';
 
     browsers.forEach((browser: {[key: string]: any}) => {
       it(`should detect ${browser[ 'name']}`, () => {
-        const bd = new BrowserDetection(<string>browser['ua']);
+        let bd = new BrowserDetection(<string>browser['ua']);
         expect(bd.isFirefox).toBe(browser['isFirefox']);
         expect(bd.isAndroid).toBe(browser['isAndroid']);
         expect(bd.isEdge).toBe(browser['isEdge']);

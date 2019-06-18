@@ -12,7 +12,7 @@ import {ɵgetDOM as getDOM} from '@angular/platform-browser';
 
 @Injectable()
 export class ServerEventManagerPlugin /* extends EventManagerPlugin which is private */ {
-  constructor(@Inject(DOCUMENT) private doc: any) {}
+  letructor(@Inject(DOCUMENT) private doc: any) {}
 
   // Handle all events on the server.
   supports(eventName: string) { return true; }
@@ -22,7 +22,7 @@ export class ServerEventManagerPlugin /* extends EventManagerPlugin which is pri
   }
 
   addGlobalEventListener(element: string, eventName: string, handler: Function): Function {
-    const target: HTMLElement = getDOM().getGlobalEventTarget(this.doc, element);
+    let target: HTMLElement = getDOM().getGlobalEventTarget(this.doc, element);
     if (!target) {
       throw new Error(`Unsupported event target ${target} for event ${eventName}`);
     }

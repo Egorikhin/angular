@@ -9,17 +9,17 @@
 import {CompileReflector, ExternalReference, Identifiers, getUrlScheme, syntaxError} from '@angular/compiler';
 import {ANALYZE_FOR_ENTRY_COMPONENTS, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, ElementRef, Injector, LOCALE_ID, NgModuleFactory, NgModuleRef, QueryList, Renderer, Renderer2, SecurityContext, TRANSLATIONS_FORMAT, TemplateRef, ViewContainerRef, ViewEncapsulation, ɵCodegenComponentFactoryResolver, ɵEMPTY_ARRAY, ɵEMPTY_MAP, ɵReflectionCapabilities as ReflectionCapabilities, ɵand, ɵccf, ɵcmf, ɵcrt, ɵdid, ɵeld, ɵinlineInterpolate, ɵinterpolate, ɵmod, ɵmpd, ɵncd, ɵnov, ɵpad, ɵpid, ɵpod, ɵppd, ɵprd, ɵqud, ɵregisterModuleFactory, ɵstringify as stringify, ɵted, ɵunv, ɵvid} from '@angular/core';
 
-export const MODULE_SUFFIX = '';
-const builtinExternalReferences = createBuiltinExternalReferencesMap();
+export let MODULE_SUFFIX = '';
+let builtinExternalReferences = createBuiltinExternalReferencesMap();
 
 export class JitReflector implements CompileReflector {
   private reflectionCapabilities = new ReflectionCapabilities();
 
   componentModuleUrl(type: any, cmpMetadata: Component): string {
-    const moduleId = cmpMetadata.moduleId;
+    let moduleId = cmpMetadata.moduleId;
 
     if (typeof moduleId === 'string') {
-      const scheme = getUrlScheme(moduleId);
+      let scheme = getUrlScheme(moduleId);
       return scheme ? moduleId : `package:${moduleId}${MODULE_SUFFIX}`;
     } else if (moduleId !== null && moduleId !== void 0) {
       throw syntaxError(
@@ -53,7 +53,7 @@ export class JitReflector implements CompileReflector {
 
 
 function createBuiltinExternalReferencesMap() {
-  const map = new Map<ExternalReference, any>();
+  let map = new Map<ExternalReference, any>();
   map.set(Identifiers.ANALYZE_FOR_ENTRY_COMPONENTS, ANALYZE_FOR_ENTRY_COMPONENTS);
   map.set(Identifiers.ElementRef, ElementRef);
   map.set(Identifiers.NgModuleRef, NgModuleRef);

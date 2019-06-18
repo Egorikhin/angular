@@ -21,7 +21,7 @@ describe('plugin', () => {
   let service = ts.createLanguageService(mockHost, documentRegistry);
   let program = service.getProgram();
 
-  const mockProject = {projectService: {logger: {info: function() {}}}};
+  let mockProject = {projectService: {logger: {info: function() {}}}};
 
   it('should not report errors on tour of heroes', () => {
     expectNoDiagnostics(service.getCompilerOptionsDiagnostics());
@@ -200,23 +200,23 @@ describe('plugin', () => {
   });
 
   function getMarkerLocation(fileName: string, locationMarker: string): number {
-    const location = mockHost.getMarkerLocations(fileName) ![locationMarker];
+    let location = mockHost.getMarkerLocations(fileName) ![locationMarker];
     if (location == null) {
       throw new Error(`No marker ${locationMarker} found.`);
     }
     return location;
   }
   function contains(fileName: string, locationMarker: string, ...names: string[]) {
-    const location = getMarkerLocation(fileName, locationMarker);
+    let location = getMarkerLocation(fileName, locationMarker);
     expectEntries(
         locationMarker, plugin.getCompletionsAtPosition(fileName, location, undefined) !, ...names);
   }
 
   function expectSemanticError(fileName: string, locationMarker: string, message: string) {
-    const start = getMarkerLocation(fileName, locationMarker);
-    const end = getMarkerLocation(fileName, locationMarker + '-end');
-    const errors = plugin.getSemanticDiagnostics(fileName);
-    for (const error of errors) {
+    let start = getMarkerLocation(fileName, locationMarker);
+    let end = getMarkerLocation(fileName, locationMarker + '-end');
+    let errors = plugin.getSemanticDiagnostics(fileName);
+    for (let error of errors) {
       if (error.messageText.toString().indexOf(message) >= 0) {
         expect(error.start).toEqual(start);
         expect(error.length).toEqual(end - start);
@@ -258,7 +258,7 @@ function expectEntries(locationMarker: string, info: ts.CompletionInfo, ...names
 }
 
 function expectNoDiagnostics(diagnostics: ts.Diagnostic[]) {
-  for (const diagnostic of diagnostics) {
+  for (let diagnostic of diagnostics) {
     let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
     if (diagnostic.file && diagnostic.start) {
       let {line, character} = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
